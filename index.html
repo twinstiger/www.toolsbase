@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Dev Tools - Local, Fast, No Uploads | JSON Formatter, Regex Tester, Base64 Decode</title>
+    <meta name="description" content="Free online developer tools: JSON formatter, regex tester, base64 decode, cron generator, hash generator, UUID generator. 100% local processing, no uploads, fast and secure.">
+    <meta name="keywords" content="json formatter, regex tester, base64 decode, cron generator, md5 generator, sha256 hash, uuid generator, password generator, timestamp converter, yaml formatter, xml formatter">
+    <meta name="author" content="Dev Tools">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Dev Tools - Local, Fast, No Uploads">
+    <meta property="og:description" content="Free developer tools for JSON formatting, regex testing, encoding/decoding, and more. All processing happens locally in your browser.">
+    <meta property="og:type" content="website">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://json-toolsbase.com">
+    <!-- External Libraries for New Tools -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><a href="#" onclick="showTool('home'); return false;" style="text-decoration: none; cursor: pointer;"><span class="logo-tool">toolsbase.net</span></a></h1>
+                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+                </div>
+                <nav class="nav">
+                    <div class="dropdown">
+                        <button class="nav-btn active" data-group="dev">🛠️ Dev Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('json')">📋 JSON/YAML/XML</a>
+                            <a href="#" onclick="showTool('regex')">🔍 Regex Tester</a>
+                            <a href="#" onclick="showTool('encode')">🔄 Encode/Decode</a>
+                            <a href="#" onclick="showTool('hash')">#️⃣ Hash Generator</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="generators">⚡ Gen Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('uuid')">🎲 UUID Generator</a>
+                            <a href="#" onclick="showTool('password')">🔑 Password Generator</a>
+                            <a href="#" onclick="showTool('timestamp')">⏰ Timestamp Converter</a>
+                            <a href="#" onclick="showTool('cron')">📅 Cron Generator</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="calculators">🧮 Calc Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('calc-basic')">🔢 Basic Calculator</a>
+                            <a href="#" onclick="showTool('calc-percentage')">📊 Percentage</a>
+                            <a href="#" onclick="showTool('calc-tip')">💵 Tip Calculator</a>
+                            <a href="#" onclick="showTool('calc-loan')">🏦 Loan Calculator</a>
+                            <a href="#" onclick="showTool('calc-age')">🎂 Age Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="converters">📐 Convert Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('conv-length')">📏 Length</a>
+                            <a href="#" onclick="showTool('conv-weight')">⚖️ Weight</a>
+                            <a href="#" onclick="showTool('conv-temp')">🌡️ Temperature</a>
+                            <a href="#" onclick="showTool('conv-volume')">🧪 Volume</a>
+                            <a href="#" onclick="showTool('conv-area')">📐 Area</a>
+                            <a href="#" onclick="showTool('conv-speed')">🚀 Speed</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="text">📝 Text Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('text-case')">🔤 Case Converter</a>
+                            <a href="#" onclick="showTool('text-wordcount')">📊 Word Counter</a>
+                            <a href="#" onclick="showTool('text-color')">🎨 Color Picker</a>
+                            <a href="#" onclick="showTool('text-random')">🎲 Random Number</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="image">🖼️ Image Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('img-qrcode')">📱 QR Code</a>
+                            <a href="#" onclick="showTool('img-compress')">🗜️ Compressor</a>
+                            <a href="#" onclick="showTool('img-exif')">📷 EXIF Viewer</a>
+                            <a href="#" onclick="showTool('img-rotate')">🔄 Rotate/Flip</a>
+                            <a href="#" onclick="showTool('img-crop')">✂️ Cropper</a>
+                            <a href="#" onclick="showTool('img-watermark')">💧 Watermark</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="network">🌐 Network Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('net-ip')">🔍 My IP</a>
+                            <a href="#" onclick="showTool('net-url')">🔗 URL Parser</a>
+                            <a href="#" onclick="showTool('net-subnet')">🌐 Subnet Calc</a>
+                            <a href="#" onclick="showTool('net-ip2int')">🔢 IP to Int</a>
+                            <a href="#" onclick="showTool('net-shorten')">✂️ URL Shortener</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="crypto">🔐 Crypto Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showTool('crypto-base32')">🔤 Base32</a>
+                            <a href="#" onclick="showTool('crypto-morse')">📻 Morse Code</a>
+                            <a href="#" onclick="showTool('crypto-bcrypt')">🔒 Bcrypt</a>
+                            <a href="#" onclick="showTool('crypto-htpasswd')">🔑 htpasswd</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Home Page - Featured Tools Cards -->
+            <section id="home-page" class="tool-section active">
+                <div class="featured-tools-grid">
+                    <!-- Password Generator Card -->
+                    <div class="tool-card" onclick="showTool('password')">
+                        <div class="card-icon">🔑</div>
+                        <h3>Password Generator</h3>
+                        <p>Create strong, secure passwords with customizable options for all your accounts</p>
+                        <div class="card-tags">
+                            <span class="tag">Security</span>
+                            <span class="tag">Password</span>
+                            <span class="tag">Random</span>
+                        </div>
+                    </div>
+
+                    <!-- QR Code Generator Card -->
+                    <div class="tool-card" onclick="showTool('img-qrcode')">
+                        <div class="card-icon">📱</div>
+                        <h3>QR Code Generator</h3>
+                        <p>Generate QR codes from text, URLs, WiFi passwords, or contact information</p>
+                        <div class="card-tags">
+                            <span class="tag">QR Code</span>
+                            <span class="tag">Share</span>
+                            <span class="tag">Easy</span>
+                        </div>
+                    </div>
+
+                    <!-- Timestamp Converter Card -->
+                    <div class="tool-card" onclick="showTool('timestamp')">
+                        <div class="card-icon">⏰</div>
+                        <h3>Timestamp Converter</h3>
+                        <p>Convert Unix timestamps to human-readable dates and vice versa instantly</p>
+                        <div class="card-tags">
+                            <span class="tag">Time</span>
+                            <span class="tag">Date</span>
+                            <span class="tag">Convert</span>
+                        </div>
+                    </div>
+
+                    <!-- Base64 Encode/Decode Card -->
+                    <div class="tool-card" onclick="showTool('encode')">
+                        <div class="card-icon">🔄</div>
+                        <h3>Base64 Encoder</h3>
+                        <p>Encode and decode Base64 text for emails, images, and data transfer</p>
+                        <div class="card-tags">
+                            <span class="tag">Base64</span>
+                            <span class="tag">Encode</span>
+                            <span class="tag">Decode</span>
+                        </div>
+                    </div>
+
+                    <!-- UUID Generator Card -->
+                    <div class="tool-card" onclick="showTool('uuid')">
+                        <div class="card-icon">🎲</div>
+                        <h3>UUID Generator</h3>
+                        <p>Generate unique identifiers for databases, applications, and tracking</p>
+                        <div class="card-tags">
+                            <span class="tag">UUID</span>
+                            <span class="tag">ID</span>
+                            <span class="tag">Unique</span>
+                        </div>
+                    </div>
+
+                    <!-- JSON Formatter Card -->
+                    <div class="tool-card" onclick="showTool('json')">
+                        <div class="card-icon">📋</div>
+                        <h3>JSON Formatter</h3>
+                        <p>Format, validate, and beautify JSON data for better readability</p>
+                        <div class="card-tags">
+                            <span class="tag">JSON</span>
+                            <span class="tag">Format</span>
+                            <span class="tag">Validate</span>
+                        </div>
+                    </div>
+
+                    <!-- Color Picker Card -->
+                    <div class="tool-card" onclick="showTool('text-color')">
+                        <div class="card-icon">🎨</div>
+                        <h3>Color Picker</h3>
+                        <p>Pick colors and convert between HEX, RGB, and other color formats</p>
+                        <div class="card-tags">
+                            <span class="tag">Color</span>
+                            <span class="tag">Design</span>
+                            <span class="tag">HEX</span>
+                        </div>
+                    </div>
+
+                    <!-- Word Counter Card -->
+                    <div class="tool-card" onclick="showTool('text-wordcount')">
+                        <div class="card-icon">📊</div>
+                        <h3>Word Counter</h3>
+                        <p>Count words, characters, sentences, and paragraphs in your text</p>
+                        <div class="card-tags">
+                            <span class="tag">Text</span>
+                            <span class="tag">Counter</span>
+                            <span class="tag">Writing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Tools Section -->
+                <div class="more-tools-section">
+                    <h2>More Developer Tools</h2>
+                    <div class="tools-categories">
+                        <div class="category">
+                            <h3>🛠️ Dev Tools</h3>
+                            <ul>
+                                <li><a href="#" onclick="showTool('regex'); return false;">Regex Tester</a></li>
+                                <li><a href="#" onclick="showTool('hash'); return false;">Hash Generator</a></li>
+                            </ul>
+                        </div>
+                        <div class="category">
+                            <h3>⚡ Generators</h3>
+                            <ul>
+                                <li><a href="#" onclick="showTool('cron'); return false;">Cron Generator</a></li>
+                                <li><a href="#" onclick="showTool('random-string'); return false;">Random String</a></li>
+                            </ul>
+                        </div>
+                        <div class="category">
+                            <h3>🧮 Calculators</h3>
+                            <ul>
+                                <li><a href="#" onclick="showTool('calc-basic'); return false;">Basic Calculator</a></li>
+                                <li><a href="#" onclick="showTool('calc-percentage'); return false;">Percentage Calc</a></li>
+                            </ul>
+                        </div>
+                        <div class="category">
+                            <h3>🌐 Network</h3>
+                            <ul>
+                                <li><a href="#" onclick="showTool('net-ip'); return false;">My IP Address</a></li>
+                                <li><a href="#" onclick="showTool('net-url'); return false;">URL Parser</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- JSON/YAML/XML Tool -->
+            <section id="json-tool" class="tool-section">
+                <div class="toolbar">
+                    <select id="json-format" class="select-input">
+                        <option value="json">📄 JSON</option>
+                        <option value="yaml">📝 YAML</option>
+                        <option value="xml">📑 XML</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="formatData()">✨ Format</button>
+                    <button class="btn" onclick="compressData()">🗜️ Compress</button>
+                    <button class="btn" onclick="validateData()">✓ Validate</button>
+                    <button class="btn btn-danger" onclick="clearAll()">🗑️ Clear</button>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="auto-format" checked>
+                        <span>Auto Format</span>
+                    </label>
+                </div>
+
+                <div class="workspace">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Input</h3>
+                            <span id="input-stats" class="stats">0 bytes</span>
+                        </div>
+                        <textarea id="json-input" placeholder="Paste your JSON, YAML, or XML here..."></textarea>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Output</h3>
+                            <span id="output-status" class="status-badge"></span>
+                        </div>
+                        <pre id="json-output"><code></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Regex Tester -->
+            <section id="regex-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>Regex Tester</h2>
+                    <p>Test regular expressions with real-time matching and common patterns library</p>
+                </div>
+
+                <div class="toolbar">
+                    <input type="text" id="regex-pattern" placeholder="Enter regex pattern..." class="regex-input">
+                    <input type="text" id="regex-flags" placeholder="Flags (gi)" class="regex-input-small">
+                    <button class="btn btn-primary" onclick="testRegex()">🧪 Test</button>
+                    <button class="btn btn-danger" onclick="clearRegex()">🗑️ Clear</button>
+                </div>
+
+                <div class="common-patterns">
+                    <h4>Common Patterns:</h4>
+                    <div class="pattern-tags">
+                        <span class="pattern-tag" onclick="setRegex('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')">Email</span>
+                        <span class="pattern-tag" onclick="setRegex('^https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$')">URL</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d{3}-?\\d{3}-?\\d{4}$')">Phone</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$')">IP Address</span>
+                        <span class="pattern-tag" onclick="setRegex('^[A-Za-z0-9_-]+$')">Alphanumeric</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d+$')">Numbers Only</span>
+                        <span class="pattern-tag" onclick="setRegex('^[A-Z][a-z]+\\s[A-Z][a-z]+$')">Name</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d{4}-\\d{2}-\\d{2}$')">Date (YYYY-MM-DD)</span>
+                    </div>
+                </div>
+
+                <div class="workspace">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Test String</h3>
+                        </div>
+                        <textarea id="regex-test-string" placeholder="Enter text to test against the regex pattern..."></textarea>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Match Results</h3>
+                            <span id="match-count" class="stats">0 matches</span>
+                        </div>
+                        <div id="regex-results" class="regex-results">
+                            <p class="placeholder-text">Results will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Encode/Decode Tool -->
+            <section id="encode-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>Encode / Decode</h2>
+                    <p>Base64, URL, HTML, and Unicode encoding/decoding</p>
+                </div>
+
+                <div class="toolbar">
+                    <select id="encode-type" class="select-input">
+                        <option value="base64">🔐 Base64</option>
+                        <option value="url">🔗 URL</option>
+                        <option value="html">🌐 HTML Entities</option>
+                        <option value="unicode">🔤 Unicode</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="encodeText()">🔒 Encode</button>
+                    <button class="btn" onclick="decodeText()">🔓 Decode</button>
+                    <button class="btn btn-danger" onclick="clearEncode()">🗑️ Clear</button>
+                </div>
+
+                <div class="workspace">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Input</h3>
+                        </div>
+                        <textarea id="encode-input" placeholder="Enter text to encode or decode..."></textarea>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Output</h3>
+                            <button class="btn-copy" onclick="copyToClipboard('encode-output')">Copy</button>
+                        </div>
+                        <textarea id="encode-output" readonly placeholder="Result will appear here..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hash Generator -->
+            <section id="hash-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>Hash Generator</h2>
+                    <p>Generate MD5, SHA-1, SHA-256 hashes</p>
+                </div>
+
+                <div class="toolbar">
+                    <select id="hash-algorithm" class="select-input">
+                        <option value="MD5">#️⃣ MD5</option>
+                        <option value="SHA-1">🔐 SHA-1</option>
+                        <option value="SHA-256" selected>🔒 SHA-256</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="generateHash()">⚡ Generate Hash</button>
+                    <button class="btn btn-danger" onclick="clearHash()">🗑️ Clear</button>
+                </div>
+
+                <div class="workspace single-panel">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Input Text</h3>
+                        </div>
+                        <textarea id="hash-input" placeholder="Enter text to hash..."></textarea>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Hash Result</h3>
+                            <button class="btn-copy" onclick="copyToClipboard('hash-output')">Copy</button>
+                        </div>
+                        <div class="hash-output-container">
+                            <input type="text" id="hash-output" readonly class="hash-output" placeholder="Hash will appear here...">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UUID Generator -->
+            <section id="uuid-tool" class="tool-section">
+                <div class="generators-grid">
+                    <div class="generator-card">
+                        <h3>UUID Generator</h3>
+                        <div class="generator-controls">
+                            <label>Quantity: <input type="number" id="uuid-count" value="1" min="1" max="100"></label>
+                            <button class="btn btn-primary" onclick="generateUUIDs()">🎲 Generate</button>
+                        </div>
+                        <textarea id="uuid-output" readonly class="generator-output" placeholder="UUIDs will appear here..."></textarea>
+                        <button class="btn-copy" onclick="copyToClipboard('uuid-output')">Copy All</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Password Generator -->
+            <section id="password-tool" class="tool-section">
+                <div class="generators-grid">
+                    <div class="generator-card">
+                        <h3>Password Generator</h3>
+                        <div class="generator-controls">
+                            <label>Length: <input type="number" id="password-length" value="16" min="4" max="128"></label>
+                            <label><input type="checkbox" id="pwd-uppercase" checked> A-Z</label>
+                            <label><input type="checkbox" id="pwd-lowercase" checked> a-z</label>
+                            <label><input type="checkbox" id="pwd-numbers" checked> 0-9</label>
+                            <label><input type="checkbox" id="pwd-symbols" checked> !@#</label>
+                        </div>
+                        <button class="btn btn-primary" onclick="generatePassword()">🔑 Generate Password</button>
+                        <div class="password-display">
+                            <input type="text" id="password-output" readonly class="password-output">
+                            <button class="btn-copy" onclick="copyToClipboard('password-output')">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timestamp Converter -->
+            <section id="timestamp-tool" class="tool-section">
+                <div class="time-tools-grid">
+                    <div class="time-card">
+                        <h3>Timestamp Converter</h3>
+                        
+                        <div class="converter-group">
+                            <label>Unix Timestamp:</label>
+                            <div class="input-group">
+                                <input type="text" id="unix-timestamp" placeholder="Enter timestamp...">
+                                <button class="btn" onclick="convertFromTimestamp()">→</button>
+                            </div>
+                        </div>
+
+                        <div class="converter-group">
+                            <label>Human Readable:</label>
+                            <div class="input-group">
+                                <input type="datetime-local" id="human-date">
+                                <button class="btn" onclick="convertFromHuman()">→</button>
+                            </div>
+                        </div>
+
+                        <div class="current-time">
+                            <p>Current Time: <strong id="current-unix"></strong></p>
+                            <p id="current-human"></p>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="setCurrentTime()">🕐 Use Current Time</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cron Generator -->
+            <section id="cron-tool" class="tool-section">
+                <div class="time-tools-grid">
+                    <div class="time-card">
+                        <h3>Cron Expression Generator</h3>
+                        
+                        <div class="cron-fields">
+                            <div class="cron-field">
+                                <label>Minute (0-59):</label>
+                                <input type="text" id="cron-minute" placeholder="*" value="*">
+                            </div>
+                            <div class="cron-field">
+                                <label>Hour (0-23):</label>
+                                <input type="text" id="cron-hour" placeholder="*" value="*">
+                            </div>
+                            <div class="cron-field">
+                                <label>Day of Month (1-31):</label>
+                                <input type="text" id="cron-day" placeholder="*" value="*">
+                            </div>
+                            <div class="cron-field">
+                                <label>Month (1-12):</label>
+                                <input type="text" id="cron-month" placeholder="*" value="*">
+                            </div>
+                            <div class="cron-field">
+                                <label>Day of Week (0-7):</label>
+                                <input type="text" id="cron-weekday" placeholder="*" value="*">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="generateCron()">✨ Generate Expression</button>
+
+                        <div class="cron-result">
+                            <label>Cron Expression:</label>
+                            <div class="cron-expression-display">
+                                <code id="cron-expression">* * * * *</code>
+                                <button class="btn-copy" onclick="copyToClipboard('cron-expression')">Copy</button>
+                            </div>
+                            <p id="cron-description" class="cron-desc">Every minute</p>
+                        </div>
+
+                        <div class="cron-presets">
+                            <h4>Presets:</h4>
+                            <div class="preset-buttons">
+                                <button class="btn-preset" onclick="setCronPreset('0 0 * * *', 'Every day at midnight')">Daily</button>
+                                <button class="btn-preset" onclick="setCronPreset('0 */6 * * *', 'Every 6 hours')">Every 6h</button>
+                                <button class="btn-preset" onclick="setCronPreset('*/15 * * * *', 'Every 15 minutes')">Every 15m</button>
+                                <button class="btn-preset" onclick="setCronPreset('0 9 * * 1', 'Monday at 9 AM')">Weekly</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calculator Tools -->
+            <section id="calculator-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🧮 Calculators</h2>
+                    <p>Quick and accurate calculations for everyday tasks</p>
+                </div>
+
+                <div class="generators-grid">
+                    <!-- Basic Calculator -->
+                    <div class="generator-card individual-tool" id="calc-basic-card">
+                        <h3>🔢 Basic Calculator</h3>
+                        <div class="workspace single-panel">
+                            <input type="text" id="calc-display" readonly placeholder="0" style="width: 100%; padding: 15px; font-size: 24px; text-align: right; margin-bottom: 15px; border: 2px solid #a5d6a7; border-radius: 10px; background: #f5f5f5;">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                                <button class="btn btn-danger" onclick="calcClear()" style="grid-column: span 2;">C</button>
+                                <button class="btn" onclick="calcBackspace()">⌫</button>
+                                <button class="btn btn-primary" onclick="calcOp('/')">÷</button>
+                                
+                                <button class="btn" onclick="calcNum('7')">7</button>
+                                <button class="btn" onclick="calcNum('8')">8</button>
+                                <button class="btn" onclick="calcNum('9')">9</button>
+                                <button class="btn btn-primary" onclick="calcOp('*')">×</button>
+                                
+                                <button class="btn" onclick="calcNum('4')">4</button>
+                                <button class="btn" onclick="calcNum('5')">5</button>
+                                <button class="btn" onclick="calcNum('6')">6</button>
+                                <button class="btn btn-primary" onclick="calcOp('-')">-</button>
+                                
+                                <button class="btn" onclick="calcNum('1')">1</button>
+                                <button class="btn" onclick="calcNum('2')">2</button>
+                                <button class="btn" onclick="calcNum('3')">3</button>
+                                <button class="btn btn-primary" onclick="calcOp('+')">+</button>
+                                
+                                <button class="btn" onclick="calcNum('0')" style="grid-column: span 2;">0</button>
+                                <button class="btn" onclick="calcDot()">.</button>
+                                <button class="btn btn-primary" onclick="calcEquals()">=</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Percentage Calculator -->
+                    <div class="generator-card individual-tool" id="calc-percentage-card">
+                        <h3>📊 Percentage Calculator</h3>
+                        <div class="generator-controls">
+                            <label>What is <input type="number" id="pct-value" value="20" style="width: 80px;"> % of <input type="number" id="pct-total" value="100" style="width: 80px;"> ?</label>
+                            <button class="btn btn-primary" onclick="calcPercentage()">Calculate</button>
+                            <div class="password-output" id="pct-result" style="margin-top: 10px;">Result: 20</div>
+                        </div>
+                    </div>
+
+                    <!-- Tip Calculator -->
+                    <div class="generator-card individual-tool" id="calc-tip-card">
+                        <h3>💵 Tip Calculator</h3>
+                        <div class="generator-controls">
+                            <label>Bill Amount: $<input type="number" id="tip-bill" value="100" style="width: 100px;"></label>
+                            <label>Tip %: <input type="number" id="tip-percent" value="15" style="width: 80px;"></label>
+                            <label>Split: <input type="number" id="tip-split" value="1" min="1" style="width: 80px;"></label>
+                            <button class="btn btn-primary" onclick="calcTip()">Calculate</button>
+                            <div class="password-output" id="tip-result" style="margin-top: 10px;">Tip: $15.00 | Total: $115.00 | Per Person: $115.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Loan Calculator -->
+                    <div class="generator-card individual-tool" id="calc-loan-card">
+                        <h3>🏦 Loan Calculator</h3>
+                        <div class="generator-controls">
+                            <label>Loan Amount: $<input type="number" id="loan-amount" value="100000" style="width: 120px;"></label>
+                            <label>Interest Rate: <input type="number" id="loan-rate" value="5" step="0.1" style="width: 80px;"> %</label>
+                            <label>Term (years): <input type="number" id="loan-term" value="30" style="width: 80px;"></label>
+                            <button class="btn btn-primary" onclick="calcLoan()">Calculate</button>
+                            <div class="password-output" id="loan-result" style="margin-top: 10px;">Monthly Payment: $536.82</div>
+                        </div>
+                    </div>
+
+                    <!-- Age Calculator -->
+                    <div class="generator-card individual-tool" id="calc-age-card">
+                        <h3>🎂 Age Calculator</h3>
+                        <div class="generator-controls">
+                            <label>Birth Date: <input type="date" id="age-birth" style="padding: 8px; border: 2px solid #a5d6a7; border-radius: 10px;"></label>
+                            <button class="btn btn-primary" onclick="calcAge()">Calculate Age</button>
+                            <div class="password-output" id="age-result" style="margin-top: 10px;">Enter your birth date</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Unit Converters -->
+            <section id="converter-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>📐 Unit Converters</h2>
+                    <p>Convert between different units instantly</p>
+                </div>
+
+                <div class="generators-grid">
+                    <!-- Length Converter -->
+                    <div class="generator-card individual-tool" id="conv-length-card">
+                        <h3>📏 Length Converter</h3>
+                        <div class="generator-controls">
+                            <input type="number" id="length-input" value="1" oninput="convertLength()" style="width: 100px;">
+                            <select id="length-from" onchange="convertLength()" class="select-input">
+                                <option value="m">Meters</option>
+                                <option value="km">Kilometers</option>
+                                <option value="cm">Centimeters</option>
+                                <option value="mm">Millimeters</option>
+                                <option value="mi">Miles</option>
+                                <option value="yd">Yards</option>
+                                <option value="ft">Feet</option>
+                                <option value="in">Inches</option>
+                            </select>
+                            <span>to</span>
+                            <select id="length-to" onchange="convertLength()" class="select-input">
+                                <option value="ft">Feet</option>
+                                <option value="m">Meters</option>
+                                <option value="km">Kilometers</option>
+                                <option value="cm">Centimeters</option>
+                                <option value="mm">Millimeters</option>
+                                <option value="mi">Miles</option>
+                                <option value="yd">Yards</option>
+                                <option value="in">Inches</option>
+                            </select>
+                            <div class="password-output" id="length-result" style="margin-top: 10px;">3.28084 ft</div>
+                        </div>
+                    </div>
+
+                    <!-- Weight Converter -->
+                    <div class="generator-card individual-tool" id="conv-weight-card">
+                        <h3>⚖️ Weight Converter</h3>
+                        <div class="generator-controls">
+                            <input type="number" id="weight-input" value="1" oninput="convertWeight()" style="width: 100px;">
+                            <select id="weight-from" onchange="convertWeight()" class="select-input">
+                                <option value="kg">Kilograms</option>
+                                <option value="g">Grams</option>
+                                <option value="mg">Milligrams</option>
+                                <option value="lb">Pounds</option>
+                                <option value="oz">Ounces</option>
+                            </select>
+                            <span>to</span>
+                            <select id="weight-to" onchange="convertWeight()" class="select-input">
+                                <option value="lb">Pounds</option>
+                                <option value="kg">Kilograms</option>
+                                <option value="g">Grams</option>
+                                <option value="mg">Milligrams</option>
+                                <option value="oz">Ounces</option>
+                            </select>
+                            <div class="password-output" id="weight-result" style="margin-top: 10px;">2.20462 lb</div>
+                        </div>
+                    </div>
+
+                    <!-- Temperature Converter -->
+                    <div class="generator-card individual-tool" id="conv-temp-card">
+                        <h3>🌡️ Temperature Converter</h3>
+                        <div class="generator-controls">
+                            <input type="number" id="temp-input" value="100" oninput="convertTemp()" style="width: 100px;">
+                            <select id="temp-from" onchange="convertTemp()" class="select-input">
+                                <option value="c">Celsius</option>
+                                <option value="f">Fahrenheit</option>
+                                <option value="k">Kelvin</option>
+                            </select>
+                            <span>to</span>
+                            <select id="temp-to" onchange="convertTemp()" class="select-input">
+                                <option value="f">Fahrenheit</option>
+                                <option value="c">Celsius</option>
+                                <option value="k">Kelvin</option>
+                            </select>
+                            <div class="password-output" id="temp-result" style="margin-top: 10px;">212 °F</div>
+                        </div>
+                    </div>
+
+                    <!-- Volume Converter -->
+                    <div class="generator-card individual-tool" id="conv-volume-card">
+                        <h3>🧪 Volume Converter</h3>
+                        <div class="generator-controls">
+                            <input type="number" id="volume-input" value="1" oninput="convertVolume()" style="width: 100px;">
+                            <select id="volume-from" onchange="convertVolume()" class="select-input">
+                                <option value="l">Liters</option>
+                                <option value="ml">Milliliters</option>
+                                <option value="gal">Gallons (US)</option>
+                                <option value="qt">Quarts</option>
+                                <option value="pt">Pints</option>
+                                <option value="cup">Cups</option>
+                                <option value="floz">Fluid Ounces</option>
+                            </select>
+                            <span>to</span>
+                            <select id="volume-to" onchange="convertVolume()" class="select-input">
+                                <option value="gal">Gallons (US)</option>
+                                <option value="l">Liters</option>
+                                <option value="ml">Milliliters</option>
+                                <option value="qt">Quarts</option>
+                                <option value="pt">Pints</option>
+                                <option value="cup">Cups</option>
+                                <option value="floz">Fluid Ounces</option>
+                            </select>
+                            <div class="password-output" id="volume-result" style="margin-top: 10px;">0.264172 gal</div>
+                        </div>
+                    </div>
+
+                    <!-- Area Converter -->
+                    <div class="generator-card individual-tool" id="conv-area-card">
+                        <h3>📐 Area Converter</h3>
+                        <div class="generator-controls">
+                            <input type="number" id="area-input" value="1" oninput="convertArea()" style="width: 100px;">
+                            <select id="area-from" onchange="convertArea()" class="select-input">
+                                <option value="sqm">Square Meters</option>
+                                <option value="sqkm">Square Kilometers</option>
+                                <option value="sqft">Square Feet</option>
+                                <option value="sqmi">Square Miles</option>
+                                <option value="acre">Acres</option>
+                                <option value="hectare">Hectares</option>
+                            </select>
+                            <span>to</span>
+                            <select id="area-to" onchange="convertArea()" class="select-input">
+                                <option value="sqft">Square Feet</option>
+                                <option value="sqm">Square Meters</option>
+                                <option value="sqkm">Square Kilometers</option>
+                                <option value="sqmi">Square Miles</option>
+                                <option value="acre">Acres</option>
+                                <option value="hectare">Hectares</option>
+                            </select>
+                            <div class="password-output" id="area-result" style="margin-top: 10px;">10.7639 sq ft</div>
+                        </div>
+                    </div>
+
+                    <!-- Speed Converter -->
+                    <div class="generator-card individual-tool" id="conv-speed-card">
+                        <h3>🚀 Speed Converter</h3>
+                        <div class="generator-controls">
+                            <input type="number" id="speed-input" value="1" oninput="convertSpeed()" style="width: 100px;">
+                            <select id="speed-from" onchange="convertSpeed()" class="select-input">
+                                <option value="mph">MPH</option>
+                                <option value="kph">KPH</option>
+                                <option value="mps">Meters/sec</option>
+                                <option value="fps">Feet/sec</option>
+                                <option value="knot">Knots</option>
+                            </select>
+                            <span>to</span>
+                            <select id="speed-to" onchange="convertSpeed()" class="select-input">
+                                <option value="kph">KPH</option>
+                                <option value="mph">MPH</option>
+                                <option value="mps">Meters/sec</option>
+                                <option value="fps">Feet/sec</option>
+                                <option value="knot">Knots</option>
+                            </select>
+                            <div class="password-output" id="speed-result" style="margin-top: 10px;">1.60934 kph</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Text Tools -->
+            <section id="text-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>📝 Text Tools</h2>
+                    <p>Transform and analyze your text</p>
+                </div>
+
+                <div class="generators-grid">
+                    <!-- Case Converter -->
+                    <div class="generator-card individual-tool" id="text-case-card">
+                        <h3>🔤 Case Converter</h3>
+                        <textarea id="case-input" placeholder="Enter your text here..." style="min-height: 150px; margin-bottom: 10px;"></textarea>
+                        <div class="toolbar">
+                            <button class="btn" onclick="convertCase('upper')">UPPERCASE</button>
+                            <button class="btn" onclick="convertCase('lower')">lowercase</button>
+                            <button class="btn" onclick="convertCase('title')">Title Case</button>
+                            <button class="btn" onclick="convertCase('sentence')">Sentence case</button>
+                            <button class="btn" onclick="convertCase('camel')">camelCase</button>
+                            <button class="btn" onclick="convertCase('snake')">snake_case</button>
+                            <button class="btn btn-danger" onclick="document.getElementById('case-input').value=''">🗑️ Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Word Counter -->
+                    <div class="generator-card individual-tool" id="text-wordcount-card">
+                        <h3>📊 Word Counter</h3>
+                        <textarea id="wordcount-input" placeholder="Type or paste your text here..." oninput="countWords()" style="min-height: 200px; margin-bottom: 10px;"></textarea>
+                        <div class="workspace single-panel">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                                <div style="padding: 15px; background: #e8f5e9; border-radius: 10px; border: 2px solid #a5d6a7;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #2e7d32;" id="wc-chars">0</div>
+                                    <div style="font-size: 12px; color: #558b2f;">Characters</div>
+                                </div>
+                                <div style="padding: 15px; background: #e8f5e9; border-radius: 10px; border: 2px solid #a5d6a7;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #2e7d32;" id="wc-words">0</div>
+                                    <div style="font-size: 12px; color: #558b2f;">Words</div>
+                                </div>
+                                <div style="padding: 15px; background: #e8f5e9; border-radius: 10px; border: 2px solid #a5d6a7;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #2e7d32;" id="wc-sentences">0</div>
+                                    <div style="font-size: 12px; color: #558b2f;">Sentences</div>
+                                </div>
+                                <div style="padding: 15px; background: #e8f5e9; border-radius: 10px; border: 2px solid #a5d6a7;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #2e7d32;" id="wc-paragraphs">0</div>
+                                    <div style="font-size: 12px; color: #558b2f;">Paragraphs</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color Picker -->
+                    <div class="generator-card individual-tool" id="text-color-card">
+                        <h3>🎨 Color Picker</h3>
+                        <div class="generator-controls">
+                            <input type="color" id="color-picker" value="#4caf50" oninput="updateColorPicker()" style="width: 100%; height: 80px; cursor: pointer; border: 2px solid #a5d6a7; border-radius: 10px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                                <div>
+                                    <label>HEX:</label>
+                                    <input type="text" id="color-hex" value="#4caf50" readonly class="password-output">
+                                </div>
+                                <div>
+                                    <label>RGB:</label>
+                                    <input type="text" id="color-rgb" value="rgb(76, 175, 80)" readonly class="password-output">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Random Number Generator -->
+                    <div class="generator-card individual-tool" id="text-random-card">
+                        <h3>🎲 Random Number Generator</h3>
+                        <div class="generator-controls">
+                            <label>Min: <input type="number" id="rand-min" value="1" style="width: 100px;"></label>
+                            <label>Max: <input type="number" id="rand-max" value="100" style="width: 100px;"></label>
+                            <label>Quantity: <input type="number" id="rand-count" value="1" min="1" max="100" style="width: 100px;"></label>
+                            <button class="btn btn-primary" onclick="generateRandomNumbers()">🎯 Generate</button>
+                            <textarea id="random-numbers-output" readonly class="generator-output" style="margin-top: 10px; min-height: 100px;"></textarea>
+                            <button class="btn-copy" onclick="copyToClipboard('random-numbers-output')">Copy All</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Image Tools -->
+            <section id="img-qrcode-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>📱 QR Code Generator</h2>
+                    <p>Generate QR codes from text or URLs</p>
+                </div>
+                <div class="generator-card">
+                    <textarea id="qrcode-input" placeholder="Enter text or URL..." style="min-height: 100px;"></textarea>
+                    <button class="btn btn-primary" onclick="generateQRCode()">✨ Generate QR Code</button>
+                    <div id="qrcode-output" style="margin-top: 20px; text-align: center;"></div>
+                </div>
+            </section>
+
+            <section id="img-compress-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🗜️ Image Compressor</h2>
+                    <p>Compress images to reduce file size</p>
+                </div>
+                <div class="generator-card">
+                    <input type="file" id="compress-file" accept="image/*" style="margin-bottom: 15px;">
+                    <label>Quality (1-100): <input type="number" id="compress-quality" value="80" min="1" max="100" style="width: 80px;"></label>
+                    <button class="btn btn-primary" onclick="compressImage()">🗜️ Compress</button>
+                    <div id="compress-result" style="margin-top: 20px;"></div>
+                </div>
+            </section>
+
+            <section id="img-exif-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>📷 EXIF Viewer</h2>
+                    <p>View image metadata and information</p>
+                </div>
+                <div class="generator-card">
+                    <input type="file" id="exif-file" accept="image/*" onchange="viewEXIF()">
+                    <div id="exif-info" style="margin-top: 20px;"></div>
+                </div>
+            </section>
+
+            <section id="img-rotate-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔄 Image Rotate & Flip</h2>
+                    <p>Rotate and flip images easily</p>
+                </div>
+                <div class="generator-card">
+                    <input type="file" id="rotate-file" accept="image/*" style="margin-bottom: 15px;">
+                    <div class="toolbar">
+                        <button class="btn" onclick="rotateImage(90)">↻ Rotate 90°</button>
+                        <button class="btn" onclick="rotateImage(-90)">↺ Rotate -90°</button>
+                        <button class="btn" onclick="flipImage('horizontal')">↔ Flip H</button>
+                        <button class="btn" onclick="flipImage('vertical')">↕ Flip V</button>
+                    </div>
+                    <canvas id="rotate-canvas" style="max-width: 100%; margin-top: 15px; border: 2px solid #a5d6a7; border-radius: 10px;"></canvas>
+                    <button class="btn btn-primary" onclick="downloadRotatedImage()" style="margin-top: 15px;">⬇️ Download</button>
+                </div>
+            </section>
+
+            <section id="img-crop-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>✂️ Image Cropper</h2>
+                    <p>Crop images to desired dimensions</p>
+                </div>
+                <div class="generator-card">
+                    <input type="file" id="crop-file" accept="image/*" style="margin-bottom: 15px;">
+                    <label>Width: <input type="number" id="crop-width" value="200" style="width: 80px;"></label>
+                    <label>Height: <input type="number" id="crop-height" value="200" style="width: 80px;"></label>
+                    <button class="btn btn-primary" onclick="cropImage()">✂️ Crop</button>
+                    <canvas id="crop-canvas" style="max-width: 100%; margin-top: 15px; border: 2px solid #a5d6a7; border-radius: 10px;"></canvas>
+                    <button class="btn btn-primary" onclick="downloadCroppedImage()" style="margin-top: 15px;">⬇️ Download</button>
+                </div>
+            </section>
+
+            <section id="img-watermark-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>💧 Image Watermark</h2>
+                    <p>Add text watermark to images</p>
+                </div>
+                <div class="generator-card">
+                    <input type="file" id="watermark-file" accept="image/*" style="margin-bottom: 15px;">
+                    <label>Watermark Text: <input type="text" id="watermark-text" placeholder="Your text" style="width: 200px;"></label>
+                    <label>Position:
+                        <select id="watermark-position" class="select-input">
+                            <option value="bottom-right">Bottom Right</option>
+                            <option value="bottom-left">Bottom Left</option>
+                            <option value="top-right">Top Right</option>
+                            <option value="top-left">Top Left</option>
+                            <option value="center">Center</option>
+                        </select>
+                    </label>
+                    <button class="btn btn-primary" onclick="addWatermark()">💧 Add Watermark</button>
+                    <canvas id="watermark-canvas" style="max-width: 100%; margin-top: 15px; border: 2px solid #a5d6a7; border-radius: 10px;"></canvas>
+                    <button class="btn btn-primary" onclick="downloadWatermarkedImage()" style="margin-top: 15px;">⬇️ Download</button>
+                </div>
+            </section>
+
+            <!-- Network Tools -->
+            <section id="net-ip-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔍 What's My IP</h2>
+                    <p>Find your public IP address and location</p>
+                </div>
+                <div class="generator-card">
+                    <button class="btn btn-primary" onclick="getMyIP()">🔍 Get My IP</button>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <h3 style="font-size: 32px; color: #4caf50; margin: 15px 0;" id="my-ip-address">Click button to get IP</h3>
+                        <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin-top: 15px;">
+                            <p><strong>City:</strong> <span id="ip-city">-</span></p>
+                            <p><strong>Region:</strong> <span id="ip-region">-</span></p>
+                            <p><strong>Country:</strong> <span id="ip-country">-</span></p>
+                            <p><strong>ISP:</strong> <span id="ip-isp">-</span></p>
+                            <p><strong>Timezone:</strong> <span id="ip-timezone">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="net-url-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔗 URL Parser</h2>
+                    <p>Parse and analyze URLs</p>
+                </div>
+                <div class="generator-card">
+                    <input type="text" id="url-parser-input" placeholder="Enter URL..." style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="parseURL()">🔗 Parse URL</button>
+                    <div style="margin-top: 20px;">
+                        <label>Protocol:</label>
+                        <input type="text" id="url-protocol" readonly class="select-input">
+                        <label>Host:</label>
+                        <input type="text" id="url-host" readonly class="select-input">
+                        <label>Port:</label>
+                        <input type="text" id="url-port" readonly class="select-input">
+                        <label>Path:</label>
+                        <input type="text" id="url-path" readonly class="select-input">
+                        <label>Query:</label>
+                        <input type="text" id="url-query" readonly class="select-input">
+                        <label>Hash:</label>
+                        <input type="text" id="url-hash" readonly class="select-input">
+                        <div id="url-params" style="margin-top: 15px;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="net-subnet-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🌐 Subnet Calculator</h2>
+                    <p>Calculate network addresses and ranges</p>
+                </div>
+                <div class="generator-card">
+                    <label>IP Address: <input type="text" id="subnet-ip" placeholder="192.168.1.1" style="width: 150px;"></label>
+                    <label>CIDR: 
+                        <select id="subnet-cidr" class="select-input">
+                            <option value="8">/8</option>
+                            <option value="16">/16</option>
+                            <option value="24" selected>/24</option>
+                            <option value="25">/25</option>
+                            <option value="26">/26</option>
+                            <option value="27">/27</option>
+                            <option value="28">/28</option>
+                            <option value="29">/29</option>
+                            <option value="30">/30</option>
+                            <option value="31">/31</option>
+                            <option value="32">/32</option>
+                        </select>
+                    </label>
+                    <button class="btn btn-primary" onclick="calculateSubnet()">🌐 Calculate</button>
+                    <div style="margin-top: 20px; background: #e8f5e9; padding: 20px; border-radius: 10px;">
+                        <p><strong>Subnet Mask:</strong> <span id="subnet-mask">-</span></p>
+                        <p><strong>Network Address:</strong> <span id="subnet-network">-</span></p>
+                        <p><strong>Broadcast Address:</strong> <span id="subnet-broadcast">-</span></p>
+                        <p><strong>Total Hosts:</strong> <span id="subnet-total">-</span></p>
+                        <p><strong>Usable Hosts:</strong> <span id="subnet-usable">-</span></p>
+                        <p><strong>First Usable:</strong> <span id="subnet-first">-</span></p>
+                        <p><strong>Last Usable:</strong> <span id="subnet-last">-</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="net-ip2int-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔢 IP to Integer</h2>
+                    <p>Convert IP addresses to integer format</p>
+                </div>
+                <div class="generator-card">
+                    <input type="text" id="ip2int-input" placeholder="192.168.1.1" style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="ipToInteger()">🔢 Convert</button>
+                    <div style="margin-top: 20px; background: #e8f5e9; padding: 20px; border-radius: 10px;">
+                        <p><strong>Decimal:</strong> <span id="ip2int-result">-</span></p>
+                        <p><strong>Hexadecimal:</strong> <span id="ip2int-hex">-</span></p>
+                        <p><strong>Binary:</strong> <span id="ip2int-binary">-</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="net-shorten-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>✂️ URL Shortener</h2>
+                    <p>Shorten long URLs</p>
+                </div>
+                <div class="generator-card">
+                    <h4>Shorten URL:</h4>
+                    <input type="text" id="shorten-input" placeholder="Enter long URL..." style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="shortenURL()">✂️ Shorten</button>
+                    <input type="text" id="shorten-output" readonly class="generator-output" style="margin-top: 15px;">
+                    <button class="btn-copy" onclick="copyToClipboard('shorten-output')">Copy</button>
+                    
+                    <h4 style="margin-top: 30px;">Expand URL:</h4>
+                    <input type="text" id="expand-input" placeholder="Enter short URL..." style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="expandURL()">🔍 Expand</button>
+                    <input type="text" id="expand-output" readonly class="generator-output" style="margin-top: 15px;">
+                </div>
+            </section>
+
+            <!-- Crypto Tools -->
+            <section id="crypto-base32-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔤 Base32 Encoder/Decoder</h2>
+                    <p>Encode and decode Base32 strings</p>
+                </div>
+                <div class="generator-card">
+                    <textarea id="base32-input" placeholder="Enter text to encode/decode..." style="min-height: 100px;"></textarea>
+                    <div class="toolbar">
+                        <button class="btn btn-primary" onclick="encodeBase32()">🔒 Encode</button>
+                        <button class="btn btn-primary" onclick="decodeBase32()">🔓 Decode</button>
+                    </div>
+                    <textarea id="base32-output" readonly class="generator-output" placeholder="Result will appear here..."></textarea>
+                    <button class="btn-copy" onclick="copyToClipboard('base32-output')">Copy Result</button>
+                </div>
+            </section>
+
+            <section id="crypto-morse-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>📻 Morse Code Translator</h2>
+                    <p>Convert text to Morse code and back</p>
+                </div>
+                <div class="generator-card">
+                    <textarea id="morse-input" placeholder="Enter text or Morse code..." style="min-height: 100px;"></textarea>
+                    <div class="toolbar">
+                        <button class="btn btn-primary" onclick="textToMorse()">→ To Morse</button>
+                        <button class="btn btn-primary" onclick="morseToText()">← To Text</button>
+                    </div>
+                    <textarea id="morse-output" readonly class="generator-output" placeholder="Result will appear here..."></textarea>
+                    <button class="btn-copy" onclick="copyToClipboard('morse-output')">Copy Result</button>
+                </div>
+            </section>
+
+            <section id="crypto-bcrypt-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔒 Bcrypt Hash Generator</h2>
+                    <p>Generate and verify bcrypt hashes</p>
+                </div>
+                <div class="generator-card">
+                    <h4>Generate Hash:</h4>
+                    <input type="password" id="bcrypt-password" placeholder="Enter password..." style="width: 100%; margin-bottom: 15px;">
+                    <label>Rounds: <input type="number" id="bcrypt-rounds" value="10" min="4" max="15" style="width: 80px;"></label>
+                    <button class="btn btn-primary" onclick="generateBcrypt()">🔒 Generate Hash</button>
+                    <input type="text" id="bcrypt-hash" readonly class="generator-output" style="margin-top: 15px; font-family: monospace;">
+                    <button class="btn-copy" onclick="copyToClipboard('bcrypt-hash')">Copy Hash</button>
+                    
+                    <h4 style="margin-top: 30px;">Verify Hash:</h4>
+                    <input type="password" id="bcrypt-verify-pass" placeholder="Password..." style="width: 100%; margin-bottom: 15px;">
+                    <input type="text" id="bcrypt-verify-hash" placeholder="Hash..." style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="verifyBcrypt()">✓ Verify</button>
+                    <div id="bcrypt-verify-result" style="margin-top: 15px; font-size: 18px; font-weight: bold;"></div>
+                </div>
+            </section>
+
+            <section id="crypto-htpasswd-tool" class="tool-section">
+                <div class="tool-header">
+                    <h2>🔑 htpasswd Generator</h2>
+                    <p>Generate Apache htpasswd entries</p>
+                </div>
+                <div class="generator-card">
+                    <input type="text" id="htpasswd-user" placeholder="Username..." style="width: 100%; margin-bottom: 15px;">
+                    <input type="password" id="htpasswd-pass" placeholder="Password..." style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="generateHtpasswd()">🔑 Generate</button>
+                    <textarea id="htpasswd-output" readonly class="generator-output" style="margin-top: 15px; font-family: monospace;"></textarea>
+                    <button class="btn-copy" onclick="copyToClipboard('htpasswd-output')">Copy</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Tools Base. All processing happens locally in your browser. No data is ever uploaded.</p>
+            <p style="margin-top: 10px;">
+                <a href="privacy-policy.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="about.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">About Us</a> | 
+                <a href="contact.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="modules/module-loader.js"></script>
+    <script src="modules/json-tools.js"></script>
+    <script src="modules/tools.js"></script>
+    <script src="modules/calculators.js"></script>
+    <script src="modules/converters.js"></script>
+    <script src="modules/text-tools.js"></script>
+    <script src="modules/image-tools.js"></script>
+    <script src="modules/network-tools.js"></script>
+    <script src="modules/crypto-tools.js"></script>
+</body>
+</html>
