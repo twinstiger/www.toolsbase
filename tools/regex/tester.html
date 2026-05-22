@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+    
+    <!-- SEO Meta Tags -->
+    <title>Regex Tester - Free Online Regular Expression Tool | ToolsBase</title>
+    <meta name="description" content="Free online regex tester with real-time matching. Test regular expressions with common patterns library. 100% local processing.">
+    <meta name="keywords" content="regex tester, regular expression, pattern matching, regex tool">
+    
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                        <img src="../../logo.svg" alt="Tools Base Logo" style="height: 48px;">
+                        <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
+                    </a>
+                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+                </div>
+                <nav class="nav">
+                    <div class="dropdown">
+                        <button class="nav-btn active">🛠️ Dev Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
+                            <a href="../regex/tester.html">🔍 Regex Tester</a>
+                            <a href="../encode/decoder.html">🔄 Encode/Decode</a>
+                            <a href="../hash/generator.html">#️⃣ Hash Generator</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">⚡ Gen Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../uuid/generator.html">🎲 UUID Generator</a>
+                            <a href="../password/generator.html">🔑 Password Generator</a>
+                            <a href="../timestamp/converter.html">⏰ Timestamp Converter</a>
+                            <a href="../cron/generator.html">📅 Cron Generator</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">🧮 Calc Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../calculators/basic.html">🔢 Basic Calculator</a>
+                            <a href="../calculators/percentage.html">📊 Percentage</a>
+                            <a href="../calculators/tip.html">💵 Tip Calculator</a>
+                            <a href="../calculators/loan.html">🏦 Loan Calculator</a>
+                            <a href="../calculators/age.html">🎂 Age Calculator</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">📐 Convert Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../converters/length.html">📏 Length</a>
+                            <a href="../converters/weight.html">⚖️ Weight</a>
+                            <a href="../converters/temperature.html">🌡️ Temperature</a>
+                            <a href="../converters/volume.html">🧪 Volume</a>
+                            <a href="../converters/area.html">📐 Area</a>
+                            <a href="../converters/speed.html">🚀 Speed</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">📝 Text Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../text/case-converter.html">🔤 Case Converter</a>
+                            <a href="../text/word-counter.html">📊 Word Counter</a>
+                            <a href="../text/color-picker.html">🎨 Color Picker</a>
+                            <a href="../text/random-number.html">🎲 Random Number</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">🖼️ Image Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../image/qrcode.html">📱 QR Code</a>
+                            <a href="../image/compressor.html">🗜️ Compressor</a>
+                            <a href="../image/exif.html">📷 EXIF Viewer</a>
+                            <a href="../image/rotate.html">🔄 Rotate/Flip</a>
+                            <a href="../image/cropper.html">✂️ Cropper</a>
+                            <a href="../image/watermark.html">💧 Watermark</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">🌐 Network Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../network/my-ip.html">🔍 My IP</a>
+                            <a href="../network/url-parser.html">🔗 URL Parser</a>
+                            <a href="../network/subnet.html">🌐 Subnet Calc</a>
+                            <a href="../network/ip-to-int.html">🔢 IP to Int</a>
+                            <a href="../network/url-shortener.html">✂️ URL Shortener</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn">🔐 Crypto Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../crypto/base32.html">🔤 Base32</a>
+                            <a href="../crypto/morse.html">📻 Morse Code</a>
+                            <a href="../crypto/bcrypt.html">🔒 Bcrypt</a>
+                            <a href="../crypto/htpasswd.html">🔑 htpasswd</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section id="regex-tool" class="tool-section active">
+                <div class="tool-header">
+                    <h2>Regex Tester</h2>
+                    <p>Test regular expressions with real-time matching and common patterns library</p>
+                </div>
+
+                <div class="toolbar">
+                    <input type="text" id="regex-pattern" placeholder="Enter regex pattern..." class="regex-input">
+                    <input type="text" id="regex-flags" placeholder="Flags (gi)" class="regex-input-small">
+                    <button class="btn btn-primary" onclick="testRegex()">🧪 Test</button>
+                    <button class="btn btn-danger" onclick="clearRegex()">🗑️ Clear</button>
+                </div>
+
+                <div class="common-patterns">
+                    <h4>Common Patterns:</h4>
+                    <div class="pattern-tags">
+                        <span class="pattern-tag" onclick="setRegex('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')">Email</span>
+                        <span class="pattern-tag" onclick="setRegex('^https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$')">URL</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d{3}-?\\d{3}-?\\d{4}$')">Phone</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$')">IP Address</span>
+                        <span class="pattern-tag" onclick="setRegex('^[A-Za-z0-9_-]+$')">Alphanumeric</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d+$')">Numbers Only</span>
+                        <span class="pattern-tag" onclick="setRegex('^[A-Z][a-z]+\\s[A-Z][a-z]+$')">Name</span>
+                        <span class="pattern-tag" onclick="setRegex('^\\d{4}-\\d{2}-\\d{2}$')">Date (YYYY-MM-DD)</span>
+                    </div>
+                </div>
+
+                <div class="workspace">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Test String</h3>
+                        </div>
+                        <textarea id="regex-test-string" placeholder="Enter text to test against the regex pattern..."></textarea>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Match Results</h3>
+                            <span id="match-count" class="stats">0 matches</span>
+                        </div>
+                        <div id="regex-results" class="regex-results">
+                            <p class="placeholder-text">Results will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Tools Base. All processing happens locally in your browser.</p>
+            <p style="margin-top: 10px;">
+                <a href="../../privacy-policy.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="../../about.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">About Us</a> | 
+                <a href="../../contact.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="../../modules/module-loader.js"></script>
+    <script src="../../modules/tools.js"></script>
+</body>
+</html>

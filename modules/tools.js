@@ -2,36 +2,99 @@
 // This file contains all remaining tool functions
 
 // ==================== Regex Tester ====================
-function testRegex() {
-    const pattern = document.getElementById('regex-pattern').value;
-    const flags = document.getElementById('regex-flags').value || 'g';
-    const testString = document.getElementById('regex-test-string').value;
-    
+const REGEX_TIMEOUT_MS = 2000; // 2秒超时保护
+const MAX_MATCHES = 1000;    // 最大匹配数限制
+
+function testRegex(pattern, flags, testString, callback) {
+    // 开始执行时间，用于检测超时
+    const startTime = Date.now();
+    const matches = [];
+    let regex;
+
     try {
-        const regex = new RegExp(pattern, flags);
-        const matches = [];
+        // 先验证正则表达式是否有效（但不执行）
+        regex = new RegExp(pattern, flags);
+    } catch (error) {
+        showRegexError(error.message);
+        return;
+    }
+
+    // 检查是否有潜在危险的正则模式
+    if (isDangerousRegex(pattern)) {
+        showRegexError('This regex pattern may cause performance issues');
+        return;
+    }
+
+    try {
         let match;
-        
+        let lastIndex = -1;
+
         while ((match = regex.exec(testString)) !== null) {
+            // 超时保护
+            if (Date.now() - startTime > REGEX_TIMEOUT_MS) {
+                showRegexError('Regex execution timed out (>2s)');
+                return;
+            }
+
+            // 匹配数量限制
+            if (matches.length >= MAX_MATCHES) {
+                showRegexError(`More than ${MAX_MATCHES} matches found, stopped`);
+                return;
+            }
+
+            // 防止无限循环（同样的匹配）
+            if (match.index === lastIndex) {
+                regex.lastIndex++;
+                continue;
+            }
+            lastIndex = match.index;
+
             matches.push({
                 text: match[0],
                 index: match.index,
                 groups: match.slice(1)
             });
+
             if (!flags.includes('g')) break;
         }
-        
+
         displayMatches(matches);
         const matchCount = document.getElementById('match-count');
         if (matchCount) {
             matchCount.textContent = `${matches.length} match${matches.length !== 1 ? 'es' : ''}`;
         }
     } catch (error) {
-        const results = document.getElementById('regex-results');
-        if (results) {
-            results.innerHTML = `<p style="color: #ef5350;">Error: ${error.message}</p>`;
-        }
+        showRegexError(error.message);
     }
+}
+
+// 向后兼容的旧版 API 调用（从 HTML onclick 使用）
+function testRegex() {
+    const pattern = document.getElementById('regex-pattern').value;
+    const flags = document.getElementById('regex-flags').value || 'g';
+    const testString = document.getElementById('regex-test-string').value;
+    testRegex(pattern, flags, testString);
+}
+
+function isDangerousRegex(pattern) {
+    // 检测可能导致 ReDoS 的危险模式
+    const dangerous = [
+        /\(\.\*\)+/,           // (.*)+
+        /\(\.\+\)+/,           // (.+)+
+        /\(\.\{[^}]+\}\)+\/,   // (.{n,})+
+        /\(\?\!\.\*\)\*+/,     // (?!.*)*+
+        /\(\?\=.\*\)\*+/       // (?=.*)*+
+    ];
+    return dangerous.some(d => d.test(pattern));
+}
+
+function showRegexError(message) {
+    const results = document.getElementById('regex-results');
+    if (results) {
+        results.innerHTML = `<p style="color: #ef5350;">Error: ${message}</p>`;
+    }
+    const matchCount = document.getElementById('match-count');
+    if (matchCount) matchCount.textContent = '0 matches';
 }
 
 function displayMatches(matches) {
@@ -68,10 +131,22 @@ function encodeText() {
     const input = document.getElementById('encode-input').value;
     const type = document.getElementById('encode-type').value;
     let result = '';
-    
+
     switch(type) {
         case 'base64':
-            result = btoa(unescape(encodeURIComponent(input)));
+            // 使用 TextEncoder + btoa 的安全方式
+            try {
+                const encoder = new TextEncoder();
+                const bytes = encoder.encode(input);
+                // 将 Uint8Array 转换为二进制字符串再编码
+                let binary = '';
+                for (let i = 0; i < bytes.length; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                result = btoa(binary);
+            } catch (e) {
+                result = 'Encoding error';
+            }
             break;
         case 'url':
             result = encodeURIComponent(input);
@@ -94,7 +169,7 @@ function encodeText() {
             }).join('');
             break;
     }
-    
+
     document.getElementById('encode-output').value = result;
 }
 
@@ -102,11 +177,22 @@ function decodeText() {
     const input = document.getElementById('encode-input').value;
     const type = document.getElementById('encode-type').value;
     let result = '';
-    
+
     try {
         switch(type) {
             case 'base64':
-                result = decodeURIComponent(escape(atob(input)));
+                // 使用 atob + TextDecoder 的安全方式
+                try {
+                    const binary = atob(input);
+                    const bytes = new Uint8Array(binary.length);
+                    for (let i = 0; i < binary.length; i++) {
+                        bytes[i] = binary.charCodeAt(i);
+                    }
+                    const decoder = new TextDecoder();
+                    result = decoder.decode(bytes);
+                } catch (e) {
+                    throw new Error('Invalid Base64 string');
+                }
                 break;
             case 'url':
                 result = decodeURIComponent(input);
