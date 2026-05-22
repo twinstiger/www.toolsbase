@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -37,24 +40,24 @@
                     </a>
                     <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
                 </div>
-                <nav class="nav">
+                                <nav class="nav">
                     <div class="dropdown">
                         <button class="nav-btn " data-group="dev">🛠️ Dev Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
                             <a href="../regex/tester.html">🔍 Regex Tester</a>
-                            <a href="../encode/decoder.html">🔄 Encode/Decode</a>
-                            <a href="../hash/generator.html">#️⃣ Hash Generator</a>
+                            <a href="../encode.html">🔄 Encode/Decode</a>
+                            <a href="../hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="../uuid/generator.html">🎲 UUID Generator</a>
-                            <a href="../password/generator.html">🔑 Password Generator</a>
-                            <a href="../timestamp/converter.html">⏰ Timestamp Converter</a>
-                            <a href="../cron/generator.html">📅 Cron Generator</a>
+                            <a href="../uuid.html">🎲 UUID Generator</a>
+                            <a href="../password.html">🔑 Password Generator</a>
+                            <a href="../timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="../cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
                     
@@ -82,7 +85,7 @@
                     </div>
                     
                     <div class="dropdown">
-                        <button class="nav-btn active" data-group="text">📝 Text Tools ▼</button>
+                        <button class="nav-btn " data-group="text">📝 Text Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../text/case-converter.html">🔤 Case Converter</a>
                             <a href="../text/word-counter.html">📊 Word Counter</a>
@@ -128,20 +131,26 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+                <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <!-- Tool Section - Content will be loaded from index.html -->
-            <section id="word_counter-tool" class="tool-section active">
-                <!-- This section will be populated with the tool content from index.html -->
+            <section id="word-counter-tool" class="tool-section active">
                 <div class="tool-header">
-                    <h2>Word Counter</h2>
-                    <p>Count words, characters, sentences, and paragraphs</p>
+                    <h2>📊 Word Counter</h2>
+                    <p>Count words, characters, and lines in text</p>
                 </div>
-                <p style="text-align: center; padding: 50px; color: #666;">
-                    Tool content will be migrated here from index.html.<br>
-                    Please refer to the original index.html for the complete tool implementation.
-                </p>
+
+                <div class="generators-grid">
+                    <div class="generator-card " id="text-wordcount-card">
+                        <h3>📊 Word Counter</h3>
+                        <textarea id="wordcount-input" placeholder="Type or paste your text here..." oninput="countWords()" style="min-height: 200px; margin-bottom: 10px;"></textarea>
+                        <div class="workspace single-panel">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                                <div style="padding: 15px; background: #e8f5e9; border-radius: 10px; border: 2px solid #a5d6a7;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #2e7d32;" id="wc-chars">0</div>
+                                    <div style="font-size: 12px; color: #558b2f;">Characters</div>
+                                </div>
+                </div>
             </section>
         </div>
     </main>

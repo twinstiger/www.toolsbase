@@ -105,6 +105,10 @@ function showTool(toolId) {
 
 // Initialize on page load
 window.addEventListener('load', () => {
-    // Show home page by default
-    showTool('home');
+    // Only show home page if we're on index.html
+    // For individual tool pages, the tool section is already visible by default
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+        showTool('home');
+    }
+    // For tool pages (e.g., tools/password.html), do nothing - the section is already active
 });

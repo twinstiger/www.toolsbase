@@ -12,7 +12,7 @@
     <title>Dev Tools - Local, Fast, No Uploads | JSON Formatter, Regex Tester, Base64 Decode</title>
     <meta name="description" content="Free online developer tools: JSON formatter, regex tester, base64 decode, cron generator, hash generator, UUID generator. 100% local processing, no uploads, fast and secure.">
     <meta name="keywords" content="json formatter, regex tester, base64 decode, cron generator, md5 generator, sha256 hash, uuid generator, password generator, timestamp converter, yaml formatter, xml formatter">
-    <meta name="author" content="Dev Tools">
+    <meta name="author" content="ToolsBase">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph -->
@@ -23,7 +23,12 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
             crossorigin="anonymous"></script>
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://json-toolsbase.com">
+    <link rel="canonical" href="https://toolsbase.net">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ToolsBase - Free Online Developer Tools">
+    <meta name="twitter:description" content="Free developer tools for JSON formatting, regex testing, encoding/decoding, and more. All processing happens locally in your browser.">
     <!-- External Libraries for New Tools -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -36,97 +41,103 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <a href="#" onclick="showTool('home'); return false;" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                        <img src="logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
-                        <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
-                    </a>
-                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div class="logo">
+                        <a href="#" onclick="showTool('home'); return false;" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                            <img src="logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
+                            <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
+                        </a>
+                        <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="dict.html" class="btn" style="text-decoration: none; white-space: nowrap;">📖 DICT</a>
+                        <a href="blog/index.html" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
+                    </div>
                 </div>
                 <nav class="nav">
                     <div class="dropdown">
                         <button class="nav-btn active" data-group="dev">🛠️ Dev Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('json')">📋 JSON/YAML/XML</a>
-                            <a href="#" onclick="showTool('regex')">🔍 Regex Tester</a>
-                            <a href="#" onclick="showTool('encode')">🔄 Encode/Decode</a>
-                            <a href="#" onclick="showTool('hash')">#️⃣ Hash Generator</a>
+                            <a href="tools/json/formatter.html">📋 JSON/YAML/XML</a>
+                            <a href="tools/regex/tester.html">🔍 Regex Tester</a>
+                            <a href="tools/encode.html">🔄 Encode/Decode</a>
+                            <a href="tools/hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('uuid')">🎲 UUID Generator</a>
-                            <a href="#" onclick="showTool('password')">🔑 Password Generator</a>
-                            <a href="#" onclick="showTool('timestamp')">⏰ Timestamp Converter</a>
-                            <a href="#" onclick="showTool('cron')">📅 Cron Generator</a>
+                            <a href="tools/uuid.html">🎲 UUID Generator</a>
+                            <a href="tools/password.html">🔑 Password Generator</a>
+                            <a href="tools/timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="tools/cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="calculators">🧮 Calc Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('calc-basic')">🔢 Basic Calculator</a>
-                            <a href="#" onclick="showTool('calc-percentage')">📊 Percentage</a>
-                            <a href="#" onclick="showTool('calc-tip')">💵 Tip Calculator</a>
-                            <a href="#" onclick="showTool('calc-loan')">🏦 Loan Calculator</a>
-                            <a href="#" onclick="showTool('calc-age')">🎂 Age Calculator</a>
+                            <a href="tools/calculators/basic.html">🔢 Basic Calculator</a>
+                            <a href="tools/calculators/percentage.html">📊 Percentage</a>
+                            <a href="tools/calculators/tip.html">💵 Tip Calculator</a>
+                            <a href="tools/calculators/loan.html">🏦 Loan Calculator</a>
+                            <a href="tools/calculators/age.html">🎂 Age Calculator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="converters">📐 Convert Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('conv-length')">📏 Length</a>
-                            <a href="#" onclick="showTool('conv-weight')">⚖️ Weight</a>
-                            <a href="#" onclick="showTool('conv-temp')">🌡️ Temperature</a>
-                            <a href="#" onclick="showTool('conv-volume')">🧪 Volume</a>
-                            <a href="#" onclick="showTool('conv-area')">📐 Area</a>
-                            <a href="#" onclick="showTool('conv-speed')">🚀 Speed</a>
+                            <a href="tools/converters/length.html">📏 Length</a>
+                            <a href="tools/converters/weight.html">⚖️ Weight</a>
+                            <a href="tools/converters/temperature.html">🌡️ Temperature</a>
+                            <a href="tools/converters/volume.html">🧪 Volume</a>
+                            <a href="tools/converters/area.html">📐 Area</a>
+                            <a href="tools/converters/speed.html">🚀 Speed</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="text">📝 Text Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('text-case')">🔤 Case Converter</a>
-                            <a href="#" onclick="showTool('text-wordcount')">📊 Word Counter</a>
-                            <a href="#" onclick="showTool('text-color')">🎨 Color Picker</a>
-                            <a href="#" onclick="showTool('text-random')">🎲 Random Number</a>
+                            <a href="tools/text/case-converter.html">🔤 Case Converter</a>
+                            <a href="tools/text/word-counter.html">📊 Word Counter</a>
+                            <a href="tools/text/color-picker.html">🎨 Color Picker</a>
+                            <a href="tools/text/random-number.html">🎲 Random Number</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="image">🖼️ Image Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('img-qrcode')">📱 QR Code</a>
-                            <a href="#" onclick="showTool('img-compress')">🗜️ Compressor</a>
-                            <a href="#" onclick="showTool('img-exif')">📷 EXIF Viewer</a>
-                            <a href="#" onclick="showTool('img-rotate')">🔄 Rotate/Flip</a>
-                            <a href="#" onclick="showTool('img-crop')">✂️ Cropper</a>
-                            <a href="#" onclick="showTool('img-watermark')">💧 Watermark</a>
+                            <a href="tools/image/qrcode.html">📱 QR Code</a>
+                            <a href="tools/image/compressor.html">🗜️ Compressor</a>
+                            <a href="tools/image/exif.html">📷 EXIF Viewer</a>
+                            <a href="tools/image/rotate.html">🔄 Rotate/Flip</a>
+                            <a href="tools/image/cropper.html">✂️ Cropper</a>
+                            <a href="tools/image/watermark.html">💧 Watermark</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="network">🌐 Network Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('net-ip')">🔍 My IP</a>
-                            <a href="#" onclick="showTool('net-url')">🔗 URL Parser</a>
-                            <a href="#" onclick="showTool('net-subnet')">🌐 Subnet Calc</a>
-                            <a href="#" onclick="showTool('net-ip2int')">🔢 IP to Int</a>
-                            <a href="#" onclick="showTool('net-shorten')">✂️ URL Shortener</a>
+                            <a href="tools/network/my-ip.html">🔍 My IP</a>
+                            <a href="tools/network/url-parser.html">🔗 URL Parser</a>
+                            <a href="tools/network/subnet.html">🌐 Subnet Calc</a>
+                            <a href="tools/network/ip-to-int.html">🔢 IP to Int</a>
+                            <a href="tools/network/url-shortener.html">✂️ URL Shortener</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn" data-group="crypto">🔐 Crypto Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showTool('crypto-base32')">🔤 Base32</a>
-                            <a href="#" onclick="showTool('crypto-morse')">📻 Morse Code</a>
-                            <a href="#" onclick="showTool('crypto-bcrypt')">🔒 Bcrypt</a>
-                            <a href="#" onclick="showTool('crypto-htpasswd')">🔑 htpasswd</a>
+                            <a href="tools/crypto/base32.html">🔤 Base32</a>
+                            <a href="tools/crypto/morse.html">📻 Morse Code</a>
+                            <a href="tools/crypto/bcrypt.html">🔒 Bcrypt</a>
+                            <a href="tools/crypto/htpasswd.html">🔑 htpasswd</a>
                         </div>
                     </div>
                 </nav>
@@ -135,106 +146,122 @@
     </header>
 
     <!-- Main Content -->
-    <main class="main">
+    <main class="main" style="height: 600px;">
         <div class="container">
             <!-- Home Page - Featured Tools Cards -->
             <section id="home-page" class="tool-section active">
                 <div class="featured-tools-grid">
                     <!-- Password Generator Card -->
-                    <div class="tool-card" onclick="showTool('password')">
-                        <div class="card-icon">🔑</div>
-                        <h3>Password Generator</h3>
-                        <p>Create strong, secure passwords with customizable options for all your accounts</p>
-                        <div class="card-tags">
-                            <span class="tag">Security</span>
-                            <span class="tag">Password</span>
-                            <span class="tag">Random</span>
+                    <a href="tools/password.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">🔑</div>
+                            <h3>Password Generator</h3>
+                            <p>Create strong, secure passwords with customizable options for all your accounts</p>
+                            <div class="card-tags">
+                                <span class="tag">Security</span>
+                                <span class="tag">Password</span>
+                                <span class="tag">Random</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- QR Code Generator Card -->
-                    <div class="tool-card" onclick="showTool('img-qrcode')">
-                        <div class="card-icon">📱</div>
-                        <h3>QR Code Generator</h3>
-                        <p>Generate QR codes from text, URLs, WiFi passwords, or contact information</p>
-                        <div class="card-tags">
-                            <span class="tag">QR Code</span>
-                            <span class="tag">Share</span>
-                            <span class="tag">Easy</span>
+                    <a href="tools/image/qrcode.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">📱</div>
+                            <h3>QR Code Generator</h3>
+                            <p>Generate QR codes from text, URLs, WiFi passwords, or contact information</p>
+                            <div class="card-tags">
+                                <span class="tag">QR Code</span>
+                                <span class="tag">Share</span>
+                                <span class="tag">Easy</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Timestamp Converter Card -->
-                    <div class="tool-card" onclick="showTool('timestamp')">
-                        <div class="card-icon">⏰</div>
-                        <h3>Timestamp Converter</h3>
-                        <p>Convert Unix timestamps to human-readable dates and vice versa instantly</p>
-                        <div class="card-tags">
-                            <span class="tag">Time</span>
-                            <span class="tag">Date</span>
-                            <span class="tag">Convert</span>
+                    <a href="tools/timestamp.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">⏰</div>
+                            <h3>Timestamp Converter</h3>
+                            <p>Convert Unix timestamps to human-readable dates and vice versa instantly</p>
+                            <div class="card-tags">
+                                <span class="tag">Time</span>
+                                <span class="tag">Date</span>
+                                <span class="tag">Convert</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Base64 Encode/Decode Card -->
-                    <div class="tool-card" onclick="showTool('encode')">
-                        <div class="card-icon">🔄</div>
-                        <h3>Base64 Encoder</h3>
-                        <p>Encode and decode Base64 text for emails, images, and data transfer</p>
-                        <div class="card-tags">
-                            <span class="tag">Base64</span>
-                            <span class="tag">Encode</span>
-                            <span class="tag">Decode</span>
+                    <a href="tools/encode.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">🔄</div>
+                            <h3>Base64 Encoder</h3>
+                            <p>Encode and decode Base64 text for emails, images, and data transfer</p>
+                            <div class="card-tags">
+                                <span class="tag">Base64</span>
+                                <span class="tag">Encode</span>
+                                <span class="tag">Decode</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- UUID Generator Card -->
-                    <div class="tool-card" onclick="showTool('uuid')">
-                        <div class="card-icon">🎲</div>
-                        <h3>UUID Generator</h3>
-                        <p>Generate unique identifiers for databases, applications, and tracking</p>
-                        <div class="card-tags">
-                            <span class="tag">UUID</span>
-                            <span class="tag">ID</span>
-                            <span class="tag">Unique</span>
+                    <a href="tools/uuid.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">🎲</div>
+                            <h3>UUID Generator</h3>
+                            <p>Generate unique identifiers for databases, applications, and tracking</p>
+                            <div class="card-tags">
+                                <span class="tag">UUID</span>
+                                <span class="tag">ID</span>
+                                <span class="tag">Unique</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- JSON Formatter Card -->
-                    <div class="tool-card" onclick="showTool('json')">
-                        <div class="card-icon">📋</div>
-                        <h3>JSON Formatter</h3>
-                        <p>Format, validate, and beautify JSON data for better readability</p>
-                        <div class="card-tags">
-                            <span class="tag">JSON</span>
-                            <span class="tag">Format</span>
-                            <span class="tag">Validate</span>
+                    <a href="tools/json/formatter.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">📋</div>
+                            <h3>JSON Formatter</h3>
+                            <p>Format, validate, and beautify JSON data for better readability</p>
+                            <div class="card-tags">
+                                <span class="tag">JSON</span>
+                                <span class="tag">Format</span>
+                                <span class="tag">Validate</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Color Picker Card -->
-                    <div class="tool-card" onclick="showTool('text-color')">
-                        <div class="card-icon">🎨</div>
-                        <h3>Color Picker</h3>
-                        <p>Pick colors and convert between HEX, RGB, and other color formats</p>
-                        <div class="card-tags">
-                            <span class="tag">Color</span>
-                            <span class="tag">Design</span>
-                            <span class="tag">HEX</span>
+                    <a href="tools/text/color-picker.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">🎨</div>
+                            <h3>Color Picker</h3>
+                            <p>Pick colors and convert between HEX, RGB, and other color formats</p>
+                            <div class="card-tags">
+                                <span class="tag">Color</span>
+                                <span class="tag">Design</span>
+                                <span class="tag">HEX</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Word Counter Card -->
-                    <div class="tool-card" onclick="showTool('text-wordcount')">
-                        <div class="card-icon">📊</div>
-                        <h3>Word Counter</h3>
-                        <p>Count words, characters, sentences, and paragraphs in your text</p>
-                        <div class="card-tags">
-                            <span class="tag">Text</span>
-                            <span class="tag">Counter</span>
-                            <span class="tag">Writing</span>
+                    <a href="tools/text/word-counter.html" class="tool-card-link">
+                        <div class="tool-card">
+                            <div class="card-icon">📊</div>
+                            <h3>Word Counter</h3>
+                            <p>Count words, characters, sentences, and paragraphs in your text</p>
+                            <div class="card-tags">
+                                <span class="tag">Text</span>
+                                <span class="tag">Counter</span>
+                                <span class="tag">Writing</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- More Tools Section -->
@@ -244,29 +271,29 @@
                         <div class="category">
                             <h3>🛠️ Dev Tools</h3>
                             <ul>
-                                <li><a href="#" onclick="showTool('regex'); return false;">Regex Tester</a></li>
-                                <li><a href="#" onclick="showTool('hash'); return false;">Hash Generator</a></li>
+                                <li><a href="tools/regex/tester.html">Regex Tester</a></li>
+                                <li><a href="tools/hash.html">Hash Generator</a></li>
                             </ul>
                         </div>
                         <div class="category">
                             <h3>⚡ Generators</h3>
                             <ul>
-                                <li><a href="#" onclick="showTool('cron'); return false;">Cron Generator</a></li>
-                                <li><a href="#" onclick="showTool('random-string'); return false;">Random String</a></li>
+                                <li><a href="tools/cron.html">Cron Generator</a></li>
+                                <li><a href="tools/text/random-number.html">Random String</a></li>
                             </ul>
                         </div>
                         <div class="category">
                             <h3>🧮 Calculators</h3>
                             <ul>
-                                <li><a href="#" onclick="showTool('calc-basic'); return false;">Basic Calculator</a></li>
-                                <li><a href="#" onclick="showTool('calc-percentage'); return false;">Percentage Calc</a></li>
+                                <li><a href="tools/calculators/basic.html">Basic Calculator</a></li>
+                                <li><a href="tools/calculators/percentage.html">Percentage Calc</a></li>
                             </ul>
                         </div>
                         <div class="category">
                             <h3>🌐 Network</h3>
                             <ul>
-                                <li><a href="#" onclick="showTool('net-ip'); return false;">My IP Address</a></li>
-                                <li><a href="#" onclick="showTool('net-url'); return false;">URL Parser</a></li>
+                                <li><a href="tools/network/my-ip.html">My IP Address</a></li>
+                                <li><a href="tools/network/url-parser.html">URL Parser</a></li>
                             </ul>
                         </div>
                     </div>

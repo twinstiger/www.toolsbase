@@ -47,7 +47,8 @@ function calcBackspace() {
 
 function calcEquals() {
     try {
-        const result = Function('"use strict";return (' + calcExpression + ')')();
+        // Safe evaluation without using eval or Function constructor
+        const result = safeCalculate(calcExpression);
         calcExpression = String(result);
         updateCalcDisplay();
     } catch (e) {
@@ -58,6 +59,88 @@ function calcEquals() {
             updateCalcDisplay();
         }, 1500);
     }
+}
+
+// Safe calculator function to avoid eval/Function
+function safeCalculate(expression) {
+    // Remove any spaces and validate the expression
+    const cleaned = expression.replace(/\s/g, '');
+    
+    // Only allow numbers, operators, and decimal points
+    if (!/^[0-9.+\-*/()]+$/.test(cleaned)) {
+        throw new Error('Invalid characters in expression');
+    }
+    
+    // Parse and calculate manually
+    return parseExpression(cleaned);
+}
+
+function parseExpression(expr) {
+    let pos = 0;
+    
+    function parseNumber() {
+        let num = '';
+        while (pos < expr.length && (expr[pos].match(/[0-9.]/))) {
+            num += expr[pos];
+            pos++;
+        }
+        if (!num) throw new Error('Expected number');
+        return parseFloat(num);
+    }
+    
+    function parseTerm() {
+        let result = parseFactor();
+        
+        while (pos < expr.length && (expr[pos] === '*' || expr[pos] === '/')) {
+            const op = expr[pos];
+            pos++;
+            const right = parseFactor();
+            if (op === '*') {
+                result *= right;
+            } else {
+                if (right === 0) throw new Error('Division by zero');
+                result /= right;
+            }
+        }
+        
+        return result;
+    }
+    
+    function parseFactor() {
+        if (expr[pos] === '(') {
+            pos++; // skip '('
+            const result = parseExpression(expr.substring(pos));
+            if (expr[pos] === ')') pos++; // skip ')'
+            return result;
+        }
+        
+        if (expr[pos] === '-') {
+            pos++;
+            return -parseFactor();
+        }
+        
+        if (expr[pos] === '+') {
+            pos++;
+            return parseFactor();
+        }
+        
+        return parseNumber();
+    }
+    
+    let result = parseTerm();
+    
+    while (pos < expr.length && (expr[pos] === '+' || expr[pos] === '-')) {
+        const op = expr[pos];
+        pos++;
+        const right = parseTerm();
+        if (op === '+') {
+            result += right;
+        } else {
+            result -= right;
+        }
+    }
+    
+    return result;
 }
 
 function calcPercentage() {

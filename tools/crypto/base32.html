@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -37,24 +40,24 @@
                     </a>
                     <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
                 </div>
-                <nav class="nav">
+                                <nav class="nav">
                     <div class="dropdown">
                         <button class="nav-btn " data-group="dev">🛠️ Dev Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
                             <a href="../regex/tester.html">🔍 Regex Tester</a>
-                            <a href="../encode/decoder.html">🔄 Encode/Decode</a>
-                            <a href="../hash/generator.html">#️⃣ Hash Generator</a>
+                            <a href="../encode.html">🔄 Encode/Decode</a>
+                            <a href="../hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="../uuid/generator.html">🎲 UUID Generator</a>
-                            <a href="../password/generator.html">🔑 Password Generator</a>
-                            <a href="../timestamp/converter.html">⏰ Timestamp Converter</a>
-                            <a href="../cron/generator.html">📅 Cron Generator</a>
+                            <a href="../uuid.html">🎲 UUID Generator</a>
+                            <a href="../password.html">🔑 Password Generator</a>
+                            <a href="../timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="../cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
                     
@@ -115,7 +118,7 @@
                     </div>
                     
                     <div class="dropdown">
-                        <button class="nav-btn active" data-group="crypto">🔐 Crypto Tools ▼</button>
+                        <button class="nav-btn " data-group="crypto">🔐 Crypto Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../crypto/base32.html">🔤 Base32</a>
                             <a href="../crypto/morse.html">📻 Morse Code</a>
@@ -131,17 +134,20 @@
     <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <!-- Tool Section - Content will be loaded from index.html -->
             <section id="base32-tool" class="tool-section active">
-                <!-- This section will be populated with the tool content from index.html -->
                 <div class="tool-header">
-                    <h2>Base32 Encoder/Decoder</h2>
+                    <h2>🔤 Base32 Encoder/Decoder</h2>
                     <p>Encode and decode Base32 strings</p>
                 </div>
-                <p style="text-align: center; padding: 50px; color: #666;">
-                    Tool content will be migrated here from index.html.<br>
-                    Please refer to the original index.html for the complete tool implementation.
-                </p>
+                <div class="generator-card">
+                    <textarea id="base32-input" placeholder="Enter text to encode/decode..." style="min-height: 100px;"></textarea>
+                    <div class="toolbar">
+                        <button class="btn btn-primary" onclick="encodeBase32()">🔒 Encode</button>
+                        <button class="btn btn-primary" onclick="decodeBase32()">🔓 Decode</button>
+                    </div>
+                    <textarea id="base32-output" readonly class="generator-output" placeholder="Result will appear here..."></textarea>
+                    <button class="btn-copy" onclick="copyToClipboard('base32-output')">Copy Result</button>
+                </div>
             </section>
         </div>
     </main>

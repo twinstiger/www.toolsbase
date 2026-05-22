@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -37,24 +40,24 @@
                     </a>
                     <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
                 </div>
-                <nav class="nav">
+                                <nav class="nav">
                     <div class="dropdown">
                         <button class="nav-btn " data-group="dev">🛠️ Dev Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
                             <a href="../regex/tester.html">🔍 Regex Tester</a>
-                            <a href="../encode/decoder.html">🔄 Encode/Decode</a>
-                            <a href="../hash/generator.html">#️⃣ Hash Generator</a>
+                            <a href="../encode.html">🔄 Encode/Decode</a>
+                            <a href="../hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="../uuid/generator.html">🎲 UUID Generator</a>
-                            <a href="../password/generator.html">🔑 Password Generator</a>
-                            <a href="../timestamp/converter.html">⏰ Timestamp Converter</a>
-                            <a href="../cron/generator.html">📅 Cron Generator</a>
+                            <a href="../uuid.html">🎲 UUID Generator</a>
+                            <a href="../password.html">🔑 Password Generator</a>
+                            <a href="../timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="../cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
                     
@@ -104,7 +107,7 @@
                     </div>
                     
                     <div class="dropdown">
-                        <button class="nav-btn active" data-group="network">🌐 Network Tools ▼</button>
+                        <button class="nav-btn " data-group="network">🌐 Network Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../network/my-ip.html">🔍 My IP</a>
                             <a href="../network/url-parser.html">🔗 URL Parser</a>
@@ -131,17 +134,20 @@
     <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <!-- Tool Section - Content will be loaded from index.html -->
             <section id="ip_to_int-tool" class="tool-section active">
-                <!-- This section will be populated with the tool content from index.html -->
                 <div class="tool-header">
-                    <h2>IP to Integer</h2>
+                    <h2>🔢 IP to Integer</h2>
                     <p>Convert IP addresses to integer format</p>
                 </div>
-                <p style="text-align: center; padding: 50px; color: #666;">
-                    Tool content will be migrated here from index.html.<br>
-                    Please refer to the original index.html for the complete tool implementation.
-                </p>
+                <div class="generator-card">
+                    <input type="text" id="ip2int-input" placeholder="192.168.1.1" style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-primary" onclick="ipToInteger()">🔢 Convert</button>
+                    <div style="margin-top: 20px; background: #e8f5e9; padding: 20px; border-radius: 10px;">
+                        <p><strong>Decimal:</strong> <span id="ip2int-result">-</span></p>
+                        <p><strong>Hexadecimal:</strong> <span id="ip2int-hex">-</span></p>
+                        <p><strong>Binary:</strong> <span id="ip2int-binary">-</span></p>
+                    </div>
+                </div>
             </section>
         </div>
     </main>

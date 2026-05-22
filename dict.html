@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -8,11 +11,19 @@
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     
     <!-- SEO Meta Tags -->
-    <title>Dictionary Tools - English-Chinese Dictionary, Synonyms, Spell Checker | ToolsBase</title>
-    <meta name="description" content="Free online dictionary tools: English-Chinese lookup, synonyms & antonyms, spell checker, word level check, tech abbreviations, US/UK converter, word frequency counter.">
-    <meta name="keywords" content="dictionary, english-chinese, synonyms, antonyms, spell checker, word frequency, tech abbreviations">
+    <title>Dictionary Tools - English Dictionary, Synonyms, Spell Checker | ToolsBase</title>
+    <meta name="description" content="Free online dictionary tools: English dictionary lookup, synonyms & antonyms, spell checker, word level check, tech abbreviations, US/UK converter, word frequency counter.">
+    <meta name="keywords" content="dictionary, english dictionary, synonyms, antonyms, spell checker, word frequency, tech abbreviations, pronunciation">
     <meta name="author" content="ToolsBase">
     <meta name="robots" content="index, follow">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dictionary Tools - English Dictionary, Synonyms, Spell Checker | ToolsBase">
+    <meta name="twitter:description" content="Free online dictionary tools: English dictionary lookup, synonyms & antonyms, spell checker, word level check, tech abbreviations, US/UK converter, word frequency counter.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://toolsbase.net/dict.html">
     
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -321,7 +332,7 @@
 
                 <!-- Panel 1: Dictionary Lookup -->
                 <div id="tab-lookup" class="dict-panel active">
-                    <h3>🔍 Dictionary Lookup (英汉/英英单词查询)</h3>
+                    <h3>🔍 Dictionary Lookup</h3>
                     <div class="search-box">
                         <div class="search-input-wrapper">
                             <input type="text" id="lookup-input" class="search-input" placeholder="Enter a word to look up..." onkeypress="if(event.key==='Enter') lookupWord()">
@@ -338,7 +349,7 @@
 
                 <!-- Panel 2: Synonyms & Antonyms -->
                 <div id="tab-synonyms" class="dict-panel">
-                    <h3>🔄 Synonyms & Antonyms (同义词反义词查询)</h3>
+                    <h3>🔄 Synonyms & Antonyms</h3>
                     <div class="search-box">
                         <div class="search-input-wrapper">
                             <input type="text" id="synonym-input" class="search-input" placeholder="Enter a word to find synonyms and antonyms..." onkeypress="if(event.key==='Enter') findSynonyms()">
@@ -355,7 +366,7 @@
 
                 <!-- Panel 3: Spell Checker -->
                 <div id="tab-spell" class="dict-panel">
-                    <h3>✓ Spell Checker (英文拼写纠错)</h3>
+                    <h3>✓ Spell Checker</h3>
                     <div class="search-box">
                         <div class="search-input-wrapper">
                             <input type="text" id="spell-input" class="search-input" placeholder="Enter text to check spelling..." onkeypress="if(event.key==='Enter') checkSpelling()">
@@ -372,7 +383,7 @@
 
                 <!-- Panel 4: Word Level Check -->
                 <div id="tab-level" class="dict-panel">
-                    <h3>📊 Word Level Check (词汇难度分级)</h3>
+                    <h3>📊 Word Level Check</h3>
                     <div class="search-box">
                         <div class="search-input-wrapper">
                             <input type="text" id="level-input" class="search-input" placeholder="Enter words separated by commas..." onkeypress="if(event.key==='Enter') checkWordLevel()">
@@ -389,7 +400,7 @@
 
                 <!-- Panel 5: Tech Abbreviation Dictionary -->
                 <div id="tab-abbr" class="dict-panel">
-                    <h3>💻 Tech Abbreviation Dictionary (技术缩写词典)</h3>
+                    <h3>💻 Tech Abbreviation Dictionary</h3>
                     <div class="search-box">
                         <div class="search-input-wrapper">
                             <input type="text" id="abbr-input" class="search-input" placeholder="Search for tech abbreviations (e.g., API, HTML, CSS)..." onkeypress="if(event.key==='Enter') searchAbbreviation()">
@@ -406,7 +417,7 @@
 
                 <!-- Panel 6: US & UK English Converter -->
                 <div id="tab-converter" class="dict-panel">
-                    <h3>🇺🇸 US & UK English Converter (美式英式英文转换)</h3>
+                    <h3>🇺🇸 US & UK English Converter</h3>
                     <div class="search-box">
                         <div class="search-input-wrapper">
                             <input type="text" id="converter-input" class="search-input" placeholder="Enter text to convert between US and UK English..." onkeypress="if(event.key==='Enter') convertEnglish()">
@@ -431,7 +442,7 @@
 
                 <!-- Panel 7: Word Frequency Counter -->
                 <div id="tab-frequency" class="dict-panel">
-                    <h3>📈 Word Frequency Counter (英文词频统计)</h3>
+                    <h3>📈 Word Frequency Counter</h3>
                     <div class="search-box">
                         <textarea id="frequency-input" class="search-input" style="width: 100%; min-height: 150px; resize: vertical;" placeholder="Paste your text here to analyze word frequency..."></textarea>
                         <button class="search-btn" onclick="countFrequency()" style="margin-top: 10px; width: 100%;">📈 Count Frequency</button>
@@ -572,7 +583,7 @@
                 let html = `<h3 style="margin-bottom: 20px;">Results for "${word}"</h3>`;
                 
                 if (synonyms.length > 0) {
-                    html += '<h4 style="margin: 20px 0 10px 0;">Synonyms (同义词):</h4><div>';
+                    html += '<h4 style="margin: 20px 0 10px 0;">Synonyms:</h4><div>';
                     synonyms.slice(0, 20).forEach(syn => {
                         html += `<span class="synonym-tag">${syn}</span>`;
                     });
@@ -580,7 +591,7 @@
                 }
                 
                 if (antonyms.length > 0) {
-                    html += '<h4 style="margin: 20px 0 10px 0;">Antonyms (反义词):</h4><div>';
+                    html += '<h4 style="margin: 20px 0 10px 0;">Antonyms:</h4><div>';
                     antonyms.slice(0, 20).forEach(ant => {
                         html += `<span class="antonym-tag">${ant}</span>`;
                     });

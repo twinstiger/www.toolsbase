@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -37,24 +40,24 @@
                     </a>
                     <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
                 </div>
-                <nav class="nav">
+                                <nav class="nav">
                     <div class="dropdown">
                         <button class="nav-btn " data-group="dev">🛠️ Dev Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
                             <a href="../regex/tester.html">🔍 Regex Tester</a>
-                            <a href="../encode/decoder.html">🔄 Encode/Decode</a>
-                            <a href="../hash/generator.html">#️⃣ Hash Generator</a>
+                            <a href="../encode.html">🔄 Encode/Decode</a>
+                            <a href="../hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="../uuid/generator.html">🎲 UUID Generator</a>
-                            <a href="../password/generator.html">🔑 Password Generator</a>
-                            <a href="../timestamp/converter.html">⏰ Timestamp Converter</a>
-                            <a href="../cron/generator.html">📅 Cron Generator</a>
+                            <a href="../uuid.html">🎲 UUID Generator</a>
+                            <a href="../password.html">🔑 Password Generator</a>
+                            <a href="../timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="../cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
                     
@@ -104,7 +107,7 @@
                     </div>
                     
                     <div class="dropdown">
-                        <button class="nav-btn active" data-group="network">🌐 Network Tools ▼</button>
+                        <button class="nav-btn " data-group="network">🌐 Network Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../network/my-ip.html">🔍 My IP</a>
                             <a href="../network/url-parser.html">🔗 URL Parser</a>
@@ -131,17 +134,39 @@
     <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <!-- Tool Section - Content will be loaded from index.html -->
             <section id="subnet-tool" class="tool-section active">
-                <!-- This section will be populated with the tool content from index.html -->
                 <div class="tool-header">
-                    <h2>Subnet Calculator</h2>
+                    <h2>🌐 Subnet Calculator</h2>
                     <p>Calculate network addresses and ranges</p>
                 </div>
-                <p style="text-align: center; padding: 50px; color: #666;">
-                    Tool content will be migrated here from index.html.<br>
-                    Please refer to the original index.html for the complete tool implementation.
-                </p>
+                <div class="generator-card">
+                    <label>IP Address: <input type="text" id="subnet-ip" placeholder="192.168.1.1" style="width: 150px;"></label>
+                    <label>CIDR: 
+                        <select id="subnet-cidr" class="select-input">
+                            <option value="8">/8</option>
+                            <option value="16">/16</option>
+                            <option value="24" selected>/24</option>
+                            <option value="25">/25</option>
+                            <option value="26">/26</option>
+                            <option value="27">/27</option>
+                            <option value="28">/28</option>
+                            <option value="29">/29</option>
+                            <option value="30">/30</option>
+                            <option value="31">/31</option>
+                            <option value="32">/32</option>
+                        </select>
+                    </label>
+                    <button class="btn btn-primary" onclick="calculateSubnet()">🌐 Calculate</button>
+                    <div style="margin-top: 20px; background: #e8f5e9; padding: 20px; border-radius: 10px;">
+                        <p><strong>Subnet Mask:</strong> <span id="subnet-mask">-</span></p>
+                        <p><strong>Network Address:</strong> <span id="subnet-network">-</span></p>
+                        <p><strong>Broadcast Address:</strong> <span id="subnet-broadcast">-</span></p>
+                        <p><strong>Total Hosts:</strong> <span id="subnet-total">-</span></p>
+                        <p><strong>Usable Hosts:</strong> <span id="subnet-usable">-</span></p>
+                        <p><strong>First Usable:</strong> <span id="subnet-first">-</span></p>
+                        <p><strong>Last Usable:</strong> <span id="subnet-last">-</span></p>
+                    </div>
+                </div>
             </section>
         </div>
     </main>

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
+            crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -37,29 +40,29 @@
                     </a>
                     <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
                 </div>
-                <nav class="nav">
+                                <nav class="nav">
                     <div class="dropdown">
                         <button class="nav-btn " data-group="dev">🛠️ Dev Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
                             <a href="../regex/tester.html">🔍 Regex Tester</a>
-                            <a href="../encode/decoder.html">🔄 Encode/Decode</a>
-                            <a href="../hash/generator.html">#️⃣ Hash Generator</a>
+                            <a href="../encode.html">🔄 Encode/Decode</a>
+                            <a href="../hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
                         <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
-                            <a href="../uuid/generator.html">🎲 UUID Generator</a>
-                            <a href="../password/generator.html">🔑 Password Generator</a>
-                            <a href="../timestamp/converter.html">⏰ Timestamp Converter</a>
-                            <a href="../cron/generator.html">📅 Cron Generator</a>
+                            <a href="../uuid.html">🎲 UUID Generator</a>
+                            <a href="../password.html">🔑 Password Generator</a>
+                            <a href="../timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="../cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
                     
                     <div class="dropdown">
-                        <button class="nav-btn active" data-group="calculators">🧮 Calc Tools ▼</button>
+                        <button class="nav-btn " data-group="calculators">🧮 Calc Tools ▼</button>
                         <div class="dropdown-content">
                             <a href="../calculators/basic.html">🔢 Basic Calculator</a>
                             <a href="../calculators/percentage.html">📊 Percentage</a>
@@ -128,20 +131,26 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+        <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <!-- Tool Section - Content will be loaded from index.html -->
-            <section id="tip-tool" class="tool-section active">
-                <!-- This section will be populated with the tool content from index.html -->
+            <section id="basic-tip-tool" class="tool-section active">
                 <div class="tool-header">
-                    <h2>Tip Calculator</h2>
-                    <p>Calculate tips and split bills</p>
+                    <h2>💵 Tip Calculator</h2>
+                    <p>Calculate tips and split bills easily</p>
                 </div>
-                <p style="text-align: center; padding: 50px; color: #666;">
-                    Tool content will be migrated here from index.html.<br>
-                    Please refer to the original index.html for the complete tool implementation.
-                </p>
+
+                <div class="generators-grid">
+                    <div class="generator-card " id="calc-tip-card">
+                        <h3>💵 Tip Calculator</h3>
+                        <div class="generator-controls">
+                            <label>Bill Amount: $<input type="number" id="tip-bill" value="100" style="width: 100px;"></label>
+                            <label>Tip %: <input type="number" id="tip-percent" value="15" style="width: 80px;"></label>
+                            <label>Split: <input type="number" id="tip-split" value="1" min="1" style="width: 80px;"></label>
+                            <button class="btn btn-primary" onclick="calcTip()">Calculate</button>
+                            <div class="password-output" id="tip-result" style="margin-top: 10px;">Tip: $15.00 | Total: $115.00 | Per Person: $115.00</div>
+                        </div>
+                </div>
             </section>
         </div>
     </main>

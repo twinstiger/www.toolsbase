@@ -1,206 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Formatter - Local Dev Tools | No Upload Required</title>
-    <meta name="description" content="Free online JSON formatter and beautifier. Format, minify, and validate JSON data locally in your browser. No uploads, 100% secure.">
-    <meta name="keywords" content="json formatter, json beautifier, json validator, format json, prettify json">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
             crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-        }
-        .dark body { 
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        }
-        textarea.code-editor {
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+    <link rel="alternate icon" href="../../logo.svg">
+    
+    <!-- SEO Meta Tags -->
+    <title>JSON Formatter & Validator - Free Online Tool | ToolsBase</title>
+    <meta name="description" content="Free online JSON formatter and validator. Format, validate, compress, and beautify JSON data instantly. 100% local processing, no uploads.">
+    <meta name="keywords" content="json formatter, json validator, json beautifier, json compressor, format json, validate json">
+    <meta name="author" content="ToolsBase">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="JSON Formatter & Validator - Free Online Tool">
+    <meta property="og:description" content="Format, validate, and beautify JSON data instantly. All processing happens locally in your browser.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../../logo.svg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://toolsbase.net/tools/json/formatter.html">
+    
+    <link rel="stylesheet" href="../../styles.css">
 </head>
-<body class="text-gray-800 dark:text-gray-100 min-h-screen transition-colors duration-300">
+<body>
     <!-- Header -->
-    <header class="glass-effect shadow-lg sticky top-0 z-50 transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="../../index.html" class="flex items-center gap-2 group">
-                <span class="text-2xl group-hover:-translate-x-1 transition-transform">←</span>
-                <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">Back to Tools</span>
-            </a>
-            <button id="theme-toggle" class="p-3 rounded-xl bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 shadow-md hover:shadow-lg transition-all duration-300 group">
-                <svg id="sun-icon" class="w-6 h-6 hidden dark:block text-yellow-500 group-hover:rotate-180 transition-transform duration-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>
-                </svg>
-                <svg id="moon-icon" class="w-6 h-6 block dark:hidden text-indigo-600 group-hover:-rotate-12 transition-transform duration-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
-                </svg>
-            </button>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../../index.html" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                        <img src="../../logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
+                        <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
+                    </a>
+                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+                </div>
+                                <nav class="nav">
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="dev">🛠️ Dev Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../json/formatter.html">📋 JSON/YAML/XML</a>
+                            <a href="../regex/tester.html">🔍 Regex Tester</a>
+                            <a href="../encode.html">🔄 Encode/Decode</a>
+                            <a href="../hash.html">#️⃣ Hash Generator</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../uuid.html">🎲 UUID Generator</a>
+                            <a href="../password.html">🔑 Password Generator</a>
+                            <a href="../timestamp.html">⏰ Timestamp Converter</a>
+                            <a href="../cron.html">📅 Cron Generator</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="calculators">🧮 Calc Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../calculators/basic.html">🔢 Basic Calculator</a>
+                            <a href="../calculators/percentage.html">📊 Percentage</a>
+                            <a href="../calculators/tip.html">💵 Tip Calculator</a>
+                            <a href="../calculators/loan.html">🏦 Loan Calculator</a>
+                            <a href="../calculators/age.html">🎂 Age Calculator</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="converters">📐 Convert Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../converters/length.html">📏 Length</a>
+                            <a href="../converters/weight.html">⚖️ Weight</a>
+                            <a href="../converters/temperature.html">🌡️ Temperature</a>
+                            <a href="../converters/volume.html">🧪 Volume</a>
+                            <a href="../converters/area.html">📐 Area</a>
+                            <a href="../converters/speed.html">🚀 Speed</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="text">📝 Text Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../text/case-converter.html">🔤 Case Converter</a>
+                            <a href="../text/word-counter.html">📊 Word Counter</a>
+                            <a href="../text/color-picker.html">🎨 Color Picker</a>
+                            <a href="../text/random-number.html">🎲 Random Number</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="image">🖼️ Image Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../image/qrcode.html">📱 QR Code</a>
+                            <a href="../image/compressor.html">🗜️ Compressor</a>
+                            <a href="../image/exif.html">📷 EXIF Viewer</a>
+                            <a href="../image/rotate.html">🔄 Rotate/Flip</a>
+                            <a href="../image/cropper.html">✂️ Cropper</a>
+                            <a href="../image/watermark.html">💧 Watermark</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="network">🌐 Network Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../network/my-ip.html">🔍 My IP</a>
+                            <a href="../network/url-parser.html">🔗 URL Parser</a>
+                            <a href="../network/subnet.html">🌐 Subnet Calc</a>
+                            <a href="../network/ip-to-int.html">🔢 IP to Int</a>
+                            <a href="../network/url-shortener.html">✂️ URL Shortener</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="nav-btn " data-group="crypto">🔐 Crypto Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="../crypto/base32.html">🔤 Base32</a>
+                            <a href="../crypto/morse.html">📻 Morse Code</a>
+                            <a href="../crypto/bcrypt.html">🔒 Bcrypt</a>
+                            <a href="../crypto/htpasswd.html">🔑 htpasswd</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-12">
-        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 border border-gray-100 dark:border-slate-700 animate-fade-in-up">
-            <!-- Title Section -->
-            <div class="mb-8">
-                <h1 class="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">JSON Formatter & Validator</h1>
-                <p class="text-gray-600 dark:text-gray-400 text-lg">Format, minify, and validate JSON data - all processing happens locally</p>
-            </div>
-
-            <!-- Input Section -->
-            <div class="mb-6">
-                <label class="block font-medium mb-2 text-gray-700 dark:text-gray-300">Input JSON:</label>
-                <textarea id="input" class="code-editor w-full h-64 px-4 py-3 input-enhanced bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-700 dark:to-slate-800 rounded-2xl border-0 resize-none" placeholder='Paste your JSON here...&#10;Example: {"name":"John","age":30,"city":"New York"}'></textarea>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-wrap gap-3 mb-6">
-                <button onclick="formatJSON()" class="btn-primary">
-                    ✨ Format / Beautify
-                </button>
-                <button onclick="minifyJSON()" class="btn-secondary">
-                    📦 Minify
-                </button>
-                <button onclick="validateJSON()" class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-green-700 shadow-lg hover:shadow-xl transition-all">
-                    ✅ Validate
-                </button>
-                <button onclick="clearAll()" class="px-6 py-3 bg-gray-500 text-white rounded-xl font-semibold hover:bg-gray-600 shadow-lg transition-all">
-                    🗑️ Clear
-                </button>
-            </div>
-
-            <!-- Output Section -->
-            <div class="mb-6">
-                <label class="block font-medium mb-2 text-gray-700 dark:text-gray-300">Output:</label>
-                <textarea id="output" readonly class="code-editor w-full h-64 px-4 py-3 result-display rounded-2xl border-0 resize-none" placeholder="Formatted JSON will appear here..."></textarea>
-            </div>
-
-            <!-- Status Message -->
-            <div id="status" class="hidden p-4 rounded-xl"></div>
-
-            <!-- Options -->
-            <div class="mt-6 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                <h3 class="font-bold text-blue-800 dark:text-blue-300 mb-3">Options:</h3>
-                <div class="flex items-center gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="indent2" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
-                        <span class="text-sm text-blue-800 dark:text-blue-300">2 spaces indent</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="sortKeys" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
-                        <span class="text-sm text-blue-800 dark:text-blue-300">Sort keys</span>
+    <main class="main">
+        <div class="container">
+            <!-- JSON/YAML/XML Tool -->
+            <section id="json-tool" class="tool-section active">
+                <div class="toolbar">
+                    <select id="json-format" class="select-input">
+                        <option value="json">📄 JSON</option>
+                        <option value="yaml">📝 YAML</option>
+                        <option value="xml">📑 XML</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="formatData()">✨ Format</button>
+                    <button class="btn" onclick="compressData()">🗜️ Compress</button>
+                    <button class="btn" onclick="validateData()">✓ Validate</button>
+                    <button class="btn btn-danger" onclick="clearAll()">🗑️ Clear</button>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="auto-format" checked>
+                        <span>Auto Format</span>
                     </label>
                 </div>
-            </div>
 
-            <!-- Pro Tip -->
-            <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                <p class="text-sm text-blue-800 dark:text-blue-300 text-center">
-                    💡 <strong>Pro Tip:</strong> Paste messy JSON and click "Format" to make it readable. All processing happens in your browser!
-                </p>
-            </div>
+                <div class="workspace">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Input</h3>
+                            <span id="input-stats" class="stats">0 bytes</span>
+                        </div>
+                        <textarea id="json-input" placeholder="Paste your JSON, YAML, or XML here..."></textarea>
+                    </div>
+                    
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Output</h3>
+                            <span id="output-status" class="status-badge"></span>
+                        </div>
+                        <pre id="json-output"><code></code></pre>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
-    <script src="../../js/theme-toggle.js"></script>
-    <script>
-        function formatJSON() {
-            const input = document.getElementById('input').value.trim();
-            const output = document.getElementById('output');
-            const status = document.getElementById('status');
-            
-            if (!input) {
-                showStatus('Please enter some JSON first!', 'error');
-                return;
-            }
-            
-            try {
-                let parsed = JSON.parse(input);
-                
-                // Sort keys if option is selected
-                if (document.getElementById('sortKeys').checked) {
-                    parsed = sortObjectKeys(parsed);
-                }
-                
-                const indent = document.getElementById('indent2').checked ? 2 : 4;
-                output.value = JSON.stringify(parsed, null, indent);
-                showStatus('✅ JSON formatted successfully!', 'success');
-            } catch (e) {
-                showStatus('❌ Invalid JSON: ' + e.message, 'error');
-            }
-        }
-        
-        function minifyJSON() {
-            const input = document.getElementById('input').value.trim();
-            const output = document.getElementById('output');
-            const status = document.getElementById('status');
-            
-            if (!input) {
-                showStatus('Please enter some JSON first!', 'error');
-                return;
-            }
-            
-            try {
-                const parsed = JSON.parse(input);
-                output.value = JSON.stringify(parsed);
-                showStatus('✅ JSON minified successfully!', 'success');
-            } catch (e) {
-                showStatus('❌ Invalid JSON: ' + e.message, 'error');
-            }
-        }
-        
-        function validateJSON() {
-            const input = document.getElementById('input').value.trim();
-            const status = document.getElementById('status');
-            
-            if (!input) {
-                showStatus('Please enter some JSON first!', 'error');
-                return;
-            }
-            
-            try {
-                JSON.parse(input);
-                showStatus('✅ Valid JSON! Syntax is correct.', 'success');
-            } catch (e) {
-                showStatus('❌ Invalid JSON: ' + e.message, 'error');
-            }
-        }
-        
-        function clearAll() {
-            document.getElementById('input').value = '';
-            document.getElementById('output').value = '';
-            document.getElementById('status').classList.add('hidden');
-        }
-        
-        function sortObjectKeys(obj) {
-            if (Array.isArray(obj)) {
-                return obj.map(sortObjectKeys);
-            } else if (obj !== null && typeof obj === 'object') {
-                return Object.keys(obj).sort().reduce((result, key) => {
-                    result[key] = sortObjectKeys(obj[key]);
-                    return result;
-                }, {});
-            }
-            return obj;
-        }
-        
-        function showStatus(message, type) {
-            const status = document.getElementById('status');
-            status.textContent = message;
-            status.className = `p-4 rounded-xl ${type === 'success' ? 'success-state' : 'error-state'}`;
-            status.classList.remove('hidden');
-            
-            setTimeout(() => {
-                status.classList.add('hidden');
-            }, 3000);
-        }
-    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Tools Base. All processing happens locally in your browser. No data is ever uploaded.</p>
+            <p style="margin-top: 10px;">
+                <a href="../../privacy-policy.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="../../about.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">About Us</a> | 
+                <a href="../../contact.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="../../modules/module-loader.js"></script>
+    <script src="../../modules/json-tools.js"></script>
 </body>
 </html>
