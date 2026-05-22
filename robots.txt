@@ -1,0 +1,16 @@
+# Robots.txt for ToolsBase
+# https://toolsbase.net
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://toolsbase.net/sitemap.xml
+
+# Disallow private or temporary paths (if any)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /tmp/
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1

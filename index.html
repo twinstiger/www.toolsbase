@@ -24,7 +24,31 @@
             crossorigin="anonymous"></script>
     <!-- Canonical URL -->
     <link rel="canonical" href="https://toolsbase.net">
-    
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Tools Base",
+        "url": "https://toolsbase.net",
+        "description": "Free online developer tools: JSON formatter, regex tester, base64 decode, cron generator, hash generator, UUID generator. 100% local processing, no uploads, fast and secure.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Tools Base"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Tools Base",
+        "url": "https://toolsbase.net",
+        "description": "Privacy-focused online developer tools platform"
+    }
+    </script>
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ToolsBase - Free Online Developer Tools">
@@ -1235,7 +1259,7 @@
 <!-- Init Header Component -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            HeaderComponent.init('#header-container', { theme: 'toolsbase.net' });
+            HeaderComponent.init('#header-container');
         });
     </script>
 </body>
