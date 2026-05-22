@@ -1,0 +1,28 @@
+{
+  "name": "www.toolsbase",
+  "version": "1.0.0",
+  "description": "ToolsBase - Free Online Developer Tools",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "repository": {
+    "url": "git+https://github.com/twinstiger/www.toolsbase.git"
+  },
+  "keywords": ["tools", "developer-tools", "online-tools"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/twinstiger/www.toolsbase/issues"
+  },
+  "homepage": "https://toolsbase.net",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
+  }
+}

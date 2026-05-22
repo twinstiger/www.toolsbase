@@ -31,10 +31,11 @@
     <meta name="twitter:description" content="Free developer tools for JSON formatting, regex testing, encoding/decoding, and more. All processing happens locally in your browser.">
     <!-- External Libraries for New Tools -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
-    
+
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <!-- Header -->
@@ -1202,14 +1203,40 @@
         </div>
     </footer>
 
-    <script src="modules/module-loader.js"></script>
-    <script src="modules/json-tools.js"></script>
-    <script src="modules/tools.js"></script>
-    <script src="modules/calculators.js"></script>
-    <script src="modules/converters.js"></script>
-    <script src="modules/text-tools.js"></script>
-    <script src="modules/image-tools.js"></script>
-    <script src="modules/network-tools.js"></script>
-    <script src="modules/crypto-tools.js"></script>
+    <script src="modules/header-component.js" defer></script>
+    <script src="modules/module-loader.js" defer></script>
+    <script src="modules/utils.js" defer></script>
+    <script src="modules/json-tools.js" defer></script>
+    <script src="modules/tools.js" defer></script>
+    <script src="modules/tools/uuid.js" defer></script>
+    <script src="modules/tools/password.js" defer></script>
+    <script src="modules/tools/hash.js" defer></script>
+    <script src="modules/tools/regex.js" defer></script>
+    <script src="modules/tools/encode.js" defer></script>
+    <script src="modules/tools/timestamp.js" defer></script>
+    <script src="modules/tools/cron.js" defer></script>
+    <script src="modules/calculators.js" defer></script>
+    <script src="modules/converters.js" defer></script>
+    <script src="modules/text-tools.js" defer></script>
+    <script src="modules/image-tools.js" defer></script>
+    <script src="modules/network-tools.js" defer></script>
+    <script src="modules/crypto-tools.js" defer></script>
+
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then((reg) => {
+                console.log('SW registered:', reg.scope);
+            }).catch((err) => {
+                console.log('SW failed:', err);
+            });
+        }
+    </script>
+<!-- Init Header Component -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            HeaderComponent.init('#header-container', { theme: 'toolsbase.net' });
+        });
+    </script>
 </body>
 </html>
