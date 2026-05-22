@@ -19,6 +19,12 @@ body {
     flex-direction: column;
 }
 
+/* Dark Mode */
+body.dark-mode {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e2e8f0;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;

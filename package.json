@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "deploy": "npx wrangler pages deploy ."
   },
   "repository": {
     "url": "git+https://github.com/twinstiger/www.toolsbase.git"

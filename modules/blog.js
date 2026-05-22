@@ -10,8 +10,7 @@ const BlogArticles = [
         excerpt: "In recent years, with users' continuous improvement of network data security awareness, a kind of online tool that can run locally in the browser is rapidly replacing the traditional server-side tool website...",
         tag: "security",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+        image: "https://picsum.photos/seed/sec1/600/400"
     },
     {
         id: 2,
@@ -19,8 +18,7 @@ const BlogArticles = [
         excerpt: "For front-end developers, back-end programmers, test engineers and Internet technical practitioners, various auxiliary small tools are indispensable important aids in daily work...",
         tag: "productivity",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>'
+        image: "https://picsum.photos/seed/dev1/600/400"
     },
     {
         id: 3,
@@ -28,8 +26,7 @@ const BlogArticles = [
         excerpt: "In daily office work, a large number of text content sorting, word quantity statistics, content arrangement and other work occupy most of the daily working time of many office staff...",
         tag: "productivity",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
+        image: "https://picsum.photos/seed/office1/600/400"
     },
     {
         id: 4,
@@ -37,8 +34,7 @@ const BlogArticles = [
         excerpt: "Discover the top 10 must-have browser-based tools that can boost your productivity and streamline your development workflow...",
         tag: "development",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+        image: "https://picsum.photos/seed/code1/600/400"
     },
     {
         id: 5,
@@ -46,8 +42,7 @@ const BlogArticles = [
         excerpt: "Learn essential data privacy practices when using online tools and how to protect your sensitive information...",
         tag: "privacy",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>'
+        image: "https://picsum.photos/seed/priv1/600/400"
     },
     {
         id: 6,
@@ -55,8 +50,7 @@ const BlogArticles = [
         excerpt: "Learn how modern browser-based tools can dramatically improve your front-end development workflow and productivity...",
         tag: "development",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'
+        image: "https://picsum.photos/seed/react1/600/400"
     },
     {
         id: 7,
@@ -64,8 +58,7 @@ const BlogArticles = [
         excerpt: "Understand the security implications of server-side processing and why running tools locally in your browser offers better privacy protection...",
         tag: "security",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+        image: "https://picsum.photos/seed/lock1/600/400"
     },
     {
         id: 8,
@@ -73,8 +66,87 @@ const BlogArticles = [
         excerpt: "Trace the evolution of front-end development tools from command-line interfaces to modern visual browser-based solutions...",
         tag: "development",
         date: "May 2026",
-        gradient: "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>'
+        image: "https://picsum.photos/seed/cli1/600/400"
+    },
+    {
+        id: 9,
+        title: "Mastering JSON: Best Practices for API Development",
+        excerpt: "Learn how to properly format, validate, and optimize JSON for API responses. Avoid common pitfalls in JSON handling...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/json1/600/400"
+    },
+    {
+        id: 10,
+        title: "Password Security 101 | Creating Unbreakable Passwords",
+        excerpt: "Discover the mathematics behind password strength and learn how to generate truly secure passwords that resist brute-force attacks...",
+        tag: "security",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/pass1/600/400"
+    },
+    {
+        id: 11,
+        title: "The Complete Guide to Regular Expressions",
+        excerpt: "Master regex with practical examples. From simple pattern matching to complex text extraction...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/regex1/600/400"
+    },
+    {
+        id: 12,
+        title: "API Testing Made Easy | Tools and Techniques",
+        excerpt: "Streamline your API development workflow with proper testing tools and automation strategies...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/api1/600/400"
+    },
+    {
+        id: 13,
+        title: "Color Theory for Developers | Building Better UIs",
+        excerpt: "Understand color fundamentals and learn to create stunning user interfaces with proper color selection...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/color1/600/400"
+    },
+    {
+        id: 14,
+        title: "Timestamp Handling Across Time Zones",
+        excerpt: "Navigate the complexities of timestamps, UTC, and time zone conversions in modern web applications...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/time1/600/400"
+    },
+    {
+        id: 15,
+        title: "Base64 Encoding Explained | When and How to Use It",
+        excerpt: "Demystify Base64 encoding with practical examples for data URI, authentication, and content transmission...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/enc1/600/400"
+    },
+    {
+        id: 16,
+        title: "QR Codes in 2026 | Beyond the Basics",
+        excerpt: "Explore advanced QR code generation techniques, customization options, and modern use cases...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/qr1/600/400"
+    },
+    {
+        id: 17,
+        title: "Image Optimization for Web Performance",
+        excerpt: "Learn compression techniques, format selection, and delivery strategies for lightning-fast websites...",
+        tag: "development",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/img1/600/400"
+    },
+    {
+        id: 18,
+        title: "Hash Functions Explained | MD5, SHA, and Beyond",
+        excerpt: "Understand cryptographic hash functions, their use cases, and when to use each algorithm...",
+        tag: "security",
+        date: "May 2026",
+        image: "https://picsum.photos/seed/hash1/600/400"
     }
 ];
 
@@ -87,8 +159,7 @@ function renderArticles() {
 
     grid.innerHTML = BlogArticles.map(article => `
         <a href="article${article.id}.html" class="blog-card" data-tag="${article.tag}" data-title="${article.title.toLowerCase()}">
-            <div class="blog-card-image" style="background: ${article.gradient};">
-                ${article.icon}
+            <div class="blog-card-image" style="background-image: url('${article.image}'); background-size: cover; background-position: center;">
             </div>
             <div class="blog-card-content">
                 <h2>${article.title}</h2>
@@ -144,7 +215,9 @@ function filterArticles() {
 }
 
 // Initialize on load
-document.addEventListener('DOMContentLoaded', renderArticles);
+document.addEventListener('DOMContentLoaded', () => {
+    renderArticles();
+});
 
 // Export to global
 window.BlogModule = { setFilter, filterArticles, articles: BlogArticles };

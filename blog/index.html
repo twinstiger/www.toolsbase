@@ -32,7 +32,42 @@
     <meta name="twitter:description" content="Read articles about developer tools, productivity tips, and best practices for using online tools.">
     
     <link rel="stylesheet" href="../styles.css">
+    <script src="../modules/blog.js" defer></script>
     <style>
+        .blog-search {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #4caf50;
+            border-radius: 30px;
+            outline: none;
+        }
+
+        .blog-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-tag {
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 2px solid #e0e0e0;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .filter-tag:hover, .filter-tag.active {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+
         .blog-container {
             max-width: 1200px;
             margin: 40px auto;
@@ -57,8 +92,8 @@
         
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
             margin-bottom: 50px;
         }
         
@@ -84,16 +119,9 @@
         .blog-card-image {
             width: 100%;
             height: 200px;
-            object-fit: cover;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .blog-card-image svg {
-            width: 80px;
-            height: 80px;
+            background-size: cover;
+            background-position: center;
+            background: #667eea;
         }
         
         .blog-card-content {
@@ -168,124 +196,18 @@
                 <p>Discover tips, tutorials, and best practices for using developer tools</p>
             </div>
 
-            <div class="blog-grid">
-                <!-- Article 1 -->
-                <a href="article1.html" class="blog-card">
-                    <div class="blog-card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                        </svg>
-                    </div>
-                    <div class="blog-card-content">
-                        <h2>Why Local Running Online Tools Are Becoming The First Choice For Modern Users</h2>
-                        <p class="excerpt">In recent years, with users' continuous improvement of network data security awareness, a kind of online tool that can run locally in the browser is rapidly replacing the traditional server-side tool website...</p>
-                        <span class="read-more">Read More →</span>
-                        <div class="meta">
-                            <span class="tag">Security</span>
-                            <span>May 2026</span>
-                        </div>
-                    </div>
-                </a>
+            <input type="text" class="blog-search" id="blog-search" placeholder="🔍 Search articles..." onkeyup="filterArticles()">
 
-                <!-- Article 2 -->
-                <a href="article2.html" class="blog-card">
-                    <div class="blog-card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6"></polyline>
-                            <polyline points="8 6 2 12 8 18"></polyline>
-                            <line x1="14" y1="4" x2="10" y2="20"></line>
-                        </svg>
-                    </div>
-                    <div class="blog-card-content">
-                        <h2>Complete Guide to Using Developer Practical Online Tools to Improve Daily Work Efficiency</h2>
-                        <p class="excerpt">For front-end developers, back-end programmers, test engineers and Internet technical practitioners, various auxiliary small tools are indispensable important aids in daily work...</p>
-                        <span class="read-more">Read More →</span>
-                        <div class="meta">
-                            <span class="tag">Productivity</span>
-                            <span>May 2026</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Article 3 -->
-                <a href="article3.html" class="blog-card">
-                    <div class="blog-card-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="blog-card-content">
-                        <h2>Daily Office Text Processing Practical Skills | Use Online Tools to Simplify Copy Sorting Work</h2>
-                        <p class="excerpt">In daily office work, a large number of text content sorting, word quantity statistics, content arrangement and other work occupy most of the daily working time of many office staff...</p>
-                        <span class="read-more">Read More →</span>
-                        <div class="meta">
-                            <span class="tag">Office</span>
-                            <span>May 2026</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Article 4 -->
-                <a href="article4.html" class="blog-card">
-                    <div class="blog-card-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
-                    </div>
-                    <div class="blog-card-content">
-                        <h2>Top 10 Essential Browser-Based Tools Every Developer Should Know</h2>
-                        <p class="excerpt">Discover the top 10 must-have browser-based tools that can boost your productivity and streamline your development workflow...</p>
-                        <span class="read-more">Read More →</span>
-                        <div class="meta">
-                            <span class="tag">Development</span>
-                            <span>May 2026</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Article 5 -->
-                <a href="article5.html" class="blog-card">
-                    <div class="blog-card-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
-                        </svg>
-                    </div>
-                    <div class="blog-card-content">
-                        <h2>Understanding Data Privacy in the Age of Online Tools</h2>
-                        <p class="excerpt">Learn essential data privacy practices when using online tools and how to protect your sensitive information...</p>
-                        <span class="read-more">Read More →</span>
-                        <div class="meta">
-                            <span class="tag">Privacy</span>
-                            <span>May 2026</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Article 6 -->
-                <a href="article6.html" class="blog-card">
-                    <div class="blog-card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6"></polyline>
-                            <polyline points="8 6 2 12 8 18"></polyline>
-                        </svg>
-                    </div>
-                    <div class="blog-card-content">
-                        <h2>Boosting Front-End Development Efficiency with Modern Browser Tools</h2>
-                        <p class="excerpt">Learn how modern browser-based tools can dramatically improve your front-end development workflow and productivity...</p>
-                        <span class="read-more">Read More →</span>
-                        <div class="meta">
-                            <span class="tag">Development</span>
-                            <span>May 2026</span>
-                        </div>
-                    </div>
-                </a>
+            <div class="blog-filter">
+                <button class="filter-tag active" onclick="setFilter('all', this)">All</button>
+                <button class="filter-tag" onclick="setFilter('productivity', this)">⚡ Productivity</button>
+                <button class="filter-tag" onclick="setFilter('development', this)">💻 Development</button>
+                <button class="filter-tag" onclick="setFilter('security', this)">🔒 Security</button>
+                <button class="filter-tag" onclick="setFilter('privacy', this)">🔐 Privacy</button>
+                <button class="filter-tag" onclick="setFilter('tips', this)">💡 Tips</button>
             </div>
+
+            <div class="blog-grid" id="blog-grid"></div>
         </div>
     </main>
 
