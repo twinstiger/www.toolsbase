@@ -1,7 +1,7 @@
 # Cloudflare Pages Configuration for static site
 [build]
-  command = ""
-  cwd = ""
+  command = "echo Ready"
+  cwd = "."
 
 [site]
   bucket = "."
