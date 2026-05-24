@@ -110,15 +110,21 @@
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <div class="header-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div class="logo">
-                    <a href="../index.html" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                        <img src="../logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
-                        <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
-                    </a>
-                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+            <div class="header-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div class="logo">
+                        <a href="../index.html" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                            <img src="../logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
+                            <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
+                        </a>
+                        <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
+                    </div>
+                <div style="display: flex; gap: 10px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
+                    <a href="../dict.html" class="btn" style="text-decoration: none; white-space: nowrap;">📖 DICT</a>
+                    <a href="index.html" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
+                    <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
                 </div>
-                🌙 Dark</button>
+                    <a href="index.html" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
                 </div>
             </div>
         </div>
