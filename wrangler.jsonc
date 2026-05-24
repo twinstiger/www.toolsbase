@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "main",
+  "compatibility_date": "2026-05-24",
+  "assets": {
+    "directory": ".",
+    "ignore": [
+      "node_modules/**",
+      ".git/**",
+      ".*"
+    ]
+  }
+}
