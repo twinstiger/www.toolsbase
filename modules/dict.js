@@ -29,14 +29,29 @@ const DictCache = {
 
 // Tab switching
 function showTab(tabName, event) {
-    if (!event) return;
-
+    // Hide all panels
+    document.querySelectorAll('.dict-panel').forEach(panel => {
+        panel.classList.remove('active');
+    });
+    // Deactivate all tabs
     document.querySelectorAll('.dict-tab').forEach(tab => {
         tab.classList.remove('active');
     });
-
-    document.getElementById('tab-' + tabName).classList.add('active');
-    event.target.classList.add('active');
+    // Activate selected panel
+    const panel = document.getElementById('tab-' + tabName);
+    if (panel) panel.classList.add('active');
+    // Activate selected tab button
+    if (event) {
+        (event.currentTarget || event.target).classList.add('active');
+    } else {
+        // Fallback: find the button with this onclick
+        const btns = document.querySelectorAll('.dict-tab');
+        btns.forEach(btn => {
+            if (btn.getAttribute('onclick')?.includes(tabName)) {
+                btn.classList.add('active');
+            }
+        });
+    }
 }
 
 // 1. Dictionary Lookup

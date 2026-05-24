@@ -52,9 +52,10 @@ function generateHeader(config) {
             </a>
             <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; align-items: center;">
             <a href="${links.dict}" class="btn" style="text-decoration: none; white-space: nowrap;">📖 DICT</a>
             <a href="${links.blog}" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
+            <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
         </div>
     </div>
 </div>`;

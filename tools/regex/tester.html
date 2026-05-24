@@ -3,18 +3,14 @@
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
             crossorigin="anonymous"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="../../logo.svg">
-    
     <!-- SEO Meta Tags -->
-    <title>Regex Tester - Free Online Regular Expression Tool | ToolsBase</title>
-    <meta name="description" content="Free online regex tester with real-time matching. Test regular expressions with common patterns library. 100% local processing.">
+    <title>Regex Tester - Test Regular Expressions Online with Real-time Match | ToolsBase</title>
+    <meta name="description" content="Free online regex tester with real-time match highlighting. Supports JavaScript regex flags (g, i, m). Library of common regex patterns. Instant results, no signup.">
     <meta name="keywords" content="regex tester, regular expression, pattern matching, regex tool">
-    
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
@@ -32,6 +28,7 @@
                     <div style="display: flex; gap: 10px;">
                         <a href="../../dict.html" class="btn" style="text-decoration: none; white-space: nowrap;">📖 DICT</a>
                         <a href="../../blog/index.html" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
+                        <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
                     </div>
                 </div>
                 <nav class="nav">
@@ -44,7 +41,6 @@
                             <a href="../hash.html">#️⃣ Hash Generator</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="generators">⚡ Gen Tools ▼</button>
                         <div class="dropdown-content">
@@ -54,7 +50,6 @@
                             <a href="../cron.html">📅 Cron Generator</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="calculators">🧮 Calc Tools ▼</button>
                         <div class="dropdown-content">
@@ -65,7 +60,6 @@
                             <a href="../calculators/age.html">🎂 Age Calculator</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="converters">📐 Convert Tools ▼</button>
                         <div class="dropdown-content">
@@ -77,7 +71,6 @@
                             <a href="../converters/speed.html">🚀 Speed</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="text">📝 Text Tools ▼</button>
                         <div class="dropdown-content">
@@ -87,7 +80,6 @@
                             <a href="../text/random-number.html">🎲 Random Number</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="image">🖼️ Image Tools ▼</button>
                         <div class="dropdown-content">
@@ -99,7 +91,6 @@
                             <a href="../image/watermark.html">💧 Watermark</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="network">🌐 Network Tools ▼</button>
                         <div class="dropdown-content">
@@ -110,7 +101,6 @@
                             <a href="../network/url-shortener.html">✂️ URL Shortener</a>
                         </div>
                     </div>
-                    
                     <div class="dropdown">
                         <button class="nav-btn " data-group="crypto">🔐 Crypto Tools ▼</button>
                         <div class="dropdown-content">
@@ -124,7 +114,6 @@
             </div>
         </div>
     </header>
-
     <main class="main">
         <div class="container">
             <section id="regex-tool" class="tool-section active">
@@ -132,14 +121,12 @@
                     <h2>Regex Tester</h2>
                     <p>Test regular expressions with real-time matching and common patterns library</p>
                 </div>
-
                 <div class="toolbar">
                     <input type="text" id="regex-pattern" placeholder="Enter regex pattern..." class="regex-input">
                     <input type="text" id="regex-flags" placeholder="Flags (gi)" class="regex-input-small">
                     <button class="btn btn-primary" onclick="testRegex()">🧪 Test</button>
                     <button class="btn btn-danger" onclick="clearRegex()">🗑️ Clear</button>
                 </div>
-
                 <div class="common-patterns">
                     <h4>Common Patterns:</h4>
                     <div class="pattern-tags">
@@ -153,7 +140,6 @@
                         <span class="pattern-tag" onclick="setRegex('^\\d{4}-\\d{2}-\\d{2}$')">Date (YYYY-MM-DD)</span>
                     </div>
                 </div>
-
                 <div class="workspace">
                     <div class="panel">
                         <div class="panel-header">
@@ -161,7 +147,6 @@
                         </div>
                         <textarea id="regex-test-string" placeholder="Enter text to test against the regex pattern..."></textarea>
                     </div>
-                    
                     <div class="panel">
                         <div class="panel-header">
                             <h3>Match Results</h3>
@@ -175,7 +160,6 @@
             </section>
         </div>
     </main>
-
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Tools Base. All processing happens locally in your browser.</p>
@@ -185,9 +169,40 @@
                 <a href="../../contact.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Contact Us</a>
             </p>
         </div>
-    </footer>
-
+    <div class="generator-card" style="margin-top:30px;">
+        <h3>📖 How to Use</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+            <div>
+                <h4 style="color:#4caf50;">Input</h4>
+                <ol style="font-size:14px; line-height:1.8; color:#555;">
+                    <li>Paste or type your data into the <strong>Input</strong> panel</li>
+                    <li>Or drag & drop a file directly onto the input area</li>
+                    <li>Use Ctrl+V to paste from clipboard</li>
+                </ol>
+            </div>
+            <div>
+                <h4 style="color:#4caf50;">Process</h4>
+                <ol style="font-size:14px; line-height:1.8; color:#555;">
+                    <li>Select your desired format option</li>
+                    <li>Click the action button to process</li>
+                    <li>Results appear instantly in the Output panel</li>
+                </ol>
+            </div>
+        </div>
+        <div style="margin-top:12px; padding:12px; background:#e8f5e9; border-radius:8px; font-size:13px;">
+            <strong>🔒 Privacy:</strong> All processing happens locally in your browser. Your data never leaves your device.
+        </div>
+    </div>
+    <!-- Related Tools -->
+    <div class="generator-card" style="margin-top:30px;">
+        <h3 style="color:#4caf50;">🔗 Related Tools</h3>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+            <a href="../json/formatter.html">📋 JSON Formatter</a> <a href="../encode.html">🔄 Encode/Decode</a> <a href="../text/case-converter.html">🔤 Case Converter</a>
+        </div>
+    </div>
+</footer>
     <script src="../../modules/module-loader.js"></script>
     <script src="../../modules/tools.js"></script>
+<script src="../../modules/dark-mode-toggle.js"></script>
 </body>
 </html>

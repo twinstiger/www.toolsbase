@@ -45,27 +45,27 @@
         }
         
         .dict-tab {
-            padding: 12px 20px;
-            background: #f5f5f5;
-            border: 2px solid transparent;
+            background: transparent;
+            border: none;
+            color: #4caf50;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 14px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 500;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
             white-space: nowrap;
         }
-        
+
         .dict-tab:hover {
             background: #e8f5e9;
-            border-color: #4caf50;
+            color: #2e7d32;
         }
-        
+
         .dict-tab.active {
-            background: #4caf50;
-            color: white;
-            border-color: #4caf50;
-            font-weight: 600;
+            background: #e8f5e9;
+            color: #2e7d32;
         }
         
         .dict-panel {
@@ -304,7 +304,62 @@
                         </a>
                         <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
                     </div>
-                    <a href="blog/index.html" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <a href="dict.html" class="btn" style="text-decoration:none;white-space:nowrap;">📖 DICT</a>
+                        <a href="blog/index.html" class="btn" style="text-decoration:none;white-space:nowrap;">📚 BLOG</a>
+                        <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
+                    </div>
+                </div>
+                <nav class="nav">
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="dev">🛠️ Dev Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="tools/json/formatter.html">📋 JSON/YAML/XML</a>
+                            <a href="tools/regex/tester.html">🔍 Regex Tester</a>
+                            <a href="tools/encode.html">🔄 Encode/Decode</a>
+                            <a href="tools/hash.html">#️⃣ Hash Generator</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="generators">⚡ Gen Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="tools/uuid.html">🎲 UUID</a>
+                            <a href="tools/password.html">🔑 Password</a>
+                            <a href="tools/timestamp.html">⏰ Timestamp</a>
+                            <a href="tools/cron.html">📅 Cron</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="calculators">🧮 Calc Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="tools/calculators/basic.html">🔢 Basic</a>
+                            <a href="tools/calculators/percentage.html">📊 Percentage</a>
+                            <a href="tools/calculators/tip.html">💵 Tip</a>
+                            <a href="tools/calculators/loan.html">🏦 Loan</a>
+                            <a href="tools/calculators/age.html">🎂 Age</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="converters">📐 Convert Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="tools/converters/length.html">📏 Length</a>
+                            <a href="tools/converters/weight.html">⚖️ Weight</a>
+                            <a href="tools/converters/temperature.html">🌡️ Temp</a>
+                            <a href="tools/converters/volume.html">🧪 Volume</a>
+                            <a href="tools/converters/area.html">📐 Area</a>
+                            <a href="tools/converters/speed.html">🚀 Speed</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="nav-btn" data-group="text">📝 Text Tools ▼</button>
+                        <div class="dropdown-content">
+                            <a href="tools/text/case-converter.html">🔤 Case</a>
+                            <a href="tools/text/word-counter.html">📊 Word Counter</a>
+                            <a href="tools/text/color-picker.html">🎨 Color</a>
+                            <a href="tools/text/random-number.html">🎲 Random</a>
+                        </div>
+                    </div>
+                </nav>
                 </div>
             </div>
         </div>
@@ -321,13 +376,13 @@
 
                 <!-- Tab Navigation -->
                 <div class="dict-tabs">
-                    <button class="dict-tab active" onclick="showTab('lookup')">🔍 Dictionary Lookup</button>
-                    <button class="dict-tab" onclick="showTab('synonyms')">🔄 Synonyms & Antonyms</button>
-                    <button class="dict-tab" onclick="showTab('spell')">✓ Spell Checker</button>
-                    <button class="dict-tab" onclick="showTab('level')">📊 Word Level Check</button>
-                    <button class="dict-tab" onclick="showTab('abbr')">💻 Tech Abbreviations</button>
-                    <button class="dict-tab" onclick="showTab('converter')">🇺🇸 US/UK Converter</button>
-                    <button class="dict-tab" onclick="showTab('frequency')">📈 Word Frequency</button>
+                    <button class="dict-tab active" onclick="showTab('lookup', event)">🔍 Dictionary Lookup</button>
+                    <button class="dict-tab" onclick="showTab('synonyms', event)">🔄 Synonyms & Antonyms</button>
+                    <button class="dict-tab" onclick="showTab('spell', event)">✓ Spell Checker</button>
+                    <button class="dict-tab" onclick="showTab('level', event)">📊 Word Level Check</button>
+                    <button class="dict-tab" onclick="showTab('abbr', event)">💻 Tech Abbreviations</button>
+                    <button class="dict-tab" onclick="showTab('converter', event)">🇺🇸 US/UK Converter</button>
+                    <button class="dict-tab" onclick="showTab('frequency', event)">📈 Word Frequency</button>
                 </div>
 
                 <!-- Panel 1: Dictionary Lookup -->
@@ -472,7 +527,8 @@
 
     <script>
         // Tab switching
-        function showTab(tabName) {
+        function showTab(tabName, event) {
+            event = event || window.event;
             // Hide all panels
             document.querySelectorAll('.dict-panel').forEach(panel => {
                 panel.classList.remove('active');
@@ -486,8 +542,8 @@
             // Show selected panel
             document.getElementById('tab-' + tabName).classList.add('active');
             
-            // Activate selected tab
-            event.target.classList.add('active');
+            // Activate selected tab button
+            (event.currentTarget || event.target).classList.add('active');
         }
 
         // 1. Dictionary Lookup
@@ -958,6 +1014,8 @@
             resultDiv.innerHTML = html;
         }
     </script>
+    <script src="modules/dark-mode-toggle.js"></script>
+    <script src="modules/module-loader.js"></script>
     <script src="modules/dict.js"></script>
 </body>
 </html>
