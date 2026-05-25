@@ -1,2 +1,84 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>QR Code Generator — ToolsBase</title><meta name="description" content="Free QR code generator. Generate QR codes for URLs, text, WiFi, or contact info. Customizable size and color."><link rel="icon" type="image/svg+xml" href="../../logo.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../../src/tokens.css"><link rel="stylesheet" href="../../src/styles.css"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script></head><body><header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn active">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header><main class="tool-page"><div class="container"><nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>QR Code Generator</span></nav><div class="tool-page-header"><h1 class="tool-page-title">📱 QR Code Generator</h1><p class="lead-text" style="margin-top:1rem;">This tool is coming soon!</p></div></div></main><footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator — ToolsBase</title>
+  <meta name="description" content="Free QR code generator. Generate QR codes for URLs, text, WiFi, or contact info. Download as PNG or SVG.">
+  <link rel="canonical" href="https://toolsbase.net/tools/image/qr-code-generator.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    #qrPreview{background:#fff;padding:1.5rem;border-radius:12px;display:flex;justify-content:center;align-items:center;min-height:200px;border:2px solid var(--color-border)}
+    #qrCanvas{display:block;max-width:100%}
+    .qr-actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem}
+    .size-btns{display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.75rem 0}
+  </style>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>QR Code Generator</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">📱 QR Code Generator</h1><p class="lead-text">Generate QR codes for URLs, text, WiFi credentials, or contact info. Download as PNG or SVG.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Content type</label>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+          <button class="btn btn--primary btn--sm active" id="tabUrl" onclick="setQRType('url')">🔗 URL / Text</button>
+          <button class="btn btn--secondary btn--sm" id="tabWifi" onclick="setQRType('wifi')">📶 WiFi</button>
+          <button class="btn btn--secondary btn--sm" id="tabVcard" onclick="setQRType('vcard')">📇 Contact</button>
+        </div>
+        <div id="urlSection">
+          <textarea id="qrText" class="input-area" rows="4" placeholder="Enter URL or text..." style="margin-bottom:0.75rem;" oninput="generateQR()"></textarea>
+        </div>
+        <div id="wifiSection" style="display:none;">
+          <input id="wifiSsid" type="text" class="input-area" placeholder="Network name (SSID)" style="margin-bottom:0.5rem;height:40px;" oninput="generateQR()">
+          <input id="wifiPass" type="text" class="input-area" placeholder="Password" style="margin-bottom:0.5rem;height:40px;" oninput="generateQR()">
+          <select id="wifiEnc" class="input-area" style="height:40px;font-size:0.875rem;" onchange="generateQR()"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select>
+        </div>
+        <div id="vcardSection" style="display:none;">
+          <input id="vcName" type="text" class="input-area" placeholder="Full Name" style="margin-bottom:0.5rem;height:40px;" oninput="generateQR()">
+          <input id="vcEmail" type="email" class="input-area" placeholder="Email" style="margin-bottom:0.5rem;height:40px;" oninput="generateQR()">
+          <input id="vcTel" type="tel" class="input-area" placeholder="Phone" style="margin-bottom:0.5rem;height:40px;" oninput="generateQR()">
+        </div>
+        <div style="margin-top:0.75rem;">
+          <label style="font-size:0.8rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">QR Code Size</label>
+          <div class="size-btns">
+            <button class="btn btn--secondary btn--sm" onclick="setQRSize(128)">128px</button>
+            <button class="btn btn--primary btn--sm" onclick="setQRSize(256)">256px</button>
+            <button class="btn btn--secondary btn--sm" onclick="setQRSize(512)">512px</button>
+          </div>
+        </div>
+      </div>
+      <div id="qrPreview"><canvas id="qrCanvas"></canvas></div>
+      <div class="qr-actions">
+        <button class="btn btn--primary" onclick="downloadQR('png')">📥 Download PNG</button>
+        <button class="btn btn--secondary" onclick="downloadQR('svg')">📥 Download SVG</button>
+        <button class="btn btn--secondary" onclick="copyQR()">📋 Copy Image</button>
+      </div>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">Is my data sent to a server?</div><div class="faq-a">No — QR codes are generated locally in your browser using JavaScript. Your data never leaves your device.</div></div>
+      <div class="faq-item"><div class="faq-q">What formats can I download?</div><div class="faq-a">You can download as PNG (raster image) or SVG (vector format). SVG scales to any size without losing quality.</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    let qrSize=256,qrType="url";
+    function setQRType(t){qrType=t;document.getElementById("tabUrl").className="btn btn--"+(t==="url"?"primary":"secondary")+" btn--sm";document.getElementById("tabWifi").className="btn btn--"+(t==="wifi"?"primary":"secondary")+" btn--sm";document.getElementById("tabVcard").className="btn btn--"+(t==="vcard"?"primary":"secondary")+" btn--sm";document.getElementById("urlSection").style.display=t==="url"?"block":"none";document.getElementById("wifiSection").style.display=t==="wifi"?"block":"none";document.getElementById("vcardSection").style.display=t==="vcard"?"block":"none";generateQR()}
+    function setQRSize(s){qrSize=s;document.querySelectorAll(".size-btns button").forEach(b=>b.className=b.textContent.includes(s+"px")?"btn btn--primary btn--sm":"btn btn--secondary btn--sm");generateQR()}
+    function getContent(){if(qrType==="url")return document.getElementById("qrText").value.trim();if(qrType==="wifi"){const ssid=document.getElementById("wifiSsid").value,pass=document.getElementById("wifiPass").value,enc=document.getElementById("wifiEnc").value;return"WIFI:T:"+enc+";S:"+ssid+";P:"+pass+";;".replace(/;/g,";").replace(/T:nopass/,"T:").replace(/P:;/,";")}if(qrType==="vcard"){const n=document.getElementById("vcName").value;const e=document.getElementById("vcEmail").value;const t=document.getElementById("vcTel").value;return"BEGIN:VCARD\nVERSION:3.0\nFN:"+n+"\nEMAIL:"+e+"\nTEL:"+t+"\nEND:VCARD"}}
+    async function generateQR(){const content=getContent();if(!content){document.getElementById("qrPreview").innerHTML="<div style='color:var(--color-text-muted);text-align:center;padding:2rem;'>Enter content above to generate QR code</div>";return}document.getElementById("qrPreview").innerHTML="<canvas id='qrCanvas'></canvas>";const canvas=document.getElementById("qrCanvas");try{if(typeof QRCode!=="undefined"){await QRCode.toCanvas(canvas,content,{width:qrSize,margin:2})}else{canvas.width=qrSize;canvas.height=qrSize;const ctx=canvas.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,qrSize,qrSize);ctx.fillStyle="#000";ctx.font="16px monospace";ctx.textAlign="center";ctx.fillText("QR library loading...",qrSize/2,qrSize/2)}}catch(e){console.error(e)}}
+    async function downloadQR(fmt){const content=getContent();if(!content)return;const canvas=document.getElementById("qrCanvas");if(!canvas)return;if(fmt==="png"){const a=document.createElement("a");a.download="qrcode.png";a.href=canvas.toDataURL("image/png");a.click()}else{try{const svg=await QRCode.toString(content,{width:qrSize,type:"svg",margin:2});const b=new Blob([svg],{type:"image/svg+xml"});const a=document.createElement("a");a.download="qrcode.svg";a.href=URL.createObjectURL(b);a.click()}catch(e){const svgEl=document.createElement("canvas");svgEl.width=qrSize;svgEl.height=qrSize;const ctx=svgEl.getContext("2d");ctx.drawImage(canvas,0,0);const a=document.createElement("a");a.download="qrcode.png";a.href=svgEl.toDataURL("image/png");a.click()}}}
+    function copyQR(){const canvas=document.getElementById("qrCanvas");if(!canvas)return;canvas.toBlob(blob=>{const item=new ClipboardItem({"image/png":blob});navigator.clipboard.write([item]).then(()=>showToast("✓ QR code copied!")).catch(()=>showToast("Copy failed - try downloading instead"))})}function showToast(m){const e=document.createElement("div");e.textContent=m;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
+    generateQR();
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>

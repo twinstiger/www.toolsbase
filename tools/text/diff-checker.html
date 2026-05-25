@@ -1,2 +1,61 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Diff Checker — ToolsBase</title><meta name="description" content="Free diff checker. Compare two texts and highlight differences line by line."><link rel="icon" type="image/svg+xml" href="../../logo.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../../src/tokens.css"><link rel="stylesheet" href="../../src/styles.css"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script></head><body><header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn active">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header><main class="tool-page"><div class="container"><nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Diff Checker</span></nav><div class="tool-page-header"><h1 class="tool-page-title">📊 Diff Checker</h1><p class="lead-text" style="margin-top:1rem;">This tool is coming soon!</p></div></div></main><footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diff Checker — ToolsBase</title>
+  <meta name="description" content="Free diff checker. Compare two texts and highlight differences line by line. Shows added, removed, and unchanged lines.">
+  <link rel="canonical" href="https://toolsbase.net/tools/text/diff-checker.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <style>
+    .diff-container{font-family:'JetBrains Mono',monospace;font-size:0.85rem;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;max-height:500px;overflow-y:auto}
+    .diff-line{padding:0.25rem 0.75rem;border-bottom:1px solid var(--color-border);white-space:pre-wrap;word-break:break-all;line-height:1.5}
+    .diff-line:last-child{border-bottom:none}
+    .diff-added{background:#dcfce7}.diff-removed{background:#fee2e2}.diff-unchanged{background:var(--color-surface)}
+    .diff-line-num{color:var(--color-text-muted);margin-right:0.75rem;user-select:none;min-width:2rem;display:inline-block;text-align:right}
+  </style>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Diff Checker</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">📊 Diff Checker</h1><p class="lead-text">Compare two texts and see differences line by line. Green = added, Red = removed.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div>
+          <label style="font-size:0.8rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Original (left)</label>
+          <textarea id="oldText" class="input-area" rows="7" placeholder="Original text..." style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;"></textarea>
+        </div>
+        <div>
+          <label style="font-size:0.8rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Changed (right)</label>
+          <textarea id="newText" class="input-area" rows="7" placeholder="Changed text..." style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <button class="btn btn--primary" onclick="computeDiff()">⚡ Compare</button>
+        <button class="btn btn--secondary" onclick="clearDiff()">Clear</button>
+      </div>
+      <div id="diffStats" style="font-size:0.85rem;margin-bottom:0.75rem;display:none;"></div>
+      <div id="diffOutput" class="diff-container" style="display:none;"></div>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">How does the diff algorithm work?</div><div class="faq-a">This tool uses a line-by-line diff algorithm that compares each line of the left text against the right text. Lines are marked as added (green), removed (red), or unchanged (white).</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    function computeDiff(){const oldL=document.getElementById("oldText").value.split("\n");const newL=document.getElementById("newText").value.split("\n");const maxLen=Math.max(oldL.length,newL.length);let added=0,removed=0,html="";for(let i=0;i<maxLen;i++){const o=oldL[i]||"",n=newL[i]||"";if(o===n&&o==="")continue;const cls=o===""&&n!==":"diff-added":n===""&&o!==":"diff-removed":o!==n?"diff-removed":"diff-unchanged";if(o!==""&&n===""){html+=`<div class="diff-line diff-removed"><span class="diff-line-num">${i+1}</span>- ${escapeHtml(o)}</div>`;removed++}else if(o===""&&n!==""){html+=`<div class="diff-line diff-added"><span class="diff-line-num">${i+1}</span>+ ${escapeHtml(n)}</div>`;added++}else{html+=`<div class="diff-line ${o!==n?'diff-removed':'diff-unchanged'}"><span class="diff-line-num">${i+1}</span>  ${escapeHtml(o)}</div>`;if(o!==n){html+=`<div class="diff-line diff-added"><span class="diff-line-num">${i+1}</span>+ ${escapeHtml(n)}</div>`;added++;removed++}}}document.getElementById("diffOutput").innerHTML=html||"<div style='padding:1rem;color:var(--color-text-muted)'>No differences found.</div>";document.getElementById("diffOutput").style.display="block";document.getElementById("diffStats").style.display="block";document.getElementById("diffStats").innerHTML=`📊 <span style="color:#16a34a;font-weight:700">+${added} added</span> &nbsp; <span style="color:#dc2626;font-weight:700">-${removed} removed</span> &nbsp; Total: ${oldL.length} → ${newL.length} lines`}
+    function escapeHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+    function clearDiff(){document.getElementById("oldText").value="";document.getElementById("newText").value="";document.getElementById("diffOutput").style.display="none";document.getElementById("diffStats").style.display="none"}
+    document.getElementById("oldText").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")computeDiff()})
+    document.getElementById("newText").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")computeDiff()})
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>

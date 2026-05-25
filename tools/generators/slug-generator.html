@@ -1,2 +1,72 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Slug Generator — ToolsBase</title><meta name="description" content="Free slug generator. Convert any text into URL-friendly slugs."><link rel="icon" type="image/svg+xml" href="../../logo.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../../src/tokens.css"><link rel="stylesheet" href="../../src/styles.css"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script></head><body><header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn active">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header><main class="tool-page"><div class="container"><nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Slug Generator</span></nav><div class="tool-page-header"><h1 class="tool-page-title">🔤 Slug Generator</h1><p class="lead-text" style="margin-top:1rem;">This tool is coming soon!</p></div></div></main><footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slug Generator — ToolsBase</title>
+  <meta name="description" content="Free slug generator. Convert any text into URL-friendly slugs. Auto-removes special chars, spaces, and accents.">
+  <link rel="canonical" href="https://toolsbase.net/tools/generators/slug-generator.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Slug Generator</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">🔤 Slug Generator</h1><p class="lead-text">Convert any text into a clean, URL-friendly slug. Handles spaces, special characters, accents, and uppercase automatically.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Enter your text</label>
+        <textarea id="input" class="input-area" placeholder="Type or paste any text...&#10;&#10;Examples:&#10;  My Amazing Blog Post!&#10;  Hallo Welt! (German)&#10;  日本語タイトル&#10;  L'entreprise française" rows="4" oninput="makeSlug()"></textarea>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <button class="btn btn--primary" onclick="makeSlug()">⚡ Generate Slug</button>
+        <button class="btn btn--secondary" onclick="copySlug()">📋 Copy</button>
+        <button class="btn btn--secondary" onclick="document.getElementById('input').value='';document.getElementById('slug').value=''">Clear</button>
+      </div>
+      <div style="margin-bottom:0.75rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Your slug</label>
+        <div id="slug" style="font-family:'JetBrains Mono',monospace;font-size:1rem;background:var(--color-bg-secondary);border:2px solid var(--color-border);border-radius:8px;padding:0.875rem 1rem;min-height:52px;display:flex;align-items:center;word-break:break-all;color:var(--color-text);">—</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+        <button class="btn btn--secondary btn--sm" onclick="copyFull()">📋 Copy with prefix</button>
+        <span id="slugMeta" style="font-size:0.8rem;color:var(--color-text-muted);"></span>
+      </div>
+    </div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>⚡ Live Examples</span></div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.75rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:var(--color-bg-secondary);border-radius:6px;font-size:0.875rem;"><span style="color:var(--color-text-muted);">"My Blog Post!"</span><span style="font-family:'JetBrains Mono',monospace;color:var(--color-primary);">my-blog-post</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:var(--color-bg-secondary);border-radius:6px;font-size:0.875rem;"><span style="color:var(--color-text-muted);">"Café Menu & Prices"</span><span style="font-family:'JetBrains Mono',monospace;color:var(--color-primary);">cafe-menu-prices</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:var(--color-bg-secondary);border-radius:6px;font-size:0.875rem;"><span style="color:var(--color-text-muted);">"  Multiple   Spaces  "</span><span style="font-family:'JetBrains Mono',monospace;color:var(--color-primary);">multiple-spaces</span></div>
+      </div>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">What is a URL slug?</div><div class="faq-a">A slug is the part of a URL that identifies a page in a human-readable way. For example, in <code>/blog/my-blog-post</code>, "my-blog-post" is the slug.</div></div>
+      <div class="faq-item"><div class="faq-q">Does it handle non-English characters?</div><div class="faq-a">Yes — accented characters (é, ñ, ü) are converted to ASCII equivalents (e, n, u). Chinese/Japanese characters are romanized or removed.</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    function makeSlug(){
+      const raw=document.getElementById("input").value;
+      if(!raw.trim()){document.getElementById("slug").textContent="—";document.getElementById("slugMeta").textContent="";return}
+      let s=raw.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+      s=s.replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-").replace(/^-+|-+$/g,"");
+      s=s.toLowerCase();
+      document.getElementById("slug").textContent=s||"—";
+      document.getElementById("slugMeta").textContent="Length: "+s.length+" chars | Words: "+(s?s.split("-").length:0);
+    }
+    function copySlug(){const s=document.getElementById("slug").textContent;if(s==="—")return;navigator.clipboard.writeText(s).then(()=>showToast("✓ Copied!"))}
+    function copyFull(){const s=document.getElementById("slug").textContent;if(s==="—")return;navigator.clipboard.writeText("https://yoursite.com/"+s).then(()=>showToast("✓ Copied with prefix!"))}
+    function showToast(m){const e=document.createElement("div");e.textContent=m;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
+    document.getElementById("input").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")makeSlug()})
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>

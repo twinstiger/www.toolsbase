@@ -3,19 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Encoder — ToolsBase</title>
-  <meta name="description" content="Free URL encoder and decoder. Encode special characters for URLs and decode URL-encoded strings. 100% browser-based.">
+  <title>URL Encoder / Decoder — ToolsBase</title>
+  <meta name="description" content="Free URL encoder and decoder. Encode special characters for URLs and decode URL-encoded strings. 100% browser-based, no uploads.">
   <link rel="canonical" href="https://toolsbase.net/tools/dev/url-encoder.html">
   <link rel="icon" type="image/svg+xml" href="../../logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../src/tokens.css">
   <link rel="stylesheet" href="../../src/styles.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
 </head>
 <body>
-  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn active">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
-  <main class="tool-page"><div class="container"><nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>URL Encoder</span></nav><div class="tool-page-header"><h1 class="tool-page-title">🔗 URL Encoder</h1><p class="lead-text" style="margin-top:1rem;">This tool is coming soon! URL encoding/decoding for special characters.</p><p style="margin-top:1rem;font-size:0.9rem;color:var(--color-text-muted);">Need it urgently? <a href="../../contact.html" style="color:var(--color-primary);">Contact us →</a></p></div></div></main>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>URL Encoder</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">🔗 URL Encoder / Decoder</h1><p class="lead-text">Encode special characters for URLs, or decode URL-encoded strings back to plain text. 100% browser-based.</p></div>
+
+    <div class="ad-slot" style="margin:1.5rem 0;"><!-- ad -->
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>Mode</span></div>
+      <div class="btn-group" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <button class="btn btn--primary active" id="encodeMode" onclick="setMode('encode')">🔒 Encode</button>
+        <button class="btn btn--secondary" id="decodeMode" onclick="setMode('decode')">🔓 Decode</button>
+      </div>
+      <div style="position:relative;margin-bottom:1rem;">
+        <textarea id="input" class="input-area" placeholder="Paste your URL or text here..." rows="5" oninput="process()"></textarea>
+        <button class="btn btn--sm btn--ghost" onclick="clearInput()" style="position:absolute;top:0.75rem;right:0.75rem;font-size:0.75rem;">Clear</button>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <button class="btn btn--primary" onclick="process()">▶ Run</button>
+        <button class="btn btn--secondary" onclick="copyOutput()">📋 Copy Result</button>
+      </div>
+      <div style="position:relative">
+        <textarea id="output" class="input-area" rows="5" placeholder="Result will appear here..." readonly></textarea>
+        <button class="btn btn--sm btn--ghost" onclick="copyOutput()" style="position:absolute;top:0.75rem;right:0.75rem;font-size:0.75rem;">Copy</button>
+      </div>
+    </div>
+
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>⚡ Quick Examples</span></div>
+      <div class="btn-group" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+        <button class="btn btn--secondary btn--sm" onclick='setInput("Hello World! How are you?")'>Hello World!</button>
+        <button class="btn btn--secondary btn--sm" onclick='setInput("https://example.com/search?q=developer tools&lang=en")'>URL with params</button>
+        <button class="btn btn--secondary btn--sm" onclick='setInput("name=John Doe&email=john@example.com")'>Query string</button>
+        <button class="btn btn--secondary btn--sm" onclick='setInput("Spaces in text → tabs \t and newlines \n")'>Spaces & tabs</button>
+      </div>
+    </div>
+
+    <div class="faq-section" style="margin:2rem 0;">
+      <h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">What does URL encoding do?</div><div class="faq-a">URL encoding converts characters that aren't allowed in URLs (like spaces, <code>&</code>, <code>#</code>, or non-ASCII characters) into a safe format using <code>%</code> followed by two hex digits. For example, a space becomes <code>%20</code>.</div></div>
+      <div class="faq-item"><div class="faq-q">When should I use URL encoding?</div><div class="faq-a">Use it when building URLs with query parameters that contain spaces or special characters, when passing text in URL paths, or when decoding query strings from server responses.</div></div>
+      <div class="faq-item"><div class="faq-q">Is this tool safe?</div><div class="faq-a">Yes — all encoding and decoding happens locally in your browser. No data is sent to any server.</div></div>
+    </div>
+  </div></main>
   <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer>
+  <script>{let mode="encode";function setMode(m){mode=m;document.getElementById("encodeMode").classList.toggle("active",m==="encode");document.getElementById("decodeMode").classList.toggle("active",m==="decode");process()}function setInput(v){document.getElementById("input").value=v;process()}function clearInput(){document.getElementById("input").value="";document.getElementById("output").value=""}function process(){const i=document.getElementById("input").value.trim();if(!i){document.getElementById("output").value="";return}try{let out;if(mode==="encode"){out=encodeURIComponent(i)}else{out=decodeURIComponent(i)}document.getElementById("output").value=out}catch(e){document.getElementById("output").value="Error: Invalid encoded string - " + e.message}}function copyOutput(){const o=document.getElementById("output");if(!o.value){return}o.select();o.setSelectionRange(0,99999);navigator.clipboard.writeText(o.value).then(()=>{const b=document.createElement("div");b.textContent="✓ Copied!";b.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(b);setTimeout(()=>b.remove(),2000)}).catch(()=>o.select())}document.getElementById("input").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")process()})</script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
 </body></html>
