@@ -420,7 +420,7 @@ input, textarea, select { font-family: inherit; }
 /* === TOOLS HOME SECTION === */
 .tools-home {
   padding: var(--space-8) 0 var(--space-12);
-  background: linear-gradient(180deg, #f0f9ff 0%, #fafaf9 60%);
+  background: var(--color-bg);
 }
 .tools-home .container { display: flex; flex-direction: column; gap: var(--space-8); }
 
