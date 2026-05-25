@@ -1,228 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
-            crossorigin="anonymous"></script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="../logo.svg">
-    
-    <!-- SEO Meta Tags -->
-    <title>Blog - ToolsBase | Developer Tips & Tutorials</title>
-    <meta name="description" content="Read articles about developer tools, productivity tips, and best practices for using online tools.">
-    <meta name="keywords" content="blog, developer tools, tutorials, productivity, online tools">
-    <meta name="author" content="ToolsBase">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Blog - ToolsBase">
-    <meta property="og:description" content="Developer tips, tutorials, and tool usage guides">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="../logo.svg">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://toolsbase.net/blog/index.html">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Blog - ToolsBase | Developer Tips & Tutorials">
-    <meta name="twitter:description" content="Read articles about developer tools, productivity tips, and best practices for using online tools.">
-    
-    <link rel="stylesheet" href="../styles.css">
-    <script src="../modules/blog.js" defer></script>
-    <style>
-        .blog-search {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto 30px;
-            padding: 15px 20px;
-            font-size: 16px;
-            border: 2px solid #4caf50;
-            border-radius: 30px;
-            outline: none;
-        }
-
-        .blog-filter {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .filter-tag {
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            border: 2px solid #e0e0e0;
-            background: white;
-            transition: all 0.3s;
-        }
-
-        .filter-tag:hover, .filter-tag.active {
-            background: #4caf50;
-            color: white;
-            border-color: #4caf50;
-        }
-
-        .blog-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        
-        .blog-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        .blog-header h1 {
-            font-size: 2.5rem;
-            color: #2e7d32;
-            margin-bottom: 10px;
-        }
-        
-        .blog-header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-        
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 50px;
-        }
-        
-        .blog-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border: 2px solid #e0e0e0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.2);
-            border-color: #4caf50;
-        }
-        
-        .blog-card-image {
-            width: 100%;
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            background: #667eea;
-        }
-        
-        .blog-card-content {
-            padding: 30px;
-        }
-        
-        .blog-card h2 {
-            font-size: 1.5rem;
-            color: #2e7d32;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .blog-card .excerpt {
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-        
-        .blog-card .read-more {
-            color: #4caf50;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        .blog-card .meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-            font-size: 13px;
-            color: #999;
-        }
-        
-        .blog-card .tag {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolsBase Blog — Developer Guides, Tips & Best Practices</title>
+  <meta name="description" content="Articles on JSON, regex, password security, and developer workflows. Learn how to use ToolsBase tools effectively with practical guides.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/index.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
-                <div class="logo">
-                    <a href="../index.html" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                        <img src="../logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
-                        <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
-                    </a>
-                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
-                </div>
-                <div style="display: flex; gap: 10px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
-                    <a href="../dict.html" class="btn" style="text-decoration: none; white-space: nowrap;">📖 DICT</a>
-                    <a href="index.html" class="btn" style="text-decoration: none; white-space: nowrap;">📚 BLOG</a>
-                    <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
-                </div>
-            </div>
-    </header>
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../index.html" class="logo"><img src="../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a>
+      <nav class="nav">
+        <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+        <a href="index.html" class="nav-btn active">📝 Blog</a>
+        <a href="../about.html" class="nav-btn">About</a>
+      </nav>
+    </div></div>
+  </header>
 
-    <!-- Main Content -->
-    <main class="main">
-        <div class="blog-container">
-            <div class="blog-header">
-                <h1>📚 Blog</h1>
-                <p>Discover tips, tutorials, and best practices for using developer tools</p>
-            </div>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <a href="../index.html">Home</a><span>›</span><span>Blog</span>
+      </nav>
 
-            <input type="text" class="blog-search" id="blog-search" placeholder="🔍 Search articles..." onkeyup="filterArticles()">
+      <div class="tool-page-header" style="margin-bottom:3rem;">
+        <h1 class="tool-page-title">From the Blog</h1>
+        <p class="lead-text" style="margin-top:1rem;">Practical guides, keyboard shortcuts, and best practices for getting the most out of developer tools.</p>
+      </div>
 
-            <div class="blog-filter">
-                <button class="filter-tag active" onclick="setFilter('all', this)">All</button>
-                <button class="filter-tag" onclick="setFilter('productivity', this)">⚡ Productivity</button>
-                <button class="filter-tag" onclick="setFilter('development', this)">💻 Development</button>
-                <button class="filter-tag" onclick="setFilter('security', this)">🔒 Security</button>
-                <button class="filter-tag" onclick="setFilter('privacy', this)">🔐 Privacy</button>
-                <button class="filter-tag" onclick="setFilter('tips', this)">💡 Tips</button>
-            </div>
-
-            <div class="blog-grid" id="blog-grid"></div>
+      <!-- Ad slot -->
+      <div class="ad-section">
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-container">
+          <ins class="adsbygoogle" style="display:block;width:100%;max-width:728px;margin:0 auto;"
+               data-ad-client="ca-pub-9420599375364457"
+               data-ad-slot="toolsbase_blog"
+               data-ad-format="horizontal"></ins>
         </div>
-    </main>
+      </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Tools Base. All processing happens locally in your browser. No data is ever uploaded.</p>
-            <p style="margin-top: 10px;">
-                <a href="../privacy-policy.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
-                <a href="../about.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">About Us</a> | 
-                <a href="../contact.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Contact Us</a>
-            </p>
-        </div>
-    </footer>
-<script src="../modules/dark-mode-toggle.js"></script>
+      <div class="blog-list" style="margin-top:2rem;">
+
+        <a href="json-formatter-guide.html" class="blog-card">
+          <div class="blog-card-date">May 20, 2025 · 5 min read · 🏷️ JSON</div>
+          <div class="blog-card-title">How to Use JSON Formatter: A Complete Guide for Developers</div>
+          <div class="blog-card-excerpt">Master format, validate, and minify modes. Learn common error fixes, keyboard shortcuts, and when to use each mode for API debugging.</div>
+          <div class="blog-card-footer">
+            <span class="blog-read-time">5 min read</span>
+            <span class="blog-card-link">Read more →</span>
+          </div>
+        </a>
+
+        <a href="regex-cheatsheet.html" class="blog-card">
+          <div class="blog-card-date">May 18, 2025 · 4 min read · 🏷️ Regex</div>
+          <div class="blog-card-title">Regular Expressions Cheat Sheet: 20 Patterns You Use 80% of the Time</div>
+          <div class="blog-card-excerpt">Email, URL, phone, date, hex color, IPv4 — copy-paste regex patterns with JavaScript examples. Includes quick reference for quantifiers.</div>
+          <div class="blog-card-footer">
+            <span class="blog-read-time">4 min read</span>
+            <span class="blog-card-link">Read more →</span>
+          </div>
+        </a>
+
+        <a href="password-security.html" class="blog-card">
+          <div class="blog-card-date">May 15, 2025 · 6 min read · 🏷️ Security</div>
+          <div class="blog-card-title">Password Security 101: What Makes a Password Truly Strong?</div>
+          <div class="blog-card-excerpt">Why length beats complexity, what NIST 2025 guidelines say, understanding entropy, and why MD5/SHA-1 shouldn't be used for passwords.</div>
+          <div class="blog-card-footer">
+            <span class="blog-read-time">6 min read</span>
+            <span class="blog-card-link">Read more →</span>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+      <div class="footer-legal"><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></div>
+    </div></div>
+  </footer>
 </body>
 </html>

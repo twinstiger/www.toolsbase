@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regular Expressions Cheat Sheet — 20 Patterns You Use 80% of the Time | ToolsBase Blog</title>
+  <meta name="description" content="Master regex with this practical cheat sheet. Covers email, URL, phone, date validation, and more. Copy-paste examples for JavaScript.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/regex-cheatsheet.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../index.html" class="logo"><img src="../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a>
+      <nav class="nav">
+        <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+        <a href="index.html" class="nav-btn active">📝 Blog</a>
+        <a href="../about.html" class="nav-btn">About</a>
+      </nav>
+    </div></div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../index.html">Home</a><span>›</span><a href="index.html">Blog</a><span>›</span><span>Regex Cheat Sheet</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 18, 2025 · 4 min read · 🏷️ Regex</div>
+        <h1>Regular Expressions Cheat Sheet: 20 Patterns You Use 80% of the Time</h1>
+        <p class="lead">Regex is powerful but notoriously hard to read. This guide covers the 20 most common patterns with copy-paste examples you can use immediately in your projects.</p>
+
+        <h2>Basic Building Blocks</h2>
+        <p>Before diving into patterns, understand these essentials:</p>
+        <ul>
+          <li><code>.</code> — Any character except newline</li>
+          <li><code>\d</code> — Any digit (0-9)</li>
+          <li><code>\w</code> — Any word character (a-z, A-Z, 0-9, _)</li>
+          <li><code>\s</code> — Whitespace (space, tab, newline)</li>
+          <li><code>^</code> — Start of string</li>
+          <li><code>$</code> — End of string</li>
+          <li><code>[abc]</code> — Any of a, b, or c</li>
+          <li><code>[^abc]</code> — NOT a, b, or c</li>
+          <li><code>|</code> — OR (alternation)</li>
+          <li><code>()</code> — Capture group</li>
+          <li><code>(?:)</code> — Non-capturing group</li>
+        </ul>
+
+        <h2>1. Email Address</h2>
+        <pre><code>const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;</code></pre>
+        <p>Validates the basic structure of most email addresses. For production, note that truly validating email requires sending a confirmation — no regex is perfect.</p>
+
+        <h2>2. URL</h2>
+        <pre><code>const urlRegex = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;</code></pre>
+        <p>Matches http and https URLs. The <code>i</code> flag makes it case-insensitive.</p>
+
+        <h2>3. Phone Number (US Format)</h2>
+        <pre><code>const phoneRegex = /^\+?1?\s*\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;</code></pre>
+        <p>Matches formats like: +1 (555) 123-4567, 555-123-4567, 5551234567</p>
+
+        <h2>4. Date (YYYY-MM-DD)</h2>
+        <pre><code>const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;</code></pre>
+        <p>Validates ISO 8601 date format. This pattern also validates month and day ranges (won't accept Feb 31).</p>
+
+        <h2>5. Time (HH:MM or HH:MM:SS)</h2>
+        <pre><code>const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/;</code></pre>
+        <p>Matches 24-hour time format. Optional seconds.</p>
+
+        <h2>6. Hex Color Code</h2>
+        <pre><code>const hexRegex = /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;</code></pre>
+        <p>Matches #RGB or #RRGGBB format. The <code>#</code> is optional.</p>
+
+        <h2>7. IPv4 Address</h2>
+        <pre><code>const ipRegex = /^(?:(?:25[0-5]|2[0-4]\d|1?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|1?\d\d?)$/;</code></pre>
+        <p>Matches valid IPv4 addresses from 0.0.0.0 to 255.255.255.255</p>
+
+        <h2>8. Username (alphanumeric, 3-16 chars)</h2>
+        <pre><code>const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;</code></pre>
+        <p>Letters, numbers, and underscores only. Length between 3 and 16.</p>
+
+        <h2>9. Strong Password</h2>
+        <pre><code>const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;</code></pre>
+        <p>Requires: lowercase, uppercase, digit, special char, minimum 8 characters. Uses lookahead assertions.</p>
+
+        <h2>10. Credit Card Number (basic validation)</h2>
+        <pre><code>const ccRegex = /^(?:4[0-9]{12}|5[1-5][0-9]{14}|3[47][0-9]{13})$/;</code></pre>
+        <p>Validates Visa, MasterCard, and Amex formats. Does not verify the checksum (Luhn algorithm).</p>
+
+        <h2>Quick Reference: Quantifiers</h2>
+        <ul>
+          <li><code>*</code> — 0 or more</li>
+          <li><code>+</code> — 1 or more</li>
+          <li><code>?</code> — 0 or 1</li>
+          <li><code>{n}</code> — Exactly n</li>
+          <li><code>{n,}</code> — n or more</li>
+          <li><code>{n,m}</code> — Between n and m</li>
+        </ul>
+
+        <h2>Try These Patterns Live</h2>
+        <p>Test any of these patterns instantly in the <a href="../tools/dev/regex-tester.html">Regex Tester tool</a>. Paste your test string, enter the pattern, toggle flags (g, i, m), and see matches highlighted in real time.</p>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../tools/dev/regex-tester.html" class="btn btn--primary">→ Try Regex Tester</a>
+        <a href="index.html" class="btn btn--ghost" style="margin-left:1rem;">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+      <div class="footer-legal"><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></div>
+    </div></div>
+  </footer>
+</body>
+</html>

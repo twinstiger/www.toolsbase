@@ -1,307 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
-    <link rel="alternate icon" href="logo.svg">
-    
-    <!-- SEO Meta Tags -->
-    <title>Contact Us - Tools Base</title>
-    <meta name="description" content="Contact Tools Base team for support, feedback, or inquiries. We're here to help!">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Contact Us - Tools Base">
-    <meta property="og:description" content="Get in touch with the Tools Base team. We welcome your feedback and questions.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="logo.svg">
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457"
-            crossorigin="anonymous"></script>
-    
-    <link rel="canonical" href="https://toolsbase.net/contact.html">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .contact-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 40px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border: 2px solid #e0e0e0;
-        }
-        
-        .contact-container h1 {
-            font-size: 2.5rem;
-            color: #2e7d32;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .contact-container .subtitle {
-            color: #666;
-            font-size: 18px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        
-        .contact-container h2 {
-            font-size: 1.75rem;
-            color: #388e3c;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .contact-container p {
-            color: #555;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-        
-        .contact-container a {
-            color: #4caf50;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .contact-container a:hover {
-            text-decoration: underline;
-            color: #388e3c;
-        }
-        
-        .contact-methods {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-        
-        .contact-card {
-            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
-            padding: 30px;
-            border-radius: 12px;
-            border: 2px solid #a5d6a7;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.2);
-            border-color: #66bb6a;
-        }
-        
-        .contact-card .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        
-        .contact-card h3 {
-            color: #2e7d32;
-            font-size: 1.35rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .contact-card p {
-            color: #558b2f;
-            font-size: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .email-link {
-            display: inline-block;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        .email-link:hover {
-            background: linear-gradient(135deg, #5cb860 0%, #43a047 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.35);
-            text-decoration: none;
-            color: white;
-        }
-        
-        .info-box {
-            background: #fff3e0;
-            border-left: 4px solid #ff9800;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        
-        .info-box p {
-            margin: 0;
-            color: #e65100;
-            font-weight: 500;
-        }
-        
-        .faq-section {
-            margin-top: 40px;
-        }
-        
-        .faq-item {
-            background: #f5f5f5;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #4caf50;
-        }
-        
-        .faq-item h4 {
-            color: #2e7d32;
-            font-size: 1.15rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .faq-item p {
-            color: #555;
-            margin: 0;
-            font-size: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact ToolsBase — Get in Touch</title>
+  <meta name="description" content="Contact ToolsBase. Send us feedback, report bugs, or request new tools. We read every message and respond within 48 hours.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/contact.html">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/tokens.css">
+  <link rel="stylesheet" href="src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="index.html" style="text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                        <img src="logo.svg" alt="Tools Base Logo" style="height: 48px; width: auto;">
-                        <h1 style="margin: 0;"><span class="logo-tool">toolsbase.net</span></h1>
-                    </a>
-                    <p class="tagline">Local, Fast, No Uploads • 100% Privacy Protected</p>
-                </div>
-                <nav class="nav">
-                    <a href="index.html" class="btn" style="text-decoration: none;">← Back to Tools</a>
-                </nav>
-            </div>
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="index.html" class="logo"><img src="logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a>
+      <nav class="nav">
+        <a href="tools/index.html" class="nav-btn">🛠️ Tools</a>
+        <a href="blog/index.html" class="nav-btn">📝 Blog</a>
+        <a href="about.html" class="nav-btn">About</a>
+      </nav>
+    </div></div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a><span>›</span><span>Contact</span>
+      </nav>
+
+      <div class="tool-page-header">
+        <h1 class="tool-page-title">Get in Touch</h1>
+        <p class="lead-text" style="margin-top:1rem;">Have feedback, a bug to report, or a tool suggestion? We'd love to hear from you.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem;">
+        <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
+          <div style="font-size:2rem;margin-bottom:1rem;">💡</div>
+          <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.5rem;">Suggest a Tool</h3>
+          <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.65;">Missing a tool you need? Tell us which tool would be most useful and we'll prioritize building it.</p>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main">
-        <div class="container">
-            <div class="contact-container">
-                <h1>Contact Us</h1>
-                <p class="subtitle">We'd Love to Hear from You!</p>
-                
-                <p>Have a question, suggestion, or feedback? We're here to help! Whether you've found a bug, want to request a new feature, or just want to say hello, we welcome all communications from our community.</p>
-
-                <div class="info-box">
-                    <p><strong>Response Time:</strong> We typically respond to emails within 24-48 hours during business days.</p>
-                </div>
-
-                <h2>Get in Touch</h2>
-                
-                <div class="contact-methods">
-                    <div class="contact-card">
-                        <div class="icon">📧</div>
-                        <h3>Email Us</h3>
-                        <p>The fastest way to reach us. Send us your questions, feedback, or suggestions.</p>
-                        <a href="mailto:shuanghuz1@gmail.com" class="email-link">shuanghuz1@gmail.com</a>
-                    </div>
-                    
-                    <div class="contact-card">
-                        <div class="icon">💡</div>
-                        <h3>Feature Requests</h3>
-                        <p>Have an idea for a new tool? We love hearing about what would make your workflow easier.</p>
-                        <a href="mailto:shuanghuz1@gmail.com?subject=Feature Request" class="email-link">Suggest a Tool</a>
-                    </div>
-                </div>
-
-                <h2>What Can We Help You With?</h2>
-                <p>We're happy to assist with a variety of inquiries:</p>
-                <ul style="margin-left: 30px; color: #555; line-height: 1.8;">
-                    <li><strong>Bug Reports:</strong> Found something that's not working correctly? Let us know!</li>
-                    <li><strong>Feature Requests:</strong> Suggest new tools or improvements to existing ones</li>
-                    <li><strong>Technical Support:</strong> Need help using a specific tool?</li>
-                    <li><strong>Partnership Opportunities:</strong> Interested in collaborating with us?</li>
-                    <li><strong>General Feedback:</strong> Share your thoughts about our platform</li>
-                    <li><strong>Privacy Concerns:</strong> Questions about how we handle data</li>
-                </ul>
-
-                <h2>Frequently Asked Questions</h2>
-                
-                <div class="faq-section">
-                    <div class="faq-item">
-                        <h4>Do I need to create an account to use the tools?</h4>
-                        <p>No! All tools on Tools Base are completely free to use without registration. Just visit the site and start using them immediately.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h4>Is my data safe when using your tools?</h4>
-                        <p>Absolutely! All processing happens locally in your browser. Your data never leaves your device or gets uploaded to any server. We take privacy very seriously.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h4>Can I use these tools offline?</h4>
-                        <p>Once you've loaded a page, most tools will work offline since they run entirely in your browser. However, an internet connection is needed initially to load the page.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h4>Are there any usage limits?</h4>
-                        <p>No! Use our tools as much as you want. There are no daily limits, no rate limiting, and no premium tiers. Everything is 100% free.</p>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <h4>How can I support Tools Base?</h4>
-                        <p>The best way to support us is by sharing our tools with others who might find them useful. You can also provide feedback and suggestions to help us improve.</p>
-                    </div>
-                </div>
-
-                <h2>Business Inquiries</h2>
-                <p>For business-related matters, advertising opportunities, or partnership proposals, please contact us at:</p>
-                <p style="text-align: center; margin: 25px 0;">
-                    <a href="mailto:shuanghuz1@gmail.com?subject=Business Inquiry" class="email-link">shuanghuz1@gmail.com</a>
-                </p>
-                <p>Please include "Business Inquiry" in your email subject line for faster routing.</p>
-
-                <h2>Community Guidelines</h2>
-                <p>When contacting us, please keep the following in mind:</p>
-                <ul style="margin-left: 30px; color: #555; line-height: 1.8;">
-                    <li>Be respectful and professional in all communications</li>
-                    <li>Provide clear and detailed information about your inquiry</li>
-                    <li>Include relevant details (browser type, steps to reproduce issues, etc.)</li>
-                    <li>Allow reasonable time for us to respond (typically 24-48 hours)</li>
-                </ul>
-
-                <h2>Thank You!</h2>
-                <p>Thank you for being part of the Tools Base community. Your feedback helps us build better tools and improve our platform. We appreciate every message we receive and look forward to hearing from you!</p>
-                
-                <p style="text-align: center; font-size: 18px; color: #2e7d32; margin-top: 30px; font-weight: 600;">
-                    Happy coding! 🚀
-                </p>
-            </div>
+        <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
+          <div style="font-size:2rem;margin-bottom:1rem;">🐛</div>
+          <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.5rem;">Report a Bug</h3>
+          <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.65;">Found something broken? Let us know which tool and what went wrong — include browser and OS if possible.</p>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Tools Base. All processing happens locally in your browser. No data is ever uploaded.</p>
-            <p style="margin-top: 10px;">
-                <a href="privacy-policy.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
-                <a href="about.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">About Us</a> | 
-                <a href="contact.html" style="color: #4caf50; text-decoration: none; margin: 0 10px;">Contact Us</a>
-            </p>
+        <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
+          <div style="font-size:2rem;margin-bottom:1rem;">🤝</div>
+          <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.5rem;">Partnerships</h3>
+          <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.65;">Interested in collaborating or linking to ToolsBase? We're open to partnerships with developer communities.</p>
         </div>
-    </footer>
+      </div>
+
+      <div style="margin-top:3rem;padding:2rem;background:var(--color-bg-alt);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
+        <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:1rem;">📧 Email Us</h3>
+        <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.7;margin-bottom:1rem;">The best way to reach us is by email. We aim to respond within 48 hours on business days.</p>
+        <a href="mailto:hello@toolsbase.net" style="font-size:1.125rem;font-weight:700;color:var(--color-primary);">hello@toolsbase.net</a>
+      </div>
+
+      <div style="margin-top:3rem;padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
+        <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:1rem;">🐙 GitHub</h3>
+        <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.7;margin-bottom:1rem;">Find our source code, report issues, or contribute on GitHub.</p>
+        <a href="https://github.com/twinstiger/toolsbase" style="font-size:1rem;font-weight:600;color:var(--color-primary);">github.com/twinstiger/toolsbase →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+      <div class="footer-legal"><a href="privacy-policy.html">Privacy</a><a href="terms.html">Terms</a></div>
+    </div></div>
+  </footer>
 </body>
 </html>

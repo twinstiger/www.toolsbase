@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Use JSON Formatter: A Complete Guide for Developers | ToolsBase Blog</title>
+  <meta name="description" content="Master the JSON Formatter with this complete guide. Learn keyboard shortcuts, error fixing, formatting vs minifying, and pro tips for working with JSON APIs.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/json-formatter-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2025-05-20">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../index.html" class="logo"><img src="../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a>
+      <nav class="nav">
+        <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+        <a href="index.html" class="nav-btn active">📝 Blog</a>
+        <a href="../about.html" class="nav-btn">About</a>
+      </nav>
+    </div></div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../index.html">Home</a><span>›</span><a href="index.html">Blog</a><span>›</span><span>JSON Formatter Guide</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 20, 2025 · 5 min read · 🏷️ JSON</div>
+        <h1>How to Use JSON Formatter: A Complete Guide for Developers</h1>
+        <p class="lead">JSON is the backbone of modern APIs, config files, and data exchange. Learn how to format, validate, and debug JSON like a pro — with keyboard shortcuts, common error fixes, and pro tips.</p>
+
+        <h2>Why JSON Formatting Matters</h2>
+        <p>Raw JSON on a single line is unreadable to humans. When you're debugging an API response at 2am or trying to understand a config file, formatting turns this:</p>
+        <pre><code>{"name":"Forza Horizon 6","year":2025,"platforms":["Xbox","PC","Cloud"],"rating":9.5,"dlc":["Hokkaido Tour","Racing Expo"]}</code></pre>
+        <p>Into this:</p>
+        <pre><code>{
+  "name": "Forza Horizon 6",
+  "year": 2025,
+  "platforms": ["Xbox", "PC", "Cloud"],
+  "rating": 9.5,
+  "dlc": ["Hokkaido Tour", "Racing Expo"]
+}</code></pre>
+
+        <h2>The Three Modes Explained</h2>
+        <p><strong>Format (Pretty Print)</strong> — Adds indentation and line breaks to make JSON human-readable. Use this for debugging, code review, or sharing with teammates.</p>
+        <p><strong>Minify</strong> — Removes all whitespace to produce the smallest possible JSON. Use this before sending data over a network to reduce payload size.</p>
+        <p><strong>Validate</strong> — Parses JSON and reports syntax errors. Use this to confirm JSON is valid before processing it in your application.</p>
+
+        <h2>Common JSON Errors and How to Fix Them</h2>
+        <p><strong>Missing commas</strong>: The most common error. After each property (except the last in an object or array), you need a comma.</p>
+        <pre><code>// Wrong
+{"name": "Alice" "age": 30}
+
+// Correct
+{"name": "Alice", "age": 30}</code></pre>
+        <p><strong>Trailing commas</strong>: JSON doesn't allow a comma after the last item.</p>
+        <pre><code>// Wrong
+{"name": "Alice", "age": 30,}
+
+// Correct
+{"name": "Alice", "age": 30}</code></pre>
+        <p><strong>Single quotes</strong>: JSON requires double quotes for keys and string values.</p>
+        <pre><code>// Wrong
+{'name': 'Alice', 'age': 30}
+
+// Correct
+{"name": "Alice", "age": 30}</code></pre>
+        <p><strong>Comments</strong>: Standard JSON doesn't support comments. If you're working with config files, consider switching to JSON5 or YAML.</p>
+
+        <h2>Keyboard Shortcuts</h2>
+        <p>Most developers prefer keyboard shortcuts for speed. While browser limitations prevent us from registering global shortcuts, you can:</p>
+        <ul>
+          <li>Press <code>Ctrl+A</code> in the input to select all, then <code>Ctrl+V</code> to paste</li>
+          <li>Use <code>Ctrl+Enter</code> to trigger Format after pasting (some browsers)</li>
+          <li>Press <code>Ctrl+Shift+C</code> to copy the formatted output</li>
+        </ul>
+
+        <h2>Pro Tips</h2>
+        <blockquote>
+          <p>Always validate before copying JSON into your code. A single misplaced comma can crash your entire application at runtime.</p>
+        </blockquote>
+        <p>Use the <strong>Sort Keys</strong> option to alphabetically sort all object keys — this makes diffs in version control much cleaner and ensures consistent output.</p>
+        <p>For large JSON files (>1MB), note that processing happens in your browser. Very large files may take a moment — but your data never leaves your device.</p>
+
+        <h2>When to Use Minify</h2>
+        <p>Minifying JSON is useful when:</p>
+        <ul>
+          <li>Sending JSON payloads over a network where bandwidth matters</li>
+          <li>Storing JSON in localStorage (which has a 5MB limit in most browsers)</li>
+          <li>Embedding small JSON configs in production JavaScript bundles</li>
+        </ul>
+        <p>For development and debugging, always keep the formatted version — minify only at deployment time.</p>
+
+        <h2>Try It Now</h2>
+        <p>Head over to the <a href="../tools/dev/json-formatter.html">JSON Formatter tool</a> and paste any JSON to see it in action. With the sample data loaded, you can experiment with all three modes and see error messages in real time.</p>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../tools/dev/json-formatter.html" class="btn btn--primary">→ Try JSON Formatter</a>
+        <a href="index.html" class="btn btn--ghost" style="margin-left:1rem;">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+      <div class="footer-legal"><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../contact.html">Contact</a></div>
+    </div></div>
+  </footer>
+</body>
+</html>

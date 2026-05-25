@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator — Generate RFC 4122 UUID v4 Online | ToolsBase</title>
+  <meta name="description" content="Free UUID v4 generator. Generate cryptographically secure UUIDs instantly. Batch generate up to 100 UUIDs at once. 100% browser-based.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/tools/generators/uuid-generator.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UUID Generator","description":"Generate RFC 4122 UUID v4 identifiers.","url":"https://toolsbase.net/tools/generators/uuid-generator.html","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><a href="../../tools/index.html#generators">Generators</a><span>›</span><span>UUID Generator</span></nav>
+
+      <div class="tool-page-header">
+        <div class="privacy-badge" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.3rem 0.85rem;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:9999px;font-size:0.75rem;font-weight:600;color:#166534;margin-bottom:1rem;">🔒 100% Local</div>
+        <h1 class="tool-page-title">🎲 UUID Generator</h1>
+        <p class="tool-page-desc">Generate RFC 4122 compliant UUID v4 identifiers using crypto.getRandomValues(). One click or batch generate up to 100 at once.</p>
+      </div>
+
+      <div class="ad-section"><div class="ad-label">Advertisement</div><div class="ad-container"><ins class="adsbygoogle" style="display:block;width:100%;max-width:728px;margin:0 auto;" data-ad-client="ca-pub-9420599375364457" data-ad-slot="toolsbase_uuid" data-ad-format="horizontal"></ins></div></div>
+
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;">
+        <label class="tool-panel-label" style="margin:0;">Count:</label>
+        <select id="uuidCount" style="padding:0.5rem 1rem;font-size:0.875rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);color:var(--color-text);">
+          <option value="1">1</option><option value="5" selected>5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option>
+        </select>
+        <button class="btn btn--primary" onclick="generateUUIDs()">🎲 Generate</button>
+        <button class="btn btn--outline" onclick="copyAll()">📋 Copy All</button>
+        <button class="btn btn--ghost" onclick="document.getElementById('uuidList').innerHTML=''">Clear</button>
+      </div>
+
+      <div id="uuidList" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem;"></div>
+
+      <div class="faq-section">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What is a UUID?<span class="faq-icon">+</span></button><div class="faq-answer">A UUID (Universally Unique Identifier) is a 128-bit number formatted as a 36-character string like <code>9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d</code>. UUIDs are used to uniquely identify entities in software systems without requiring a central authority.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What does "v4" mean?<span class="faq-icon">+</span></button><div class="faq-answer">UUIDs come in several versions. Version 4 generates random UUIDs using cryptographically secure random numbers. It's the most commonly used version for general-purpose unique identifiers. The format is <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code> where y is always 8, 9, A, or B.</div></div>
+        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How many UUIDs can be generated?<span class="faq-icon">+</span></button><div class="faq-answer">UUID v4 has 122 bits of randomness (~2^122 possible UUIDs). That's approximately 5.3 undecillion (5.3×10^36) unique UUIDs — more than enough for any practical application. The chance of a collision is effectively zero.</div></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer>
+
+  <script>
+    function uuidv4() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+    }
+    function generateUUIDs() {
+      const count = parseInt(document.getElementById('uuidCount').value);
+      const list = document.getElementById('uuidList');
+      list.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const id = uuidv4();
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.875rem 1.25rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);gap:1rem;';
+        item.innerHTML = `<span style="font-family:var(--font-mono);font-size:0.9rem;word-break:break-all;">${id}</span><button class="copy-btn" onclick="copyOne('${id}')">📋</button>`;
+        list.appendChild(item);
+      }
+    }
+    function copyOne(text) {
+      navigator.clipboard.writeText(text);
+      const btn = event.target.closest('.copy-btn');
+      btn.textContent = '✓';
+      setTimeout(() => btn.textContent = '📋', 1200);
+    }
+    function copyAll() {
+      const texts = [...document.querySelectorAll('#uuidList span')].map(el => el.textContent);
+      if (!texts.length) return;
+      navigator.clipboard.writeText(texts.join('\n'));
+    }
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      item.classList.toggle('open');
+      item.querySelector('.faq-icon').textContent = item.classList.contains('open') ? '×' : '+';
+    }
+    generateUUIDs();
+  </script>
+</body>
+</html>
