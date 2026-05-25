@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Tester — Test Regular Expressions Online | ToolsBase</title>
+  <meta name="description" content="Free regex tester with real-time match highlighting. Test JavaScript regular expressions instantly. No uploads — 100% local.">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="canonical" href="https://toolsbase.net/tools/regex/tester.html">
+  <meta property="og:title" content="Regex Tester — Free Online Tool">
+  <meta property="og:description" content="Test regex patterns with real-time highlighting. 100% local.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles-v2.css">
+  <link rel="stylesheet" href="../../src/components.css">
+  <style>
+    .regex-pattern-input {
+      width: 100%;
+      padding: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-base);
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      color: var(--color-text);
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    .regex-pattern-input:focus { border-color: var(--color-primary); }
+    .regex-pattern-input.valid { border-color: var(--color-success); }
+    .regex-pattern-input.invalid { border-color: var(--color-error); }
+
+    .flags-row {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-top: var(--space-3);
+    }
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+      font-family: inherit;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .flag-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+    .test-text-area {
+      width: 100%;
+      min-height: 160px;
+      padding: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      color: var(--color-text);
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    .test-text-area:focus { border-color: var(--color-primary); }
+
+    .highlighted-text {
+      width: 100%;
+      min-height: 160px;
+      padding: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      line-height: 1.7;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-x: auto;
+    }
+
+    .match-highlight {
+      background: color-mix(in srgb, var(--color-primary) 30%, transparent);
+      border-bottom: 2px solid var(--color-primary);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+    .match-highlight:nth-child(even) {
+      background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+      border-bottom-color: var(--color-accent);
+    }
+
+    .match-info {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-top: var(--space-3);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+    }
+    .match-count { font-weight: var(--font-weight-semibold); color: var(--color-primary); }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../../index-v2.html" class="logo">
+          <img src="../../logo.svg" alt="ToolsBase"><div><div class="logo-title">toolsbase.net</div><div class="logo-tagline">Local · Fast · Private</div></div>
+        </a>
+        <nav class="nav">
+          <a href="../../index-v2.html" class="nav-btn">🛠️ All Tools</a>
+          <a href="#" class="nav-btn">📋 JSON</a>
+          <a href="../regex/tester-v2.html" class="nav-btn active">🔍 Regex</a>
+          <a href="#" class="nav-btn">🔄 Encode</a>
+        </nav>
+        <div style="display:flex;gap:var(--space-2);">
+          <button class="btn btn--ghost btn--sm" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="tool-workspace">
+      <div class="container">
+
+        <div class="tool-workspace-header">
+          <div>
+            <div class="privacy-badge" style="margin-bottom:var(--space-3);">🔒 100% Local</div>
+            <h1 class="tool-workspace-title">🔍 Regex Tester</h1>
+            <p class="tool-workspace-desc">Test and debug regular expressions with real-time match highlighting. Supports JavaScript regex syntax.</p>
+          </div>
+        </div>
+
+        <!-- Pattern Input -->
+        <div style="margin-bottom:var(--space-6);">
+          <label class="tool-panel-label">Pattern (regex)</label>
+          <input
+            type="text"
+            id="regexPattern"
+            class="regex-pattern-input"
+            placeholder='e.g. \b([A-Z]{3})\b|\d{4}-\d{4}|car(s|ing)?'
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <div class="flags-row">
+            <button class="flag-btn active" data-flag="g" onclick="toggleFlag(this)">g — Global</button>
+            <button class="flag-btn" data-flag="i" onclick="toggleFlag(this)">i — Case Insensitive</button>
+            <button class="flag-btn" data-flag="m" onclick="toggleFlag(this)">m — Multiline</button>
+            <button class="flag-btn" data-flag="s" onclick="toggleFlag(this)">s — Dotall</button>
+            <span id="regex-error" style="color:var(--color-error);font-size:var(--font-size-xs);display:none;margin-left:var(--space-3);"></span>
+          </div>
+        </div>
+
+        <!-- Test Text -->
+        <div style="margin-bottom:var(--space-6);">
+          <label class="tool-panel-label">Test String</label>
+          <textarea
+            id="testText"
+            class="test-text-area"
+            placeholder='Paste your test text here...
+
+Example:
+The quick brown fox jumps over the lazy dog.
+Car, Cars, Carving, and Card are related.
+BMW M1 • Nissan GT-R • Toyota Supra
+Forza Horizon 6 Japan release: 2025-10-15'
+            spellcheck="false"
+          ></textarea>
+          <div class="match-info">
+            <span>🔍 <span class="match-count" id="matchCount">0</span> matches</span>
+            <span id="groupCount" style="display:none;">📦 <span id="groupInfo"></span> groups</span>
+          </div>
+        </div>
+
+        <!-- Highlighted Output -->
+        <div style="margin-bottom:var(--space-6);">
+          <label class="tool-panel-label">Highlighted Output</label>
+          <div class="highlighted-text" id="highlightedOutput"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="tool-actions" style="margin-bottom:var(--space-6);">
+          <button class="btn btn--primary" onclick="testRegex()">▶ Test Regex</button>
+          <button class="btn btn--outline" onclick="clearRegex()">Clear</button>
+          <button class="btn btn--ghost" onclick="loadRegexExamples()">📚 Load Examples</button>
+        </div>
+
+        <!-- Quick Examples -->
+        <details style="margin-bottom:var(--space-6);">
+          <summary style="cursor:pointer;font-size:var(--font-size-sm);color:var(--color-text-muted);margin-bottom:var(--space-3);">💡 Common Regex Patterns</summary>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-3);">
+            <button class="btn btn--outline" style="text-align:left;" onclick='loadPattern("\\\\b[\\\\w-]+@[\\\\w-]+\\\\.[\\\\w.]+\\\\b","Email addresses")'>\b[\w-]+@[\w-]+\.[\w.]+\b — Email</button>
+            <button class="btn btn--outline" style="text-align:left;" onclick='loadPattern("https?://[^\\\\s]+","URLs")'>https?://\S+ — URL</button>
+            <button class="btn btn--outline" style="text-align:left;" onclick='loadPattern("\\\\d{4}-\\\\d{2}-\\\\d{2}","ISO Dates")'>\d{4}-\d{2}-\d{2} — Date (YYYY-MM-DD)</button>
+            <button class="btn btn--outline" style="text-align:left;" onclick='loadPattern("\\\\b[A-Z]{3}\\\\b","3-Letter Codes")'>\b[A-Z]{3}\b — 3-Letter Codes</button>
+            <button class="btn btn--outline" style="text-align:left;" onclick='loadPattern("[#$@!%&*?]{6,}","Strong Passwords")'>[$@!%&*?]{6,} — Strong Password</button>
+            <button class="btn btn--outline" style="text-align:left;" onclick='loadPattern("\\\\d+\\\\.\\\\d{2}","Prices")'>\d+\.\d{2} — Prices ($X.XX)</button>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 <span>ToolsBase.net</span> — <span style="color:var(--color-accent)">🔒 100% Local</span></span>
+        <a href="../../index-v2.html" class="footer-copy" style="color:var(--color-primary);">← All Tools</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let flags = { g: true, i: false, m: false, s: false };
+
+    function toggleTheme() {
+      const isDark = document.documentElement === 'dark';
+      if (isDark) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
+      else { document.documentElement.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
+      location.reload();
+    }
+    if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme','dark');
+
+    function toggleFlag(btn) {
+      const flag = btn.dataset.flag;
+      flags[flag] = !flags[flag];
+      btn.classList.toggle('active');
+      testRegex();
+    }
+
+    function getFlags() {
+      return Object.entries(flags).filter(([k,v]) => v).map(([k]) => k).join('');
+    }
+
+    function testRegex() {
+      const pattern = document.getElementById('regexPattern').value;
+      const text = document.getElementById('testText').value;
+      const patternInput = document.getElementById('regexPattern');
+      const errorEl = document.getElementById('regex-error');
+      const matchCountEl = document.getElementById('matchCount');
+      const groupInfoEl = document.getElementById('groupInfo');
+      const groupCountEl = document.getElementById('groupCount');
+      const output = document.getElementById('highlightedOutput');
+
+      if (!pattern || !text) {
+        output.textContent = text || '';
+        matchCountEl.textContent = '0';
+        groupCountEl.style.display = 'none';
+        return;
+      }
+
+      try {
+        const flagStr = getFlags();
+        const regex = new RegExp(pattern, flagStr);
+        patternInput.classList.remove('invalid');
+        patternInput.classList.add('valid');
+        errorEl.style.display = 'none';
+
+        const matches = [...text.matchAll(regex)];
+        matchCountEl.textContent = matches.length;
+
+        // Show groups if any
+        if (matches.length > 0 && matches[0].length > 1) {
+          groupCountEl.style.display = 'inline';
+          groupInfoEl.textContent = matches[0].length - 1;
+        } else {
+          groupCountEl.style.display = 'none';
+        }
+
+        // Highlight matches
+        let result = text;
+        if (flagStr.includes('g')) {
+          result = text.replace(regex, m => `<span class="match-highlight">${escapeHtml(m)}</span>`);
+        } else {
+          result = escapeHtml(text).replace(regex, m => `<span class="match-highlight">${m}</span>`);
+        }
+        output.innerHTML = result;
+
+      } catch (err) {
+        patternInput.classList.remove('valid');
+        patternInput.classList.add('invalid');
+        patternInput.classList.remove('valid');
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'inline';
+        output.textContent = text;
+        matchCountEl.textContent = '0';
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function clearRegex() {
+      document.getElementById('regexPattern').value = '';
+      document.getElementById('testText').value = '';
+      document.getElementById('highlightedOutput').textContent = '';
+      document.getElementById('matchCount').textContent = '0';
+      document.getElementById('regexPattern').classList.remove('valid','invalid');
+    }
+
+    function loadPattern(p, _) {
+      document.getElementById('regexPattern').value = p;
+      testRegex();
+    }
+
+    function loadRegexExamples() {
+      document.getElementById('testText').value = `The quick brown fox jumps over the lazy dog.
+BMW M1 and Nissan GT-R are racing legends.
+Forza Horizon 6 Japan release: 2025-10-15
+Contact: racer@gameworld.com | http://example.com/fh6
+Order #1234-AB56 for the Premium Edition.`;
+      testRegex();
+    }
+
+    // Live test on input
+    document.getElementById('regexPattern').addEventListener('input', testRegex);
+    document.getElementById('testText').addEventListener('input', testRegex);
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</body>
+</html>

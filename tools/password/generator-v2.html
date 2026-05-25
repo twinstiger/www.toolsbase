@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator — Strong Random Passwords | ToolsBase</title>
+  <meta name="description" content="Free password generator. Create strong, secure random passwords instantly. 100% local — no uploads.">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles-v2.css">
+  <link rel="stylesheet" href="../../src/components.css">
+  <style>
+    .password-display {
+      font-family: var(--font-mono);
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.05em;
+      word-break: break-all;
+      padding: var(--space-6);
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      text-align: center;
+      color: var(--color-text);
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color var(--transition-fast);
+    }
+    .strength-bar {
+      height: 6px;
+      border-radius: var(--radius-full);
+      transition: width var(--transition-normal), background var(--transition-normal);
+      background: var(--color-error);
+    }
+    .strength-label { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../../index-v2.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div><div class="logo-title">toolsbase.net</div><div class="logo-tagline">Local · Fast · Private</div></div></a>
+      <nav class="nav">
+        <a href="../../index-v2.html" class="nav-btn">🛠️ All Tools</a>
+        <a href="#" class="nav-btn active">🔑 Password</a>
+      </nav>
+      <button class="btn btn--ghost btn--sm" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+    </div></div>
+  </header>
+
+  <main>
+    <section class="tool-workspace">
+      <div class="container--narrow">
+
+        <div class="tool-workspace-header">
+          <div>
+            <div class="privacy-badge" style="margin-bottom:var(--space-3);">🔒 100% Local</div>
+            <h1 class="tool-workspace-title">🔑 Password Generator</h1>
+            <p class="tool-workspace-desc">Generate cryptographically secure random passwords. Never sent to any server.</p>
+          </div>
+        </div>
+
+        <!-- Generated Password Display -->
+        <div class="password-display" id="pwdDisplay">Click Generate...</div>
+
+        <!-- Strength -->
+        <div style="margin:var(--space-4) 0 var(--space-6);">
+          <div class="strength-bar" id="strengthBar" style="width:0%"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:var(--space-2);">
+            <span class="strength-label" id="strengthLabel">-</span>
+            <span id="entropyLabel" style="font-size:var(--font-size-xs);color:var(--color-text-muted);"></span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:flex;gap:var(--space-3);margin-bottom:var(--space-6);">
+          <button class="btn btn--primary btn--lg" onclick="generatePwd()">🎲 Generate</button>
+          <button class="btn btn--outline" onclick="copyPwd()">📋 Copy</button>
+        </div>
+
+        <!-- Options -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-6);">
+          <h3 style="font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">Options</h3>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-4);margin-bottom:var(--space-6);">
+            <div>
+              <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Length: <strong id="lenVal">16</strong></label>
+              <input type="range" id="pwdLen" min="8" max="128" value="16" style="width:100%;" oninput="document.getElementById('lenVal').textContent=this.value">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+              <label class="toggle"><input type="checkbox" id="optLower" checked onchange="generatePwd()"><span class="toggle-track"></span><span class="toggle-thumb"></span><span>a-z (lowercase)</span></label>
+              <label class="toggle"><input type="checkbox" id="optUpper" checked onchange="generatePwd()"><span class="toggle-track"></span><span class="toggle-thumb"></span><span>A-Z (uppercase)</span></label>
+              <label class="toggle"><input type="checkbox" id="optDigits" checked onchange="generatePwd()"><span class="toggle-track"></span><span class="toggle-thumb"></span><span>0-9 (digits)</span></label>
+              <label class="toggle"><input type="checkbox" id="optSymbols" checked onchange="generatePwd()"><span class="toggle-track"></span><span class="toggle-thumb"></span><span>!@#$%... (symbols)</span></label>
+            </div>
+          </div>
+
+          <div>
+            <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Exclude ambiguous characters:</label>
+            <label class="toggle"><input type="checkbox" id="optExclude" onchange="generatePwd()"><span class="toggle-track"></span><span class="toggle-thumb"></span><span>I, l, 1, L, O, 0, o</span></label>
+          </div>
+        </div>
+
+        <!-- Strength Guide -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);">
+          <h3 style="font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">Strength Guide</h3>
+          <div style="display:grid;gap:var(--space-3);">
+            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-sm);">
+              <span>8 chars, lowercase</span><span style="color:var(--color-error);">❌ Weak (3 bits)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-sm);">
+              <span>12 chars, mixed</span><span style="color:var(--color-warning);">⚠️ Fair (~50 bits)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-sm);">
+              <span>16 chars, all types</span><span style="color:var(--color-accent);">✅ Strong (~100 bits)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-sm);">
+              <span>24+ chars, all types</span><span style="color:var(--color-success);">💪 Very Strong (200+ bits)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2026 <span>ToolsBase.net</span> — <span style="color:var(--color-accent)">🔒 100% Local</span></span>
+      <a href="../../index-v2.html" style="color:var(--color-primary);">← All Tools</a>
+    </div></div>
+  </footer>
+
+  <script>
+    const SYMBOLS = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement[isDark ? 'removeAttribute' : 'setAttribute']('data-theme', '');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark'); location.reload();
+    }
+    if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+    function generatePwd() {
+      const len = parseInt(document.getElementById('pwdLen').value);
+      const lower = document.getElementById('optLower').checked;
+      const upper = document.getElementById('optUpper').checked;
+      const digits = document.getElementById('optDigits').checked;
+      const symbols = document.getElementById('optSymbols').checked;
+      const exclude = document.getElementById('optExclude').checked;
+
+      let chars = '';
+      if (lower) chars += exclude ? 'abcdefghjkmnpqrstuvwxyz' : 'abcdefghijklmnopqrstuvwxyz';
+      if (upper) chars += exclude ? 'ABCDEFGHJKMNPQRSTUVWXYZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (digits) chars += exclude ? '23456789' : '0123456789';
+      if (symbols) chars += SYMBOLS;
+      if (!chars) { chars = 'abcdefghijklmnopqrstuvwxyz'; }
+
+      const arr = new Uint32Array(len);
+      crypto.getRandomValues(arr);
+      let pwd = '';
+      for (let i = 0; i < len; i++) pwd += chars[arr[i] % chars.length];
+
+      document.getElementById('pwdDisplay').textContent = pwd;
+
+      // Entropy
+      const entropy = Math.round(len * Math.log2(chars.length));
+      const bar = document.getElementById('strengthBar');
+      const label = document.getElementById('strengthLabel');
+      const entLabel = document.getElementById('entropyLabel');
+      entLabel.textContent = `${entropy} bits entropy`;
+
+      if (entropy < 50) { bar.style.width = '33%'; bar.style.background = 'var(--color-error)'; label.textContent = '⚠️ Weak'; label.style.color = 'var(--color-error)'; }
+      else if (entropy < 80) { bar.style.width = '60%'; bar.style.background = 'var(--color-warning)'; label.textContent = '⚠️ Fair'; label.style.color = 'var(--color-warning)'; }
+      else if (entropy < 128) { bar.style.width = '80%'; bar.style.background = 'var(--color-accent)'; label.textContent = '✅ Strong'; label.style.color = 'var(--color-accent)'; }
+      else { bar.style.width = '100%'; bar.style.background = 'var(--color-success)'; label.textContent = '💪 Very Strong'; label.style.color = 'var(--color-success)'; }
+    }
+
+    function copyPwd() {
+      const pwd = document.getElementById('pwdDisplay').textContent;
+      if (!pwd || pwd === 'Click Generate...') return;
+      navigator.clipboard.writeText(pwd);
+    }
+
+    generatePwd();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</body>
+</html>

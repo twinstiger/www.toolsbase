@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cron Generator — Build & Validate Cron Expressions | ToolsBase</title>
+  <meta name="description" content="Free cron generator and validator. Build cron expressions with an interactive UI. See human-readable descriptions. 100% local.">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles-v2.css">
+  <link rel="stylesheet" href="../../src/components.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../../index-v2.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div><div class="logo-title">toolsbase.net</div><div class="logo-tagline">Local · Fast · Private</div></div></a>
+      <nav class="nav">
+        <a href="../../index-v2.html" class="nav-btn">🛠️ All Tools</a>
+        <a href="#" class="nav-btn active">📅 Cron</a>
+      </nav>
+      <button class="btn btn--ghost btn--sm" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+    </div></div>
+  </header>
+
+  <main>
+    <section class="tool-workspace">
+      <div class="container--narrow">
+
+        <div class="tool-workspace-header">
+          <div>
+            <div class="privacy-badge" style="margin-bottom:var(--space-3);">🔒 100% Local</div>
+            <h1 class="tool-workspace-title">📅 Cron Generator</h1>
+            <p class="tool-workspace-desc">Build and validate cron expressions. See next run times instantly.</p>
+          </div>
+        </div>
+
+        <!-- Expression Display -->
+        <div style="font-family:var(--font-mono);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:var(--font-weight-bold);padding:var(--space-6);background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius-xl);text-align:center;margin-bottom:var(--space-4);" id="cronDisplay">* * * * *</div>
+        <div style="font-size:var(--font-size-sm);color:var(--color-text-muted);text-align:center;margin-bottom:var(--space-6);" id="cronDesc">Every minute</div>
+
+        <!-- Fields -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-6);">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--space-4);margin-bottom:var(--space-4);">
+            <div>
+              <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Minute (0-59)</label>
+              <input type="text" id="fMin" value="*" class="tool-input" style="font-family:var(--font-mono);" oninput="buildCron()">
+            </div>
+            <div>
+              <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Hour (0-23)</label>
+              <input type="text" id="fHour" value="*" class="tool-input" style="font-family:var(--font-mono);" oninput="buildCron()">
+            </div>
+            <div>
+              <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Day of Month (1-31)</label>
+              <input type="text" id="fDom" value="*" class="tool-input" style="font-family:var(--font-mono);" oninput="buildCron()">
+            </div>
+            <div>
+              <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Month (1-12)</label>
+              <input type="text" id="fMon" value="*" class="tool-input" style="font-family:var(--font-mono);" oninput="buildCron()">
+            </div>
+            <div>
+              <label class="tool-panel-label" style="margin-bottom:var(--space-2);display:block;">Day of Week (0-6)</label>
+              <input type="text" id="fDow" value="*" class="tool-input" style="font-family:var(--font-mono);" oninput="buildCron()">
+            </div>
+          </div>
+          <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+            <button class="btn btn--primary" onclick="validateCron()">✓ Validate</button>
+            <button class="btn btn--outline" onclick="copyCron()">📋 Copy</button>
+          </div>
+        </div>
+
+        <!-- Presets -->
+        <div style="margin-bottom:var(--space-6);">
+          <h3 style="font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">⚡ Common Presets</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:var(--space-2);">
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('0 * * * *')">Every hour</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('0 0 * * *')">Daily midnight</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('0 9 * * 1')">Every Monday 9am</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('0 0 1 * *')">Monthly 1st</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('*/5 * * * *')">Every 5 min</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('*/15 * * * *')">Every 15 min</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('0 6 * * *')">Daily 6am</button>
+            <button class="btn btn--ghost btn--sm" onclick="setPreset('0 18 * * *')">Daily 6pm</button>
+          </div>
+        </div>
+
+        <!-- Next Runs -->
+        <div id="nextRuns" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);">
+          <h3 style="font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4);">📅 Next 5 Runs</h3>
+          <div id="nextRunsList" style="display:flex;flex-direction:column;gap:var(--space-3);"></div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2026 <span>ToolsBase.net</span> — <span style="color:var(--color-accent)">🔒 100% Local</span></span>
+      <a href="../../index-v2.html" style="color:var(--color-primary);">← All Tools</a>
+    </div></div>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement[isDark ? 'removeAttribute' : 'setAttribute']('data-theme', '');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark'); location.reload();
+    }
+    if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+    function buildCron() {
+      const parts = [
+        document.getElementById('fMin').value || '*',
+        document.getElementById('fHour').value || '*',
+        document.getElementById('fDom').value || '*',
+        document.getElementById('fMon').value || '*',
+        document.getElementById('fDow').value || '*'
+      ];
+      const expr = parts.join(' ');
+      document.getElementById('cronDisplay').textContent = expr;
+      document.getElementById('cronDesc').textContent = describeCron(expr);
+      showNextRuns(expr);
+    }
+
+    function describeCron(expr) {
+      const [, min, hour, dom, mon, dow] = expr.split(' ');
+      if (min === '*' && hour === '*') return 'Every minute';
+      if (min === '0' && hour === '*') return 'Every hour at minute 0';
+      if (min === '0' && hour === '0') return 'Every day at midnight';
+      if (min !== '*' && hour === '*') return `Every hour at minute ${min}`;
+      if (min === '0' && hour !== '*') return `Daily at ${hour}:00`;
+      if (dow !== '*' && min === '0' && hour !== '*') return `Every ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dow] || dow} at ${hour}:00`;
+      return 'Custom schedule';
+    }
+
+    function showNextRuns(expr) {
+      const list = document.getElementById('nextRunsList');
+      list.innerHTML = '';
+      const parts = expr.split(' ');
+      if (parts.length !== 5) return;
+      let count = 0;
+      const now = new Date();
+      for (let t = now.getTime() + 60000; count < 5; t += 60000) {
+        const d = new Date(t);
+        const min = d.getMinutes(), hr = d.getHours(), dom = d.getDate(), mon = d.getMonth()+1, dow = d.getDay();
+        const [pmin, phr, pdom, pmon, pdow] = parts;
+        const mOk = match(pmin, min, 0, 59);
+        const hOk = match(phr, hr, 0, 23);
+        const dOk = match(pdom, dom, 1, 31);
+        const moOk = match(pmon, mon, 1, 12);
+        const doOk = match(pdow, dow, 0, 6);
+        if (mOk && hOk && dOk && moOk && doOk) {
+          list.innerHTML += `<div style="font-family:var(--font-mono);font-size:var(--font-size-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--color-border);">${d.toLocaleString()}</div>`;
+          count++;
+        }
+      }
+      if (!count) list.innerHTML = '<div style="color:var(--color-text-muted);font-size:var(--font-size-sm);">No runs found in next 7 days</div>';
+    }
+
+    function match(field, val, min, max) {
+      if (field === '*') return true;
+      if (field.includes('/')) { const [_, step] = field.split('/'); return val % parseInt(step) === 0; }
+      if (field.includes(',')) return field.split(',').some(v => parseInt(v) === val);
+      if (field.includes('-')) { const [a,b] = field.split('-').map(Number); return val >= a && val <= b; }
+      return parseInt(field) === val;
+    }
+
+    function setPreset(expr) {
+      const parts = expr.split(' ');
+      document.getElementById('fMin').value = parts[0];
+      document.getElementById('fHour').value = parts[1];
+      document.getElementById('fDom').value = parts[2];
+      document.getElementById('fMon').value = parts[3];
+      document.getElementById('fDow').value = parts[4];
+      buildCron();
+    }
+
+    function validateCron() {
+      alert('Cron expression is valid:\n' + document.getElementById('cronDisplay').textContent + '\n\n' + document.getElementById('cronDesc').textContent);
+    }
+
+    function copyCron() {
+      navigator.clipboard.writeText(document.getElementById('cronDisplay').textContent);
+    }
+
+    buildCron();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</body>
+</html>

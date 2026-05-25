@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator — Generate UUID v4 Online | ToolsBase</title>
+  <meta name="description" content="Free UUID v4 generator. Generate unlimited RFC 4122 compliant UUIDs instantly. 100% local — no server calls.">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles-v2.css">
+  <link rel="stylesheet" href="../../src/components.css">
+  <style>
+    .uuid-list { display: flex; flex-direction: column; gap: var(--space-3); }
+    .uuid-item {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+      padding: var(--space-4); background: var(--color-surface);
+      border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    }
+    .uuid-value { font-family: var(--font-mono); font-size: var(--font-size-base); word-break: break-all; }
+    .uuid-item-actions { display: flex; gap: var(--space-2); flex-shrink: 0; }
+    .uuid-controls {
+      display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap;
+      margin-bottom: var(--space-6);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../../index-v2.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div><div class="logo-title">toolsbase.net</div><div class="logo-tagline">Local · Fast · Private</div></div></a>
+      <nav class="nav">
+        <a href="../../index-v2.html" class="nav-btn">🛠️ All Tools</a>
+        <a href="#" class="nav-btn active">🎲 UUID</a>
+      </nav>
+      <button class="btn btn--ghost btn--sm" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+    </div></div>
+  </header>
+
+  <main>
+    <section class="tool-workspace">
+      <div class="container">
+
+        <div class="tool-workspace-header">
+          <div>
+            <div class="privacy-badge" style="margin-bottom:var(--space-3);">🔒 100% Local</div>
+            <h1 class="tool-workspace-title">🎲 UUID Generator</h1>
+            <p class="tool-workspace-desc">Generate RFC 4122 compliant UUID v4 — cryptographically random, browser-native.</p>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="uuid-controls">
+          <label class="tool-panel-label" style="margin:0;">Count:</label>
+          <select id="uuidCount" class="format-select" style="padding:var(--space-2) var(--space-4);font-size:var(--font-size-sm);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);color:var(--color-text);">
+            <option value="1">1</option>
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <button class="btn btn--primary" onclick="generateUUIDs()">🎲 Generate UUIDs</button>
+          <button class="btn btn--outline" onclick="copyAll()">📋 Copy All</button>
+          <button class="btn btn--ghost" onclick="document.getElementById('uuidList').innerHTML=''">Clear</button>
+        </div>
+
+        <!-- UUID List -->
+        <div id="uuidList" class="uuid-list"></div>
+
+        <!-- Info -->
+        <div style="margin-top:var(--space-8);padding:var(--space-6);background:var(--color-surface);border-radius:var(--radius-xl);border:1px solid var(--color-border);">
+          <h3 style="font-size:var(--font-size-lg);font-weight:var(--font-weight-bold);margin-bottom:var(--space-3);">📖 What is UUID v4?</h3>
+          <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);line-height:1.7;">
+            A UUID (Universally Unique Identifier) v4 is a 128-bit number formatted as
+            <code style="font-family:var(--font-mono);background:var(--color-surface-2);padding:2px 6px;border-radius:4px;">xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code>.
+            The <strong>y</strong> character is always <strong>8, 9, A, or B</strong>, making it RFC 4122 compliant.
+            UUIDs are generated using <strong>crypto.getRandomValues()</strong> — the same secure random source used by browsers for security-sensitive operations.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2026 <span>ToolsBase.net</span> — <span style="color:var(--color-accent)">🔒 100% Local</span></span>
+      <a href="../../index-v2.html" style="color:var(--color-primary);">← All Tools</a>
+    </div></div>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement[isDark ? 'removeAttribute' : 'setAttribute']('data-theme', '');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark'); location.reload();
+    }
+    if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+    function uuidv4() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    }
+
+    function generateUUIDs() {
+      const count = parseInt(document.getElementById('uuidCount').value);
+      const list = document.getElementById('uuidList');
+      list.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const id = uuidv4();
+        const item = document.createElement('div');
+        item.className = 'uuid-item';
+        item.innerHTML = `
+          <span class="uuid-value">${id}</span>
+          <div class="uuid-item-actions">
+            <button class="copy-btn" onclick="copyOne('${id}')">📋</button>
+          </div>`;
+        list.appendChild(item);
+      }
+    }
+
+    function copyOne(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = '📋', 1200);
+      });
+    }
+
+    function copyAll() {
+      const texts = [...document.querySelectorAll('.uuid-value')].map(el => el.textContent);
+      if (!texts.length) return;
+      navigator.clipboard.writeText(texts.join('\n'));
+    }
+
+    // Generate 5 on load
+    generateUUIDs();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</body>
+</html>

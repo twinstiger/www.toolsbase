@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Generator — MD5, SHA-1, SHA-256, SHA-512 | ToolsBase</title>
+  <meta name="description" content="Free online hash generator. Generate MD5, SHA-1, SHA-256, SHA-512 hashes instantly. 100% local — no uploads.">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles-v2.css">
+  <link rel="stylesheet" href="../../src/components.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="../../index-v2.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div><div class="logo-title">toolsbase.net</div><div class="logo-tagline">Local · Fast · Private</div></div></a>
+      <nav class="nav">
+        <a href="../../index-v2.html" class="nav-btn">🛠️ All Tools</a>
+        <a href="../json/formatter-v2.html" class="nav-btn">📋 JSON</a>
+        <a href="../regex/tester-v2.html" class="nav-btn">🔍 Regex</a>
+        <a href="#" class="nav-btn active">#️⃣ Hash</a>
+      </nav>
+      <button class="btn btn--ghost btn--sm" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+    </div></div>
+  </header>
+
+  <main>
+    <section class="tool-workspace">
+      <div class="container">
+
+        <div class="tool-workspace-header">
+          <div>
+            <div class="privacy-badge" style="margin-bottom:var(--space-3);">🔒 100% Local</div>
+            <h1 class="tool-workspace-title">#️⃣ Hash Generator</h1>
+            <p class="tool-workspace-desc">Generate MD5, SHA-1, SHA-256, SHA-512, and more — instantly in your browser. No uploads.</p>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div style="margin-bottom:var(--space-6);">
+          <label class="tool-panel-label">Input Text</label>
+          <textarea id="hashInput" class="tool-input" placeholder="Enter text to hash..." spellcheck="false" style="min-height:120px;"></textarea>
+        </div>
+
+        <!-- Hash Buttons -->
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;margin-bottom:var(--space-6);">
+          <button class="btn btn--primary" onclick="generateHash('md5')">MD5</button>
+          <button class="btn btn--outline" onclick="generateHash('sha1')">SHA-1</button>
+          <button class="btn btn--outline" onclick="generateHash('sha256')">SHA-256</button>
+          <button class="btn btn--outline" onclick="generateHash('sha384')">SHA-384</button>
+          <button class="btn btn--outline" onclick="generateHash('sha512')">SHA-512</button>
+          <button class="btn btn--ghost" onclick="document.getElementById('hashInput').value='';document.getElementById('hashResults').innerHTML=''">Clear</button>
+        </div>
+
+        <!-- Results -->
+        <div id="hashResults"></div>
+
+        <!-- Info -->
+        <div style="margin-top:var(--space-8);padding:var(--space-6);background:var(--color-surface);border-radius:var(--radius-xl);border:1px solid var(--color-border);">
+          <h3 style="font-size:var(--font-size-lg);font-weight:var(--font-weight-bold);margin-bottom:var(--space-3);">🔐 Security Note</h3>
+          <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);line-height:1.7;">
+            MD5 and SHA-1 are <strong>not recommended for passwords</strong> — they are fast and can be brute-forced.
+            For passwords, use <strong>bcrypt</strong> or <strong>Argon2</strong>. SHA-256 and SHA-512 are fine for integrity checksums.
+            All hashing is done locally in your browser — data never leaves your device.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer-bottom">
+      <span class="footer-copy">© 2026 <span>ToolsBase.net</span> — <span style="color:var(--color-accent)">🔒 100% Local</span></span>
+      <a href="../../index-v2.html" style="color:var(--color-primary);">← All Tools</a>
+    </div></div>
+  </footer>
+
+  <!-- CryptoJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script>
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement[isDark ? 'removeAttribute' : 'setAttribute']('data-theme', '');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      location.reload();
+    }
+    if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+    function generateHash(type) {
+      const input = document.getElementById('hashInput').value;
+      if (!input) return;
+      let hash = '';
+      switch (type) {
+        case 'md5':    hash = CryptoJS.MD5(input).toString(); break;
+        case 'sha1':   hash = CryptoJS.SHA1(input).toString(); break;
+        case 'sha256': hash = CryptoJS.SHA256(input).toString(); break;
+        case 'sha384': hash = CryptoJS.SHA384(input).toString(); break;
+        case 'sha512': hash = CryptoJS.SHA512(input).toString(); break;
+      }
+      const label = type.toUpperCase();
+      const res = document.getElementById('hashResults');
+      const existing = res.querySelector(`[data-hash="${type}"]`);
+      if (existing) existing.remove();
+      const el = document.createElement('div');
+      el.setAttribute('data-hash', type);
+      el.style.cssText = 'margin-bottom:var(--space-4);padding:var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);';
+      el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap;">
+        <span style="font-weight:var(--font-weight-semibold);min-width:80px;">${label}</span>
+        <code id="hash-${type}" style="font-family:var(--font-mono);font-size:var(--font-size-sm);color:var(--color-text);word-break:break-all);flex:1;">${hash}</code>
+        <button class="copy-btn" onclick="copyHash('${hash}')">📋 Copy</button>
+      </div>`;
+      res.appendChild(el);
+    }
+
+    function copyHash(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target.closest('.copy-btn');
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = '📋 Copy', 1500);
+      });
+    }
+
+    document.getElementById('hashInput').addEventListener('input', () => {
+      document.getElementById('hashResults').innerHTML = '';
+    });
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</body>
+</html>
