@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design B: Dark Professional — ToolsBase</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2333;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --subtle: #484f58;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --purple: #a371f7;
+}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:#79c0ff}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;background:rgba(13,17,23,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:0.75rem}
+.logo img{height:28px}
+.logo-name{font-weight:800;font-size:1rem;color:var(--text);letter-spacing:-0.02em}
+.logo-sub{font-size:0.68rem;color:var(--muted)}
+.nav{display:flex;gap:0.25rem}
+.nav a{padding:0.4rem 0.9rem;border-radius:6px;font-size:0.8125rem;font-weight:600;color:var(--muted);transition:all 150ms}
+.nav a:hover{color:var(--text);background:var(--surface)}
+.nav a.active{color:var(--accent)}
+
+/* HERO */
+.hero{max-width:1200px;margin:0 auto;padding:5rem 2rem 3.5rem;text-align:center}
+.hero-eyebrow{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);padding:0.3rem 1rem;border:1px solid rgba(63,185,80,0.25);border-radius:9999px;background:rgba(63,185,80,0.06);margin-bottom:1.5rem}
+.hero-title{
+  font-size:clamp(2.5rem,7vw,5rem);
+  font-weight:800;
+  line-height:1.0;
+  letter-spacing:-0.04em;
+  background:linear-gradient(135deg,#e6edf3 0%,#79c0ff 50%,#a371f7 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:1.5rem;
+}
+.hero-subtitle{font-size:1rem;color:var(--muted);max-width:480px;margin:0 auto 2.5rem;line-height:1.8}
+.hero-cta{display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap}
+.btn{padding:0.8rem 1.75rem;border-radius:8px;font-size:0.875rem;font-weight:700;cursor:pointer;transition:all 200ms;font-family:inherit;border:none;display:inline-flex;align-items:center;gap:0.4rem}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{background:#79c0ff;transform:translateY(-2px)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.hero-stats{display:flex;justify-content:center;gap:3.5rem;padding-top:2rem;margin-top:2.5rem;border-top:1px solid var(--border)}
+.hero-stat-value{display:block;font-size:1.75rem;font-weight:800;letter-spacing:-0.03em;color:var(--text)}
+.hero-stat-label{display:block;font-size:0.72rem;color:var(--muted);margin-top:0.2rem}
+
+/* PRIVACY */
+.privacy{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0.75rem 0;text-align:center}
+.privacy span{font-size:0.78rem;color:var(--muted)}
+.privacy .green{color:var(--green);font-weight:700}
+.privacy .dot{color:var(--subtle);margin:0 0.5rem}
+
+/* CATEGORY SECTIONS */
+.categories{max-width:1200px;margin:0 auto;padding:2rem 2rem 4rem}
+.cat-section{padding:2.5rem 0;border-bottom:1px solid var(--border)}
+.cat-section:last-child{border-bottom:none}
+.cat-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem}
+.cat-icon{font-size:1.5rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;flex-shrink:0}
+.cat-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:0.15rem}
+.cat-title{font-size:1.125rem;font-weight:700;color:var(--text)}
+.cat-count{font-size:0.7rem;font-weight:600;color:var(--subtle);margin-left:auto;padding:0.2rem 0.7rem;border:1px solid var(--border);border-radius:9999px}
+
+/* TOOL GRID */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0.75rem}
+.tc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;flex-direction:column;text-decoration:none;transition:all 200ms;position:relative}
+.tc:hover{border-color:var(--accent);background:var(--surface2)}
+.tc-icon{font-size:1.5rem;margin-bottom:0.6rem}
+.tc-title{font-size:0.875rem;font-weight:700;color:var(--text);margin-bottom:0.35rem;font-family:'JetBrains Mono',monospace}
+.tc-desc{font-size:0.8125rem;color:var(--muted);line-height:1.6;flex:1}
+.tc-meta{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.tc-tags{display:flex;gap:0.25rem;flex-wrap:wrap}
+.tag{font-size:0.65rem;font-weight:600;padding:2px 7px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--subtle)}
+.tc-arrow{font-size:0.875rem;color:var(--accent);opacity:0;transition:opacity 150ms}
+.tc:hover .tc-arrow{opacity:1}
+
+/* FOOTER */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem 0}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-size:0.78rem;color:var(--subtle)}
+.footer-links{display:flex;gap:1.25rem}
+.footer-links a{font-size:0.78rem;color:var(--subtle)}
+.footer-links a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo"><img src="../logo.svg" alt=""><div><div class="logo-name">ToolsBase</div><div class="logo-sub">Free · Local · Private</div></div></a>
+    <nav class="nav">
+      <a href="#" class="active">Tools</a>
+      <a href="#">Blog</a>
+      <a href="#">About</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-eyebrow">🔒 100% Browser-Based · No Uploads</div>
+  <h1 class="hero-title">Developer Tools,<br>Done Right.</h1>
+  <p class="hero-subtitle">JSON, regex, Base64, hashes — all instant, all private, all in your browser.</p>
+  <div class="hero-cta">
+    <a href="#" class="btn btn-primary">▶ Try JSON Formatter</a>
+    <a href="#" class="btn btn-outline">View All 28 Tools</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-value">28+</span><span class="hero-stat-label">Free Tools</span></div>
+    <div class="hero-stat"><span class="hero-stat-value">100%</span><span class="hero-stat-label">Local Processing</span></div>
+    <div class="hero-stat"><span class="hero-stat-value">0</span><span class="hero-stat-label">Data Collected</span></div>
+  </div>
+</section>
+<div class="privacy">
+  <span class="green">🔒 No cookies</span>
+  <span class="dot">·</span>
+  <span class="green">No tracking</span>
+  <span class="dot">·</span>
+  <span class="green">No stored data</span>
+  <span class="dot">·</span>
+  Everything runs locally on your device
+</div>
+
+<section class="categories">
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-icon">🛠️</span>
+      <div><div class="cat-label">Developer Tools</div><div class="cat-title">Essential utilities for writing better code</div></div>
+      <span class="cat-count">6 tools</span>
+    </div>
+    <div class="tool-grid">
+      <a href="#" class="tc"><div class="tc-icon">📋</div><div class="tc-title">JSON Formatter</div><div class="tc-desc">Format, validate, and minify JSON with syntax highlighting.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">JSON</span><span class="tag">Formatter</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">🔍</div><div class="tc-title">Regex Tester</div><div class="tc-desc">Test regular expressions with real-time match highlighting.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">Regex</span><span class="tag">Tester</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">🔄</div><div class="tc-title">Base64 Encoder</div><div class="tc-desc">Encode and decode Base64 instantly with file support.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">Base64</span><span class="tag">Encoder</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">#️⃣</div><div class="tc-title">Hash Generator</div><div class="tc-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">Hash</span><span class="tag">SHA</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">🔗</div><div class="tc-title">URL Encoder</div><div class="tc-desc">Encode or decode URL components and query strings.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">URL</span><span class="tag">Encoding</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">🗃️</div><div class="tc-title">SQL Formatter</div><div class="tc-desc">Format and prettify SQL queries with syntax highlighting.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">SQL</span><span class="tag">Formatter</span></div><span class="tc-arrow">→</span></div></a>
+    </div>
+  </div>
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-icon">⚡</span>
+      <div><div class="cat-label">Generators</div><div class="cat-title">Instantly generate passwords, UUIDs, and slugs</div></div>
+      <span class="cat-count">4 tools</span>
+    </div>
+    <div class="tool-grid">
+      <a href="#" class="tc"><div class="tc-icon">🔑</div><div class="tc-title">Password Generator</div><div class="tc-desc">Generate strong passwords with customizable options.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">Security</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">🎲</div><div class="tc-title">UUID Generator</div><div class="tc-desc">Generate UUID v4 identifiers instantly.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">UUID</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">📝</div><div class="tc-title">Lorem Ipsum</div><div class="tc-desc">Generate placeholder text in paragraphs or words.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">Lorem</span></div><span class="tc-arrow">→</span></div></a>
+      <a href="#" class="tc"><div class="tc-icon">🔤</div><div class="tc-title">Slug Generator</div><div class="tc-desc">Convert text into URL-friendly slugs.</div><div class="tc-meta"><div class="tc-tags"><span class="tag">Slug</span></div><span class="tc-arrow">→</span></div></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
