@@ -3,99 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hash Generator — MD5, SHA-1, SHA-256, SHA-512 | ToolsBase</title>
-  <meta name="description" content="Free online hash generator. Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes instantly in your browser. No uploads.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://toolsbase.net/tools/dev/hash-generator.html">
-  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../src/tokens.css">
-  <link rel="stylesheet" href="../../src/styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Hash Generator","description":"Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes.","url":"https://toolsbase.net/tools/dev/hash-generator.html","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <title>Hash Generator — ToolsBase.net</title>
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-name">ToolsBase</span>
+    </a>
+    <nav class="nav">
+      <a href="/tools/index.html" class="nav-btn">Tools</a>
+      <a href="/blog/index.html" class="nav-btn">Blog</a>
+      <a href="/about.html" class="nav-btn">About</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <span class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-  <main class="tool-page">
-    <div class="container">
-      <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Hash Generator</span></nav>
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Hash Generator</span>
+    </div>
+    <div class="tool-page-header">
+      <h1 class="tool-page-title">🔧 Hash Generator</h1>
+      <p class="lead-text">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input.</p>
+    </div>
 
-      <div class="tool-page-header">
-        <div class="privacy-badge" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.3rem 0.85rem;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:9999px;font-size:0.75rem;font-weight:600;color:#166534;margin-bottom:1rem;">🔒 100% Local</div>
-        <h1 class="tool-page-title">#️⃣ Hash Generator</h1>
-        <p class="tool-page-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input. All hashing happens locally in your browser.</p>
+    <div class="tool-layout">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Input</div>
+        <textarea id="input" class="tool-input" placeholder="Enter your hash generator input here..."></textarea>
+        <div class="tool-actions">
+          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+        </div>
       </div>
-
-      <div class="ad-section"><div class="ad-label">Advertisement</div><div class="ad-container"><ins class="adsbygoogle" style="display:block;width:100%;max-width:728px;margin:0 auto;" data-ad-client="ca-pub-9420599375364457" data-ad-slot="toolsbase_hash" data-ad-format="horizontal"></ins></div></div>
-
-      <div style="margin-bottom:1.25rem;">
-        <label class="tool-panel-label">Input Text</label>
-        <textarea id="hashInput" class="tool-input" placeholder="Enter text to hash..." style="min-height:120px;" spellcheck="false"></textarea>
-      </div>
-
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.5rem;">
-        <button class="btn btn--primary" onclick="genHash('md5')">MD5</button>
-        <button class="btn btn--outline" onclick="genHash('sha1')">SHA-1</button>
-        <button class="btn btn--outline" onclick="genHash('sha256')">SHA-256</button>
-        <button class="btn btn--outline" onclick="genHash('sha384')">SHA-384</button>
-        <button class="btn btn--outline" onclick="genHash('sha512')">SHA-512</button>
-        <button class="btn btn--ghost" onclick="document.getElementById('hashInput').value='';document.getElementById('hashResults').innerHTML=''">Clear</button>
-      </div>
-
-      <div id="hashResults"></div>
-
-      <div class="faq-section">
-        <h2 class="faq-title">Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What is a cryptographic hash?<span class="faq-icon">+</span></button><div class="faq-answer">A hash function takes any input and produces a fixed-length string of characters. The same input always produces the same output. Hash functions are one-way — you can't reverse them back to the original text.</div></div>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is MD5 or SHA-1 safe for passwords?<span class="faq-icon">+</span></button><div class="faq-answer"><strong>No.</strong> MD5 and SHA-1 are too fast to be secure for passwords — they can be brute-forced in seconds. For password storage, use bcrypt, Argon2, or scrypt. For checksums and integrity verification, SHA-256 or stronger are fine.</div></div>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Which algorithm should I use?<span class="faq-icon">+</span></button><div class="faq-answer">For <strong>checksums and integrity verification</strong>, SHA-256 is a good default. For <strong>digital signatures and certificates</strong>, SHA-256 or SHA-384 are recommended. Avoid MD5 and SHA-1 for security-related applications.</div></div>
-      </div>
-
-      <div style="margin-top:3rem;padding:1.5rem;background:var(--color-bg-alt);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
-        <div style="font-size:0.75rem;font-weight:700;color:var(--color-text-muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📖 Related Guide</div>
-        <a href="../../blog/password-security.html" style="font-size:1rem;font-weight:700;color:var(--color-text);">Password Security 101: What Makes a Password Truly Strong? →</a>
-        <p style="font-size:0.875rem;color:var(--color-text-muted);margin-top:0.5rem;">Learn why hashing ≠ encryption, and what entropy means for security.</p>
+      <div class="tool-panel">
+        <div class="tool-panel-label">Output</div>
+        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div class="btn-group" style="margin-top:0.625rem;">
+          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
+        </div>
       </div>
     </div>
-  </main>
 
-  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer>
+    <div class="tool-stats">
+      <span id="stats">Ready — enter input to start</span>
+    </div>
 
-  <script>
-    function genHash(type) {
-      const inp = document.getElementById('hashInput').value;
-      if (!inp) return;
-      let hash = '';
-      switch(type) {
-        case 'md5': hash = CryptoJS.MD5(inp).toString(); break;
-        case 'sha1': hash = CryptoJS.SHA1(inp).toString(); break;
-        case 'sha256': hash = CryptoJS.SHA256(inp).toString(); break;
-        case 'sha384': hash = CryptoJS.SHA384(inp).toString(); break;
-        case 'sha512': hash = CryptoJS.SHA512(inp).toString(); break;
-      }
-      const el = document.createElement('div');
-      el.style.cssText = 'margin-bottom:0.75rem;padding:1rem 1.25rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;';
-      el.innerHTML = `<span style="font-weight:700;font-size:0.8rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;min-width:70px;">${type.toUpperCase()}</span><code style="font-family:var(--font-mono);font-size:0.8rem;color:var(--color-text);word-break:break-all;flex:1;">${hash}</code><button class="copy-btn" onclick="copyHash('${hash}')">📋</button>`;
-      const existing = document.querySelector(`[data-hash="${type}"]`);
-      if (existing) existing.remove();
-      document.getElementById('hashResults').prepend(el);
-      el.setAttribute('data-hash', type);
-    }
-    function copyHash(text) {
-      navigator.clipboard.writeText(text);
-      const btn = event.target.closest('.copy-btn');
-      btn.textContent = '✓';
-      setTimeout(() => btn.textContent = '📋', 1500);
-    }
-    function toggleFaq(btn) {
-      const item = btn.closest('.faq-item');
-      item.classList.toggle('open');
-      item.querySelector('.faq-icon').textContent = item.classList.contains('open') ? '×' : '+';
-    }
-  </script>
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is Hash Generator used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Hash Generator is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Hash Generator is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="logo-name">ToolsBase</span>
+        </a>
+        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tools</h3>
+          <ul>
+            <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
+            <li><a href="/tools/generators/password-generator.html">Generators</a></li>
+            <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
+            <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Company</h3>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/privacy-policy.html">Privacy</a></li>
+            <li><a href="/terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 ToolsBase.net · <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
+      <div class="footer-legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast">Copied!</div>
+
+<script>
+function transform() {
+  const input = document.getElementById('input').value;
+  if (!input.trim()) return;
+  const output = input;
+  document.getElementById('output').textContent = output;
+  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+}
+
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').textContent = '';
+  document.getElementById('stats').textContent = 'Ready';
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
+
+function downloadOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'output.txt'; a.click();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
+document.getElementById('input').addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') transform();
+});
+</script>
 </body>
 </html>

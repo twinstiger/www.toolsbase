@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Injection: How Attacks Work and How to Prevent Them — ToolsBase Blog</title>
+  <meta name="description" content="SQL injection remains one of the most dangerous web vulnerabilities. Learn how it works through real examples and how to write code that's immune.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/sql-injection-prevention.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>SQL Injection: How Attacks Work and How to Prevent Them</span>
+          </div>
+          <h1>SQL Injection: How Attacks Work and How to Prevent Them</h1>
+          <p class="lead">SQL injection remains one of the most dangerous web vulnerabilities. Learn how it works through real examples and how to write code that's immune.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-20</span>
+            <span>9 min read</span>
+            <span>Security</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/sql/800/400" alt="SQL Injection: How Attacks Work and How to Prevent Them" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>The Most Dangerous Vulnerability</h2>
+<p>SQL injection has been at the top of the OWASP Top 10 for over a decade. In 2024, it still appears in major breaches — from user data exposure to full server takeover. Understanding it isn't optional for developers.</p>
+
+<h2>How SQL Injection Works</h2>
+<p>The vulnerability occurs when user input is directly concatenated into a SQL query instead of being passed as a parameter.</p>
+
+<h3>The Vulnerable Code</h3>
+<pre><code>// ❌ VULNERABLE — Never do this
+const query = `SELECT * FROM users
+  WHERE email = '${email}' AND password = '${password}'`;
+
+// User enters:
+// email: admin@example.com
+// password: ' OR '1'='1
+// Result: SELECT * FROM users WHERE email = 'admin@example.com'
+//          AND password = '' OR '1'='1'
+// Always true — attacker is logged in!</code></pre>
+
+<h3>The Attack Types</h3>
+<ul>
+<li><strong>Union-based:</strong> Extract data from other tables</li>
+<li><strong>Boolean-based:</strong> Infer information character by character</li>
+<li><strong>Time-based:</strong> Use <code>SLEEP()</code> to infer responses</li>
+<li><strong>Out-of-band:</strong> DNS exfiltration via database error messages</li>
+</ul>
+
+<h3>Real Attack Payload</h3>
+<pre><code>' UNION SELECT NULL,username,password,NULL FROM users--</code></pre>
+
+<h2>The Fix: Parameterized Queries</h2>
+<pre><code>// ✅ Node.js with prepared statements
+const result = await db.query(
+  'SELECT * FROM users WHERE email = $1 AND password = $2',
+  [email, password]
+);
+
+// ✅ Python with SQLAlchemy
+user = db.session.query(User).filter_by(
+  email=email, password=password
+).first()</code></pre>
+
+<h2>ORMs Are Not Foolproof</h2>
+<p>SQLAlchemy, Hibernate, Prisma — ORMs prevent most SQL injection, but some patterns still allow it:</p>
+<pre><code>// ⚠️ Still vulnerable — raw SQL in ORM
+db.raw('SELECT * FROM users WHERE name = ' + userInput)</code></pre>
+
+<h2>Defense in Depth</h2>
+<ul>
+<li><strong>Parameterized queries</strong> — always, no exceptions</li>
+<li><strong>Least privilege</strong> — database user should only have needed permissions</li>
+<li><strong>Input validation</strong> — whitelist expected values, reject unexpected patterns</li>
+<li><strong>Web Application Firewall (WAF)</strong> — additional protection layer</li>
+<li><strong>Regular security audits</strong> — scan code and dependencies</li>
+</ul>
+
+<h2>How to Test Your Code</h2>
+<p>Try SQLMap (open-source SQL injection tool) on your own staging environment. If it finds something, fix it before attackers do.</p>
+
+<h2>Format SQL for Readability</h2>
+<p>Use our <a href="../tools/dev/sql-formatter.html">SQL Formatter</a> to pretty-print complex queries — making suspicious patterns easier to spot during code review.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

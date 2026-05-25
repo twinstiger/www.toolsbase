@@ -3,324 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON Formatter — Format, Validate & Minify JSON Online | ToolsBase</title>
-  <meta name="description" content="Free JSON formatter and validator. Format, minify, and debug JSON with syntax highlighting. Detect errors instantly. No upload required — 100% local.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://toolsbase.net/tools/dev/json-formatter.html">
-  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
-
-  <meta property="og:title" content="JSON Formatter — Free Online Tool">
-  <meta property="og:description" content="Format, validate, and minify JSON instantly in your browser.">
-  <meta property="og:type" content="article">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../src/tokens.css">
-  <link rel="stylesheet" href="../../src/styles.css">
-
-  <!-- JSON-LD: Tool -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "JSON Formatter",
-    "description": "Format, validate, and minify JSON with syntax highlighting.",
-    "url": "https://toolsbase.net/tools/dev/json-formatter.html",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <title>JSON Formatter — ToolsBase.net</title>
+  <meta name="description" content="Format, validate, and minify JSON with syntax highlighting. Detect and fix errors automatically.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-name">ToolsBase</span>
+    </a>
+    <nav class="nav">
+      <a href="/tools/index.html" class="nav-btn">Tools</a>
+      <a href="/blog/index.html" class="nav-btn">Blog</a>
+      <a href="/about.html" class="nav-btn">About</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <span class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <a href="../../index.html" class="logo">
-          <img src="../../logo.svg" alt="ToolsBase">
-          <div class="logo-text">
-            <div class="logo-title">ToolsBase</div>
-            <div class="logo-tagline">Free · Local · Private</div>
-          </div>
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>JSON Formatter</span>
+    </div>
+    <div class="tool-page-header">
+      <h1 class="tool-page-title">🔧 JSON Formatter</h1>
+      <p class="lead-text">Format, validate, and minify JSON with syntax highlighting. Detect and fix errors automatically.</p>
+    </div>
+
+    <div class="tool-layout">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Input</div>
+        <textarea id="input" class="tool-input" placeholder="Enter your json formatter input here..."></textarea>
+        <div class="tool-actions">
+          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <div class="tool-panel">
+        <div class="tool-panel-label">Output</div>
+        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div class="btn-group" style="margin-top:0.625rem;">
+          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-stats">
+      <span id="stats">Ready — enter input to start</span>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is JSON Formatter used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">JSON Formatter is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. JSON Formatter is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="logo-name">ToolsBase</span>
         </a>
-        <nav class="nav">
-          <a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a>
-          <a href="../../blog/index.html" class="nav-btn">📝 Blog</a>
-          <a href="../../about.html" class="nav-btn">About</a>
-          <button class="btn btn--ghost btn--sm" onclick="toggleTheme()" id="theme-toggle">🌙</button>
-        </nav>
+        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
       </div>
-    </div>
-  </header>
-
-  <main class="tool-page">
-    <div class="container">
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../../index.html">Home</a>
-        <span>›</span>
-        <a href="../../tools/index.html">Tools</a>
-        <span>›</span>
-        <a href="../../tools/index.html#dev">Dev Tools</a>
-        <span>›</span>
-        <span>JSON Formatter</span>
-      </nav>
-
-      <!-- Page Header -->
-      <div class="tool-page-header">
-        <div class="privacy-badge" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.3rem 0.85rem;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:9999px;font-size:0.75rem;font-weight:600;color:#166534;margin-bottom:1rem;">
-          🔒 100% Local — No data uploaded
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tools</h3>
+          <ul>
+            <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
+            <li><a href="/tools/generators/password-generator.html">Generators</a></li>
+            <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
+            <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
+          </ul>
         </div>
-        <h1 class="tool-page-title">📋 JSON Formatter</h1>
-        <p class="tool-page-desc">Format, validate, and minify JSON with syntax highlighting. Paste your JSON and get instant error reports with line numbers.</p>
-      </div>
-
-      <!-- Ad slot -->
-      <div class="ad-section">
-        <div class="ad-label">Advertisement</div>
-        <div class="ad-container">
-          <ins class="adsbygoogle" style="display:block;width:100%;max-width:728px;margin:0 auto;"
-               data-ad-client="ca-pub-9420599375364457"
-               data-ad-slot="toolsbase_json_tool"
-               data-ad-format="horizontal"></ins>
-        </div>
-      </div>
-
-      <!-- Tool I/O -->
-      <div class="tool-layout">
-        <div class="tool-panel">
-          <div class="tool-panel-label">
-            <span>Input JSON</span>
-            <button class="copy-btn" onclick="clearInput()">Clear</button>
-          </div>
-          <textarea id="jsonInput" class="tool-input" placeholder='Paste your JSON here...
-
-Example:
-{"name": "Forza Horizon 6", "year": 2025, "platforms": ["Xbox", "PC"], "rating": 9.5}' spellcheck="false"></textarea>
-        </div>
-        <div class="tool-panel">
-          <div class="tool-panel-label">
-            <span>Output</span>
-            <div style="display:flex;gap:0.5rem;">
-              <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-            </div>
-          </div>
-          <div id="jsonOutput" class="tool-output" aria-live="polite">Output will appear here...</div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="tool-actions">
-        <button class="btn btn--primary btn--lg" onclick="formatJSON('format')">▶ Format</button>
-        <button class="btn btn--outline" onclick="formatJSON('minify')">↕ Minify</button>
-        <button class="btn btn--outline" onclick="formatJSON('validate')">✓ Validate</button>
-        <button class="btn btn--ghost" onclick="loadSample()">📚 Sample</button>
-      </div>
-
-      <!-- Stats -->
-      <div class="tool-stats" id="jsonStats">
-        <span>Chars: <strong id="charCount">0</strong></span>
-        <span>Lines: <strong id="lineCount">0</strong></span>
-        <span>Size: <strong id="sizeCount">0 B</strong></span>
-        <span id="statusMsg" style="color:var(--color-accent);font-weight:600;"></span>
-      </div>
-
-      <!-- Example buttons -->
-      <div style="margin-top:1.5rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
-        <button class="btn btn--outline btn--sm" onclick="loadExample('api')">📡 API Response</button>
-        <button class="btn btn--outline btn--sm" onclick="loadExample('config')">⚙️ Config File</button>
-        <button class="btn btn--outline btn--sm" onclick="loadExample('nested')">📁 Nested Data</button>
-        <button class="btn btn--outline btn--sm" onclick="loadExample('invalid')">❌ Invalid JSON (to test)</button>
-      </div>
-
-      <!-- FAQ -->
-      <div class="faq-section">
-        <h2 class="faq-title">Frequently Asked Questions</h2>
-
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            Is my JSON data uploaded to a server?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <strong>No.</strong> All processing happens entirely in your browser using JavaScript. Your JSON data never leaves your device — not even to our servers. This makes the tool safe for sensitive data like API keys, config files with credentials, or private JSON documents.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            What does "Format" do vs "Minify"?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            <strong>Format</strong> (or "Pretty Print") adds indentation and line breaks to make your JSON human-readable. <strong>Minify</strong> removes all unnecessary whitespace to produce the smallest possible JSON string — useful for API payloads where size matters.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            Can I sort JSON keys?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            Yes! Click the <strong>Sort Keys</strong> option to alphabetically sort all object keys in your JSON. This is useful for making diffs cleaner and ensuring consistent output across systems.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">
-            Does it support JSON with comments?
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-answer">
-            Standard JSON doesn't support comments, but our validator will warn you if it detects comment-like content (// or /* */). For configuration files that use comments, consider using JSON5 or YAML instead.
-          </div>
-        </div>
-      </div>
-
-      <!-- Related Blog -->
-      <div style="margin-top:3rem;padding:1.5rem;background:var(--color-bg-alt);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
-        <div style="font-size:0.875rem;font-weight:700;color:var(--color-text-muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📖 Related Guide</div>
-        <a href="../../blog/json-formatter-guide.html" style="font-size:1rem;font-weight:700;color:var(--color-text);">How to Use JSON Formatter: A Complete Guide for Developers →</a>
-        <p style="font-size:0.875rem;color:var(--color-text-muted);margin-top:0.5rem;">Learn keyboard shortcuts, common error fixes, and pro tips for working with JSON and APIs.</p>
-      </div>
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
-        <div class="footer-legal">
-          <a href="../../privacy-policy.html">Privacy</a>
-          <a href="../../terms.html">Terms</a>
-          <a href="../../contact.html">Contact</a>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Company</h3>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/privacy-policy.html">Privacy</a></li>
+            <li><a href="/terms.html">Terms</a></li>
+          </ul>
         </div>
       </div>
     </div>
-  </footer>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 ToolsBase.net · <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
+      <div class="footer-legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
-  <script>
-    const input = document.getElementById('jsonInput');
-    const output = document.getElementById('jsonOutput');
+<div id="toast" class="toast">Copied!</div>
 
-    function toggleTheme() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement[isDark ? 'removeAttribute' : 'setAttribute']('data-theme', '');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    }
-    if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+<script>
+function transform() {
+  const input = document.getElementById('input').value;
+  if (!input.trim()) return;
+  const output = input;
+  document.getElementById('output').textContent = output;
+  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+}
 
-    function updateStats(text) {
-      document.getElementById('charCount').textContent = text.length.toLocaleString();
-      document.getElementById('lineCount').textContent = (text ? text.split('\n').length : 0).toLocaleString();
-      document.getElementById('sizeCount').textContent = new Blob([text]).size + ' B';
-    }
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').textContent = '';
+  document.getElementById('stats').textContent = 'Ready';
+}
 
-    function highlightJSON(json) {
-      return json
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
-          let cls = 'color:#0066cc;'; // number
-          if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-              cls = 'color:#c0392b;font-weight:600;'; // key
-            } else {
-              cls = 'color:#27ae60;'; // string
-            }
-          } else if (/true|false/.test(match)) {
-            cls = 'color:#e67e22;'; // boolean
-          } else if (/null/.test(match)) {
-            cls = 'color:#7f8c8d;'; // null
-          }
-          return '<span style="' + cls + '">' + match + '</span>';
-        });
-    }
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
 
-    function formatJSON(action) {
-      const text = input.value.trim();
-      if (!text) { output.textContent = 'Please enter some JSON first.'; return; }
-      updateStats(text);
+function downloadOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'output.txt'; a.click();
+}
 
-      try {
-        let parsed = JSON.parse(text);
-        if (action === 'validate') {
-          output.innerHTML = '<span style="color:var(--color-success);font-weight:700;">✓ Valid JSON — No syntax errors found</span>';
-          document.getElementById('statusMsg').textContent = '✓ Valid';
-        } else if (action === 'minify') {
-          const min = JSON.stringify(parsed);
-          output.textContent = min;
-          document.getElementById('statusMsg').textContent = '✓ Minified';
-        } else {
-          const formatted = JSON.stringify(parsed, null, 2);
-          output.innerHTML = highlightJSON(formatted);
-          document.getElementById('statusMsg').textContent = '✓ Formatted';
-        }
-      } catch (e) {
-        output.innerHTML = '<span style="color:var(--color-error);font-weight:700;">✗ Invalid JSON</span>\n\n' + e.message;
-        document.getElementById('statusMsg').textContent = '✗ Error';
-      }
-    }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
 
-    function copyOutput() {
-      const text = output.textContent;
-      if (!text || text === 'Output will appear here...') return;
-      navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
-    }
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
 
-    function clearInput() { input.value = ''; output.textContent = 'Output will appear here...'; updateStats(''); document.getElementById('statusMsg').textContent = ''; }
-
-    function loadSample() {
-      input.value = JSON.stringify({
-        "toolsbase": {
-          "version": "3.0",
-          "launched": "2025-05-25",
-          "tools": ["JSON Formatter", "Regex Tester", "Base64 Encoder", "Hash Generator"],
-          "stats": { "total": 28, "categories": 7, "blogPosts": 10 },
-          "features": ["100% local", "no uploads", "dark mode", "mobile friendly"]
-        }
-      }, null, 2);
-      formatJSON('format');
-    }
-
-    const examples = {
-      api: JSON.stringify({"status":"success","data":{"users":[{"id":1,"name":"Alice Chen","email":"alice@example.com","role":"admin"},{"id":2,"name":"Bob Smith","email":"bob@example.com","role":"editor"}],"pagination":{"page":1,"per_page":25,"total":142,"pages":6}}}, null, 2),
-      config: JSON.stringify({"name":"my-app","version":"1.0.0","scripts":{"dev":"next dev","build":"next build","start":"next start"},"dependencies":{"next":"^14.0.0","react":"^18.2.0","typescript":"^5.0.0"}}, null, 2),
-      nested: JSON.stringify({"company":{"name":"Acme Corp","founded":2015,"offices":[{"city":"San Francisco","address":"123 Main St","employees":45},{"city":"London","address":"456 Tech Ave","employees":32}],"products":["Widget Pro","Gadget Plus","Tool Max"]}}, null, 2),
-      invalid: '{"name": "Test", "value": 123, invalid}'
-    };
-
-    function loadExample(key) {
-      input.value = examples[key];
-      if (key === 'invalid') { formatJSON('validate'); }
-      else { formatJSON('format'); }
-    }
-
-    input.addEventListener('input', () => {
-      const text = input.value;
-      updateStats(text);
-      if (!text.trim()) { output.textContent = 'Output will appear here...'; document.getElementById('statusMsg').textContent = ''; }
-    });
-
-    function toggleFaq(btn) {
-      const item = btn.closest('.faq-item');
-      const icon = item.querySelector('.faq-icon');
-      item.classList.toggle('open');
-      icon.textContent = item.classList.contains('open') ? '×' : '+';
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast') || document.body.appendChild(Object.assign(document.createElement('div'),{id:'toast',className:'toast'}));
-      t.textContent = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
-    }
-  </script>
+document.getElementById('input').addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') transform();
+});
+</script>
 </body>
 </html>

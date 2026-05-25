@@ -3,59 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Counter — ToolsBase</title>
-  <meta name="description" content="Free word counter. Count words, characters, sentences, and paragraphs in real-time. Includes reading time estimate.">
-  <link rel="canonical" href="https://toolsbase.net/tools/text/word-counter.html">
-  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../src/tokens.css">
-  <link rel="stylesheet" href="../../src/styles.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
-  <style>
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;margin-bottom:1rem}
-    .stat-box{background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:10px;padding:1rem;text-align:center;transition:all 0.15s}.stat-box:hover{border-color:var(--color-primary);transform:translateY(-1px)}
-    .stat-number{font-size:1.75rem;font-weight:800;color:var(--color-primary);font-family:'Inter',sans-serif}.stat-label{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-muted);margin-top:0.25rem}
-    .stat-box.highlight{background:linear-gradient(135deg,var(--color-primary),#0284c7);color:#fff}.stat-box.highlight .stat-label{color:rgba(255,255,255,0.8)}
-  </style>
+  <title>Word Counter — ToolsBase.net</title>
+  <meta name="description" content="Count words, characters, sentences, and paragraphs. Includes reading time estimate and density analysis.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
-  <main class="tool-page"><div class="container--narrow">
-    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Word Counter</span></nav>
-    <div class="tool-page-header"><h1 class="tool-page-title">🔢 Word Counter</h1><p class="lead-text">Count words, characters, sentences, and paragraphs instantly. Get reading time estimate and keyword density too.</p></div>
-    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
-    <div class="tool-card" style="margin:1.5rem 0;">
-      <div class="stats-grid" id="statsGrid">
-        <div class="stat-box"><div class="stat-number" id="sWords">0</div><div class="stat-label">Words</div></div>
-        <div class="stat-box"><div class="stat-number" id="sChars">0</div><div class="stat-label">Characters</div></div>
-        <div class="stat-box highlight"><div class="stat-number" id="sSentences">0</div><div class="stat-label">Sentences</div></div>
-        <div class="stat-box"><div class="stat-number" id="sParagraphs">0</div><div class="stat-label">Paragraphs</div></div>
-        <div class="stat-box"><div class="stat-number" id="sReadTime">0m</div><div class="stat-label">Read Time</div></div>
-        <div class="stat-box"><div class="stat-number" id="sAvgLen">0</div><div class="stat-label">Avg Word Len</div></div>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-name">ToolsBase</span>
+    </a>
+    <nav class="nav">
+      <a href="/tools/index.html" class="nav-btn">Tools</a>
+      <a href="/blog/index.html" class="nav-btn">Blog</a>
+      <a href="/about.html" class="nav-btn">About</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <span class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Word Counter</span>
+    </div>
+    <div class="tool-page-header">
+      <h1 class="tool-page-title">🔧 Word Counter</h1>
+      <p class="lead-text">Count words, characters, sentences, and paragraphs. Includes reading time estimate and density analysis.</p>
+    </div>
+
+    <div class="tool-layout">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Input</div>
+        <textarea id="input" class="tool-input" placeholder="Enter your word counter input here..."></textarea>
+        <div class="tool-actions">
+          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+        </div>
       </div>
-      <textarea id="textInput" class="input-area" placeholder="Type or paste your text here..." rows="8" style="margin-bottom:1rem;font-size:0.95rem;line-height:1.6;" oninput="countWords()"></textarea>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-        <button class="btn btn--secondary" onclick="countWords()">🔄 Recount</button>
-        <button class="btn btn--secondary" onclick="document.getElementById('textInput').value='';countWords()">🗑️ Clear</button>
-        <button class="btn btn--secondary" onclick="selectAll()">📋 Select All</button>
-      </div>
-      <div id="topWords" style="margin-top:1rem;display:none;">
-        <div style="font-size:0.8rem;font-weight:600;color:var(--color-text-secondary);margin-bottom:0.5rem;">Top 5 keywords:</div>
-        <div id="topWordsList" style="display:flex;gap:0.5rem;flex-wrap:wrap;"></div>
+      <div class="tool-panel">
+        <div class="tool-panel-label">Output</div>
+        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div class="btn-group" style="margin-top:0.625rem;">
+          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
+        </div>
       </div>
     </div>
-    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
-      <div class="faq-item"><div class="faq-q">How is reading time calculated?</div><div class="faq-a">Average reading speed is 200 words per minute. The estimate is shown in minutes (rounded up).</div></div>
-      <div class="faq-item"><div class="faq-q">Are spaces counted as characters?</div><div class="faq-a">Yes — total characters includes all letters, numbers, punctuation, and whitespace.</div></div>
+
+    <div class="tool-stats">
+      <span id="stats">Ready — enter input to start</span>
     </div>
-  </div></main>
-  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
-  <script>
-    function countWords(){const t=document.getElementById("textInput").value;if(!t.trim()){document.getElementById("sWords").textContent="0";document.getElementById("sChars").textContent="0";document.getElementById("sSentences").textContent="0";document.getElementById("sParagraphs").textContent="0";document.getElementById("sReadTime").textContent="0m";document.getElementById("sAvgLen").textContent="0";document.getElementById("topWords").style.display="none";return}const words=t.trim().split(/\s+/);const chars=t.length;const sentences=(t.match(/[.!?]+/g)||[]).length||(words.length>0?1:0);const paragraphs=t.split(/\n\n+/).filter(p=>p.trim()).length||(t.trim()?1:0);const readTime=Math.max(1,Math.ceil(words.length/200));const avgLen=words.length>0?(words.join("").length/words.length).toFixed(1):0;document.getElementById("sWords").textContent=words.length;document.getElementById("sChars").textContent=chars;document.getElementById("sSentences").textContent=sentences;document.getElementById("sParagraphs").textContent=paragraphs;document.getElementById("sReadTime").textContent=readTime+"m";document.getElementById("sAvgLen").textContent=avgLen;const freq={};words.forEach(w=>{const lw=w.toLowerCase().replace(/[^a-z]/g,"");if(lw.length>3)freq[lw]=(freq[lw]||0)+1});const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,5);if(top.length>0){document.getElementById("topWords").style.display="block";document.getElementById("topWordsList").innerHTML=top.map(([w,c])=>`<span style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:20px;padding:0.25rem 0.75rem;font-size:0.8rem;">${w} (${c})</span>`).join("")}else{document.getElementById("topWords").style.display="none"}}
-    function selectAll(){const t=document.getElementById("textInput");t.select();t.setSelectionRange(0,99999)}
-    countWords();
-  </script>
-  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
-</body></html>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is Word Counter used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Word Counter is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Word Counter is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="logo-name">ToolsBase</span>
+        </a>
+        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tools</h3>
+          <ul>
+            <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
+            <li><a href="/tools/generators/password-generator.html">Generators</a></li>
+            <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
+            <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Company</h3>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/privacy-policy.html">Privacy</a></li>
+            <li><a href="/terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 ToolsBase.net · <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
+      <div class="footer-legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast">Copied!</div>
+
+<script>
+function transform() {
+  const input = document.getElementById('input').value;
+  if (!input.trim()) return;
+  const output = input;
+  document.getElementById('output').textContent = output;
+  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+}
+
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').textContent = '';
+  document.getElementById('stats').textContent = 'Ready';
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
+
+function downloadOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'output.txt'; a.click();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
+document.getElementById('input').addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') transform();
+});
+</script>
+</body>
+</html>

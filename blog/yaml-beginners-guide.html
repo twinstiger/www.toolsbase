@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YAML for Developers: A Practical Guide from Zero to Production — ToolsBase Blog</title>
+  <meta name="description" content="YAML is everywhere — Docker Compose, Kubernetes, GitHub Actions, Ansible. This guide covers YAML syntax, common pitfalls, and best practices for writing clean config files.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/yaml-beginners-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>YAML for Developers: A Practical Guide from Zero to Production</span>
+          </div>
+          <h1>YAML for Developers: A Practical Guide from Zero to Production</h1>
+          <p class="lead">YAML is everywhere — Docker Compose, Kubernetes, GitHub Actions, Ansible. This guide covers YAML syntax, common pitfalls, and best practices for writing clean config files.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-12</span>
+            <span>8 min read</span>
+            <span>Dev Tools</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/yaml/800/400" alt="YAML for Developers: A Practical Guide from Zero to Production" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>Why YAML Matters</h2>
+<p>YAML ("YAML Ain't Markup Language") is the de facto standard for configuration files in the modern developer stack. Docker Compose, Kubernetes, GitHub Actions, Ansible, Jekyll — all use YAML. Understanding it deeply saves hours of frustration.</p>
+
+<h2>Basic Data Types</h2>
+<pre><code># String (quotes optional unless special chars)
+name: John Doe
+
+# Number
+age: 32
+
+# Boolean
+active: true
+
+# Null
+middle_name: null
+
+# Date
+created: 2026-01-15</code></pre>
+
+<h2>Strings and Quoting</h2>
+<pre><code># Unquoted — works for most cases
+message: Hello World
+
+# Double quotes — escape sequences work
+path: "line1\nline2"
+
+# Single quotes — literal, no escape
+note: 'It costs $100'</code></pre>
+
+<h2>Lists (Arrays)</h2>
+<pre><code># Inline style
+fruits: [apple, banana, cherry]
+
+# Block style
+languages:
+  - Python
+  - JavaScript
+  - Go
+  - Rust</code></pre>
+
+<h2>Objects (Maps)</h2>
+<pre><code># Block style
+server:
+  host: localhost
+  port: 8080
+  ssl: true
+
+# Inline style (good for short configs)
+server: {host: localhost, port: 8080}</code></pre>
+
+<h2>Nested Structures</h2>
+<pre><code>database:
+  primary:
+    host: db1.example.com
+    port: 5432
+    credentials:
+      user: admin
+      password: secret123
+  replica:
+    host: db2.example.com
+    port: 5432</code></pre>
+
+<h2>Common Pitfalls</h2>
+<ul>
+<li><strong>Tabs vs spaces:</strong> YAML requires spaces. Tabs cause silent errors.</li>
+<li><strong>Case sensitivity:</strong> <code>true</code> and <code>True</code> are different.</li>
+<li><strong>Colon spacing:</strong> Write <code>key: value</code>, not <code>key:value</code>.</li>
+<li><strong>Indentation:</strong> Use consistent spaces (2 or 4). Never mix.</li>
+</ul>
+
+<h2>Anchors and Aliases</h2>
+<pre><code>defaults: &defaults
+  retries: 3
+  timeout: 30
+
+production:
+  <<: *defaults
+  timeout: 60</code></pre>
+
+<h2>Validate Your YAML</h2>
+<p>Use our <a href="../tools/dev/yaml-formatter.html">YAML Formatter</a> to format, validate, and convert YAML to JSON. Copy-paste errors are the #1 cause of broken CI/CD pipelines.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

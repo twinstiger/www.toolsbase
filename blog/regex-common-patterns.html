@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>20 Regex Patterns Every Developer Should Know — ToolsBase Blog</title>
+  <meta name="description" content="A curated collection of the most useful regular expressions — from email validation to hex colors, with explanations you can actually understand.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/regex-common-patterns.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>20 Regex Patterns Every Developer Should Know</span>
+          </div>
+          <h1>20 Regex Patterns Every Developer Should Know</h1>
+          <p class="lead">A curated collection of the most useful regular expressions — from email validation to hex colors, with explanations you can actually understand.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-21</span>
+            <span>10 min read</span>
+            <span>Dev Tools</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/regex/800/400" alt="20 Regex Patterns Every Developer Should Know" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>The Regex Reference You Actually Need</h2>
+<p>Rather than another tutorial, this is a practical reference of patterns you'll actually use — with clear explanations of how each part works.</p>
+
+<h2>1. Email Address</h2>
+<pre><code>/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/</code></pre>
+<p>Validates standard email format. Not RFC-compliant (there is no perfect email regex), but catches typos and common mistakes.</p>
+
+<h2>2. URL</h2>
+<pre><code>/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?=$]*/</code></pre>
+<p>Matches http and https URLs with a hostname and optional path.</p>
+
+<h2>3. IPv4 Address</h2>
+<pre><code>/^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}
+  (?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/</code></pre>
+<p>Validates each octet as 0–255, preventing invalid IPs like 256.0.0.1.</p>
+
+<h2>4. Phone Number (US)</h2>
+<pre><code>/^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/</code></pre>
+<p>Matches (555) 123-4567, 555-123-4567, 5551234567, etc.</p>
+
+<h2>5. Hex Color Code</h2>
+<pre><code>/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/</code></pre>
+<p>Matches #FFF, #ffffff, #000, with or without the # prefix.</p>
+
+<h2>6. Date (YYYY-MM-DD)</h2>
+<pre><code>/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/</code></pre>
+<p>Validates year, month (01–12), and day (01–31) with proper month bounds.</p>
+
+<h2>7. Time (HH:MM or HH:MM:SS)</h2>
+<pre><code>/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/</code></pre>
+<p>Matches 00:00 to 23:59, with optional seconds.</p>
+
+<h2>8. Username</h2>
+<pre><code>/^[a-zA-Z0-9_-]{3,16}$/</code></pre>
+<p>Alphanumeric + underscore/hyphen, 3–16 characters.</p>
+
+<h2>9. Strong Password</h2>
+<pre><code>/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)
+  (?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/</code></pre>
+<p>Requires: lowercase, uppercase, digit, special char, min 8 chars.</p>
+
+<h2>10. Credit Card (basic)</h2>
+<pre><code>/^\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}$/</code></pre>
+<p>Matches Visa, Mastercard format. Use a payment library for real validation.</p>
+
+<h2>11. Slug / URL-friendly string</h2>
+<pre><code>/^[a-z0-9]+(?:-[a-z0-9]+)*$/</code></pre>
+<p>Lowercase letters, numbers, single hyphens between words. No leading/trailing hyphens.</p>
+
+<h2>12. HTML Tag</h2>
+<pre><code>/^<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/</code></pre>
+<p>Matches opening tags with content and closing tags, or self-closing tags.</p>
+
+<h2>13. Comma-Separated Numbers</h2>
+<pre><code>/^\d{1,3}(,\d{3})*$/</code></pre>
+<p>Matches 1,000, 1,000,000 but not 10,00 or 1000,000.</p>
+
+<h2>14. UUID</h2>
+<pre><code>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-
+  [0-9a-f]{4}-[0-9a-f]{12}$/i</code></pre>
+<p>Matches standard UUID format (v4 or any version).</p>
+
+<h2>15. File Extension</h2>
+<pre><code>/\.(jpg|jpeg|png|gif|webp)$/i</code></pre>
+<p>Extracts image file extensions from filenames.</p>
+
+<h2>Test Your Regexes</h2>
+<p>Use our <a href="../tools/dev/regex-tester.html">Regex Tester</a> to validate patterns against test strings — with real-time highlighting of matches and capture groups.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

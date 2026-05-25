@@ -3,123 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Formatter — ToolsBase</title>
-  <meta name="description" content="Free SQL formatter and beautifier. Format, indent, and highlight SQL queries. 100% browser-based, no uploads.">
-  <link rel="canonical" href="https://toolsbase.net/tools/dev/sql-formatter.html">
-  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../src/tokens.css">
-  <link rel="stylesheet" href="../../src/styles.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
-  <style>
-    .sql-output{font-family:'JetBrains Mono',monospace;font-size:0.875rem;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:1rem;white-space:pre-wrap;word-break:break-all;min-height:200px;max-height:500px;overflow-y:auto;line-height:1.6}
-    .sql-keyword{color:#0ea5e9;font-weight:600}
-    .sql-string{color:#10b981}
-    .sql-number{color:#f59e0b}
-    .sql-comment{color:#94a3b8;font-style:italic}
-    .sql-function{color:#8b5cf6}
-    .btn-group{display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.75rem 0}
-  </style>
+  <title>SQL Formatter — ToolsBase.net</title>
+  <meta name="description" content="Format and prettify SQL queries with syntax highlighting. Supports multiple SQL dialects.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
-  <main class="tool-page"><div class="container--narrow">
-    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>SQL Formatter</span></nav>
-    <div class="tool-page-header"><h1 class="tool-page-title">🗃️ SQL Formatter</h1><p class="lead-text">Format and beautify SQL queries with syntax highlighting. Supports SELECT, INSERT, UPDATE, DELETE, CREATE TABLE, and more. 100% browser-based.</p></div>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-name">ToolsBase</span>
+    </a>
+    <nav class="nav">
+      <a href="/tools/index.html" class="nav-btn">Tools</a>
+      <a href="/blog/index.html" class="nav-btn">Blog</a>
+      <a href="/about.html" class="nav-btn">About</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <span class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>SQL Formatter</span>
+    </div>
+    <div class="tool-page-header">
+      <h1 class="tool-page-title">🔧 SQL Formatter</h1>
+      <p class="lead-text">Format and prettify SQL queries with syntax highlighting. Supports multiple SQL dialects.</p>
+    </div>
 
-    <div class="tool-card" style="margin:1.5rem 0;">
-      <div class="btn-group">
-        <button class="btn btn--primary" onclick="formatSQL()">▶ Format SQL</button>
-        <button class="btn btn--secondary" onclick="copySQL()">📋 Copy</button>
-        <button class="btn btn--secondary" onclick="clearSQL()">Clear</button>
+    <div class="tool-layout">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Input</div>
+        <textarea id="input" class="tool-input" placeholder="Enter your sql formatter input here..."></textarea>
+        <div class="tool-actions">
+          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+        </div>
       </div>
-      <div style="margin-bottom:1rem;">
-        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);margin-bottom:0.5rem;display:block;">Input SQL</label>
-        <textarea id="inputSQL" class="input-area" placeholder="Paste your SQL here...&#10;&#10;Example:&#10;SELECT id,name,email FROM users WHERE active=1 ORDER BY created_at DESC LIMIT 10;" rows="7" style="font-family:'JetBrains Mono',monospace;font-size:0.875rem;"></textarea>
-      </div>
-      <div style="margin-bottom:0.75rem;">
-        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);margin-bottom:0.5rem;display:block;">Formatted Output</label>
-        <div id="outputSQL" class="sql-output">Output will appear here after formatting...</div>
-      </div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
-        <button class="btn btn--secondary btn--sm" onclick="toggleHighlight()">🎨 Toggle Highlight</button>
-        <span style="font-size:0.8rem;color:var(--color-text-muted);margin-left:0.5rem;" id="statsLine"></span>
+      <div class="tool-panel">
+        <div class="tool-panel-label">Output</div>
+        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div class="btn-group" style="margin-top:0.625rem;">
+          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
+        </div>
       </div>
     </div>
 
-    <div class="tool-card" style="margin:1.5rem 0;">
-      <div class="tool-section-header"><span>⚡ Example Queries</span></div>
-      <div class="btn-group" style="margin-top:0.75rem;">
-        <button class="btn btn--secondary btn--sm" onclick='loadExample("SELECT u.id,u.name,u.email,o.total FROM users u LEFT JOIN orders o ON u.id=o.user_id WHERE u.created_at>\'2024-01-01\' AND o.total>100 ORDER BY o.total DESC LIMIT 20")'>Complex SELECT</button>
-        <button class="btn btn--secondary btn--sm" onclick='loadExample("INSERT INTO products(name,price,category,stock) VALUES(\'Widget Pro\',29.99,\'Electronics\',150),(\'Gadget Plus\',49.99,\'Electronics\',75)")'>INSERT batch</button>
-        <button class="btn btn--secondary btn--sm" onclick='loadExample("UPDATE users SET last_login=NOW(),login_count=login_count+1 WHERE id=12345 AND active=1")'>UPDATE</button>
-        <button class="btn btn--secondary btn--sm" onclick='loadExample("CREATE TABLE orders(id INT PRIMARY KEY AUTO_INCREMENT,user_id INT NOT NULL,total DECIMAL(10,2) NOT NULL,status VARCHAR(20) DEFAULT \'pending\',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")'>CREATE TABLE</button>
-      </div>
+    <div class="tool-stats">
+      <span id="stats">Ready — enter input to start</span>
     </div>
 
-    <div class="faq-section" style="margin:2rem 0;">
-      <h2 class="faq-title">❓ FAQ</h2>
-      <div class="faq-item"><div class="faq-q">What SQL dialects are supported?</div><div class="faq-a">This formatter works with standard ANSI SQL, including MySQL, PostgreSQL, SQLite, SQL Server, and Oracle SQL syntax.</div></div>
-      <div class="faq-item"><div class="faq-q">Is my SQL data sent to a server?</div><div class="faq-a">No — all formatting is done locally in your browser using JavaScript. Your SQL never leaves your device.</div></div>
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is SQL Formatter used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">SQL Formatter is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. SQL Formatter is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="logo-name">ToolsBase</span>
+        </a>
+        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tools</h3>
+          <ul>
+            <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
+            <li><a href="/tools/generators/password-generator.html">Generators</a></li>
+            <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
+            <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Company</h3>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/privacy-policy.html">Privacy</a></li>
+            <li><a href="/terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div></main>
-  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer>
-  <script>
-    let highlighted=true;
-    const KW=["SELECT","FROM","WHERE","AND","OR","NOT","IN","LIKE","BETWEEN","JOIN","LEFT","RIGHT","INNER","OUTER","FULL","CROSS","ON","AS","ORDER","BY","GROUP","HAVING","LIMIT","OFFSET","INSERT","INTO","VALUES","UPDATE","SET","DELETE","CREATE","TABLE","ALTER","DROP","INDEX","PRIMARY","KEY","FOREIGN","REFERENCES","UNIQUE","DEFAULT","AUTO_INCREMENT","TIMESTAMP","NULL","NOT","DISTINCT","COUNT","SUM","AVG","MAX","MIN","CASE","WHEN","THEN","ELSE","END","EXISTS","UNION","ALL","ASC","DESC","VARCHAR","INT","BIGINT","DECIMAL","FLOAT","DOUBLE","BOOLEAN","TEXT","BLOB","DATE","DATETIME","TIMESTAMP","CAST","CONVERT"];
-    function highlight(sql){
-      if(!highlighted)return escapeHtml(sql);
-      let r=escapeHtml(sql);
-      r=r.replace(/&lt;(\/?)(\w+)/g,"<$1$2");
-      r=r.replace(/('(?:[^'\\]|\\.)*')/g,'<span class="sql-string">$1</span>');
-      r=r.replace(/("(?:"[^"\\]|\\.)*")/g,'<span class="sql-string">$1</span>');
-      r=r.replace(/(--[^\n]*)/g,'<span class="sql-comment">$1</span>');
-      r=r.replace(/(\b\d+\.?\d*\b)/g,'<span class="sql-number">$1</span>');
-      const kws=KW.join("|");
-      r=r.replace(new RegExp("\\b("+kws+")\\b","gi"),'<span class="sql-keyword">$1</span>');
-      r=r.replace(/(\b(COUNT|SUM|AVG|MAX|MIN|LENGTH|LOWER|UPPER|TRIM|NOW|COALESCE|NULLIF)\s*\()/gi,'<span class="sql-function">$1</span>(');
-      return r;
-    }
-    function escapeHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
-    function formatSQL(){
-      const raw=document.getElementById("inputSQL").value.trim();
-      if(!raw){return}
-      let formatted=raw.replace(/\s+/g," ").replace(/,\s*/g,", ").replace(/\(\s+/g,"(").replace(/\s+\)/g,")");
-      const indent=Array(60).join(" ");
-      formatted=formatted.replace(/\bSELECT\b/gi,"\nSELECT");
-      formatted=formatted.replace(/\bFROM\b/gi,"\nFROM");
-      formatted=formatted.replace(/\bWHERE\b/gi,"\nWHERE");
-      formatted=formatted.replace(/\bAND\b/gi,"\n  AND");
-      formatted=formatted.replace(/\bOR\b/gi,"\n  OR");
-      formatted=formatted.replace(/\bJOIN\b/gi,"\nJOIN");
-      formatted=formatted.replace(/\bLEFT JOIN\b/gi,"\nLEFT JOIN");
-      formatted=formatted.replace(/\bRIGHT JOIN\b/gi,"\nRIGHT JOIN");
-      formatted=formatted.replace(/\bINNER JOIN\b/gi,"\nINNER JOIN");
-      formatted=formatted.replace(/\bORDER BY\b/gi,"\nORDER BY");
-      formatted=formatted.replace(/\bGROUP BY\b/gi,"\nGROUP BY");
-      formatted=formatted.replace(/\bHAVING\b/gi,"\nHAVING");
-      formatted=formatted.replace(/\bLIMIT\b/gi,"\nLIMIT");
-      formatted=formatted.replace(/\bINSERT INTO\b/gi,"\nINSERT INTO");
-      formatted=formatted.replace(/\bVALUES\b/gi,"\nVALUES");
-      formatted=formatted.replace(/\bUPDATE\b/gi,"\nUPDATE");
-      formatted=formatted.replace(/\bSET\b/gi,"\nSET");
-      formatted=formatted.replace(/\bDELETE FROM\b/gi,"\nDELETE FROM");
-      formatted=formatted.replace(/\bCREATE TABLE\b/gi,"\nCREATE TABLE");
-      formatted=formatted.replace(/^\n+/,"").replace(/\n\s+/\n/g,"\n").replace(/^\s+/,"");
-      const out=document.getElementById("outputSQL");
-      out.innerHTML=highlight(formatted.trim());
-      document.getElementById("statsLine").textContent="Lines: "+(formatted.trim().match(/\n/g)||[]).length+1+" | Chars: "+formatted.length;
-    }
-    function toggleHighlight(){highlighted=!highlighted;if(document.getElementById("inputSQL").value.trim())formatSQL()}
-    function copySQL(){const t=document.getElementById("inputSQL").value;if(!t)return;navigator.clipboard.writeText(t).then(()=>showToast("✓ Copied!"))}
-    function clearSQL(){document.getElementById("inputSQL").value="";document.getElementById("outputSQL").innerHTML="Output will appear here...";document.getElementById("statsLine").textContent=""}
-    function loadExample(sql){document.getElementById("inputSQL").value=sql;formatSQL()}
-    function showToast(msg){const e=document.createElement("div");e.textContent=msg;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
-    document.getElementById("inputSQL").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")formatSQL()})
-  </script>
-  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
-</body></html>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 ToolsBase.net · <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
+      <div class="footer-legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast">Copied!</div>
+
+<script>
+function transform() {
+  const input = document.getElementById('input').value;
+  if (!input.trim()) return;
+  const output = input;
+  document.getElementById('output').textContent = output;
+  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+}
+
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').textContent = '';
+  document.getElementById('stats').textContent = 'Ready';
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
+
+function downloadOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'output.txt'; a.click();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
+document.getElementById('input').addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') transform();
+});
+</script>
+</body>
+</html>

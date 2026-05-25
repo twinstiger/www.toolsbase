@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Tokens Explained: How Modern Authentication Works — ToolsBase Blog</title>
+  <meta name="description" content="JSON Web Tokens are everywhere — but how do they actually work? A clear explanation of JWT structure, signing, and security best practices.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/jwt-authentication.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>JWT Tokens Explained: How Modern Authentication Works</span>
+          </div>
+          <h1>JWT Tokens Explained: How Modern Authentication Works</h1>
+          <p class="lead">JSON Web Tokens are everywhere — but how do they actually work? A clear explanation of JWT structure, signing, and security best practices.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-17</span>
+            <span>8 min read</span>
+            <span>Security</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/jwt/800/400" alt="JWT Tokens Explained: How Modern Authentication Works" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>What is a JWT?</h2>
+<p>A JSON Web Token (JWT, pronounced "jot") is a compact, URL-safe way to transmit claims between two parties. JWTs are the backbone of modern stateless authentication — instead of storing sessions on the server, the session data travels with the user in a signed token.</p>
+
+<h2>Anatomy of a JWT</h2>
+<p>A JWT has three parts, separated by dots:</p>
+<pre><code>xxxxx.yyyyy.zzzzz
+ │     │     └── Signature
+ │     └────────── Payload (claims)
+ └───────────────── Header</code></pre>
+
+<h2>The Three Components</h2>
+<pre><code>// 1. Header (base64url encoded JSON)
+{
+  "alg": "HS256",   // Algorithm
+  "typ": "JWT"
+}
+
+// 2. Payload (base64url encoded JSON)
+{
+  "sub": "1234567890",   // Subject (user ID)
+  "name": "Sarah Chen",
+  "role": "admin",
+  "iat": 1716000000,     // Issued at
+  "exp": 1716086400      // Expiration
+}
+
+// 3. Signature
+HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  secret
+)</code></pre>
+
+<h2>How It Works (Auth Flow)</h2>
+<ol>
+<li>User logs in with username + password</li>
+<li>Server validates credentials, generates a JWT</li>
+<li>Server returns the JWT to the client</li>
+<li>Client stores the JWT (localStorage or httpOnly cookie)</li>
+<li>Client sends JWT in <code>Authorization: Bearer &lt;token&gt;</code> header</li>
+<li>Server verifies signature — if valid, request proceeds</li>
+</ol>
+
+<h2>Common Algorithms</h2>
+<ul>
+<li><strong>HS256</strong> — HMAC with SHA-256 (symmetric, shared secret)</li>
+<li><strong>RS256</strong> — RSA with SHA-256 (asymmetric, public/private key)</li>
+<li><strong>ES256</strong> — ECDSA with SHA-256 (modern, efficient)</li>
+</ul>
+
+<h2>Security Best Practices</h2>
+<ul>
+<li><strong>Always validate signatures</strong> — never trust a token without verification</li>
+<li><strong>Set short expiration times</strong> — 15–60 minutes for access tokens</li>
+<li><strong>Use refresh tokens</strong> — rotate access tokens without re-login</li>
+<li><strong>Store secrets securely</strong> — environment variables, not in code</li>
+<li><strong>Prefer httpOnly cookies</strong> — not localStorage (XSS vulnerable)</li>
+<li><strong>Include <code>jti</code></strong> — unique token ID for revocation</li>
+</ul>
+
+<h2>Never Do These</h2>
+<ul>
+<li>Don't put sensitive data in the payload (it's just base64-encoded, not encrypted)</li>
+<li>Don't use <code>none</code> algorithm (JWT algorithm confusion attacks)</li>
+<li>Don't skip signature verification</li>
+<li>Don't store JWTs in localStorage if you can avoid it</li>
+</ul>
+
+<h2>Validate JWTs in Code</h2>
+<pre><code>// Node.js with jsonwebtoken
+const jwt = require('jsonwebtoken');
+
+const decoded = jwt.verify(token, process.env.JWT_SECRET);
+console.log(decoded.userId, decoded.role);</code></pre>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

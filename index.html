@@ -3,350 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ToolsBase — Free Online Developer Tools | JSON, Regex, Base64 & More</title>
-  <meta name="description" content="Free browser-based developer tools: JSON formatter, regex tester, Base64 encoder, hash generator, UUID & password generator. 100% local — no uploads, no tracking.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://toolsbase.net/">
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <meta name="theme-color" content="#f97316">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ToolsBase — Free Online Developer Tools">
-  <meta property="og:description" content="JSON formatter, regex tester, Base64 encoder, hash generator and more. All in your browser — no uploads.">
-  <meta property="og:url" content="https://toolsbase.net/">
-  <meta property="og:site_name" content="ToolsBase">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ToolsBase — Free Online Developer Tools">
-  <meta name="twitter:description" content="JSON formatter, regex tester, Base64 encoder, hash generator and more. 100% local.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/tokens.css">
-  <link rel="stylesheet" href="src/styles.css">
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebSite","name":"ToolsBase","url":"https://toolsbase.net/","description":"Free online developer tools: JSON formatter, regex tester, Base64 encoder, hash generator and more.","potentialAction":{"@type":"SearchAction","target":"https://toolsbase.net/?q={search_term_string}","query-input":"required name=search_term_string"}}
-  </script>
+  <title>ToolsBase.net — 51 Free Browser-Based Developer Tools</title>
+  <meta name="description" content="Free browser tools: JSON Formatter, Regex Tester, Password Generator, QR Code, and 50 more. 42 built-in + 9 curated external tools.">
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="/src/styles.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <header class="header">
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-name">ToolsBase</span>
+    </a>
+    <nav class="nav">
+      <a href="/tools/index.html" class="nav-btn">Tools</a>
+      <a href="/blog/index.html" class="nav-btn">Blog</a>
+      <a href="/about.html" class="nav-btn">About</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <span class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">51 free tools &middot; 100% browser-based</div>
+      <h1 class="hero-title">Developer Tools, Done Right.</h1>
+      <p class="hero-sub">Free, no-sign-up utilities. Formatters, generators, converters, and more. 42 built-in tools + 9 curated external tools.</p>
+      <div class="hero-search">
+        <span class="hero-search-icon">🔍</span>
+        <input type="text" class="hero-search-input" id="searchInput" placeholder="Search 51 tools..." autocomplete="off">
+      </div>
+      <div class="hero-cta">
+        <a href="/tools/index.html" class="btn btn--primary">Browse All 51 →</a>
+        <a href="/blog/index.html" class="btn btn--outline">Read Blog</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-grid">
+<a href="tools/dev/json-formatter.html" class="hc hc--blue"><div class="hc-icon">📋</div><div class="hc-title">JSON Formatter</div><div class="hc-sub">Format & validate JSON instantly</div></a>
+<a href="tools/dev/regex-tester.html" class="hc hc--purple"><div class="hc-icon">🔍</div><div class="hc-title">Regex Tester</div><div class="hc-sub">Test regex with live highlighting</div></a>
+<a href="tools/generators/password-generator.html" class="hc hc--green"><div class="hc-icon">🔑</div><div class="hc-title">Password Generator</div><div class="hc-sub">Generate strong passwords</div></a>
+<a href="tools/image/qr-code-generator.html" class="hc hc--pink"><div class="hc-icon">📱</div><div class="hc-title">QR Code Generator</div><div class="hc-sub">Create QR codes in seconds</div></a>
+<a href="tools/converters/timestamp-converter.html" class="hc hc--yellow"><div class="hc-icon">⏱️</div><div class="hc-title">Timestamp Converter</div><div class="hc-sub">Convert any time format</div></a>
+<a href="tools/dev/base64-encoder.html" class="hc hc--orange"><div class="hc-icon">🔄</div><div class="hc-title">Base64 Encoder</div><div class="hc-sub">Encode & decode Base64</div></a>
+      </div>
+    </div>
+  </section>
+  <div class="privacy-strip">
+    <div class="privacy-inner">
+      <span class="privacy-item">🔒 100% Local Processing</span>
+      <span class="privacy-item">📊 42 Built-in Tools</span>
+      <span class="privacy-item">🔗 9 External Tools</span>
+      <span class="privacy-item">⚡ 51 Total Tools</span>
+    </div>
+  </div>
+  <section class="tools-home">
     <div class="container">
-      <div class="header-content">
-        <a href="/" class="logo">
-          <img src="logo.svg" alt="ToolsBase">
-          <div>
-            <div class="logo-name">ToolsBase</div>
-            <div class="logo-tag">Free · Local · Private</div>
-          </div>
-        </a>
-        <nav class="nav" aria-label="Main navigation">
-          <a href="tools/index.html" class="nav-btn active">🛠️ Tools</a>
-          <a href="blog/index.html" class="nav-btn">📝 Blog</a>
-          <a href="about.html" class="nav-btn">About</a>
-        </nav>
-        <button class="mobile-menu-btn" aria-label="Menu">
-          <div class="hamburger"><span></span><span></span><span></span></div>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-
-    <!-- HERO: two-column grid -->
-    <section class="hero">
-      <!-- LEFT -->
-      <div class="hero-left">
-        <div class="hero-badge">⚡ 28 Free Developer Tools · 100% Browser-Based</div>
-        <h1 class="hero-title">Developer Tools,<br><span>Done Right.</span></h1>
-        <p class="hero-sub">JSON, regex, Base64, hashes — all instant, all private, all in your browser. No sign-up, no limits, no tracking.</p>
-
-        <!-- Search -->
-        <div class="hero-search">
-          <span class="hero-search-icon">🔍</span>
-          <input type="text" class="hero-search-input" placeholder="Search 28 tools — JSON, Regex, Base64, Hash..." id="heroSearch" autocomplete="off">
-        </div>
-        <!-- Search results inline -->
-        <div id="searchResults" style="display:none;background:#fff;border:2px solid #fed7aa;border-radius:14px;overflow:hidden;margin-top:0.5rem;"></div>
-      </div>
-
-      <!-- RIGHT: Tool Preview Grid -->
-      <div class="hero-right">
-        <div class="hero-grid">
-          <div class="hc hc--blue"><div class="hc-icon">📋</div><div class="hc-title">JSON Formatter</div><div class="hc-sub">Format · Validate</div></div>
-          <div class="hc hc--green"><div class="hc-icon">🔑</div><div class="hc-title">Password</div><div class="hc-sub">Generator</div></div>
-          <div class="hc hc--yellow"><div class="hc-icon">🔍</div><div class="hc-title">Regex Tester</div><div class="hc-sub">Real-time match</div></div>
-          <div class="hc hc--purple"><div class="hc-icon">🔄</div><div class="hc-title">Base64</div><div class="hc-sub">Encoder</div></div>
-          <div class="hc hc--pink"><div class="hc-icon">#️⃣</div><div class="hc-title">Hash</div><div class="hc-sub">Generator</div></div>
-          <div class="hc hc--orange"><div class="hc-icon">🎲</div><div class="hc-title">UUID</div><div class="hc-sub">Generator</div></div>
-        </div>
-        <!-- CTA buttons in a row -->
-        <div style="display:flex;gap:0.75rem;margin-top:1rem;flex-wrap:nowrap;">
-          <a href="tools/dev/json-formatter.html" class="btn btn--primary" style="flex:1;text-align:center;white-space:nowrap;">Try JSON Formatter →</a>
-          <a href="tools/index.html" class="btn btn--outline" style="flex:1;text-align:center;white-space:nowrap;">Browse All 28 Tools →</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRIVACY STRIP -->
-    <div class="privacy-strip">
-      <div class="privacy-inner">
-        <div class="privacy-item"><span class="privacy-dot">🔒</span> No cookies</div>
-        <div class="privacy-item"><span class="privacy-dot">·</span></div>
-        <div class="privacy-item"><span class="privacy-dot">No tracking</span></div>
-        <div class="privacy-item"><span class="privacy-dot">·</span></div>
-        <div class="privacy-item"><span class="privacy-dot">No stored data</span></div>
-        <div class="privacy-item"><span class="privacy-dot">·</span></div>
-        <div class="privacy-item">Everything runs locally on your device</div>
-      </div>
-    </div>
-
-    <!-- TOOLS SECTION -->
-    <section class="tools-home">
-      <div class="container">
-
-        <!-- DEV TOOLS -->
-        <div class="category-section">
+        <div class="category-section" id="dev-tools" style="--cat-color:var(--tc-blue)">
           <div class="category-header">
-            <span class="category-dot" style="background:#2563eb"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#2563eb">Developer Tools</div>
-              <div class="category-title">Essential utilities for writing better code</div>
-            </div>
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">🔧 Dev Tools</h2></div>
+            <span class="category-count">12 tools</span>
+          </div>
+          <div class="tool-grid">
+<a href="tools/dev/json-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📋</div><div class="tool-card-title">JSON Formatter</div><div class="tool-card-desc">Format, validate, and minify JSON with syntax highlighting.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/regex-tester.html" class="tool-card tc-blue"><div class="tool-card-icon">🔍</div><div class="tool-card-title">Regex Tester</div><div class="tool-card-desc">Test regular expressions with real-time match highlighting.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/base64-encoder.html" class="tool-card tc-blue"><div class="tool-card-icon">🔄</div><div class="tool-card-title">Base64 Encoder</div><div class="tool-card-desc">Encode and decode Base64. Supports URL-safe Base64URL variant.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/hash-generator.html" class="tool-card tc-blue"><div class="tool-card-icon">#️⃣</div><div class="tool-card-title">Hash Generator</div><div class="tool-card-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/url-encoder.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🔗</div><div class="tool-card-title">URL Encoder</div><div class="tool-card-desc">Encode and decode URL components with special character handling.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/sql-formatter.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🗃️</div><div class="tool-card-title">SQL Formatter</div><div class="tool-card-desc">Format and prettify SQL queries with syntax highlighting.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/html-minifier.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🏄</div><div class="tool-card-title">HTML Minifier</div><div class="tool-card-desc">Compress HTML by removing whitespace and optional tags.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/json-to-yaml.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">📄</div><div class="tool-card-title">JSON to YAML</div><div class="tool-card-desc">Convert JSON to YAML and vice versa with validation.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/yaml-validator.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">✅</div><div class="tool-card-title">YAML Validator</div><div class="tool-card-desc">Validate YAML syntax with line-number error reporting.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/css-minifier.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🎨</div><div class="tool-card-title">CSS Minifier</div><div class="tool-card-desc">Compress CSS by removing whitespace, comments, and unused rules.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/js-minifier.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">⚡</div><div class="tool-card-title">JavaScript Minifier</div><div class="tool-card-desc">Minify JavaScript for production deployment.</div><div class="tool-card-link">→</div></a>
+<a href="tools/dev/xml-formatter.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">📰</div><div class="tool-card-title">XML Formatter</div><div class="tool-card-desc">Format and validate XML with proper indentation.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#dev-tools" class="view-all-link">View all 12 Dev Tools →</a></div>
+        </div>
+        <div class="category-section" id="generators" style="--cat-color:var(--tc-green)">
+          <div class="category-header">
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">⚡ Generators</h2></div>
             <span class="category-count">6 tools</span>
           </div>
           <div class="tool-grid">
-            <a href="tools/dev/json-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📋</div><div class="tool-card-title">JSON Formatter</div><div class="tool-card-desc">Format, validate, and minify JSON with syntax highlighting. Detect and fix errors automatically.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">JSON</span><span class="tag">Formatter</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/dev/regex-tester.html" class="tool-card tc-purple"><div class="tool-card-icon">🔍</div><div class="tool-card-title">Regex Tester</div><div class="tool-card-desc">Test and debug regular expressions with real-time match highlighting and capture groups.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Regex</span><span class="tag">Tester</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/dev/base64-encoder.html" class="tool-card tc-pink"><div class="tool-card-icon">🔄</div><div class="tool-card-title">Base64 Encoder</div><div class="tool-card-desc">Encode and decode Base64 instantly. Supports text, files, and URL-safe Base64URL variant.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Base64</span><span class="tag">Encoder</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/dev/hash-generator.html" class="tool-card tc-orange"><div class="tool-card-icon">#️⃣</div><div class="tool-card-title">Hash Generator</div><div class="tool-card-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Hash</span><span class="tag">SHA</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/dev/url-encoder.html" class="tool-card tc-green"><div class="tool-card-icon">🔗</div><div class="tool-card-title">URL Encoder</div><div class="tool-card-desc">Encode or decode URL components. Handles special characters, query strings, and non-ASCII text.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">URL</span><span class="tag">Encoding</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/dev/sql-formatter.html" class="tool-card tc-cyan"><div class="tool-card-icon">🗃️</div><div class="tool-card-title">SQL Formatter</div><div class="tool-card-desc">Format and prettify SQL queries with syntax highlighting. Supports multiple SQL dialects.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">SQL</span><span class="tag">Formatter</span></div><span class="tool-card-link">→</span></div></a>
-          </div>
+<a href="tools/generators/password-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔑</div><div class="tool-card-title">Password Generator</div><div class="tool-card-desc">Generate strong passwords with customizable length and characters.</div><div class="tool-card-link">→</div></a>
+<a href="tools/generators/uuid-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🎲</div><div class="tool-card-title">UUID Generator</div><div class="tool-card-desc">Generate UUID v4 identifiers instantly for testing and dev.</div><div class="tool-card-link">→</div></a>
+<a href="tools/generators/lorem-ipsum.html" class="tool-card tc-green"><div class="tool-card-icon">📝</div><div class="tool-card-title">Lorem Ipsum</div><div class="tool-card-desc">Generate placeholder text in paragraphs, words, or bytes.</div><div class="tool-card-link">→</div></a>
+<a href="tools/generators/slug-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔤</div><div class="tool-card-title">Slug Generator</div><div class="tool-card-desc">Convert text to URL-friendly slugs with unicode support.</div><div class="tool-card-link">→</div></a>
+<a href="tools/generators/random-string.html" class="tool-card tc-green hidden-card"><div class="tool-card-icon">🎯</div><div class="tool-card-title">Random String</div><div class="tool-card-desc">Generate random strings with custom charset and length.</div><div class="tool-card-link">→</div></a>
+<a href="tools/generators/fake-json.html" class="tool-card tc-green hidden-card"><div class="tool-card-icon">📦</div><div class="tool-card-title">Fake JSON Generator</div><div class="tool-card-desc">Generate realistic mock JSON data for testing applications.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#generators" class="view-all-link">View all 6 Generators →</a></div>
         </div>
-
-        <!-- GENERATORS -->
-        <div class="category-section">
+        <div class="category-section" id="converters" style="--cat-color:var(--tc-yellow)">
           <div class="category-header">
-            <span class="category-dot" style="background:#16a34a"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#16a34a">Generators</div>
-              <div class="category-title">Instantly generate passwords, UUIDs, placeholder text, and slugs</div>
-            </div>
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">🔄 Converters</h2></div>
             <span class="category-count">4 tools</span>
           </div>
           <div class="tool-grid">
-            <a href="tools/generators/password-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔑</div><div class="tool-card-title">Password Generator</div><div class="tool-card-desc">Generate strong, random passwords with customizable length and character sets. Copy instantly.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Security</span><span class="tag">Password</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/generators/uuid-generator.html" class="tool-card tc-purple"><div class="tool-card-icon">🎲</div><div class="tool-card-title">UUID Generator</div><div class="tool-card-desc">Generate UUID v4 identifiers instantly. Perfect for database keys, testing, and software development.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">UUID</span><span class="tag">ID</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/generators/lorem-ipsum.html" class="tool-card tc-yellow"><div class="tool-card-icon">📝</div><div class="tool-card-title">Lorem Ipsum</div><div class="tool-card-desc">Generate placeholder text in paragraphs, words, or bytes. Choose from classic or random content.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Lorem</span><span class="tag">Placeholder</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/generators/slug-generator.html" class="tool-card tc-orange"><div class="tool-card-icon">🔤</div><div class="tool-card-title">Slug Generator</div><div class="tool-card-desc">Convert any text into URL-friendly slugs. Handles spaces, special characters, and unicode.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Slug</span><span class="tag">URL</span></div><span class="tool-card-link">→</span></div></a>
-          </div>
+<a href="tools/converters/timestamp-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">⏱️</div><div class="tool-card-title">Timestamp Converter</div><div class="tool-card-desc">Convert between Unix timestamps and human-readable dates.</div><div class="tool-card-link">→</div></a>
+<a href="tools/converters/number-base.html" class="tool-card tc-yellow"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Number Base Converter</div><div class="tool-card-desc">Convert between binary, octal, decimal, and hexadecimal.</div><div class="tool-card-link">→</div></a>
+<a href="tools/converters/color-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Color Converter</div><div class="tool-card-desc">Convert between HEX, RGB, HSL with color picker and palette.</div><div class="tool-card-link">→</div></a>
+<a href="tools/converters/unit-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">📏</div><div class="tool-card-title">Unit Converter</div><div class="tool-card-desc">Convert length, weight, temperature, and more units.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#converters" class="view-all-link">View all 4 Converters →</a></div>
         </div>
-
-        <!-- CONVERTERS -->
-        <div class="category-section">
+        <div class="category-section" id="text-tools" style="--cat-color:var(--tc-purple)">
           <div class="category-header">
-            <span class="category-dot" style="background:#d97706"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#d97706">Converters</div>
-              <div class="category-title">Transform data between formats — timestamps, bases, colors, and units</div>
-            </div>
-            <span class="category-count">4 tools</span>
-          </div>
-          <div class="tool-grid">
-            <a href="tools/converters/timestamp-converter.html" class="tool-card tc-blue"><div class="tool-card-icon">⏱️</div><div class="tool-card-title">Timestamp Converter</div><div class="tool-card-desc">Convert between Unix timestamps and human-readable dates. Supports all timezones and batch conversion.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Time</span><span class="tag">Date</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/converters/number-base.html" class="tool-card tc-green"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Number Base Converter</div><div class="tool-card-desc">Convert between binary, octal, decimal, and hexadecimal. Supports big integers up to 64 bits.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Binary</span><span class="tag">Hex</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/converters/color-converter.html" class="tool-card tc-pink"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Color Converter</div><div class="tool-card-desc">Convert between HEX, RGB, HSL, and other color formats. Includes color picker and palette generator.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Color</span><span class="tag">HEX</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/converters/unit-converter.html" class="tool-card tc-purple"><div class="tool-card-icon">📏</div><div class="tool-card-title">Unit Converter</div><div class="tool-card-desc">Convert length, weight, temperature, and more. Includes metric, imperial, and specialized units.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Units</span><span class="tag">Conversion</span></div><span class="tool-card-link">→</span></div></a>
-          </div>
-        </div>
-
-        <!-- TEXT TOOLS -->
-        <div class="category-section">
-          <div class="category-header">
-            <span class="category-dot" style="background:#7c3aed"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#7c3aed">Text Tools</div>
-              <div class="category-title">Count words, change case, compare diffs — text processing made easy</div>
-            </div>
-            <span class="category-count">3 tools</span>
-          </div>
-          <div class="tool-grid">
-            <a href="tools/text/word-counter.html" class="tool-card tc-blue"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Word Counter</div><div class="tool-card-desc">Count words, characters, sentences, and paragraphs. Includes reading time estimate and density analysis.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Text</span><span class="tag">Counter</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/text/case-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">Aa</div><div class="tool-card-title">Case Converter</div><div class="tool-card-desc">Convert text between camelCase, PascalCase, snake_case, kebab-case, and more.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Case</span><span class="tag">Text</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/text/diff-checker.html" class="tool-card tc-green"><div class="tool-card-icon">📋</div><div class="tool-card-title">Diff Checker</div><div class="tool-card-desc">Compare two texts side by side and highlight differences line by line.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Diff</span><span class="tag">Compare</span></div><span class="tool-card-link">→</span></div></a>
-          </div>
-        </div>
-
-        <!-- IMAGE TOOLS -->
-        <div class="category-section">
-          <div class="category-header">
-            <span class="category-dot" style="background:#db2777"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#db2777">Image Tools</div>
-              <div class="category-title">QR codes, favicons, and image encoding — all in your browser</div>
-            </div>
-            <span class="category-count">3 tools</span>
-          </div>
-          <div class="tool-grid">
-            <a href="tools/image/qr-code-generator.html" class="tool-card tc-blue"><div class="tool-card-icon">📱</div><div class="tool-card-title">QR Code Generator</div><div class="tool-card-desc">Generate QR codes from any text, URL, WiFi credentials, or contact info. Download as PNG or SVG.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">QR</span><span class="tag">Image</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/image/favicon-generator.html" class="tool-card tc-orange"><div class="tool-card-icon">🌐</div><div class="tool-card-title">Favicon Generator</div><div class="tool-card-desc">Generate favicon.ico and app icons from any image. Creates all standard sizes automatically.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Favicon</span><span class="tag">Icon</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/image/image-to-base64.html" class="tool-card tc-pink"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">Image to Base64</div><div class="tool-card-desc">Convert images to Base64 data URIs for embedding directly in HTML or CSS.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Image</span><span class="tag">Base64</span></div><span class="tool-card-link">→</span></div></a>
-          </div>
-        </div>
-
-        <!-- NETWORK TOOLS -->
-        <div class="category-section">
-          <div class="category-header">
-            <span class="category-dot" style="background:#0891b2"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#0891b2">Network Tools</div>
-              <div class="category-title">IP addresses, URLs, subnets — networking utilities for developers</div>
-            </div>
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">📝 Text Tools</h2></div>
             <span class="category-count">5 tools</span>
           </div>
           <div class="tool-grid">
-            <a href="tools/network/my-ip.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌐</div><div class="tool-card-title">My IP Address</div><div class="tool-card-desc">Instantly reveal your public IP address. Shows both IPv4 and IPv6 if available.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Network</span><span class="tag">IP</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/network/url-parser.html" class="tool-card tc-blue"><div class="tool-card-icon">🔎</div><div class="tool-card-title">URL Parser</div><div class="tool-card-desc">Parse any URL into its components — protocol, host, port, path, query, and fragment.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">URL</span><span class="tag">Parser</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/network/url-shortener.html" class="tool-card tc-green"><div class="tool-card-icon">✂️</div><div class="tool-card-title">URL Shortener</div><div class="tool-card-desc">Create shortened, shareable URLs from long links. Works entirely in your browser with no external API.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">URL</span><span class="tag">Shortener</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/network/subnet.html" class="tool-card tc-purple"><div class="tool-card-icon">🧮</div><div class="tool-card-title">Subnet Calculator</div><div class="tool-card-desc">Calculate subnets, CIDR notation, network address, and host range for any IP address.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Subnet</span><span class="tag">CIDR</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/network/ip-to-int.html" class="tool-card tc-orange"><div class="tool-card-icon">🔢</div><div class="tool-card-title">IP to Integer</div><div class="tool-card-desc">Convert IPv4 addresses to 32-bit integer representation and vice versa.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">IP</span><span class="tag">Integer</span></div><span class="tool-card-link">→</span></div></a>
-          </div>
+<a href="tools/text/word-counter.html" class="tool-card tc-purple"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Word Counter</div><div class="tool-card-desc">Count words, characters, sentences with reading time estimate.</div><div class="tool-card-link">→</div></a>
+<a href="tools/text/case-converter.html" class="tool-card tc-purple"><div class="tool-card-icon">Aa</div><div class="tool-card-title">Case Converter</div><div class="tool-card-desc">Convert text between camelCase, PascalCase, snake_case, kebab-case.</div><div class="tool-card-link">→</div></a>
+<a href="tools/text/diff-checker.html" class="tool-card tc-purple"><div class="tool-card-icon">📋</div><div class="tool-card-title">Diff Checker</div><div class="tool-card-desc">Compare two texts side by side with highlighted differences.</div><div class="tool-card-link">→</div></a>
+<a href="tools/text/markdown-preview.html" class="tool-card tc-purple"><div class="tool-card-icon">📝</div><div class="tool-card-title">Markdown Preview</div><div class="tool-card-desc">Live Markdown preview with GFM support, tables, and code blocks.</div><div class="tool-card-link">→</div></a>
+<a href="tools/text/text-diff.html" class="tool-card tc-purple hidden-card"><div class="tool-card-icon">🔀</div><div class="tool-card-title">Text Diff</div><div class="tool-card-desc">Word-level and character-level text comparison tool.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#text-tools" class="view-all-link">View all 5 Text Tools →</a></div>
         </div>
-
-        <!-- CRYPTO & SECURITY -->
-        <div class="category-section">
+        <div class="category-section" id="image-tools" style="--cat-color:var(--tc-pink)">
           <div class="category-header">
-            <span class="category-dot" style="background:#dc2626"></span>
-            <div class="category-info">
-              <div class="category-label" style="color:#dc2626">Crypto & Security</div>
-              <div class="category-title">Hashing, encoding, and encryption tools for secure development</div>
-            </div>
-            <span class="category-count">4 tools</span>
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">🖼️ Image Tools</h2></div>
+            <span class="category-count">3 tools</span>
           </div>
           <div class="tool-grid">
-            <a href="tools/crypto/bcrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔒</div><div class="tool-card-title">bcrypt Generator</div><div class="tool-card-desc">Generate and verify bcrypt password hashes. Industry-standard hashing for secure password storage.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">bcrypt</span><span class="tag">Password</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/crypto/htpasswd.html" class="tool-card tc-orange"><div class="tool-card-icon">🔑</div><div class="tool-card-title">htpasswd Generator</div><div class="tool-card-desc">Generate Apache htpasswd files for HTTP Basic Authentication. Supports bcrypt, MD5, and SHA hashes.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">htpasswd</span><span class="tag">Auth</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/crypto/morse.html" class="tool-card tc-yellow"><div class="tool-card-icon">•••</div><div class="tool-card-title">Morse Code</div><div class="tool-card-desc">Encode or decode Morse code. Supports text to morse and morse to text conversion with audio playback.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Morse</span><span class="tag">Crypto</span></div><span class="tool-card-link">→</span></div></a>
-            <a href="tools/crypto/base32.html" class="tool-card tc-purple"><div class="tool-card-icon">🔠</div><div class="tool-card-title">Base32 Encoder</div><div class="tool-card-desc">Encode and decode Base32 strings. Case-insensitive encoding ideal for DNS-safe identifiers.</div><div class="tool-card-meta"><div class="tool-card-tags"><span class="tag">Base32</span><span class="tag">Encoder</span></div><span class="tool-card-link">→</span></div></a>
+<a href="tools/image/qr-code-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">📱</div><div class="tool-card-title">QR Code Generator</div><div class="tool-card-desc">Generate QR codes from text, URLs, WiFi, or contact info.</div><div class="tool-card-link">→</div></a>
+<a href="tools/image/favicon-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">🌐</div><div class="tool-card-title">Favicon Generator</div><div class="tool-card-desc">Generate favicon.ico and app icons from any image.</div><div class="tool-card-link">→</div></a>
+<a href="tools/image/image-to-base64.html" class="tool-card tc-pink"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">Image to Base64</div><div class="tool-card-desc">Convert images to Base64 data URIs for embedding in HTML/CSS.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#image-tools" class="view-all-link">View all 3 Image Tools →</a></div>
+        </div>
+        <div class="category-section" id="network-tools" style="--cat-color:var(--tc-cyan)">
+          <div class="category-header">
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">🌐 Network Tools</h2></div>
+            <span class="category-count">7 tools</span>
           </div>
+          <div class="tool-grid">
+<a href="tools/network/my-ip.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌐</div><div class="tool-card-title">My IP Address</div><div class="tool-card-desc">Reveal your public IPv4 and IPv6 address instantly.</div><div class="tool-card-link">→</div></a>
+<a href="tools/network/url-parser.html" class="tool-card tc-cyan"><div class="tool-card-icon">🔎</div><div class="tool-card-title">URL Parser</div><div class="tool-card-desc">Parse URLs into protocol, host, port, path, query, and fragment.</div><div class="tool-card-link">→</div></a>
+<a href="tools/network/url-shortener.html" class="tool-card tc-cyan"><div class="tool-card-icon">✂️</div><div class="tool-card-title">URL Shortener</div><div class="tool-card-desc">Create shortened URLs from long links, entirely in your browser.</div><div class="tool-card-link">→</div></a>
+<a href="tools/network/subnet.html" class="tool-card tc-cyan"><div class="tool-card-icon">🧮</div><div class="tool-card-title">Subnet Calculator</div><div class="tool-card-desc">Calculate CIDR, network address, and host range for any IP.</div><div class="tool-card-link">→</div></a>
+<a href="tools/network/ip-to-int.html" class="tool-card tc-cyan hidden-card"><div class="tool-card-icon">🔢</div><div class="tool-card-title">IP to Integer</div><div class="tool-card-desc">Convert IPv4 to 32-bit integer and vice versa.</div><div class="tool-card-link">→</div></a>
+<a href="tools/network/dns-lookup.html" class="tool-card tc-cyan hidden-card"><div class="tool-card-icon">🌍</div><div class="tool-card-title">DNS Lookup</div><div class="tool-card-desc">Query A, AAAA, CNAME, MX, TXT, NS records for any domain.</div><div class="tool-card-link">→</div></a>
+<a href="tools/network/user-agent.html" class="tool-card tc-cyan hidden-card"><div class="tool-card-icon">👤</div><div class="tool-card-title">User Agent Parser</div><div class="tool-card-desc">Parse browser User-Agent strings into OS, browser, device.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#network-tools" class="view-all-link">View all 7 Network Tools →</a></div>
         </div>
-
-        <!-- CTA -->
-        <div style="text-align:center;padding:2.5rem 0 1.5rem;">
-          <h2 style="font-size:1.25rem;font-weight:900;color:#1c1917;margin-bottom:0.875rem;letter-spacing:-0.025em;">Need something specific?</h2>
-          <p style="color:#78716c;margin-bottom:1.5rem;">All 28+ tools are available in the tools directory. No signup, no limits.</p>
-          <a href="tools/index.html" class="btn btn--primary" style="padding:0.85rem 2.25rem;">Browse All Tools →</a>
+        <div class="category-section" id="crypto-tools" style="--cat-color:var(--tc-red)">
+          <div class="category-header">
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">🔒 Crypto Tools</h2></div>
+            <span class="category-count">5 tools</span>
+          </div>
+          <div class="tool-grid">
+<a href="tools/crypto/bcrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔒</div><div class="tool-card-title">bcrypt Generator</div><div class="tool-card-desc">Generate and verify bcrypt password hashes for secure storage.</div><div class="tool-card-link">→</div></a>
+<a href="tools/crypto/htpasswd.html" class="tool-card tc-red"><div class="tool-card-icon">🔑</div><div class="tool-card-title">htpasswd Generator</div><div class="tool-card-desc">Generate Apache htpasswd files for HTTP Basic Authentication.</div><div class="tool-card-link">→</div></a>
+<a href="tools/crypto/morse.html" class="tool-card tc-red"><div class="tool-card-icon">•••</div><div class="tool-card-title">Morse Code</div><div class="tool-card-desc">Encode and decode Morse code with audio playback support.</div><div class="tool-card-link">→</div></a>
+<a href="tools/crypto/base32.html" class="tool-card tc-red"><div class="tool-card-icon">🔠</div><div class="tool-card-title">Base32 Encoder</div><div class="tool-card-desc">Encode and decode Base32 strings for DNS-safe identifiers.</div><div class="tool-card-link">→</div></a>
+<a href="tools/crypto/aes-encrypt.html" class="tool-card tc-red hidden-card"><div class="tool-card-icon">🔐</div><div class="tool-card-title">AES Encrypt/Decrypt</div><div class="tool-card-desc">Encrypt and decrypt text using AES-256-CBC in your browser.</div><div class="tool-card-link">→</div></a>          </div>
+          <div class="view-all-row"><a href="/tools/index.html#crypto-tools" class="view-all-link">View all 5 Crypto Tools →</a></div>
         </div>
-
+        <div class="category-section" id="external-tools" style="--cat-color:var(--tc-gray)">
+          <div class="category-header">
+            <span class="category-dot"></span>
+            <div class="category-info"><h2 class="category-title">🔗 Recommended External Tools</h2></div>
+            <span class="category-count">9 tools</span>
+          </div>
+          <div class="tool-grid">
+<a href="https://www.ilovepdf.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">📄</div><div class="tool-card-title">iLovePDF</div><div class="tool-card-desc">PDF processing — merge, split, compress, convert PDF to and from Word, Excel, images.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.photopea.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Photopea</div><div class="tool-card-desc">Free online photo editor with Photoshop-level features. Layers, masks, filters — no download.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.remove.bg" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">✨</div><div class="tool-card-title">Remove.bg</div><div class="tool-card-desc">One-click AI background removal. Works on people, products, animals.</div><div class="tool-card-link">↗</div></a>
+<a href="https://tinypng.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">TinyPNG</div><div class="tool-card-desc">Smart lossy compression for PNG and JPEG. Reduce file size by up to 80%.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.hemingwayapp.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">✏️</div><div class="tool-card-title">Hemingway Editor</div><div class="tool-card-desc">English sentence checker — highlights complex sentences, passive voice, adverbs.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.speedtest.net" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">📡</div><div class="tool-card-title">Speedtest</div><div class="tool-card-desc">Test internet speed — ping, download, upload speed with real server data.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.wolframalpha.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🧠</div><div class="tool-card-title">WolframAlpha</div><div class="tool-card-desc">Computational knowledge engine — math, science, statistics, geography, and more.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.online-voice-recorder.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🎙️</div><div class="tool-card-title">Online Voice Recorder</div><div class="tool-card-desc">Record voice in your browser, export to MP3, WAV, or OGG.</div><div class="tool-card-link">↗</div></a>
+<a href="https://www.capcut.com/editor" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🎬</div><div class="tool-card-title">CapCut Web</div><div class="tool-card-desc">Free online video editor with AI tools — auto-captions, background removal, transitions.</div><div class="tool-card-link">↗</div></a>          </div>
+        </div>    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="logo-name">ToolsBase</span>
+        </a>
+        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
       </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="/" class="logo">
-            <img src="logo.svg" alt="ToolsBase">
-            <div>
-              <div class="logo-name">ToolsBase</div>
-              <div class="logo-tag">Free · Local · Private</div>
-            </div>
-          </a>
-          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
-        </div>
-        <div class="footer-links">
-          <div class="footer-col">
-            <div class="footer-col-title">Tools</div>
-            <ul>
-              <li><a href="tools/dev/json-formatter.html">JSON Formatter</a></li>
-              <li><a href="tools/dev/regex-tester.html">Regex Tester</a></li>
-              <li><a href="tools/dev/base64-encoder.html">Base64 Encoder</a></li>
-              <li><a href="tools/generators/password-generator.html">Password Generator</a></li>
-              <li><a href="tools/converters/timestamp-converter.html">Timestamp Converter</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <div class="footer-col-title">Resources</div>
-            <ul>
-              <li><a href="blog/index.html">Blog</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <div class="footer-col-title">Legal</div>
-            <ul>
-              <li><a href="privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="terms.html">Terms of Service</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
-        <div class="footer-legal">
-          <a href="privacy-policy.html">Privacy</a>
-          <a href="terms.html">Terms</a>
-        </div>
+      <div class="footer-links">
+        <div class="footer-col"><h3 class="footer-col-title">Tools</h3><ul>
+          <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
+          <li><a href="/tools/generators/password-generator.html">Generators</a></li>
+          <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
+          <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
+        </ul></div>
+        <div class="footer-col"><h3 class="footer-col-title">Company</h3><ul>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/privacy-policy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+        </ul></div>
       </div>
     </div>
-  </footer>
-
-  <script>
-  var searchTimeout;
-  document.getElementById('heroSearch').addEventListener('input', function(e) {
-    var q = e.target.value.toLowerCase().trim();
-    var resultsDiv = document.getElementById('searchResults');
-    clearTimeout(searchTimeout);
-    if (q.length === 0) {
-      resultsDiv.style.display = 'none';
-      document.querySelectorAll('.tool-card').forEach(function(c){ c.style.display = ''; });
-      document.querySelectorAll('.category-section').forEach(function(s){ s.style.display = ''; });
-      return;
-    }
-    searchTimeout = setTimeout(function() {
-      var allCards = document.querySelectorAll('.tool-card');
-      var matched = [];
-      allCards.forEach(function(card) {
-        var text = (card.querySelector('.tool-card-title').textContent + ' ' + card.querySelector('.tool-card-desc').textContent + ' ' + card.querySelector('.tool-card-tags').textContent).toLowerCase();
-        if (text.indexOf(q) !== -1) {
-          matched.push(card.cloneNode(true));
-          card.style.display = 'none';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      document.querySelectorAll('.category-section').forEach(function(sec) {
-        var visible = sec.querySelectorAll('.tool-card:not([style])');
-        if (visible.length === 0) sec.style.display = 'none';
-      });
-      if (matched.length > 0) {
-        resultsDiv.innerHTML = '<div style="padding:0.65rem 1.1rem;font-size:0.78rem;font-weight:700;color:#78716c;border-bottom:1px solid #f0e6d9;">' + matched.length + ' result' + (matched.length > 1 ? 's' : '') + ' for "' + q + '"</div>';
-        matched.forEach(function(card) {
-          var item = document.createElement('a');
-          item.href = card.getAttribute('href');
-          item.style.cssText = 'display:flex;align-items:center;gap:0.75rem;padding:0.65rem 1.1rem;border-bottom:1px solid #f0e6d9;text-decoration:none;transition:background 150ms;';
-          item.innerHTML = '<span style="font-size:1.4rem;">' + card.querySelector('.tool-card-icon').textContent + '</span><div><div style="font-size:0.875rem;font-weight:800;color:#1c1917;">' + card.querySelector('.tool-card-title').textContent + '</div><div style="font-size:0.73rem;color:#a8a29e;margin-top:2px;">' + card.querySelector('.tool-card-desc').textContent.substring(0,55) + '...</div></div><span style="margin-left:auto;color:#ea580c;font-weight:700;font-size:0.875rem;">→</span>';
-          item.addEventListener('mouseenter', function(){ this.style.background = '#fff7ed'; });
-          item.addEventListener('mouseleave', function(){ this.style.background = ''; });
-          resultsDiv.appendChild(item);
-        });
-        resultsDiv.style.display = '';
-      } else {
-        resultsDiv.innerHTML = '<div style="padding:1rem;text-align:center;color:#a8a29e;font-size:0.8375rem;">No tools found for "' + q + '"</div>';
-        resultsDiv.style.display = '';
-      }
-    }, 200);
-  });
-  document.getElementById('heroSearch').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      var resultsDiv = document.getElementById('searchResults');
-      var first = resultsDiv.querySelector('a');
-      if (first) window.location.href = first.href;
-    }
-  });
-  </script>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 ToolsBase.net &middot; <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
+      <div class="footer-legal"><a href="/privacy-policy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+<div id="toast" class="toast">Copied!</div>
+<script>const s=document.getElementById("searchInput");if(s){var tm;s.addEventListener("input",function(){clearTimeout(tm);tm=setTimeout(function(){var q=s.value.toLowerCase().trim();document.querySelectorAll(".tool-card").forEach(function(c){c.style.display=c.textContent.toLowerCase().indexOf(q)>-1||!q?"":"none"});document.querySelectorAll(".view-all-row").forEach(function(r){r.style.display=q?"":"none"})},150)})}</script>
 </body>
 </html>

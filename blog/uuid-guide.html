@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUIDs Explained: The Art of Generating Unique Identifiers — ToolsBase Blog</title>
+  <meta name="description" content="What makes a UUID unique? A deep dive into UUID versions, generation, and when (not) to use them as database keys.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/uuid-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>UUIDs Explained: The Art of Generating Unique Identifiers</span>
+          </div>
+          <h1>UUIDs Explained: The Art of Generating Unique Identifiers</h1>
+          <p class="lead">What makes a UUID unique? A deep dive into UUID versions, generation, and when (not) to use them as database keys.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-18</span>
+            <span>6 min read</span>
+            <span>Fundamentals</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/uuid/800/400" alt="UUIDs Explained: The Art of Generating Unique Identifiers" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>What is a UUID?</h2>
+<p>A Universally Unique Identifier (UUID) is a 128-bit label, typically written as a 36-character hexadecimal string with hyphens: <code>550e8400-e29b-41d4-a716-446655440000</code>. The probability of generating two identical UUIDs is vanishingly small — hence "universally unique."</p>
+
+<h2>UUID Versions</h2>
+<p>There are several UUID versions, each with different generation strategies:</p>
+
+<h3>UUID v1 — Timestamp + MAC Address</h3>
+<pre><code>550e8400-e29b-11d4-a716-446655440000
+              └─ timestamp + MAC here</code></pre>
+<p>Contains the generating machine's MAC address — a privacy concern. Can be reordered for time-sortability.</p>
+
+<h3>UUID v4 — Random (Most Common)</h3>
+<pre><code>6ba7b810-9dad-41d4-80b4-00c04fd430c8
+└── random bits, 122 bits of entropy</code></pre>
+<p>Purely random. No information leakage. Good for most use cases. Use this unless you have a specific reason not to.</p>
+
+<h3>UUID v7 — Time-Ordered</h3>
+<pre><code>0191a7c4-5e3f-7000-9673-a1b2c3d4e5f6
+└── embedded timestamp, sortable</code></pre>
+<p>Newer (RFC 9562). Embeds a Unix timestamp, making it lexicographically sortable while remaining random enough for uniqueness.</p>
+
+<h2>Database Performance</h2>
+<p>UUIDs as primary keys have a significant drawback: <strong>random insertion performance</strong>. B-tree indexes store entries in sorted order. Random UUIDs cause constant page splits and index bloat.</p>
+<ul>
+<li><strong>Don't use UUID v4 as primary keys</strong> in high-write workloads</li>
+<li><strong>Consider UUID v7</strong> for time-sortable IDs with good write performance</li>
+<li><strong>Use sequential IDs</strong> (auto-increment) for simple cases</li>
+<li><strong>CUID2 / ULID</strong> are modern alternatives designed for database performance</li>
+</ul>
+
+<h2>Generating UUIDs</h2>
+<pre><code>// JavaScript (browser or Node)
+crypto.randomUUID()
+// "550e8400-e29b-41d4-a716-446655440000"
+
+// Python
+import uuid
+uuid.uuid4()   # v4 random
+uuid.uuid7()   # v7 time-ordered</code></pre>
+
+<h2>When to Use UUIDs</h2>
+<ul>
+<li>Distributed systems where multiple services generate IDs independently</li>
+<li>URL-safe identifiers (no need for collision checking)</li>
+<li>When the ID should not reveal information about order or count</li>
+<li>External/publicfacing IDs (not guessable)</li>
+</ul>
+
+<h2>Try Our UUID Generator</h2>
+<p>Generate v4 UUIDs instantly with our <a href="../tools/generators/uuid-generator.html">UUID Generator</a>. One click to generate one or批量 UUIDs with copy-to-clipboard support.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

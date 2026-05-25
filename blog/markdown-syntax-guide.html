@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Syntax: The Complete Cheatsheet for Developers — ToolsBase Blog</title>
+  <meta name="description" content="From basic formatting to GFM tables and task lists — a comprehensive Markdown reference with examples you can copy and paste.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/markdown-syntax-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>Markdown Syntax: The Complete Cheatsheet for Developers</span>
+          </div>
+          <h1>Markdown Syntax: The Complete Cheatsheet for Developers</h1>
+          <p class="lead">From basic formatting to GFM tables and task lists — a comprehensive Markdown reference with examples you can copy and paste.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-16</span>
+            <span>9 min read</span>
+            <span>Writing</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/markdown/800/400" alt="Markdown Syntax: The Complete Cheatsheet for Developers" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>Why Markdown?</h2>
+<p>Markdown is the universal writing format for developers. README files, documentation sites, blog posts, pull request descriptions, Slack messages — all Markdown. Once you know it, you'll use it every day.</p>
+
+<h2>Basic Formatting</h2>
+<pre><code>**bold text**
+*italic text*
+~~strikethrough~~
+`inline code`
+
+# Heading 1
+## Heading 2
+### Heading 3
+
+&gt; Blockquote
+
+--- (horizontal rule)</code></pre>
+
+<h2>Links and Images</h2>
+<pre><code>[Link text](https://example.com)
+![Alt text](image.jpg)
+
+[Link with title](https://example.com "Title text")
+
+<!-- Reference style -->
+[Google][1]
+[1]: https://google.com</code></pre>
+
+<h2>Lists</h2>
+<pre><code><!-- Unordered -->
+- Item one
+- Item two
+  - Nested item
+  - Another nested
+
+<!-- Ordered -->
+1. First step
+2. Second step
+3. Third step
+
+<!-- Task list (GFM) -->
+- [x] Done task
+- [ ] Incomplete task</code></pre>
+
+<h2>Code Blocks</h2>
+<pre><code><!-- Fenced code with language -->
+```javascript
+const greeting = "Hello, World!";
+console.log(greeting);
+```
+
+<!-- Inline code -->
+Use `npm install` to add packages.</code></pre>
+
+<h2>Tables (GFM)</h2>
+<pre><code>| Name    | Role      | Status |
+|---------|-----------|--------|
+| Alice   | Admin     | Active |
+| Bob     | Editor    | Active |
+| Charlie | Viewer    | Inactive|</code></pre>
+
+<h2>GFM Extensions</h2>
+<p>GitHub Flavored Markdown adds:</p>
+<ul>
+<li>Task lists: <code>- [ ] todo</code></li>
+<li>Tables: pipe-separated columns</li>
+<li>Strikethrough: <code>~~deleted~~</code></li>
+<li>Autolinks: URLs become clickable automatically</li>
+<li>Code fencing: with syntax highlighting</li>
+</ul>
+
+<h2>Live Preview</h2>
+<p>Use our <a href="../tools/text/markdown-previewer.html">Markdown Previewer</a> to see your Markdown rendered in real-time as you type.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

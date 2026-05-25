@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary and Hex for Developers: The Numbers Your Computer Actually Uses — ToolsBase Blog</title>
+  <meta name="description" content="Understanding binary, hexadecimal, and base conversion is essential for debugging, low-level programming, and working with memory addresses.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/binary-hex-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="../index.html" class="logo">
+          <img src="../logo.svg" alt="ToolsBase">
+          <div>
+            <div class="logo-name">ToolsBase</div>
+            <div class="logo-tag">Free · Local · Private</div>
+          </div>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../tools/index.html" class="nav-btn">🛠️ Tools</a>
+          <a href="index.html" class="nav-btn active">📝 Blog</a>
+          <a href="../about.html" class="nav-btn">About</a>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Menu">
+          <div class="hamburger"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>Binary and Hex for Developers: The Numbers Your Computer Actually Uses</span>
+          </div>
+          <h1>Binary and Hex for Developers: The Numbers Your Computer Actually Uses</h1>
+          <p class="lead">Understanding binary, hexadecimal, and base conversion is essential for debugging, low-level programming, and working with memory addresses.</p>
+          <div class="blog-article-meta">
+            <span>2026-05-15</span>
+            <span>7 min read</span>
+            <span>Fundamentals</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/binaryhex/800/400" alt="Binary and Hex for Developers: The Numbers Your Computer Actually Uses" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>Why Should Developers Care?</h2>
+<p>Even if you write high-level code, binary and hex show up everywhere: memory addresses in debugger output, color codes in CSS (#FF5733), UUIDs, network packets, cryptographic keys. Understanding these bases makes you a more effective debugger.</p>
+
+<h2>Binary (Base 2)</h2>
+<p>Computers use binary — 0s and 1s — because electrical signals have two states: off (0) and on (1). Each digit is called a <strong>bit</strong>. Eight bits make a <strong>byte</strong>.</p>
+<pre><code>Decimal to Binary:
+  13 = 8 + 4 + 1 = 1101
+  255 = 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 11111111
+
+Binary to Decimal:
+  1010 = 8 + 0 + 2 + 0 = 10
+  11111111 = 255</code></pre>
+
+<h2>Hexadecimal (Base 16)</h2>
+<p>Hex is a compact way to represent binary. Each hex digit covers 4 binary digits (a nibble). This makes it human-readable while mapping directly to memory.</p>
+<pre><code>Hex to Binary:
+  0 = 0000    8 = 1000
+  1 = 0001    9 = 1001
+  2 = 0010    A = 1010
+  3 = 0011    B = 1011
+  4 = 0100    C = 1100
+  5 = 0101    D = 1101
+  6 = 0110    E = 1110
+  7 = 0111    F = 1111
+
+# Examples
+  0xFF   = 255      (11111111)
+  0x10   = 16       (00010000)
+  0xBAD  = 2989    (101110101101)</code></pre>
+
+<h2>Common Uses</h2>
+<ul>
+<li><strong>Colors in CSS:</strong> <code>#FF5733</code> = RGB(255, 87, 51)</li>
+<li><strong>Memory addresses:</strong> <code>0x7fff5fbff8a0</code></li>
+<li><strong>UUIDs:</strong> <code>550e8400-e29b-41d4-a716-446655440000</code></li>
+<li><strong>Network addresses:</strong> IPv6 uses hex groups</li>
+</ul>
+
+<h2>Use Our Number Base Converter</h2>
+<p>Our <a href="../tools/converters/number-base.html">Number Base Converter</a> instantly converts between binary, octal, decimal, and hexadecimal — no mental math needed.</p>
+
+<h2>Quick Reference</h2>
+<pre><code>Decimal  Binary     Hex
+     0    0000       0
+    15    1111       F
+    16    00010000   10
+   255    11111111   FF
+  1024    01000000   400</code></pre>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo">
+            <img src="../logo.svg" alt="ToolsBase">
+            <div>
+              <div class="logo-name">ToolsBase</div>
+              <div class="logo-tag">Free · Local · Private</div>
+            </div>
+          </a>
+          <p>Free browser-based developer tools. No uploads, no tracking — everything runs locally on your device.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Tools</div>
+            <ul>
+              <li><a href="../tools/dev/json-formatter.html">JSON Formatter</a></li>
+              <li><a href="../tools/dev/regex-tester.html">Regex Tester</a></li>
+              <li><a href="../tools/generators/password-generator.html">Password Generator</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Blog</div>
+            <ul>
+              <li><a href="index.html">All Articles</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <div class="footer-col-title">Legal</div>
+            <ul>
+              <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="../terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span>
+        <div class="footer-legal">
+          <a href="../privacy-policy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

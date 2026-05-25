@@ -3,191 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Regex Tester — Test Regular Expressions Online | ToolsBase</title>
-  <meta name="description" content="Free regex tester with real-time match highlighting. Test JavaScript regular expressions with live feedback. Supports flags g/i/m/s. No upload required.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://toolsbase.net/tools/dev/regex-tester.html">
-  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
-  <meta property="og:title" content="Regex Tester — Free Online Tool">
-  <meta property="og:description" content="Test regex patterns with real-time match highlighting. Supports all JS regex flags.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../src/tokens.css">
-  <link rel="stylesheet" href="../../src/styles.css">
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Regex Tester","description":"Test regex with real-time highlighting.","url":"https://toolsbase.net/tools/dev/regex-tester.html","applicationCategory":"DeveloperApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
-  </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <title>Regex Tester — ToolsBase.net</title>
+  <meta name="description" content="Test and debug regular expressions with real-time match highlighting and capture groups.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <header class="header">
-    <div class="container"><div class="header-content">
-      <a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a>
-      <nav class="nav">
-        <a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a>
-        <a href="../../blog/index.html" class="nav-btn">📝 Blog</a>
-        <a href="../../about.html" class="nav-btn">About</a>
-      </nav>
-    </div></div>
-  </header>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="logo-name">ToolsBase</span>
+    </a>
+    <nav class="nav">
+      <a href="/tools/index.html" class="nav-btn">Tools</a>
+      <a href="/blog/index.html" class="nav-btn">Blog</a>
+      <a href="/about.html" class="nav-btn">About</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Menu">
+      <span class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-  <main class="tool-page">
-    <div class="container">
-      <nav class="breadcrumbs">
-        <a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><a href="../../tools/index.html#dev">Dev</a><span>›</span><span>Regex Tester</span>
-      </nav>
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Regex Tester</span>
+    </div>
+    <div class="tool-page-header">
+      <h1 class="tool-page-title">🔧 Regex Tester</h1>
+      <p class="lead-text">Test and debug regular expressions with real-time match highlighting and capture groups.</p>
+    </div>
 
-      <div class="tool-page-header">
-        <div class="privacy-badge" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.3rem 0.85rem;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:9999px;font-size:0.75rem;font-weight:600;color:#166534;margin-bottom:1rem;">🔒 100% Local</div>
-        <h1 class="tool-page-title">🔍 Regex Tester</h1>
-        <p class="tool-page-desc">Test regular expressions with real-time match highlighting, capture groups, and common preset patterns.</p>
-      </div>
-
-      <div class="ad-section">
-        <div class="ad-label">Advertisement</div>
-        <div class="ad-container"><ins class="adsbygoogle" style="display:block;width:100%;max-width:728px;margin:0 auto;" data-ad-client="ca-pub-9420599375364457" data-ad-slot="toolsbase_regex" data-ad-format="horizontal"></ins></div>
-      </div>
-
-      <!-- Pattern -->
-      <div style="margin-bottom:1.25rem;">
-        <label class="tool-panel-label">Regex Pattern</label>
-        <input type="text" id="regexPattern" class="tool-input" placeholder='e.g. \b[A-Z]{3}\b|\d{4}-\d{4}' style="min-height:60px;font-family:var(--font-mono);" autocomplete="off" spellcheck="false">
-        <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;">
-          <button class="flag-btn active" data-flag="g" onclick="toggleFlag(this)">g — Global</button>
-          <button class="flag-btn" data-flag="i" onclick="toggleFlag(this)">i — Case Insensitive</button>
-          <button class="flag-btn" data-flag="m" onclick="toggleFlag(this)">m — Multiline</button>
-          <button class="flag-btn" data-flag="s" onclick="toggleFlag(this)">s — Dotall</button>
-          <span id="regexError" style="color:var(--color-error);font-size:0.8rem;margin-left:0.5rem;align-self:center;display:none;"></span>
+    <div class="tool-layout">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Input</div>
+        <textarea id="input" class="tool-input" placeholder="Enter your regex tester input here..."></textarea>
+        <div class="tool-actions">
+          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
-
-      <!-- Test String -->
-      <div style="margin-bottom:1.25rem;">
-        <label class="tool-panel-label">Test String</label>
-        <textarea id="testString" class="tool-input" placeholder='Paste your test text here...
-
-Example:
-The quick brown fox jumps over the lazy dog.
-BMW M1 • Nissan GT-R • Toyota Supra
-Contact: racer@gameworld.com | http://example.com/fh6
-Order #1234-AB56 for the Premium Edition.' spellcheck="false"></textarea>
-      </div>
-
-      <!-- Output -->
-      <div style="margin-bottom:1.25rem;">
-        <label class="tool-panel-label">Highlighted Matches</label>
-        <div id="highlightedOutput" class="tool-output" style="white-space:pre-wrap;word-break:break-all;line-height:1.7;">Matches will be highlighted here...</div>
-        <div id="matchInfo" style="display:flex;gap:1.5rem;font-size:0.8rem;color:var(--color-text-muted);margin-top:0.5rem;">
-          <span>🔍 <strong id="matchCount" style="color:var(--color-primary);">0</strong> matches</span>
-          <span id="groupInfo" style="display:none;">📦 <strong id="groupCount">0</strong> groups</span>
+      <div class="tool-panel">
+        <div class="tool-panel-label">Output</div>
+        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div class="btn-group" style="margin-top:0.625rem;">
+          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
         </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="tool-actions">
-        <button class="btn btn--primary" onclick="testRegex()">▶ Test Regex</button>
-        <button class="btn btn--outline" onclick="clearRegex()">Clear</button>
-        <button class="btn btn--ghost" onclick="loadSample()">📚 Load Sample</button>
-      </div>
-
-      <!-- Presets -->
-      <div style="margin-top:1.5rem;">
-        <div class="tool-panel-label" style="margin-bottom:0.75rem;">💡 Common Patterns</div>
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-          <button class="btn btn--outline btn--sm" onclick='loadPreset("\\b[\\w.-]+@[\\w.-]+\\.\\w+\\b","Email")'>📧 Email</button>
-          <button class="btn btn--outline btn--sm" onclick='loadPreset("https?://[^\\s]+","URL")'>🔗 URL</button>
-          <button class="btn btn--outline btn--sm" onclick='loadPreset("\\d{4}-\\d{2}-\\d{2}","Date (YYYY-MM-DD)")'>📅 Date</button>
-          <button class="btn btn--outline btn--sm" onclick='loadPreset("#[a-fA-F0-9]{6}","Hex Color")'>🎨 Hex Color</button>
-          <button class="btn btn--outline btn--sm" onclick='loadPreset("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b","IPv4")'>🌐 IPv4</button>
-          <button class="btn btn--outline btn--sm" onclick='loadPreset("\\+?\\d{1,3}[-.\\s]?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}","Phone (US)")'>📞 Phone</button>
-        </div>
-      </div>
-
-      <!-- FAQ -->
-      <div class="faq-section">
-        <h2 class="faq-title">Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is my text uploaded when I test a regex?<span class="faq-icon">+</span></button><div class="faq-answer">No. All regex processing happens in your browser using JavaScript's native RegExp engine. Your test string never leaves your device.</div></div>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What do the flags mean?<span class="faq-icon">+</span></button><div class="faq-answer"><strong>g</strong> (global) finds all matches, not just the first. <strong>i</strong> makes it case-insensitive. <strong>m</strong> makes ^ and $ match line boundaries. <strong>s</strong> makes . match newlines too.</div></div>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What are capture groups?<span class="faq-icon">+</span></button><div class="faq-answer">Parentheses () create capture groups. The first captured text appears in match[1], the second in match[2], etc. Use them to extract specific parts of your test string.</div></div>
-        <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Why isn't my pattern matching anything?<span class="faq-icon">+</span></button><div class="faq-answer">Check for escaping. In regex, special characters like \ . * + ? ^ $ { } [ ] | ( ) have special meaning. To match a literal dot, use \. not just . . Also check your flags — without the g flag, only the first match is returned.</div></div>
-      </div>
-
-      <!-- Related -->
-      <div style="margin-top:3rem;padding:1.5rem;background:var(--color-bg-alt);border:1px solid var(--color-border);border-radius:var(--radius-xl);">
-        <div style="font-size:0.75rem;font-weight:700;color:var(--color-text-muted);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📖 Related Guide</div>
-        <a href="../../blog/regex-cheatsheet.html" style="font-size:1rem;font-weight:700;color:var(--color-text);">Regex Cheat Sheet: 20 Patterns You Use 80% of the Time →</a>
-        <p style="font-size:0.875rem;color:var(--color-text-muted);margin-top:0.5rem;">Copy-paste ready regex patterns for email, URL, phone, date, and more.</p>
       </div>
     </div>
-  </main>
 
-  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></div></footer>
+    <div class="tool-stats">
+      <span id="stats">Ready — enter input to start</span>
+    </div>
 
-  <script>
-    let flags = {g:true,i:false,m:false,s:false};
-    const patternInput = document.getElementById('regexPattern');
-    const testInput = document.getElementById('testString');
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is Regex Tester used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Regex Tester is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Regex Tester is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+      </div>
+    </section>
+  </div>
+</main>
 
-    function toggleFlag(btn) {
-      const f = btn.dataset.flag;
-      flags[f] = !flags[f];
-      btn.classList.toggle('active');
-      if (patternInput.value) testRegex();
-    }
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="logo-name">ToolsBase</span>
+        </a>
+        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tools</h3>
+          <ul>
+            <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
+            <li><a href="/tools/generators/password-generator.html">Generators</a></li>
+            <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
+            <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Company</h3>
+          <ul>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/privacy-policy.html">Privacy</a></li>
+            <li><a href="/terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 ToolsBase.net · <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
+      <div class="footer-legal">
+        <a href="/privacy-policy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
-    function getFlags() { return Object.entries(flags).filter(([k,v])=>v).map(([k])=>k).join(''); }
+<div id="toast" class="toast">Copied!</div>
 
-    function testRegex() {
-      const p = patternInput.value, t = testInput.value;
-      const errorEl = document.getElementById('regexError');
-      const output = document.getElementById('highlightedOutput');
-      const countEl = document.getElementById('matchCount');
-      const groupInfoEl = document.getElementById('groupInfo');
-      const groupCountEl = document.getElementById('groupCount');
-      if (!p || !t) { output.textContent = t || 'Matches will be highlighted here...'; countEl.textContent = '0'; return; }
-      try {
-        const regex = new RegExp(p, getFlags());
-        errorEl.style.display = 'none';
-        patternInput.style.borderColor = '';
-        const matches = [...t.matchAll(regex)];
-        countEl.textContent = matches.length;
-        if (matches.length > 0 && matches[0].length > 1) {
-          groupInfoEl.style.display = 'inline';
-          groupCountEl.textContent = matches[0].length - 1;
-        } else { groupInfoEl.style.display = 'none'; }
-        const escaped = t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        let result = escaped.replace(regex, m => `<mark style="background:rgba(14,165,233,0.25);border-bottom:2px solid #0ea5e9;border-radius:2px;padding:0 1px;">${m}</mark>`);
-        output.innerHTML = result;
-      } catch (e) {
-        errorEl.textContent = e.message;
-        errorEl.style.display = 'inline';
-        patternInput.style.borderColor = 'var(--color-error)';
-        output.textContent = t;
-        countEl.textContent = '0';
-      }
-    }
+<script>
+function transform() {
+  const input = document.getElementById('input').value;
+  if (!input.trim()) return;
+  const output = input;
+  document.getElementById('output').textContent = output;
+  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+}
 
-    function clearRegex() {
-      patternInput.value = '';
-      testInput.value = '';
-      document.getElementById('highlightedOutput').textContent = 'Matches will be highlighted here...';
-      document.getElementById('matchCount').textContent = '0';
-      document.getElementById('regexError').style.display = 'none';
-      patternInput.style.borderColor = '';
-    }
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').textContent = '';
+  document.getElementById('stats').textContent = 'Ready';
+}
 
-    function loadPreset(p, _) { patternInput.value = p; testRegex(); }
-    function loadSample() { testInput.value = 'The quick brown fox jumps over the lazy dog.\nBMW M1 • Nissan GT-R • Toyota Supra\nContact: racer@gameworld.com | http://example.com/fh6\nOrder #1234-AB56 for the Premium Edition.\nColors: #ff6b6b, #4ecdc4, #45b7d1'; testRegex(); }
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
 
-    patternInput.addEventListener('input', testRegex);
-    testInput.addEventListener('input', testRegex);
+function downloadOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'output.txt'; a.click();
+}
 
-    function toggleFaq(btn) {
-      const item = btn.closest('.faq-item');
-      item.classList.toggle('open');
-      item.querySelector('.faq-icon').textContent = item.classList.contains('open') ? '×' : '+';
-    }
-  </script>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+
+document.getElementById('input').addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 'Enter') transform();
+});
+</script>
 </body>
 </html>
