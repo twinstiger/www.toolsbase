@@ -370,3 +370,35 @@ input, textarea, select { font-family: inherit; }
   .container { padding: 0 var(--space-4); }
   .container--narrow { padding: 0 var(--space-4); }
 }
+
+/* === HOMEPAGE LAYOUT FIX === */
+.hero-privacy-wrap {
+  padding: 0 0 var(--space-12);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.hero + .hero-privacy-wrap { display: none; }
+.hero-wrap {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding-bottom: var(--space-12);
+}
+.tools-home { padding: var(--space-12) 0 var(--space-16); }
+.tools-home .container { display: flex; flex-direction: column; gap: var(--space-10); }
+
+/* === TOOLS HOME SECTION === */
+.tools-home {
+  padding: var(--space-12) 0 var(--space-16);
+  background: var(--color-bg);
+}
+.tools-home .container { display: flex; flex-direction: column; gap: var(--space-8); }
+
+/* Each category group has subtle bottom separator */
+.category-group {
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.category-group:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
