@@ -4,223 +4,477 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ToolsBase.net — 51 Free Browser-Based Developer Tools</title>
-  <meta name="description" content="Free browser tools: JSON Formatter, Regex Tester, Password Generator, QR Code, and 50 more. 42 built-in + 9 curated external tools.">
-  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Free browser tools: JSON Formatter, Regex Tester, Password Generator, QR Code, and 50 more. 100% browser-based, no sign-up required.">
+  <meta name="theme-color" content="#2563EB">
   <link rel="stylesheet" href="/src/styles.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<header class="header">
-  <div class="container header-content">
+<!-- NAVIGATION -->
+<header class="site-header">
+  <div class="container header-inner">
     <a href="/" class="logo">
       <div class="logo-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
       </div>
       <span class="logo-name">ToolsBase</span>
     </a>
     <nav class="nav">
-      <a href="/tools/index.html" class="nav-btn">Tools</a>
-      <a href="/blog/index.html" class="nav-btn">Blog</a>
-      <a href="/about.html" class="nav-btn">About</a>
+      <a href="/tools/index.html" class="nav-link">Tools</a>
+      <a href="/blog/index.html" class="nav-link">Blog</a>
+      <a href="/about.html" class="nav-link">About</a>
     </nav>
-    <button class="mobile-menu-btn" aria-label="Menu">
-      <span class="hamburger"><span></span><span></span><span></span></button>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="/tools/index.html" class="mobile-nav-link">Tools</a>
+    <a href="/blog/index.html" class="mobile-nav-link">Blog</a>
+    <a href="/about.html" class="mobile-nav-link">About</a>
   </div>
 </header>
+
 <main>
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-left">
-      <div class="hero-badge">51 free tools &middot; 100% browser-based</div>
-      <h1 class="hero-title">Developer Tools, Done Right.</h1>
-      <p class="hero-sub">Free, no-sign-up utilities. Formatters, generators, converters, and more. 42 built-in tools + 9 curated external tools.</p>
-      <div class="hero-search">
-        <span class="hero-search-icon">🔍</span>
-        <input type="text" class="hero-search-input" id="searchInput" placeholder="Search 51 tools..." autocomplete="off">
-      </div>
-      <div class="hero-cta">
-        <a href="/tools/index.html" class="btn btn--primary">Browse All 51 →</a>
-        <a href="/blog/index.html" class="btn btn--outline">Read Blog</a>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="hero-grid">
-<a href="tools/dev/json-formatter.html" class="hc hc--blue"><div class="hc-icon">📋</div><div class="hc-title">JSON Formatter</div><div class="hc-sub">Format & validate JSON instantly</div></a>
-<a href="tools/dev/regex-tester.html" class="hc hc--purple"><div class="hc-icon">🔍</div><div class="hc-title">Regex Tester</div><div class="hc-sub">Test regex with live highlighting</div></a>
-<a href="tools/generators/password-generator.html" class="hc hc--green"><div class="hc-icon">🔑</div><div class="hc-title">Password Generator</div><div class="hc-sub">Generate strong passwords</div></a>
-<a href="tools/image/qr-code-generator.html" class="hc hc--pink"><div class="hc-icon">📱</div><div class="hc-title">QR Code Generator</div><div class="hc-sub">Create QR codes in seconds</div></a>
-<a href="tools/converters/timestamp-converter.html" class="hc hc--yellow"><div class="hc-icon">⏱️</div><div class="hc-title">Timestamp Converter</div><div class="hc-sub">Convert any time format</div></a>
-<a href="tools/dev/base64-encoder.html" class="hc hc--orange"><div class="hc-icon">🔄</div><div class="hc-title">Base64 Encoder</div><div class="hc-sub">Encode & decode Base64</div></a>
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-headline">Free Tools for Developers.<br>No Sign-up.</h1>
+        <p class="hero-sub">51 browser-based tools. JSON, regex, passwords, converters and more.</p>
+        <div class="hero-search-wrap">
+          <input type="text" id="searchInput" class="hero-search" placeholder="Search 51 tools..." autocomplete="off">
+        </div>
+        <a href="/tools/index.html" class="btn-primary">Browse All Tools</a>
       </div>
     </div>
   </section>
-  <div class="privacy-strip">
-    <div class="privacy-inner">
-      <span class="privacy-item">🔒 100% Local Processing</span>
-      <span class="privacy-item">📊 42 Built-in Tools</span>
-      <span class="privacy-item">🔗 9 External Tools</span>
-      <span class="privacy-item">⚡ 51 Total Tools</span>
-    </div>
-  </div>
-  <section class="tools-home">
+
+  <!-- TOOL CATEGORIES -->
+  <section class="categories">
     <div class="container">
-        <div class="category-section" id="dev-tools" style="--cat-color:var(--tc-blue)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">🔧 Dev Tools</h2></div>
-            <span class="category-count">12 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/dev/json-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📋</div><div class="tool-card-title">JSON Formatter</div><div class="tool-card-desc">Format, validate, and minify JSON with syntax highlighting.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/regex-tester.html" class="tool-card tc-blue"><div class="tool-card-icon">🔍</div><div class="tool-card-title">Regex Tester</div><div class="tool-card-desc">Test regular expressions with real-time match highlighting.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/base64-encoder.html" class="tool-card tc-blue"><div class="tool-card-icon">🔄</div><div class="tool-card-title">Base64 Encoder</div><div class="tool-card-desc">Encode and decode Base64. Supports URL-safe Base64URL variant.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/hash-generator.html" class="tool-card tc-blue"><div class="tool-card-icon">#️⃣</div><div class="tool-card-title">Hash Generator</div><div class="tool-card-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/url-encoder.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🔗</div><div class="tool-card-title">URL Encoder</div><div class="tool-card-desc">Encode and decode URL components with special character handling.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/sql-formatter.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🗃️</div><div class="tool-card-title">SQL Formatter</div><div class="tool-card-desc">Format and prettify SQL queries with syntax highlighting.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/html-minifier.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🏄</div><div class="tool-card-title">HTML Minifier</div><div class="tool-card-desc">Compress HTML by removing whitespace and optional tags.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/json-to-yaml.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">📄</div><div class="tool-card-title">JSON to YAML</div><div class="tool-card-desc">Convert JSON to YAML and vice versa with validation.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/yaml-validator.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">✅</div><div class="tool-card-title">YAML Validator</div><div class="tool-card-desc">Validate YAML syntax with line-number error reporting.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/css-minifier.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">🎨</div><div class="tool-card-title">CSS Minifier</div><div class="tool-card-desc">Compress CSS by removing whitespace, comments, and unused rules.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/js-minifier.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">⚡</div><div class="tool-card-title">JavaScript Minifier</div><div class="tool-card-desc">Minify JavaScript for production deployment.</div><div class="tool-card-link">→</div></a>
-<a href="tools/dev/xml-formatter.html" class="tool-card tc-blue hidden-card"><div class="tool-card-icon">📰</div><div class="tool-card-title">XML Formatter</div><div class="tool-card-desc">Format and validate XML with proper indentation.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#dev-tools" class="view-all-link">View all 12 Dev Tools →</a></div>
+
+      <!-- Dev Tools -->
+      <div class="cat-section" id="dev-tools">
+        <div class="cat-header">
+          <span class="cat-label">Tools</span>
+          <h2 class="cat-name">Dev Tools</h2>
+          <span class="cat-count">12 tools</span>
         </div>
-        <div class="category-section" id="generators" style="--cat-color:var(--tc-green)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">⚡ Generators</h2></div>
-            <span class="category-count">6 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/generators/password-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔑</div><div class="tool-card-title">Password Generator</div><div class="tool-card-desc">Generate strong passwords with customizable length and characters.</div><div class="tool-card-link">→</div></a>
-<a href="tools/generators/uuid-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🎲</div><div class="tool-card-title">UUID Generator</div><div class="tool-card-desc">Generate UUID v4 identifiers instantly for testing and dev.</div><div class="tool-card-link">→</div></a>
-<a href="tools/generators/lorem-ipsum.html" class="tool-card tc-green"><div class="tool-card-icon">📝</div><div class="tool-card-title">Lorem Ipsum</div><div class="tool-card-desc">Generate placeholder text in paragraphs, words, or bytes.</div><div class="tool-card-link">→</div></a>
-<a href="tools/generators/slug-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔤</div><div class="tool-card-title">Slug Generator</div><div class="tool-card-desc">Convert text to URL-friendly slugs with unicode support.</div><div class="tool-card-link">→</div></a>
-<a href="tools/generators/random-string.html" class="tool-card tc-green hidden-card"><div class="tool-card-icon">🎯</div><div class="tool-card-title">Random String</div><div class="tool-card-desc">Generate random strings with custom charset and length.</div><div class="tool-card-link">→</div></a>
-<a href="tools/generators/fake-json.html" class="tool-card tc-green hidden-card"><div class="tool-card-icon">📦</div><div class="tool-card-title">Fake JSON Generator</div><div class="tool-card-desc">Generate realistic mock JSON data for testing applications.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#generators" class="view-all-link">View all 6 Generators →</a></div>
+        <div class="tool-grid">
+<a href="tools/dev/json-formatter.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">JF</div>
+  <div class="tool-body">
+    <div class="tool-name">JSON Formatter</div>
+    <div class="tool-desc">Format, validate, and minify JSON instantly</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/dev/regex-tester.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">RX</div>
+  <div class="tool-body">
+    <div class="tool-name">Regex Tester</div>
+    <div class="tool-desc">Test regex with real-time match highlighting</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/dev/base64-encoder.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">B64</div>
+  <div class="tool-body">
+    <div class="tool-name">Base64 Encoder</div>
+    <div class="tool-desc">Encode and decode Base64 with URL-safe support</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/dev/hash-generator.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">HG</div>
+  <div class="tool-body">
+    <div class="tool-name">Hash Generator</div>
+    <div class="tool-desc">Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
         </div>
-        <div class="category-section" id="converters" style="--cat-color:var(--tc-yellow)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">🔄 Converters</h2></div>
-            <span class="category-count">4 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/converters/timestamp-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">⏱️</div><div class="tool-card-title">Timestamp Converter</div><div class="tool-card-desc">Convert between Unix timestamps and human-readable dates.</div><div class="tool-card-link">→</div></a>
-<a href="tools/converters/number-base.html" class="tool-card tc-yellow"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Number Base Converter</div><div class="tool-card-desc">Convert between binary, octal, decimal, and hexadecimal.</div><div class="tool-card-link">→</div></a>
-<a href="tools/converters/color-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Color Converter</div><div class="tool-card-desc">Convert between HEX, RGB, HSL with color picker and palette.</div><div class="tool-card-link">→</div></a>
-<a href="tools/converters/unit-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">📏</div><div class="tool-card-title">Unit Converter</div><div class="tool-card-desc">Convert length, weight, temperature, and more units.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#converters" class="view-all-link">View all 4 Converters →</a></div>
+        <div class="view-all-row"><a href="/tools/index.html#dev-tools" class="view-all-link">View all 12 Dev Tools →</a></div>
+      </div>
+
+      <!-- Generators -->
+      <div class="cat-section" id="generators">
+        <div class="cat-header">
+          <span class="cat-label">Tools</span>
+          <h2 class="cat-name">Generators</h2>
+          <span class="cat-count">6 tools</span>
         </div>
-        <div class="category-section" id="text-tools" style="--cat-color:var(--tc-purple)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">📝 Text Tools</h2></div>
-            <span class="category-count">5 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/text/word-counter.html" class="tool-card tc-purple"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Word Counter</div><div class="tool-card-desc">Count words, characters, sentences with reading time estimate.</div><div class="tool-card-link">→</div></a>
-<a href="tools/text/case-converter.html" class="tool-card tc-purple"><div class="tool-card-icon">Aa</div><div class="tool-card-title">Case Converter</div><div class="tool-card-desc">Convert text between camelCase, PascalCase, snake_case, kebab-case.</div><div class="tool-card-link">→</div></a>
-<a href="tools/text/diff-checker.html" class="tool-card tc-purple"><div class="tool-card-icon">📋</div><div class="tool-card-title">Diff Checker</div><div class="tool-card-desc">Compare two texts side by side with highlighted differences.</div><div class="tool-card-link">→</div></a>
-<a href="tools/text/markdown-preview.html" class="tool-card tc-purple"><div class="tool-card-icon">📝</div><div class="tool-card-title">Markdown Preview</div><div class="tool-card-desc">Live Markdown preview with GFM support, tables, and code blocks.</div><div class="tool-card-link">→</div></a>
-<a href="tools/text/text-diff.html" class="tool-card tc-purple hidden-card"><div class="tool-card-icon">🔀</div><div class="tool-card-title">Text Diff</div><div class="tool-card-desc">Word-level and character-level text comparison tool.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#text-tools" class="view-all-link">View all 5 Text Tools →</a></div>
+        <div class="tool-grid">
+<a href="tools/generators/password-generator.html" class="tool-card" style="--cat-color:#10B981">
+  <div class="tool-icon" style="background:#10B981">PG</div>
+  <div class="tool-body">
+    <div class="tool-name">Password Generator</div>
+    <div class="tool-desc">Generate strong passwords with custom length</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/generators/uuid-generator.html" class="tool-card" style="--cat-color:#10B981">
+  <div class="tool-icon" style="background:#10B981">UG</div>
+  <div class="tool-body">
+    <div class="tool-name">UUID Generator</div>
+    <div class="tool-desc">Generate UUID v4 identifiers instantly</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/generators/lorem-ipsum.html" class="tool-card" style="--cat-color:#10B981">
+  <div class="tool-icon" style="background:#10B981">LI</div>
+  <div class="tool-body">
+    <div class="tool-name">Lorem Ipsum</div>
+    <div class="tool-desc">Generate placeholder text in paragraphs or words</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/generators/slug-generator.html" class="tool-card" style="--cat-color:#10B981">
+  <div class="tool-icon" style="background:#10B981">SG</div>
+  <div class="tool-body">
+    <div class="tool-name">Slug Generator</div>
+    <div class="tool-desc">Convert text to URL-friendly slugs</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
         </div>
-        <div class="category-section" id="image-tools" style="--cat-color:var(--tc-pink)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">🖼️ Image Tools</h2></div>
-            <span class="category-count">3 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/image/qr-code-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">📱</div><div class="tool-card-title">QR Code Generator</div><div class="tool-card-desc">Generate QR codes from text, URLs, WiFi, or contact info.</div><div class="tool-card-link">→</div></a>
-<a href="tools/image/favicon-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">🌐</div><div class="tool-card-title">Favicon Generator</div><div class="tool-card-desc">Generate favicon.ico and app icons from any image.</div><div class="tool-card-link">→</div></a>
-<a href="tools/image/image-to-base64.html" class="tool-card tc-pink"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">Image to Base64</div><div class="tool-card-desc">Convert images to Base64 data URIs for embedding in HTML/CSS.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#image-tools" class="view-all-link">View all 3 Image Tools →</a></div>
+        <div class="view-all-row"><a href="/tools/index.html#generators" class="view-all-link">View all 6 Generators →</a></div>
+      </div>
+
+      <!-- Converters -->
+      <div class="cat-section" id="converters">
+        <div class="cat-header">
+          <span class="cat-label">Utilities</span>
+          <h2 class="cat-name">Converters</h2>
+          <span class="cat-count">4 tools</span>
         </div>
-        <div class="category-section" id="network-tools" style="--cat-color:var(--tc-cyan)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">🌐 Network Tools</h2></div>
-            <span class="category-count">7 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/network/my-ip.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌐</div><div class="tool-card-title">My IP Address</div><div class="tool-card-desc">Reveal your public IPv4 and IPv6 address instantly.</div><div class="tool-card-link">→</div></a>
-<a href="tools/network/url-parser.html" class="tool-card tc-cyan"><div class="tool-card-icon">🔎</div><div class="tool-card-title">URL Parser</div><div class="tool-card-desc">Parse URLs into protocol, host, port, path, query, and fragment.</div><div class="tool-card-link">→</div></a>
-<a href="tools/network/url-shortener.html" class="tool-card tc-cyan"><div class="tool-card-icon">✂️</div><div class="tool-card-title">URL Shortener</div><div class="tool-card-desc">Create shortened URLs from long links, entirely in your browser.</div><div class="tool-card-link">→</div></a>
-<a href="tools/network/subnet.html" class="tool-card tc-cyan"><div class="tool-card-icon">🧮</div><div class="tool-card-title">Subnet Calculator</div><div class="tool-card-desc">Calculate CIDR, network address, and host range for any IP.</div><div class="tool-card-link">→</div></a>
-<a href="tools/network/ip-to-int.html" class="tool-card tc-cyan hidden-card"><div class="tool-card-icon">🔢</div><div class="tool-card-title">IP to Integer</div><div class="tool-card-desc">Convert IPv4 to 32-bit integer and vice versa.</div><div class="tool-card-link">→</div></a>
-<a href="tools/network/dns-lookup.html" class="tool-card tc-cyan hidden-card"><div class="tool-card-icon">🌍</div><div class="tool-card-title">DNS Lookup</div><div class="tool-card-desc">Query A, AAAA, CNAME, MX, TXT, NS records for any domain.</div><div class="tool-card-link">→</div></a>
-<a href="tools/network/user-agent.html" class="tool-card tc-cyan hidden-card"><div class="tool-card-icon">👤</div><div class="tool-card-title">User Agent Parser</div><div class="tool-card-desc">Parse browser User-Agent strings into OS, browser, device.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#network-tools" class="view-all-link">View all 7 Network Tools →</a></div>
+        <div class="tool-grid">
+<a href="tools/converters/timestamp-converter.html" class="tool-card" style="--cat-color:#F59E0B">
+  <div class="tool-icon" style="background:#F59E0B">TS</div>
+  <div class="tool-body">
+    <div class="tool-name">Timestamp Converter</div>
+    <div class="tool-desc">Convert between Unix timestamps and dates</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/converters/number-base.html" class="tool-card" style="--cat-color:#F59E0B">
+  <div class="tool-icon" style="background:#F59E0B">NB</div>
+  <div class="tool-body">
+    <div class="tool-name">Number Base Converter</div>
+    <div class="tool-desc">Convert binary, octal, decimal, and hex</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/converters/color-converter.html" class="tool-card" style="--cat-color:#F59E0B">
+  <div class="tool-icon" style="background:#F59E0B">CC</div>
+  <div class="tool-body">
+    <div class="tool-name">Color Converter</div>
+    <div class="tool-desc">Convert between HEX, RGB, HSL with picker</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/converters/unit-converter.html" class="tool-card" style="--cat-color:#F59E0B">
+  <div class="tool-icon" style="background:#F59E0B">UC</div>
+  <div class="tool-body">
+    <div class="tool-name">Unit Converter</div>
+    <div class="tool-desc">Convert length, weight, temperature and more</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
         </div>
-        <div class="category-section" id="crypto-tools" style="--cat-color:var(--tc-red)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">🔒 Crypto Tools</h2></div>
-            <span class="category-count">5 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="tools/crypto/bcrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔒</div><div class="tool-card-title">bcrypt Generator</div><div class="tool-card-desc">Generate and verify bcrypt password hashes for secure storage.</div><div class="tool-card-link">→</div></a>
-<a href="tools/crypto/htpasswd.html" class="tool-card tc-red"><div class="tool-card-icon">🔑</div><div class="tool-card-title">htpasswd Generator</div><div class="tool-card-desc">Generate Apache htpasswd files for HTTP Basic Authentication.</div><div class="tool-card-link">→</div></a>
-<a href="tools/crypto/morse.html" class="tool-card tc-red"><div class="tool-card-icon">•••</div><div class="tool-card-title">Morse Code</div><div class="tool-card-desc">Encode and decode Morse code with audio playback support.</div><div class="tool-card-link">→</div></a>
-<a href="tools/crypto/base32.html" class="tool-card tc-red"><div class="tool-card-icon">🔠</div><div class="tool-card-title">Base32 Encoder</div><div class="tool-card-desc">Encode and decode Base32 strings for DNS-safe identifiers.</div><div class="tool-card-link">→</div></a>
-<a href="tools/crypto/aes-encrypt.html" class="tool-card tc-red hidden-card"><div class="tool-card-icon">🔐</div><div class="tool-card-title">AES Encrypt/Decrypt</div><div class="tool-card-desc">Encrypt and decrypt text using AES-256-CBC in your browser.</div><div class="tool-card-link">→</div></a>          </div>
-          <div class="view-all-row"><a href="/tools/index.html#crypto-tools" class="view-all-link">View all 5 Crypto Tools →</a></div>
+        <div class="view-all-row"><a href="/tools/index.html#converters" class="view-all-link">View all 4 Converters →</a></div>
+      </div>
+
+      <!-- Text Tools -->
+      <div class="cat-section" id="text-tools">
+        <div class="cat-header">
+          <span class="cat-label">Tools</span>
+          <h2 class="cat-name">Text Tools</h2>
+          <span class="cat-count">5 tools</span>
         </div>
-        <div class="category-section" id="external-tools" style="--cat-color:var(--tc-gray)">
-          <div class="category-header">
-            <span class="category-dot"></span>
-            <div class="category-info"><h2 class="category-title">🔗 Recommended External Tools</h2></div>
-            <span class="category-count">9 tools</span>
-          </div>
-          <div class="tool-grid">
-<a href="https://www.ilovepdf.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">📄</div><div class="tool-card-title">iLovePDF</div><div class="tool-card-desc">PDF processing — merge, split, compress, convert PDF to and from Word, Excel, images.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.photopea.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Photopea</div><div class="tool-card-desc">Free online photo editor with Photoshop-level features. Layers, masks, filters — no download.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.remove.bg" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">✨</div><div class="tool-card-title">Remove.bg</div><div class="tool-card-desc">One-click AI background removal. Works on people, products, animals.</div><div class="tool-card-link">↗</div></a>
-<a href="https://tinypng.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">TinyPNG</div><div class="tool-card-desc">Smart lossy compression for PNG and JPEG. Reduce file size by up to 80%.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.hemingwayapp.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">✏️</div><div class="tool-card-title">Hemingway Editor</div><div class="tool-card-desc">English sentence checker — highlights complex sentences, passive voice, adverbs.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.speedtest.net" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">📡</div><div class="tool-card-title">Speedtest</div><div class="tool-card-desc">Test internet speed — ping, download, upload speed with real server data.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.wolframalpha.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🧠</div><div class="tool-card-title">WolframAlpha</div><div class="tool-card-desc">Computational knowledge engine — math, science, statistics, geography, and more.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.online-voice-recorder.com" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🎙️</div><div class="tool-card-title">Online Voice Recorder</div><div class="tool-card-desc">Record voice in your browser, export to MP3, WAV, or OGG.</div><div class="tool-card-link">↗</div></a>
-<a href="https://www.capcut.com/editor" target="_blank" rel="noopener" class="tool-card tc-gray"><div class="tool-card-icon">🎬</div><div class="tool-card-title">CapCut Web</div><div class="tool-card-desc">Free online video editor with AI tools — auto-captions, background removal, transitions.</div><div class="tool-card-link">↗</div></a>          </div>
-        </div>    </div>
+        <div class="tool-grid">
+<a href="tools/text/word-counter.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">WC</div>
+  <div class="tool-body">
+    <div class="tool-name">Word Counter</div>
+    <div class="tool-desc">Count words, characters, sentences with estimate</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/text/case-converter.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">CV</div>
+  <div class="tool-body">
+    <div class="tool-name">Case Converter</div>
+    <div class="tool-desc">Convert camelCase, PascalCase, snake_case, kebab</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/text/diff-checker.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">DC</div>
+  <div class="tool-body">
+    <div class="tool-name">Diff Checker</div>
+    <div class="tool-desc">Compare two texts side by side with highlights</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/text/markdown-preview.html" class="tool-card" style="--cat-color:#2563EB">
+  <div class="tool-icon" style="background:#2563EB">MP</div>
+  <div class="tool-body">
+    <div class="tool-name">Markdown Preview</div>
+    <div class="tool-desc">Live Markdown preview with GFM and tables</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+        </div>
+        <div class="view-all-row"><a href="/tools/index.html#text-tools" class="view-all-link">View all 5 Text Tools →</a></div>
+      </div>
+
+      <!-- Image Tools -->
+      <div class="cat-section" id="image-tools">
+        <div class="cat-header">
+          <span class="cat-label">Tools</span>
+          <h2 class="cat-name">Image Tools</h2>
+          <span class="cat-count">3 tools</span>
+        </div>
+        <div class="tool-grid">
+<a href="tools/image/qr-code-generator.html" class="tool-card" style="--cat-color:#F97316">
+  <div class="tool-icon" style="background:#F97316">QR</div>
+  <div class="tool-body">
+    <div class="tool-name">QR Code Generator</div>
+    <div class="tool-desc">Create QR codes from text, URLs, WiFi, contacts</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/image/favicon-generator.html" class="tool-card" style="--cat-color:#F97316">
+  <div class="tool-icon" style="background:#F97316">FG</div>
+  <div class="tool-body">
+    <div class="tool-name">Favicon Generator</div>
+    <div class="tool-desc">Generate favicon.ico and app icons from image</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/image/image-to-base64.html" class="tool-card" style="--cat-color:#F97316">
+  <div class="tool-icon" style="background:#F97316">IB</div>
+  <div class="tool-body">
+    <div class="tool-name">Image to Base64</div>
+    <div class="tool-desc">Convert images to Base64 data URIs for embedding</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+        </div>
+        <div class="view-all-row"><a href="/tools/index.html#image-tools" class="view-all-link">View all 3 Image Tools →</a></div>
+      </div>
+
+      <!-- Network Tools -->
+      <div class="cat-section" id="network-tools">
+        <div class="cat-header">
+          <span class="cat-label">Tools</span>
+          <h2 class="cat-name">Network Tools</h2>
+          <span class="cat-count">7 tools</span>
+        </div>
+        <div class="tool-grid">
+<a href="tools/network/my-ip.html" class="tool-card" style="--cat-color:#06B6D4">
+  <div class="tool-icon" style="background:#06B6D4">IP</div>
+  <div class="tool-body">
+    <div class="tool-name">My IP Address</div>
+    <div class="tool-desc">Reveal your public IPv4 and IPv6 address</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/network/url-parser.html" class="tool-card" style="--cat-color:#06B6D4">
+  <div class="tool-icon" style="background:#06B6D4">UP</div>
+  <div class="tool-body">
+    <div class="tool-name">URL Parser</div>
+    <div class="tool-desc">Parse URLs into protocol, host, port, path, query</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/network/url-shortener.html" class="tool-card" style="--cat-color:#06B6D4">
+  <div class="tool-icon" style="background:#06B6D4">US</div>
+  <div class="tool-body">
+    <div class="tool-name">URL Shortener</div>
+    <div class="tool-desc">Create shortened URLs entirely in your browser</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/network/subnet.html" class="tool-card" style="--cat-color:#06B6D4">
+  <div class="tool-icon" style="background:#06B6D4">SC</div>
+  <div class="tool-body">
+    <div class="tool-name">Subnet Calculator</div>
+    <div class="tool-desc">Calculate CIDR, network address, and host range</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+        </div>
+        <div class="view-all-row"><a href="/tools/index.html#network-tools" class="view-all-link">View all 7 Network Tools →</a></div>
+      </div>
+
+      <!-- Crypto Tools -->
+      <div class="cat-section" id="crypto-tools">
+        <div class="cat-header">
+          <span class="cat-label">Tools</span>
+          <h2 class="cat-name">Crypto Tools</h2>
+          <span class="cat-count">5 tools</span>
+        </div>
+        <div class="tool-grid">
+<a href="tools/crypto/bcrypt.html" class="tool-card" style="--cat-color:#EF4444">
+  <div class="tool-icon" style="background:#EF4444">BC</div>
+  <div class="tool-body">
+    <div class="tool-name">bcrypt Generator</div>
+    <div class="tool-desc">Generate and verify bcrypt password hashes</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/crypto/htpasswd.html" class="tool-card" style="--cat-color:#EF4444">
+  <div class="tool-icon" style="background:#EF4444">HP</div>
+  <div class="tool-body">
+    <div class="tool-name">htpasswd Generator</div>
+    <div class="tool-desc">Generate Apache htpasswd files for HTTP auth</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/crypto/morse.html" class="tool-card" style="--cat-color:#EF4444">
+  <div class="tool-icon" style="background:#EF4444">MC</div>
+  <div class="tool-body">
+    <div class="tool-name">Morse Code</div>
+    <div class="tool-desc">Encode and decode Morse code with audio playback</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+<a href="tools/crypto/base32.html" class="tool-card" style="--cat-color:#EF4444">
+  <div class="tool-icon" style="background:#EF4444">B3</div>
+  <div class="tool-body">
+    <div class="tool-name">Base32 Encoder</div>
+    <div class="tool-desc">Encode and decode Base32 strings for DNS</div>
+  </div>
+  <div class="tool-arrow">→</div>
+</a>
+        </div>
+        <div class="view-all-row"><a href="/tools/index.html#crypto-tools" class="view-all-link">View all 5 Crypto Tools →</a></div>
+      </div>
+
+      <!-- External Tools -->
+      <div class="cat-section" id="external-tools">
+        <div class="cat-header">
+          <span class="cat-label">Recommended</span>
+          <h2 class="cat-name">External Tools</h2>
+          <span class="cat-count">9 tools</span>
+        </div>
+        <div class="tool-grid">
+<a href="https://www.ilovepdf.com" target="_blank" rel="noopener" class="tool-card tool-card--ext" style="--cat-color:#6B7280">
+  <div class="tool-icon" style="background:#6B7280">IL</div>
+  <div class="tool-body">
+    <div class="tool-name">iLovePDF</div>
+    <div class="tool-desc">Merge, split, compress, convert PDF files</div>
+  </div>
+  <div class="tool-arrow">↗</div>
+</a>
+<a href="https://www.photopea.com" target="_blank" rel="noopener" class="tool-card tool-card--ext" style="--cat-color:#6B7280">
+  <div class="tool-icon" style="background:#6B7280">PP</div>
+  <div class="tool-body">
+    <div class="tool-name">Photopea</div>
+    <div class="tool-desc">Free online photo editor with Photoshop features</div>
+  </div>
+  <div class="tool-arrow">↗</div>
+</a>
+<a href="https://www.remove.bg" target="_blank" rel="noopener" class="tool-card tool-card--ext" style="--cat-color:#6B7280">
+  <div class="tool-icon" style="background:#6B7280">RB</div>
+  <div class="tool-body">
+    <div class="tool-name">Remove.bg</div>
+    <div class="tool-desc">One-click AI background removal for any image</div>
+  </div>
+  <div class="tool-arrow">↗</div>
+</a>
+<a href="https://tinypng.com" target="_blank" rel="noopener" class="tool-card tool-card--ext" style="--cat-color:#6B7280">
+  <div class="tool-icon" style="background:#6B7280">TP</div>
+  <div class="tool-body">
+    <div class="tool-name">TinyPNG</div>
+    <div class="tool-desc">Smart lossy compression for PNG and JPEG</div>
+  </div>
+  <div class="tool-arrow">↗</div>
+</a>
+        </div>
+      </div>
+
+    </div>
   </section>
 </main>
-<footer class="footer">
+
+<!-- FOOTER -->
+<footer class="site-footer">
   <div class="container">
-    <div class="footer-top">
+    <div class="footer-inner">
       <div class="footer-brand">
         <a href="/" class="logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="logo-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
           <span class="logo-name">ToolsBase</span>
         </a>
-        <p>Free browser-based developer tools. No data collected, no sign-up required.</p>
+        <p class="footer-tagline">Free browser-based developer tools. No data collected, no sign-up required.</p>
       </div>
-      <div class="footer-links">
-        <div class="footer-col"><h3 class="footer-col-title">Tools</h3><ul>
+      <div class="footer-col">
+        <h3 class="footer-col-title">Tools</h3>
+        <ul class="footer-links">
           <li><a href="/tools/dev/json-formatter.html">Dev Tools</a></li>
           <li><a href="/tools/generators/password-generator.html">Generators</a></li>
           <li><a href="/tools/converters/timestamp-converter.html">Converters</a></li>
           <li><a href="/tools/text/word-counter.html">Text Tools</a></li>
-        </ul></div>
-        <div class="footer-col"><h3 class="footer-col-title">Company</h3><ul>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 class="footer-col-title">Legal</h3>
+        <ul class="footer-links">
           <li><a href="/about.html">About</a></li>
-          <li><a href="/contact.html">Contact</a></li>
-          <li><a href="/privacy-policy.html">Privacy</a></li>
+          <li><a href="/privacy-policy.html">Privacy Policy</a></li>
           <li><a href="/terms.html">Terms</a></li>
-        </ul></div>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">&copy; 2026 ToolsBase.net &middot; <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span>
-      <div class="footer-legal"><a href="/privacy-policy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+      <span class="footer-copy">© 2025 ToolsBase.net</span>
     </div>
   </div>
 </footer>
+
 <div id="toast" class="toast">Copied!</div>
-<script>const s=document.getElementById("searchInput");if(s){var tm;s.addEventListener("input",function(){clearTimeout(tm);tm=setTimeout(function(){var q=s.value.toLowerCase().trim();document.querySelectorAll(".tool-card").forEach(function(c){c.style.display=c.textContent.toLowerCase().indexOf(q)>-1||!q?"":"none"});document.querySelectorAll(".view-all-row").forEach(function(r){r.style.display=q?"":"none"})},150)})}</script>
+
+<script>
+  // Mobile menu toggle
+  var menuBtn = document.getElementById('mobileMenuBtn');
+  var mobileNav = document.getElementById('mobileNav');
+  if (menuBtn && mobileNav) {
+    menuBtn.addEventListener('click', function () {
+      mobileNav.classList.toggle('mobile-nav--open');
+    });
+  }
+
+  // Search filter
+  var searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    var timer;
+    searchInput.addEventListener('input', function () {
+      clearTimeout(timer);
+      var q = searchInput.value.toLowerCase().trim();
+      timer = setTimeout(function () {
+        document.querySelectorAll('.tool-card').forEach(function (c) {
+          c.style.display = c.textContent.toLowerCase().indexOf(q) > -1 || !q ? '' : 'none';
+        });
+        document.querySelectorAll('.view-all-row').forEach(function (r) {
+          r.style.display = q ? 'none' : '';
+        });
+      }, 150);
+    });
+  }
+</script>
 </body>
 </html>
