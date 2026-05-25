@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bcrypt Generator — ToolsBase</title>
+  <meta name="description" content="Free bcrypt hash generator. Generate bcrypt hashes for password storage. Choose cost factor (10-14). All processing done locally.">
+  <link rel="canonical" href="https://toolsbase.net/tools/crypto/bcrypt.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>bcrypt</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">🔐 bcrypt Generator</h1><p class="lead-text">Generate bcrypt password hashes. Choose cost factor (work factor). All computation done locally in your browser — passwords never leave your device.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Password to hash</label>
+        <input type="text" id="password" class="input-area" placeholder="Enter password..." style="height:48px;font-size:1rem;" oninput="generateHash()">
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Cost Factor (work factor): <span id="costLabel">10</span></label>
+        <input type="range" min="4" max="14" value="10" id="costSlider" style="width:100%;cursor:pointer" oninput="document.getElementById('costLabel').textContent=this.value;generateHash()">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--color-text-muted);margin-top:0.25rem;"><span>Fast (4)</span><span>Balanced (10)</span><span>Strong (14)</span></div>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">bcrypt Hash</label>
+        <textarea id="hashOutput" class="input-area" rows="4" readonly style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;"></textarea>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn--primary" onclick="generateHash()">⚡ Generate Hash</button>
+        <button class="btn btn--secondary" onclick="copyHash()">📋 Copy Hash</button>
+      </div>
+    </div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>⚡ Test Vector</span></div>
+      <p style="font-size:0.85rem;color:var(--color-text-muted);margin:0.75rem 0;">Standard bcrypt test: password <code>password</code> with cost 10 produces a $2a$10$ hash. Click to load:</p>
+      <button class="btn btn--secondary btn--sm" onclick="loadTest()">🔑 Load test password</button>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">What is bcrypt and why is it used?</div><div class="faq-a">bcrypt is a password hashing algorithm designed for security. It uses a work factor (cost) that makes hashing slow and resistant to brute-force attacks. It's the recommended algorithm for password storage in modern applications.</div></div>
+      <div class="faq-item"><div class="faq-q">What cost factor should I use?</div><div class="faq-a"><strong>Cost 10</strong> is the minimum recommended for new systems. <strong>Cost 12</strong> is better for high-security applications. Higher costs are more secure but slower. Avoid cost below 10.</div></div>
+      <div class="faq-item"><div class="faq-q">Is my password sent to a server?</div><div class="faq-a">No — bcrypt.js runs entirely in your browser. Your password never leaves your device.</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    function generateHash(){const pwd=document.getElementById("password").value;if(!pwd){document.getElementById("hashOutput").value="";return}const cost=parseInt(document.getElementById("costSlider").value);document.getElementById("hashOutput").value="Generating...";const s=Date.now();const d=new bCrypt.bcryptjs();d.genSalt(cost,function(err,salt){d.hash(pwd,salt,function(err,hash){document.getElementById("hashOutput").value=hash;document.getElementById("hashOutput").style.color="var(--color-text)"})})}
+    function loadTest(){document.getElementById("password").value="password";document.getElementById("costSlider").value=10;document.getElementById("costLabel").textContent="10";generateHash()}
+    function copyHash(){const v=document.getElementById("hashOutput").value;if(!v||v==="Generating...")return;navigator.clipboard.writeText(v).then(()=>showToast("✓ Hash copied!"))}
+    function showToast(m){const e=document.createElement("div");e.textContent=m;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>

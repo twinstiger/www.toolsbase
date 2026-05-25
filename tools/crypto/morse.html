@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morse Code Encoder / Decoder — ToolsBase</title>
+  <meta name="description" content="Free Morse code encoder and decoder. Convert text to Morse code and vice versa. Supports letters, numbers, and punctuation.">
+  <link rel="canonical" href="https://toolsbase.net/tools/crypto/morse.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <style>
+    .morse-output{font-family:'JetBrains Mono',monospace;font-size:1.25rem;letter-spacing:0.15em;padding:1rem;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;min-height:60px;text-align:center;color:var(--color-text);word-break:break-all}
+  </style>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Morse Code</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">📡 Morse Code Encoder / Decoder</h1><p class="lead-text">Convert text to Morse code and decode Morse back to text. Supports letters A-Z, numbers 0-9, and common punctuation.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <button class="btn btn--primary active" id="modeEnc" onclick="setMorseMode('encode')">🔤 Encode Text → Morse</button>
+        <button class="btn btn--secondary" id="modeDec" onclick="setMorseMode('decode')">📡 Decode Morse → Text</button>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;" id="inputLabel">Text to encode</label>
+        <textarea id="morseInput" class="input-area" rows="3" placeholder="Type something..." oninput="processMorse()"></textarea>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Morse Code</label>
+        <div id="morseOutput" class="morse-output">—</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn--secondary" onclick="playMorse()">🔊 Play Sound</button>
+        <button class="btn btn--secondary" onclick="copyMorse()">📋 Copy Morse</button>
+      </div>
+    </div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>Morse Code Reference</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.5rem;margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;">
+        <div style="background:var(--color-bg-secondary);border-radius:6px;padding:0.5rem;">A = .- &nbsp;B = -... &nbsp;C = -.-.</div>
+        <div style="background:var(--color-bg-secondary);border-radius:6px;padding:0.5rem;">0 = ----- &nbsp;1 = .---- &nbsp;2 = ..---</div>
+        <div style="background:var(--color-bg-secondary);border-radius:6px;padding:0.5rem;">Space = / &nbsp;Period = .-.-.-</div>
+      </div>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">What characters are supported?</div><div class="faq-a">Letters A-Z, numbers 0-9, and common punctuation (period, comma, question mark, exclamation, slash, parentheses, ampersand, colon, semicolon, equals, plus, minus, underscore, quotes, at).</div></div>
+      <div class="faq-item"><div class="faq-q">Can I play the Morse code as sound?</div><div class="faq-a">Yes — click "Play Sound" to hear the Morse code. Each dot is a short beep, each dash is a longer beep.</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    const M={"A":".-","B":"-...","C":"-.-.","D":"-..","E":".","F":"..-.","G":"--.","H":"....","I":"..","J":".---","K":"-.-","L":".-..","M":"--","N":"-.","O":"---","P":".--.","Q":"--.-","R":".-.","S":"...","T":"-","U":"..-","V":"...-","W":".--","X":"-..-","Y":"-.--","Z":"--..","0":"-----","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----.",".":".-.-.-",",":"--..--","?":"..--..","!":"-.-.--","/":"-..-.","(":"-.--.",")":"-.--.-","&":".-...,":":"---...",";":"-.-.-.","=":"-...-","+":".-.-.","-":"-....-","_":"..--.-","\"":".-..-.","$":"...-..-","@":".--.-."};
+    const RM={};Object.entries(M).forEach(([k,v])=>RM[v]=k);
+    let mMode="encode";
+    function setMorseMode(m){mMode=m;document.getElementById("modeEnc").className="btn btn--"+(m==="encode"?"primary":"secondary");document.getElementById("modeDec").className="btn btn--"+(m==="decode"?"primary":"secondary");document.getElementById("inputLabel").textContent=m==="encode"?"Text to encode":"Morse to decode (use space between chars, / for word break)";document.getElementById("morseInput").value="";document.getElementById("morseOutput").textContent="—"}
+    function processMorse(){const v=document.getElementById("morseInput").value.trim();if(!v){document.getElementById("morseOutput").textContent="—";return}if(mMode==="encode"){document.getElementById("morseOutput").textContent=v.toUpperCase().split("").map(c=>M[c]||"").join(" ")}else{const words=v.split("/");document.getElementById("morseOutput").textContent=words.map(w=>w.trim().split(" ").map(m=>RM[m]||"").join("")).join(" ")}}
+    function copyMorse(){const v=document.getElementById("morseOutput").textContent;if(v==="—")return;navigator.clipboard.writeText(v).then(()=>showToast("✓ Copied!"))}
+    function playMorse(){const v=document.getElementById("morseOutput").textContent;if(v==="—"||!v)return;const ctx=new(window.AudioContext||window.webkitAudioContext)();let t=ctx.currentTime;v.split("").forEach(c=>{if(c==="."){beep(ctx,t,0.1);t+=0.2}else if(c==="-"){beep(ctx,t,0.3);t+=0.4}else if(c===" "){t+=0.2}else if(c==="/"){t+=0.4}})}
+    function beep(ctx,t,dur){const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=800;g.gain.setValueAtTime(0.3,t);g.gain.exponentialRampToValueAtTime(0.001,t+dur);o.start(t);o.stop(t+dur)}
+    function showToast(m){const e=document.createElement("div");e.textContent=m;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>

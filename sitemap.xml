@@ -30,4 +30,13 @@
   <url><loc>https://toolsbase.net/tools/image/qr-code-generator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://toolsbase.net/tools/image/favicon-generator.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://toolsbase.net/tools/image/image-to-base64.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolsbase.net/tools/network/my-ip.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolsbase.net/tools/network/url-parser.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolsbase.net/tools/network/url-shortener.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/tools/network/subnet.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/tools/network/ip-to-int.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/tools/crypto/bcrypt.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/tools/crypto/htpasswd.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/tools/crypto/morse.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://toolsbase.net/tools/crypto/base32.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

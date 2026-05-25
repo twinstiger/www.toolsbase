@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base32 Encoder / Decoder — ToolsBase</title>
+  <meta name="description" content="Free Base32 encoder and decoder. Convert text to Base32 and back. RFC 4648 compliant. 100% browser-based.">
+  <link rel="canonical" href="https://toolsbase.net/tools/crypto/base32.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Base32</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">🔢 Base32 Encoder / Decoder</h1><p class="lead-text">Encode text to Base32 or decode Base32 back to plain text. RFC 4648 compliant alphabet (A-Z, 2-7). 100% browser-based.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <button class="btn btn--primary active" id="tabEnc32" onclick="setB32Mode('encode')">🔒 Encode</button>
+        <button class="btn btn--secondary" id="tabDec32" onclick="setB32Mode('decode')">🔓 Decode</button>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Input</label>
+        <textarea id="b32Input" class="input-area" rows="4" placeholder="Enter text..." oninput="processB32()"></textarea>
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.875rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.5rem;">Base32 Output</label>
+        <textarea id="b32Output" class="input-area" rows="4" readonly style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:var(--color-bg-secondary);"></textarea>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn--primary" onclick="processB32()">⚡ Process</button>
+        <button class="btn btn--secondary" onclick="copyB32()">📋 Copy</button>
+        <button class="btn btn--secondary" onclick="swapB32()">⇄ Swap</button>
+      </div>
+    </div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>⚡ Quick Examples</span></div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.75rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:var(--color-bg-secondary);border-radius:6px;cursor:pointer;" onclick='setB32Input("Hello, World!")'><span style="font-family:'JetBrains Mono';color:var(--color-text-muted);font-size:0.85rem;">Hello, World!</span><span style="font-family:'JetBrains Mono';color:var(--color-primary);font-size:0.85rem;">JBSWY3DPFQQHO33V</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:var(--color-bg-secondary);border-radius:6px;cursor:pointer;" onclick='setB32Input("f")'><span style="font-family:'JetBrains Mono';color:var(--color-text-muted);font-size:0.85rem;">f</span><span style="font-family:'JetBrains Mono';color:var(--color-primary);font-size:0.85rem;">MY======</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:var(--color-bg-secondary);border-radius:6px;cursor:pointer;" onclick='setB32Input("foo")'><span style="font-family:'JetBrains Mono';color:var(--color-text-muted);font-size:0.85rem;">foo</span><span style="font-family:'JetBrains Mono';color:var(--color-primary);font-size:0.85rem;">MZXW6YTBMM======</span></div>
+      </div>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">What is Base32?</div><div class="faq-a">Base32 is a binary-to-text encoding that uses a 32-character alphabet (A-Z and 2-7). It's commonly used in applications that need case-insensitive encoding, such as DNS records and certificate fingerprints.</div></div>
+      <div class="faq-item"><div class="faq-q">What's the difference between Base32 and Base64?</div><div class="faq-a">Base32 uses 32 characters (A-Z, 2-7) and is case-insensitive. Base64 uses 64 characters (A-Z, a-z, 0-9, +, /) and is case-sensitive. Base32 produces longer output but is more reliable in environments where uppercase/lowercase distinction is lost.</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    const B32ALPH="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bMode="encode";
+    function setB32Mode(m){bMode=m;document.getElementById("tabEnc32").className="btn btn--"+(m==="encode"?"primary":"secondary");document.getElementById("tabDec32").className="btn btn--"+(m==="decode"?"primary":"secondary");document.getElementById("b32Input").value="";document.getElementById("b32Output").value="";document.getElementById("b32Input").placeholder=m==="encode"?"Enter text to encode...":"Enter Base32 to decode..."}
+    function b32enc(s){let bits=0,bbuf=0,out="";for(let i=0;i<s.length;i++){bbuf=(bbuf<<8)|s.charCodeAt(i);bits+=8;while(bits>=5){out+=B32ALPH[(bbuf>>>(bits-5))&31];bits-=5}}if(bits>0)out+=B32ALPH[(bbuf<<(5-bits))&31];return out.padEnd(Math.ceil(out.length/8)*8,"=")}
+    function b32dec(s){let bits=0,bbuf=0,out="";s=s.replace(/=+$/,"");const clean=s.toUpperCase().replace(/[^A-Z2-7]/g,"");for(let i=0;i<clean.length;i++){const v=B32ALPH.indexOf(clean[i]);if(v<0)continue;bbuf=(bbuf<<5)|v;bits+=5;while(bits>=8){out+=String.fromCharCode((bbuf>>>(bits-8))&255);bits-=8}}return out}
+    function processB32(){const v=document.getElementById("b32Input").value;if(!v){document.getElementById("b32Output").value="";return}try{document.getElementById("b32Output").value=bMode==="encode"?b32enc(v):b32dec(v)}catch(e){document.getElementById("b32Output").value="Error: "+e.message}}
+    function setB32Input(v){document.getElementById("b32Input").value=v;processB32()}
+    function copyB32(){const v=document.getElementById("b32Output").value;if(!v)return;navigator.clipboard.writeText(v).then(()=>showToast("✓ Copied!"))}
+    function swapB32(){const inp=document.getElementById("b32Input").value;const out=document.getElementById("b32Output").value;document.getElementById("b32Input").value=out;document.getElementById("b32Output").value=inp;bMode=bMode==="encode"?"decode":"encode";document.getElementById("tabEnc32").className="btn btn--"+(bMode==="encode"?"primary":"secondary");document.getElementById("tabDec32").className="btn btn--"+(bMode==="decode"?"primary":"secondary")}
+    function showToast(m){const e=document.createElement("div");e.textContent=m;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>

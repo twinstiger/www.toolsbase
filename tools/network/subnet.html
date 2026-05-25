@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subnet Calculator — ToolsBase</title>
+  <meta name="description" content="Free subnet calculator. Calculate network address, broadcast, usable hosts, CIDR notation for any IPv4 address and subnet mask.">
+  <link rel="canonical" href="https://toolsbase.net/tools/network/subnet.html">
+  <link rel="icon" type="image/svg+xml" href="../../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/tokens.css">
+  <link rel="stylesheet" href="../../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+  <style>
+    .subnet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem;margin-top:0.5rem}
+    .subnet-item{background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:0.875rem 1rem;cursor:pointer;transition:all 0.15s}.subnet-item:hover{border-color:var(--color-primary)}
+    .subnet-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-muted);margin-bottom:0.25rem}.subnet-value{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--color-text);word-break:break-all}
+    .subnet-item.network{border-color:#10b981;background:rgba(16,185,129,0.05)}.subnet-item.broadcast{border-color:#ec4899;background:rgba(236,72,153,0.05)}.subnet-item.host-range{border-color:#0ea5e9;background:rgba(14,165,233,0.05)}
+  </style>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../../index.html" class="logo"><img src="../../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../../blog/index.html" class="nav-btn">📝 Blog</a><a href="../../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../../index.html">Home</a><span>›</span><a href="../../tools/index.html">Tools</a><span>›</span><span>Subnet Calculator</span></nav>
+    <div class="tool-page-header"><h1 class="tool-page-title">🖧 Subnet Calculator</h1><p class="lead-text">Calculate network address, broadcast, usable host range, and total hosts for any IPv4 address and subnet mask.</p></div>
+    <div class="ad-slot" style="margin:1.5rem 0;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9420599375364457" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:0.75rem;margin-bottom:1rem;align-items:end;">
+        <div>
+          <label style="font-size:0.8rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.25rem;">IP Address</label>
+          <input type="text" id="ipInput" class="input-area" placeholder="192.168.1.0" value="192.168.1.0" style="height:48px;font-size:1.1rem;font-family:'JetBrains Mono',monospace;">
+        </div>
+        <div>
+          <label style="font-size:0.8rem;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:0.25rem;">CIDR / Prefix</label>
+          <select id="cidrSelect" class="input-area" style="height:48px;font-size:1rem;" onchange="calculateSubnet()">
+            <option value="32">/32 (1 host)</option><option value="31">/31 (2 hosts)</option><option value="30">/30 (4 hosts)</option><option value="29">/29 (8 hosts)</option><option value="28" selected>/28 (16 hosts)</option><option value="27">/27 (32 hosts)</option><option value="26">/26 (64 hosts)</option><option value="25">/25 (128 hosts)</option><option value="24">/24 (256 hosts)</option><option value="23">/23 (512 hosts)</option><option value="22">/22 (1024 hosts)</option><option value="21">/21 (2048 hosts)</option><option value="20">/20 (4096 hosts)</option><option value="19">/19 (8192 hosts)</option><option value="18">/18 (16384 hosts)</option><option value="16">/16 (65536 hosts)</option><option value="8">/8 (16M hosts)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <button class="btn btn--primary" onclick="calculateSubnet()">⚡ Calculate</button>
+        <button class="btn btn--secondary" onclick="copyAll()">📋 Copy All</button>
+      </div>
+      <div id="results" class="subnet-grid"></div>
+    </div>
+    <div class="tool-card" style="margin:1.5rem 0;">
+      <div class="tool-section-header"><span>⚡ Common Subnet Presets</span></div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("192.168.1.0","24")'>/24 — 254 hosts</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("192.168.1.0","25")'>/25 — 126 hosts</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("192.168.1.0","26")'>/26 — 62 hosts</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("192.168.1.0","27")'>/27 — 30 hosts</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("192.168.1.0","28")'>/28 — 14 hosts</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("192.168.1.0","29")'>/29 — 6 hosts</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("10.0.0.0","8")'>/8 — Large network</button>
+        <button class="btn btn--secondary btn--sm" onclick='setPreset("172.16.0.0","12")'>/12 — AWS VPC</button>
+      </div>
+    </div>
+    <div class="faq-section" style="margin:2rem 0;"><h2 class="faq-title">❓ FAQ</h2>
+      <div class="faq-item"><div class="faq-q">What does CIDR notation mean?</div><div class="faq-a"><strong>/24</strong> means the first 24 bits are the network portion, leaving 8 bits for hosts. A /24 network has 256 addresses (254 usable). A /30 has 4 addresses (2 usable). The smaller the CIDR number, the larger the network.</div></div>
+      <div class="faq-item"><div class="faq-q">Why do usable hosts = total - 2?</div><div class="faq-a">The first address (network address) and last address (broadcast address) are reserved. For example, in 192.168.1.0/24, .0 is the network and .255 is the broadcast — both can't be assigned to devices.</div></div>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../../privacy-policy.html">Privacy</a><a href="../../terms.html">Terms</a></div></div></footer>
+  <script>
+    function ipToNum(octets){return octets.reduce((acc,oct)=>(acc<<8)+parseInt(oct),0)>>>0}
+    function numToIP(num){return[(num>>>24)&255,(num>>>16)&255,(num>>>8)&255,num&255].join(".")}
+    function calculateSubnet(){const ip=document.getElementById("ipInput").value.trim();const cidr=parseInt(document.getElementById("cidrSelect").value);if(!ip)return;const octets=ip.split(".");if(octets.length!==4||octets.some(o=>isNaN(parseInt(o))))return;const ipNum=ipToNum(octets);const maskNum=(0xFFFFFFFF<<(32-cidr))>>>0;const netNum=ipNum&maskNum;const bcNum=netNum|(~maskNum>>>0);const firstHost=cidr<31?netNum+1:netNum;const lastHost=cidr<31?bcNum-1:bcNum;const totalHosts=Math.pow(2,32-cidr);const usable=cidr<31?totalHosts-2:totalHosts;const wildcard=(~maskNum)>>>0;const results=[{label:"Network Address",value:numToIP(netNum),cls:"network"},{label:"Broadcast Address",value:numToIP(bcNum),cls:"broadcast"},{label:"Subnet Mask",value:numToIP(maskNum),cls:""},{label:"Wildcard Mask",value:numToIP(wildcard),cls:""},{label:"First Usable Host",value:numToIP(firstHost),cls:"host-range"},{label:"Last Usable Host",value:numToIP(lastHost),cls:"host-range"},{label:"Total Addresses",value:totalHosts.toLocaleString(),cls:""},{label:"Usable Hosts",value:usable.toLocaleString(),cls:""},{label:"CIDR Notation",value:"/"+cidr,cls:""},{label:"IP Class",value:octets[0]<128?"Class A":octets[0]<192?"Class B":octets[0]<224?"Class C":"Other",cls:""}];document.getElementById("results").innerHTML=results.map(r=>`<div class="subnet-item ${r.cls}" onclick="copy('${r.value}')"><div class="subnet-label">${r.label}</div><div class="subnet-value">${r.value}</div></div>`).join("")}
+    function setPreset(ip,cidr){document.getElementById("ipInput").value=ip;document.getElementById("cidrSelect").value=cidr;calculateSubnet()}
+    function copy(v){navigator.clipboard.writeText(v).then(()=>showToast("✓ Copied: "+v))}
+    function copyAll(){const items=document.querySelectorAll(".subnet-value");const text=Array.from(items).map(el=>el.textContent).join("\n");navigator.clipboard.writeText(text).then(()=>showToast("✓ All copied!"))}
+    function showToast(m){const e=document.createElement("div");e.textContent=m;e.style.cssText="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0ea5e9;color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999";document.body.appendChild(e);setTimeout(()=>e.remove(),2000)}
+    calculateSubnet();
+  </script>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</body></html>
