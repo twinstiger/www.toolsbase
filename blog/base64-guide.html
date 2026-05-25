@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encoding Explained: When to Use It and Why It Matters — ToolsBase</title>
+  <meta name="description" content="Learn what Base64 encoding is, how it works, and when to use it. Includes practical examples for JSON, images, and data URIs.">
+  <link rel="canonical" href="https://toolsbase.net/blog/base64-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header"><div class="container"><div class="header-content"><a href="../index.html" class="logo"><img src="../logo.svg" alt="ToolsBase"><div class="logo-text"><div class="logo-title">ToolsBase</div><div class="logo-tagline">Free · Local · Private</div></div></a><nav class="nav"><a href="../tools/index.html" class="nav-btn">🛠️ Tools</a><a href="../blog/index.html" class="nav-btn">📝 Blog</a><a href="../about.html" class="nav-btn">About</a></nav></div></div></header>
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../index.html">Home</a><span>›</span><a href="../blog/index.html">Blog</a><span>›</span><span>Base64 Guide</span></nav>
+    <article class="blog-article">
+      <header class="blog-article-header">
+        <h1>Base64 Encoding Explained: When to Use It and Why It Matters</h1>
+        <div class="blog-article-meta"><span>📅 May 25, 2026</span><span>⏱️ 8 min read</span><span>🔤 Developer Tools</span></div>
+      </header>
+
+      <p class="lead">Base64 is a binary-to-text encoding scheme that converts binary data into ASCII text format. It's everywhere in modern web development — from API responses to inline images — and understanding it will make you a better developer.</p>
+
+      <h2>What Is Base64 and Why Does It Exist?</h2>
+      <p>computers store everything as binary data (1s and 0s). But some protocols and systems — like email (SMTP), JSON APIs, and URLs — can only handle text. Base64 solves this by mapping binary data to a set of 64 printable ASCII characters (A-Z, a-z, 0-9, +, and /).</p>
+      <p>Imagine you have an image file. You can't put raw binary into a JSON response — it would break the parser. But if you Base64-encode it, you get a string like <code>R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7</code> that any system can handle.</p>
+
+      <h2>How Base64 Works (Step by Step)</h2>
+      <p>Each 3 bytes of binary data (24 bits) are split into four 6-bit groups. Each group maps to a character in the Base64 alphabet:</p>
+      <pre><code>Text: "Hi"
+Binary: 01001000 01101001
+Split into 6-bit groups: 010010 000110 1001--
+Pad with zeros:         010010 000110 100100
+Base64 indices:         18     6      36     --
+Result:                 "S"   "G"    "k"    "=" (padding)</code></pre>
+      <p>So "Hi" becomes <code>SGk=</code>. The <code>=</code> at the end is padding — Base64 works in groups of 4 characters, so input that isn't divisible by 3 gets padded.</p>
+
+      <h2>When to Use Base64</h2>
+      <h3>1. Inline Images in CSS/HTML</h3>
+      <p>Instead of loading an external image file, you can embed it directly:</p>
+      <pre><code>&lt;img src="data:image/png;base64,iVBORw0KGgo..."&gt;</code></pre>
+      <p>Use for small icons or images (under 1-2KB) where the HTTP request overhead is larger than the encoded data. Don't use for large images — it inflates file size by ~33% and can't be cached separately.</p>
+
+      <h3>2. JSON API Responses</h3>
+      <p>When transmitting binary data through an API, Base64 is the standard encoding:</p>
+      <pre><code>{
+  "filename": "avatar.png",
+  "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  "mimeType": "image/png"
+}</code></pre>
+
+      <h3>3. Embedding Small Files in Configuration</h3>
+      <p>API keys, certificates, and small files are often Base64-encoded in config files or environment variables to avoid escaping issues with special characters.</p>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li><strong>Email attachments</strong> — MIME encoding for binary attachments in emails</li>
+        <li><strong>JWT tokens</strong> — Header and payload are Base64URL-encoded</li>
+        <li><strong>Basic authentication</strong> — Username:password becomes Base64 header</li>
+        <li><strong>Data URLs</strong> — Embed images directly in HTML/CSS</li>
+        <li><strong>OAuth tokens</strong> — Many providers return tokens as Base64 strings</li>
+      </ul>
+
+      <h2>Base64 vs Base32 vs Base16</h2>
+      <p>Base64 uses 64 characters and produces compact output (33% overhead). Base32 uses 32 characters (A-Z, 2-7) and is case-insensitive — useful in DNS environments where case can be lost. Base16 (hex) uses only 16 characters and is easiest to read but produces the largest output.</p>
+
+      <h2>Try It Yourself</h2>
+      <p>Use our <a href="../tools/dev/base64-encoder.html">Base64 Encoder tool</a> to convert text or images to Base64 instantly. Everything happens locally in your browser — your data never leaves your device.</p>
+
+      <h2>Security Considerations</h2>
+      <p>Base64 is <strong>not encryption</strong>. Anyone can decode a Base64 string — it's just encoding, not security. Never store passwords or sensitive data as plain Base64. For data protection, use AES, RSA, or other encryption algorithms.</p>
+      <p>However, Base64 is useful for obscuring data from casual observation — similar to "security through obscurity." It's not a substitute for real encryption but can add a layer against casual inspection.</p>
+
+      <h2>Performance Tip</h2>
+      <p>Base64 encoding inflates data size by 33%. If you're encoding large files (images over 50KB, documents, archives), consider using binary transfer instead. For small data — tokens, small icons, config values — Base64 is efficient and portable.</p>
+    </article>
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+      <a href="../blog/index.html" style="color:var(--color-primary);font-weight:600;">← Back to Blog</a>
+    </div>
+  </div></main>
+  <footer class="footer"><div class="container"><div class="footer-bottom"><span class="footer-copy">© 2025 ToolsBase.net — Free · Local · Private</span><div class="footer-legal"><a href="../privacy-policy.html">Privacy</a><a href="../terms.html">Terms</a></div></div></footer>
+</body></html>
