@@ -106,10 +106,10 @@
           100% Browser-Based · No Uploads
         </div>
         <h1 class="hero-title">
-          Developer Tools,<br><span>Done Right</span>
+          Developer Tools, <span>Done Right</span>
         </h1>
         <p class="hero-subtitle">
-          Free online tools for developers — JSON formatter, regex tester, Base64 encoder, hash generator, and more. All processing happens locally in your browser.
+          Free online developer tools: JSON formatter, regex tester, Base64 encoder, hash generator, and more — all processing happens locally in your browser.
         </p>
 
         <!-- Search -->
@@ -148,14 +148,13 @@
       <div class="container">
         <!-- Category Filter -->
         <div class="category-nav" role="tablist" aria-label="Filter tools by category">
-          <button class="category-tab active" data-category="all" role="tab">All Tools</button>
-          <button class="category-tab" data-category="dev" role="tab">Developer</button>
-          <button class="category-tab" data-category="generators" role="tab">Generators</button>
-          <button class="category-tab" data-category="converters" role="tab">Converters</button>
-          <button class="category-tab" data-category="text" role="tab">Text</button>
-          <button class="category-tab" data-category="image" role="tab">Image</button>
-          <button class="category-tab" data-category="network" role="tab">Network</button>
-          <button class="category-tab" data-category="crypto" role="tab">Crypto</button>
+          <a href="#section-dev" class="category-tab" data-category="dev">Developer</a>
+          <a href="#section-generators" class="category-tab" data-category="generators">Generators</a>
+          <a href="#section-converters" class="category-tab" data-category="converters">Converters</a>
+          <a href="#section-text" class="category-tab" data-category="text">Text</a>
+          <a href="#section-image" class="category-tab" data-category="image">Image</a>
+          <a href="#section-network" class="category-tab" data-category="network">Network</a>
+          <a href="#section-crypto" class="category-tab" data-category="crypto">Crypto</a>
         </div>
 
         <!-- Ad -->
@@ -164,7 +163,7 @@
         </div>
 
         <!-- Dev Tools -->
-        <div class="category-group" data-category="dev">
+        <div class="category-group" id="section-dev" data-category="dev">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">🛠️</span>
@@ -232,7 +231,7 @@
         </div>
 
         <!-- Generators -->
-        <div class="category-group" data-category="generators">
+        <div class="category-group" id="section-generators" data-category="generators">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">⚡</span>
@@ -281,7 +280,7 @@
         </div>
 
         <!-- Converters -->
-        <div class="category-group" data-category="converters">
+        <div class="category-group" id="section-converters" data-category="converters">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">🔄</span>
@@ -330,7 +329,7 @@
         </div>
 
         <!-- Text Tools -->
-        <div class="category-group" data-category="text">
+        <div class="category-group" id="section-text" data-category="text">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">📝</span>
@@ -370,7 +369,7 @@
         </div>
 
         <!-- Image Tools -->
-        <div class="category-group" data-category="image">
+        <div class="category-group" id="section-image" data-category="image">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">🖼️</span>
@@ -410,7 +409,7 @@
         </div>
 
         <!-- Network Tools -->
-        <div class="category-group" data-category="network">
+        <div class="category-group" id="section-network" data-category="network">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">🌐</span>
@@ -468,7 +467,7 @@
         </div>
 
         <!-- Crypto & Security -->
-        <div class="category-group" data-category="crypto">
+        <div class="category-group" id="section-crypto" data-category="crypto">
           <div class="section-header">
             <div class="section-title-group">
               <span class="section-icon">🔐</span>
@@ -581,27 +580,17 @@
   </footer>
 
   <script>
-    // Category filter — maps category to grid id
-    const CAT_MAP = {
-      all: null,
-      dev: 'grid-dev',
-      generators: 'grid-generators',
-      converters: 'grid-converters',
-      text: 'grid-text',
-      image: 'grid-image',
-      network: 'grid-network',
-      crypto: 'grid-crypto'
-    };
-    const tabs = document.querySelectorAll('.category-tab');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const cat = tab.dataset.category;
-        const targetId = CAT_MAP[cat];
-        document.querySelectorAll('.tool-grid').forEach(grid => {
-          grid.style.display = (targetId === null || grid.id === targetId) ? '' : 'none';
-        });
+    // Category tab smooth scroll — removes active state (anchor links handle it naturally)
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        const href = tab.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
       });
     });
     // Search
