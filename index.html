@@ -48,6 +48,7 @@
       <div class="hero-search">
         <span class="hero-search-icon">🔍</span>
         <input type="text" class="hero-search-input" id="searchInput" placeholder="Search 51 tools..." autocomplete="off">
+        <div class="search-dropdown" id="searchDropdown"></div>
       </div>
       <div class="hero-cta">
         <a href="/tools/index.html" class="btn btn--primary">Browse All 51 →</a>
@@ -223,6 +224,63 @@
   </div>
 </footer>
 <div id="toast" class="toast">Copied!</div>
-<script>const s=document.getElementById("searchInput");if(s){var tm;s.addEventListener("input",function(){clearTimeout(tm);tm=setTimeout(function(){var q=s.value.toLowerCase().trim();document.querySelectorAll(".tool-card").forEach(function(c){c.style.display=c.textContent.toLowerCase().indexOf(q)>-1||!q?"":"none"});document.querySelectorAll(".view-all-row").forEach(function(r){r.style.display=q?"":"none"})},150)})}</script>
+<script>
+const s = document.getElementById("searchInput");
+const d = document.getElementById("searchDropdown");
+if (s && d) {
+  const allTools = Array.from(document.querySelectorAll(".tool-card")).map(c => {
+    const icon = c.querySelector(".tool-card-icon")?.textContent || "";
+    const title = c.querySelector(".tool-card-title")?.textContent || "";
+    const desc = c.querySelector(".tool-card-desc")?.textContent || "";
+    const href = c.getAttribute("href") || "";
+    const cat = c.closest(".category-section")?.querySelector(".category-title")?.textContent?.replace(/[\u{1F300}-\u{1F9FF}]/gu, "").trim() || "";
+    return { icon, title, desc, href, cat };
+  });
+
+  function renderDropdown(results) {
+    if (!s.value.trim()) { d.classList.remove("show"); return; }
+    d.classList.add("show");
+    if (results.length === 0) {
+      d.innerHTML = '<div class="search-dropdown-empty">No tools found</div>';
+      return;
+    }
+    d.innerHTML = results.slice(0, 8).map(t =>
+      `<a href="${t.href}" class="search-dropdown-item">
+        <span class="sdi-icon">${t.icon}</span>
+        <div>
+          <div class="sdi-title">${t.title}</div>
+          <div class="sdi-desc">${t.desc}</div>
+        </div>
+        <span class="sdi-cat">${t.cat}</span>
+      </a>`
+    ).join("");
+  }
+
+  s.addEventListener("input", function() {
+    const q = s.value.toLowerCase().trim();
+    if (!q) { d.classList.remove("show"); return; }
+    const results = allTools.filter(t =>
+      t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)
+    );
+    renderDropdown(results);
+  });
+
+  s.addEventListener("focus", function() {
+    if (s.value.trim()) {
+      const q = s.value.toLowerCase().trim();
+      const results = allTools.filter(t =>
+        t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)
+      );
+      renderDropdown(results);
+    }
+  });
+
+  document.addEventListener("click", function(e) {
+    if (!s.contains(e.target) && !d.contains(e.target)) {
+      d.classList.remove("show");
+    }
+  });
+}
+</script>
 </body>
 </html>
