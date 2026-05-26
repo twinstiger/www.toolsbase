@@ -6,6 +6,11 @@
   <title>All 51 Tools - ToolsBase.net</title>
   <meta name="description" content="Browse all 51 free developer tools — 42 built-in and 9 curated external tools across 8 categories.">
   <meta name="theme-color" content="#000000">
+  <meta property="og:title" content="All 51 Tools - ToolsBase.net">
+  <meta property="og:description" content="Browse all 51 free developer tools — 42 built-in and 9 curated external tools across 8 categories.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://toolsbase.net/tools/index.html">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/src/tokens.css">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -35,6 +40,22 @@
     <div class="tool-page-header">
       <h1 class="tool-page-title">🔧 All 51 Tools</h1>
       <p class="lead-text">42 built-in tools + 9 curated external tools across 8 categories.</p>
+      <div class="hero-search" style="margin-top:1rem">
+        <span class="hero-search-icon">🔍</span>
+        <input type="text" class="hero-search-input" id="searchInput" placeholder="Search 51 tools..." autocomplete="off">
+      </div>
+    </div>
+    <div class="cat-tabs">
+      <div class="cat-tabs-inner">
+        <a href="#dev-tools" class="category-tab">🔧 Dev Tools</a>
+        <a href="#generators" class="category-tab">⚡ Generators</a>
+        <a href="#converters" class="category-tab">🔄 Converters</a>
+        <a href="#text-tools" class="category-tab">📝 Text Tools</a>
+        <a href="#image-tools" class="category-tab">🖼️ Image Tools</a>
+        <a href="#network-tools" class="category-tab">🌐 Network Tools</a>
+        <a href="#crypto-tools" class="category-tab">🔒 Crypto Tools</a>
+        <a href="#external-tools" class="category-tab">🔗 External</a>
+      </div>
     </div>
         <div class="category-section" id="dev-tools" style="--cat-color:var(--tc-blue)">
           <div class="category-header">
@@ -192,6 +213,65 @@
   </div>
 </footer>
 <div id="toast" class="toast">Copied!</div>
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.cat-tabs .category-tab');
+  const sections = {
+    'dev-tools': document.getElementById('dev-tools'),
+    'generators': document.getElementById('generators'),
+    'converters': document.getElementById('converters'),
+    'text-tools': document.getElementById('text-tools'),
+    'image-tools': document.getElementById('image-tools'),
+    'network-tools': document.getElementById('network-tools'),
+    'crypto-tools': document.getElementById('crypto-tools'),
+    'external-tools': document.getElementById('external-tools')
+  };
+
+  function updateActiveTab() {
+    const hash = window.location.hash.slice(1) || 'dev-tools';
+    tabs.forEach(tab => {
+      const href = tab.getAttribute('href').slice(1);
+      tab.classList.toggle('active', href === hash);
+    });
+  }
+
+  if (window.location.hash) {
+    const target = document.getElementById(window.location.hash.slice(1));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, '', '#' + targetId);
+        updateActiveTab();
+      }
+    });
+  });
+
+  window.addEventListener('hashchange', updateActiveTab);
+  updateActiveTab();
+
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    let timer;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        const q = searchInput.value.toLowerCase().trim();
+        document.querySelectorAll('.tool-card').forEach(function(c) {
+          c.style.display = c.textContent.toLowerCase().indexOf(q) > -1 || !q ? '' : 'none';
+        });
+      }, 150);
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
