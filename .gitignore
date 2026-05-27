@@ -67,3 +67,5 @@ coverage/
 # ============================================================
 .wrangler/
 wrangler.toml
+# Build output
+/dist/

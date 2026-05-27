@@ -4,9 +4,10 @@
   "description": "ToolsBase - Free Online Developer Tools",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "deploy": "npx wrangler pages deploy ."
+    "build": "node build.mjs",
+    "watch": "npx watchexec -w src -w '*.html' 'npm run build'",
+    "deploy": "npm run build && npx wrangler pages deploy dist",
+    "dev": "npm run build && npx serve dist"
   },
   "repository": {
     "url": "git+https://github.com/twinstiger/www.toolsbase.git"
