@@ -1,11 +1,5 @@
-# Cloudflare Pages Configuration for static site
-[build]
-  command = "echo Ready"
-  cwd = "."
+# Cloudflare Pages Configuration
+# Build is handled by GitHub Actions - this file only tells Cloudflare where to serve files
 
 [site]
-  bucket = "."
-# GitHub Actions deploy uses this — build first then deploy
-[build]
-  command = "npm install && npm run build"
-  cwd = "."
+  bucket = "./dist"
