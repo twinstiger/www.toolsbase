@@ -33,6 +33,12 @@ function assetPath(filePath, asset) {
   return prefix + asset;
 }
 
+// Google Ads script
+const GOOGLE_ADS_SCRIPT = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>';
+
+// SEO meta tags template
+const SEO_META = '<meta property="og:type" content="website">\n  <meta property="og:site_name" content="ToolsBase">\n  <meta property="og:image" content="/og-image.png">\n  <meta name="twitter:card" content="summary_large_image">';
+
 // Process a single HTML file
 function processFile(filePath) {
   let html = fs.readFileSync(filePath, 'utf-8');
@@ -69,6 +75,16 @@ function processFile(filePath) {
   // Always add tokens.css for dark mode support (must come before styles.css)
   if (!html.includes('tokens.css')) {
     html = html.replace('<link rel="stylesheet" href="' + prefix + 'src/styles.css">', '<link rel="stylesheet" href="' + prefix + 'src/tokens.css">\n  <link rel="stylesheet" href="' + prefix + 'src/styles.css">');
+  }
+
+  // Add Google Ads script after <head> if not already present
+  if (!html.includes('googlesyndication.com')) {
+    html = html.replace('<head>', '<head>\n  ' + GOOGLE_ADS_SCRIPT);
+  }
+
+  // Add SEO meta tags after <head> if og:type is missing
+  if (!html.includes('property="og:type"')) {
+    html = html.replace('<head>', '<head>\n  ' + SEO_META);
   }
 
   return html;
