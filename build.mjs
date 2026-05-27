@@ -36,16 +36,34 @@ function assetPath(filePath, asset) {
 // Google Ads script
 const GOOGLE_ADS_SCRIPT = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>';
 
-// SEO meta tags template
-const SEO_META = '<meta property="og:type" content="website">\n  <meta property="og:site_name" content="ToolsBase">\n  <meta property="og:image" content="/og-image.png">\n  <meta name="twitter:card" content="summary_large_image">';
-
 // Process a single HTML file
-function processFile(filePath) {
+function processFile(filePath, outPath) {
   let html = fs.readFileSync(filePath, 'utf-8');
 
   // Get depth for this file
   const depth = getDepth(filePath);
   const prefix = depth > 0 ? '../'.repeat(depth) : './';
+
+  // Extract SEO info from existing title and description
+  const titleMatch = html.match(/<title>([^<]*)<\/title>/);
+  const descMatch = html.match(/<meta name="description" content="([^"]*)"/);
+  const pageTitle = titleMatch ? titleMatch[1] : 'ToolsBase';
+  const pageDesc = descMatch ? descMatch[1] : 'Free online developer tools';
+  const siteUrl = 'https://toolsbase.net';
+  // Convert output path to web path (e.g., dist/tools/foo.html -> tools/foo.html)
+  const webPath = outPath.replace(DIST, '').replace(/^\//, '').replace(/\\/g, '/');
+  const pageUrl = siteUrl + '/' + webPath;
+
+  // Build dynamic SEO meta tags
+  const seoMeta = `<meta property="og:type" content="website">
+  <meta property="og:title" content="${pageTitle}">
+  <meta property="og:description" content="${pageDesc}">
+  <meta property="og:url" content="${pageUrl}">
+  <meta property="og:site_name" content="ToolsBase">
+  <meta property="og:image" content="${siteUrl}/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${pageTitle}">
+  <meta name="twitter:description" content="${pageDesc}">`;
 
   // Replace header
   const headerMatch = html.match(/<header class="header">[\s\S]*?<\/header>\s*/);
@@ -82,9 +100,9 @@ function processFile(filePath) {
     html = html.replace('<head>', '<head>\n  ' + GOOGLE_ADS_SCRIPT);
   }
 
-  // Add SEO meta tags after <head> if og:type is missing
+  // Add SEO meta tags before </head> if og:type is missing
   if (!html.includes('property="og:type"')) {
-    html = html.replace('<head>', '<head>\n  ' + SEO_META);
+    html = html.replace('</head>', '  ' + seoMeta + '\n</head>');
   }
 
   return html;
@@ -142,7 +160,7 @@ function build() {
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     // Process and write
-    const processed = processFile(file);
+    const processed = processFile(file, outputPath);
     fs.writeFileSync(outputPath, processed);
     console.log(`  ${relPath}`);
   }
