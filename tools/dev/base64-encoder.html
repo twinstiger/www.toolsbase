@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base64 Encoder — ToolsBase.net</title>
-  <meta name="description" content="Encode and decode Base64 instantly. Supports text, files, and URL-safe Base64URL variant.">
+  <title>Base64 Encoder/Decoder — ToolsBase.net</title>
+  <meta name="description" content="Encode and decode Base64 strings instantly in your browser. 100% local, no uploads.">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
@@ -14,25 +14,29 @@
 <main class="tool-page">
   <div class="container">
     <div class="breadcrumbs">
-      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Base64 Encoder</span>
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Base64 Encoder/Decoder</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Base64 Encoder</h1>
-      <p class="lead-text">Encode and decode Base64 instantly. Supports text, files, and URL-safe Base64URL variant.</p>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔄 Base64 Encoder/Decoder</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Encode plain text to Base64 or decode Base64 back to plain text. Runs entirely in your browser.</p>
     </div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your base64 encoder input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Enter text to encode, or Base64 to decode…"></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="encodeBase64()">🔐 Encode → Base64</button>
+          <button class="btn btn--secondary" onclick="decodeBase64()">🔓 Decode → Text</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
         <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div id="output" class="tool-output" style="white-space:pre-wrap;word-break:break-all;" placeholder="Output will appear here…"></div>
         <div class="btn-group" style="margin-top:0.625rem;">
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
           <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
@@ -41,22 +45,22 @@
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Ready — enter text and choose Encode or Decode</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Base64 Encoder used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Base64 Encoder is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-question">What is Base64 used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Base64 encodes binary data as ASCII text — used for embedding images in HTML/CSS, transmitting data in JSON, email attachments, and API authentication headers.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Base64 Encoder is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">Does this support UTF-8?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Full UTF-8 support including Chinese, emoji, and all Unicode characters.</div>
       </div>
     </section>
   </div>
@@ -64,18 +68,44 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+function encodeBase64() {
+  const raw = document.getElementById('input').value;
+  if (!raw) return;
+  try {
+    // UTF-8 safe encoding
+    const encoded = btoa(unescape(encodeURIComponent(raw)));
+    document.getElementById('output').textContent = encoded;
+    document.getElementById('stats').textContent = 'Encoded — ' + encoded.length + ' Base64 chars';
+    document.getElementById('stats').style.color = '';
+  } catch (e) {
+    showError(e);
+  }
+}
+
+function decodeBase64() {
+  const raw = document.getElementById('input').value.trim();
+  if (!raw) return;
+  try {
+    const decoded = decodeURIComponent(escape(atob(raw)));
+    document.getElementById('output').textContent = decoded;
+    document.getElementById('stats').textContent = 'Decoded — ' + decoded.length + ' chars';
+    document.getElementById('stats').style.color = '';
+  } catch (e) {
+    showError(e);
+  }
+}
+
+function showError(e) {
+  document.getElementById('output').textContent = 'Error: ' + e.message;
+  document.getElementById('stats').textContent = 'Invalid input — check your Base64 string';
+  document.getElementById('stats').style.color = '#ef5350';
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
   document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('stats').textContent = 'Ready — enter text and choose Encode or Decode';
+  document.getElementById('stats').style.color = '';
 }
 
 function copyOutput() {
@@ -89,7 +119,7 @@ function downloadOutput() {
   if (!text) return;
   const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'base64-output.txt'; a.click();
 }
 
 function showToast(msg) {
@@ -98,12 +128,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('base64-encoder', 'Base64 Encoder/Decoder'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+  if (e.ctrlKey && e.key === 'Enter') encodeBase64();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('base64-encoder', 'Base64 Encoder/Decoder');
 });
 </script>
 </body>

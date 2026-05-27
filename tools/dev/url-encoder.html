@@ -17,25 +17,27 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>URL Encoder</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 URL Encoder</h1>
-      <p class="lead-text">Encode or decode URL components. Handles special characters, query strings, and non-ASCII text.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 URL Encoder</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Encode or decode URL components. Handles special characters, query strings, and non-ASCII text.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your url encoder input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Enter text to URL encode/decode..."></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="encodeURL()">🔐 Encode</button>
+          <button class="btn btn--secondary" onclick="decodeURL()">🔓 Decode</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
         <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div id="output" class="tool-output" style="white-space:pre-wrap;word-break:break-all;" placeholder="Output will appear here..."></div>
         <div class="btn-group" style="margin-top:0.625rem;">
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
         </div>
       </div>
     </div>
@@ -64,12 +66,26 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
+function encodeURL() {
   const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  if (!input) return;
+  try {
+    document.getElementById('output').textContent = encodeURIComponent(input);
+    document.getElementById('stats').textContent = 'Encoded successfully';
+  } catch (e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+  }
+}
+
+function decodeURL() {
+  const input = document.getElementById('input').value;
+  if (!input) return;
+  try {
+    document.getElementById('output').textContent = decodeURIComponent(input);
+    document.getElementById('stats').textContent = 'Decoded successfully';
+  } catch (e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+  }
 }
 
 function clearAll() {
@@ -89,7 +105,7 @@ function downloadOutput() {
   if (!text) return;
   const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'url-encoded.txt'; a.click();
 }
 
 function showToast(msg) {
@@ -98,12 +114,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('url-encoder', 'URL Encoder'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+  if (e.ctrlKey && e.key === 'Enter') encodeURL();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('url-encoder', 'URL Encoder');
 });
 </script>
 </body>

@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Markdown Preview</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Markdown Preview</h1>
-      <p class="lead-text">Live preview for Markdown with syntax highlighting. Supports GFM, tables, task lists, and code blocks.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Markdown Preview</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Live preview for Markdown with syntax highlighting. Supports GFM, tables, task lists, and code blocks.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,18 +66,156 @@
 
 <!-- FOOTER -->
 <script>
+// Simple Markdown parser
+function parseMarkdown(text) {
+  const lines = text.split('\n');
+  let html = '';
+  let inCodeBlock = false;
+  let inBlockquote = false;
+  let codeContent = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Code blocks
+    if (line.startsWith('```')) {
+      if (inCodeBlock) {
+        html += '<pre><code>' + escapeHtml(codeContent.join('\n')) + '</code></pre>\n';
+        codeContent = [];
+        inCodeBlock = false;
+      } else {
+        inCodeBlock = true;
+      }
+      i++;
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeContent.push(line);
+      i++;
+      continue;
+    }
+
+    // Blockquotes
+    if (line.startsWith('>')) {
+      let quoteLines = [];
+      while (i < lines.length && lines[i].startsWith('>')) {
+        quoteLines.push(lines[i].substring(1).trim());
+        i++;
+      }
+      html += '<blockquote>' + parseInline(quoteLines.join(' ')) + '</blockquote>\n';
+      continue;
+    }
+
+    // Headers
+    if (line.startsWith('#######')) {
+      html += '<h6>' + parseInline(line.substring(7).trim()) + '</h6>\n';
+    } else if (line.startsWith('######')) {
+      html += '<h6>' + parseInline(line.substring(6).trim()) + '</h6>\n';
+    } else if (line.startsWith('#####')) {
+      html += '<h5>' + parseInline(line.substring(5).trim()) + '</h5>\n';
+    } else if (line.startsWith('####')) {
+      html += '<h4>' + parseInline(line.substring(4).trim()) + '</h4>\n';
+    } else if (line.startsWith('###')) {
+      html += '<h3>' + parseInline(line.substring(3).trim()) + '</h3>\n';
+    } else if (line.startsWith('##')) {
+      html += '<h2>' + parseInline(line.substring(2).trim()) + '</h2>\n';
+    } else if (line.startsWith('#')) {
+      html += '<h1>' + parseInline(line.substring(1).trim()) + '</h1>\n';
+    }
+    // Horizontal rule
+    else if (line.match(/^[-*_]{3,}$/)) {
+      html += '<hr>\n';
+    }
+    // Unordered lists
+    else if (line.match(/^[\-\*]\s/)) {
+      let listItems = [];
+      while (i < lines.length && lines[i].match(/^[\-\*]\s/)) {
+        listItems.push('<li>' + parseInline(lines[i].substring(2).trim()) + '</li>');
+        i++;
+      }
+      html += '<ul>' + listItems.join('') + '</ul>\n';
+      continue;
+    }
+    // Ordered lists
+    else if (line.match(/^\d+\.\s/)) {
+      let listItems = [];
+      while (i < lines.length && lines[i].match(/^\d+\.\s/)) {
+        listItems.push('<li>' + parseInline(lines[i].replace(/^\d+\.\s/, '').trim()) + '</li>');
+        i++;
+      }
+      html += '<ol>' + listItems.join('') + '</ol>\n';
+      continue;
+    }
+    // Empty line
+    else if (line.trim() === '') {
+      html += '<br>\n';
+    }
+    // Paragraph
+    else {
+      html += '<p>' + parseInline(line) + '</p>\n';
+    }
+    i++;
+  }
+
+  return html;
+}
+
+function parseInline(text) {
+  // Escape HTML first
+  text = escapeHtml(text);
+
+  // Bold **text**
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Bold __text__
+  text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+  // Italic *text*
+  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // Italic _text_
+  text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+
+  // Inline code `code`
+  text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+
+  // Links [text](url)
+  text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+  // Images ![alt](url)
+  text = text.replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1">');
+
+  return text;
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+
+  try {
+    const html = parseMarkdown(input);
+    document.getElementById('output').innerHTML = html;
+
+    const charCount = input.length;
+    const lineCount = input.split('\n').length;
+    document.getElementById('stats').textContent = 'Rendered ' + lineCount + ' lines, ' + charCount + ' chars';
+  } catch (e) {
+    document.getElementById('output').innerHTML = '<span style="color:#ef5350;">Error rendering markdown: ' + e.message + '</span>';
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
   document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('stats').textContent = 'Ready — enter input to start';
 }
 
 function copyOutput() {
@@ -85,11 +225,11 @@ function copyOutput() {
 }
 
 function downloadOutput() {
-  const text = document.getElementById('output').textContent;
+  const text = document.getElementById('output').innerHTML;
   if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
+  const blob = new Blob([text], { type: 'text/html' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'markdown.html'; a.click();
 }
 
 function showToast(msg) {
@@ -98,12 +238,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('markdown-preview', 'Markdown Preview'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('markdown-preview', 'Markdown Preview');
 });
 </script>
 </body>

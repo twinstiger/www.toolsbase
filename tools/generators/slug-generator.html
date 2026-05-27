@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Slug Generator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Slug Generator</h1>
-      <p class="lead-text">Convert any text into URL-friendly slugs. Handles spaces, special characters, and unicode.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Slug Generator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Convert any text into URL-friendly slugs. Handles spaces, special characters, and unicode.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -67,9 +69,15 @@
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const slug = input.trim()
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+    .replace(/[^a-z0-9\s-]/g, '') // remove invalid chars
+    .replace(/\s+/g, '-') // spaces to hyphens
+    .replace(/-+/g, '-') // collapse multiple hyphens
+    .replace(/^-|-$/g, ''); // trim hyphens from ends
+  document.getElementById('output').textContent = slug;
+  document.getElementById('stats').textContent = '"' + input.trim() + '" → "' + slug + '"';
 }
 
 function clearAll() {
@@ -98,12 +106,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('slug-generator', 'Slug Generator'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('slug-generator', 'Slug Generator');
 });
 </script>
 </body>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DNS Lookup — ToolsBase.net</title>
-  <meta name="description" content="Query DNS records — A, AAAA, CNAME, MX, TXT, NS records for any domain.">
+  <meta name="description" content="Look up DNS records for any domain. Find IP addresses, MX, TXT, CNAME and more.">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
@@ -17,46 +17,49 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>DNS Lookup</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 DNS Lookup</h1>
-      <p class="lead-text">Query DNS records — A, AAAA, CNAME, MX, TXT, NS records for any domain.</p>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🌍 DNS Lookup</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Look up DNS records for any domain. Find A, AAAA, MX, TXT, CNAME records.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your dns lookup input here..."></textarea>
+        <div class="tool-panel-label">Domain</div>
+        <input type="text" id="domain-input" class="tool-input" placeholder="example.com">
+        <div class="tool-panel-label" style="margin-top:0.75rem;">Record Types</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+          <label class="checkbox-label"><input type="checkbox" id="type-a" checked> A</label>
+          <label class="checkbox-label"><input type="checkbox" id="type-aaaa" checked> AAAA</label>
+          <label class="checkbox-label"><input type="checkbox" id="type-mx"> MX</label>
+          <label class="checkbox-label"><input type="checkbox" id="type-txt"> TXT</label>
+          <label class="checkbox-label"><input type="checkbox" id="type-cname"> CNAME</label>
+        </div>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="doDNSLookup()">🔍 Lookup</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
+        <div class="tool-panel-label">DNS Records</div>
+        <div id="dns-output" class="tool-output" style="white-space:pre-wrap;font-family:monospace;" placeholder="DNS records will appear here..."></div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Enter a domain name to lookup</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is DNS Lookup used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">DNS Lookup queries DNS records for any domain. Supports A, AAAA, CNAME, MX, TXT, NS record types and shows the full DNS resolution chain.</div>
+        <div class="faq-question">What does DNS Lookup do?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">DNS Lookup shows the IP addresses and other DNS records associated with a domain name.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. DNS Lookup is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser using Cloudflare's DNS-over-HTTPS API.</div>
       </div>
     </section>
   </div>
@@ -64,32 +67,86 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+const RECORD_TYPES = {
+  'A': 1,
+  'AAAA': 28,
+  'MX': 15,
+  'TXT': 16,
+  'CNAME': 5
+};
+
+async function doDNSLookup() {
+  const domain = document.getElementById('domain-input').value.trim();
+  const output = document.getElementById('dns-output');
+  const stats = document.getElementById('stats');
+
+  if (!domain) {
+    output.textContent = '';
+    stats.textContent = 'Enter a domain';
+    return;
+  }
+
+  // Get selected record types
+  const selectedTypes = [];
+  Object.keys(RECORD_TYPES).forEach(type => {
+    if (document.getElementById('type-' + type.toLowerCase()).checked) {
+      selectedTypes.push(type);
+    }
+  });
+
+  if (selectedTypes.length === 0) {
+    output.textContent = 'Please select at least one record type';
+    stats.textContent = 'Select a record type';
+    return;
+  }
+
+  output.textContent = 'Looking up ' + domain + '...\n';
+  stats.textContent = 'Looking up DNS records...';
+
+  try {
+    const promises = selectedTypes.map(type =>
+      fetch('https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(domain) + '&type=' + RECORD_TYPES[type], {
+        headers: { 'Accept': 'application/dns-json' }
+      }).then(r => r.json()).catch(() => null)
+    );
+
+    const results = await Promise.all(promises);
+    let result = '<span style="color:var(--color-primary);">DNS Records for ' + domain + '</span>\n';
+    result += '─────────────────────────────────\n\n';
+
+    selectedTypes.forEach((type, i) => {
+      const data = results[i];
+      result += '<span style="color:var(--color-primary);">' + type + ' Records</span>\n';
+
+      if (data && data.Answer && data.Answer.length > 0) {
+        const filtered = data.Answer.filter(r => r.type === RECORD_TYPES[type]);
+        if (filtered.length > 0) {
+          filtered.forEach(r => {
+            result += '  ' + r.data + '\n';
+          });
+        } else {
+          result += '  (no records found)\n';
+        }
+      } else {
+        result += '  (no records found)\n';
+      }
+      result += '\n';
+    });
+
+    result += '<span style="color:var(--color-text-muted);">Lookup completed at ' + new Date().toLocaleTimeString() + '</span>';
+
+    output.innerHTML = result;
+    stats.textContent = 'DNS lookup completed for ' + domain;
+  } catch (err) {
+    output.textContent = 'Error: Could not complete DNS lookup.\n\n' + err.message;
+    stats.textContent = 'DNS lookup failed';
+  }
 }
 
 function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
-}
-
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
-
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  document.getElementById('domain-input').value = '';
+  document.getElementById('dns-output').textContent = '';
+  document.getElementById('stats').textContent = 'Enter a domain name to lookup';
 }
 
 function showToast(msg) {
@@ -98,13 +155,33 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('dns-lookup', 'DNS Lookup'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('dns-lookup', 'DNS Lookup');
+
+  const input = document.getElementById('domain-input');
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doDNSLookup();
+  });
 });
 </script>
+<style>
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.checkbox-label input {
+  width: 16px;
+  height: 16px;
+}
+</style>
 </body>
 </html>

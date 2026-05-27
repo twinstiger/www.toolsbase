@@ -17,46 +17,42 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>URL Parser</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 URL Parser</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔗 URL Parser</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Parse any URL into its components — protocol, host, port, path, query, and fragment.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your url parser input here..."></textarea>
+        <div class="tool-panel-label">URL</div>
+        <input type="text" id="url-input" class="tool-input" placeholder="https://example.com/path?query=value#section">
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="parseUrl()">🔍 Parse URL</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
+        <div class="tool-panel-label">Parsed Components</div>
+        <div id="parsed-output" class="tool-output" style="font-family:monospace;white-space:pre-wrap;" placeholder="URL details will appear here..."></div>
+        <div id="query-params" class="tool-output" style="margin-top:0.75rem;font-family:monospace;font-size:0.85rem;" placeholder="Query parameters will appear here..."></div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Enter a URL to parse</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is URL Parser used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">URL Parser is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-question">What does URL Parser do?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">It breaks down a URL into its individual components: protocol, host, port, path, query string, and fragment identifier.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. URL Parser is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device.</div>
       </div>
     </section>
   </div>
@@ -64,32 +60,77 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+function parseUrl() {
+  const input = document.getElementById('url-input').value.trim();
+  const output = document.getElementById('parsed-output');
+  const paramsOutput = document.getElementById('query-params');
+  const stats = document.getElementById('stats');
+
+  if (!input) {
+    output.textContent = '';
+    paramsOutput.innerHTML = '';
+    stats.textContent = 'Enter a URL';
+    return;
+  }
+
+  let url;
+  try {
+    let urlStr = input;
+    if (!urlStr.match(/^https?:\/\//i)) {
+      urlStr = 'https://' + urlStr;
+    }
+    url = new URL(urlStr);
+  } catch (e) {
+    output.textContent = 'Error: Invalid URL format\n\n' + e.message;
+    paramsOutput.innerHTML = '';
+    stats.textContent = 'Invalid URL';
+    return;
+  }
+
+  const protocol = url.protocol.replace(':', '');
+  const hostname = url.hostname;
+  const port = url.port || (protocol === 'https' ? '443' : '80');
+  const pathname = url.pathname === '/' ? '(root)' : url.pathname || '(none)';
+  const search = url.search || '(none)';
+  const hash = url.hash || '(none)';
+  const hostnameWithoutWww = hostname.replace(/^www\./, '');
+
+  output.textContent = `Full URL:   ${url.href}
+Protocol:  ${protocol}
+Host:      ${hostname}
+Port:      ${port}
+Path:      ${pathname}
+Query:     ${search}
+Hash:      ${hash}
+───
+Origin:    ${url.origin}
+Username:  ${url.username || '(none)'}
+Password:  ${url.password ? '******' : '(none)'}`;
+
+  // Parse query parameters
+  let paramsHtml = '';
+  if (url.searchParams && url.searchParams.size > 0) {
+    paramsHtml = '<div style="margin-top:0.5rem;color:var(--color-text-muted);font-size:0.8rem;">Query Parameters:</div>';
+    paramsHtml += '<div style="display:grid;gap:0.25rem;">';
+    for (const [key, value] of url.searchParams) {
+      paramsHtml += `<div><span style="color:var(--color-primary);">${escapeHtml(key)}</span> = <span style="color:var(--color-text);">${escapeHtml(value)}</span></div>`;
+    }
+    paramsHtml += '</div>';
+  }
+  paramsOutput.innerHTML = paramsHtml;
+
+  stats.textContent = 'Parsed: ' + hostnameWithoutWwww;
 }
 
 function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('url-input').value = '';
+  document.getElementById('parsed-output').textContent = '';
+  document.getElementById('query-params').innerHTML = '';
+  document.getElementById('stats').textContent = 'Enter a URL to parse';
 }
 
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
-
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function showToast(msg) {
@@ -98,12 +139,19 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('url-parser', 'URL Parser'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('url-parser', 'URL Parser');
+
+  const input = document.getElementById('url-input');
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') parseUrl();
+  });
 });
 </script>
 </body>

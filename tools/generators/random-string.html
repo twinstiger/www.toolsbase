@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Random String</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Random String</h1>
-      <p class="lead-text">Generate random strings with custom patterns — alphanumeric, alphanumeric with symbols, or custom charset.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Random String</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Generate random strings with custom patterns — alphanumeric, alphanumeric with symbols, or custom charset.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -65,11 +67,36 @@
 <!-- FOOTER -->
 <script>
 function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const input = document.getElementById('input').value.trim();
+  // parse: count:10 length:20 charset:alphanumeric (or custom:ABC123)
+  let count = 10, length = 20, charset = 'alphanumeric';
+  if (input) {
+    const cnt = input.match(/count[=:]?\s*(\d+)/i);
+    if (cnt) count = parseInt(cnt[1]);
+    const len = input.match(/length[=:]?\s*(\d+)/i);
+    if (len) length = parseInt(len[1]);
+    const cs = input.match(/charset[=:]?\s*(\S+)/i);
+    if (cs) charset = cs[1];
+  }
+  const charSets = {
+    alphanumeric: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+    alpha: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    alphanumeric_upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+    numeric: '0123456789',
+    hex: '0123456789abcdef',
+    custom: charset,
+  };
+  const pool = (charSets[charset] || charSets.alphanumeric);
+  const bytes = new Uint8Array(length * count);
+  crypto.getRandomValues(bytes);
+  const strings = [];
+  for (let c = 0; c < count; c++) {
+    let s = '';
+    for (let i = 0; i < length; i++) s += pool[bytes[c * length + i] % pool.length];
+    strings.push(s);
+  }
+  document.getElementById('output').textContent = strings.join('\n');
+  document.getElementById('stats').textContent = 'Generated ' + count + ' strings (length: ' + length + ', charset: ' + charset + ')';
 }
 
 function clearAll() {
@@ -98,12 +125,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('random-string', 'Random String'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('random-string', 'Random String');
 });
 </script>
 </body>

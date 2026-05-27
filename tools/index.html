@@ -27,6 +27,7 @@
       <div class="hero-search" style="margin-top:1rem">
         <span class="hero-search-icon">🔍</span>
         <input type="text" class="hero-search-input" id="searchInput" placeholder="Search 51 tools..." autocomplete="off">
+        <div class="search-dropdown" id="searchDropdown"></div>
       </div>
     </div>
     <div class="cat-tabs">
@@ -48,18 +49,18 @@
             <span class="category-count">12 tools</span>
           </div>
           <div class="tool-grid">
-<a href="dev/json-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📋</div><div class="tool-card-title">JSON Formatter</div><div class="tool-card-desc">Format, validate, and minify JSON with syntax highlighting.</div><div class="tool-card-link">→</div></a>
-<a href="dev/regex-tester.html" class="tool-card tc-blue"><div class="tool-card-icon">🔍</div><div class="tool-card-title">Regex Tester</div><div class="tool-card-desc">Test regular expressions with real-time match highlighting.</div><div class="tool-card-link">→</div></a>
-<a href="dev/base64-encoder.html" class="tool-card tc-blue"><div class="tool-card-icon">🔄</div><div class="tool-card-title">Base64 Encoder</div><div class="tool-card-desc">Encode and decode Base64. Supports URL-safe Base64URL variant.</div><div class="tool-card-link">→</div></a>
-<a href="dev/hash-generator.html" class="tool-card tc-blue"><div class="tool-card-icon">#️⃣</div><div class="tool-card-title">Hash Generator</div><div class="tool-card-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</div><div class="tool-card-link">→</div></a>
-<a href="dev/url-encoder.html" class="tool-card tc-blue"><div class="tool-card-icon">🔗</div><div class="tool-card-title">URL Encoder</div><div class="tool-card-desc">Encode and decode URL components with special character handling.</div><div class="tool-card-link">→</div></a>
-<a href="dev/sql-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">🗃️</div><div class="tool-card-title">SQL Formatter</div><div class="tool-card-desc">Format and prettify SQL queries with syntax highlighting.</div><div class="tool-card-link">→</div></a>
-<a href="dev/html-minifier.html" class="tool-card tc-blue"><div class="tool-card-icon">🏄</div><div class="tool-card-title">HTML Minifier</div><div class="tool-card-desc">Compress HTML by removing whitespace and optional tags.</div><div class="tool-card-link">→</div></a>
-<a href="dev/json-to-yaml.html" class="tool-card tc-blue"><div class="tool-card-icon">📄</div><div class="tool-card-title">JSON to YAML</div><div class="tool-card-desc">Convert JSON to YAML and vice versa with validation.</div><div class="tool-card-link">→</div></a>
-<a href="dev/yaml-validator.html" class="tool-card tc-blue"><div class="tool-card-icon">✅</div><div class="tool-card-title">YAML Validator</div><div class="tool-card-desc">Validate YAML syntax with line-number error reporting.</div><div class="tool-card-link">→</div></a>
-<a href="dev/css-minifier.html" class="tool-card tc-blue"><div class="tool-card-icon">🎨</div><div class="tool-card-title">CSS Minifier</div><div class="tool-card-desc">Compress CSS by removing whitespace, comments, and unused rules.</div><div class="tool-card-link">→</div></a>
-<a href="dev/js-minifier.html" class="tool-card tc-blue"><div class="tool-card-icon">⚡</div><div class="tool-card-title">JavaScript Minifier</div><div class="tool-card-desc">Minify JavaScript for production deployment.</div><div class="tool-card-link">→</div></a>
-<a href="dev/xml-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📰</div><div class="tool-card-title">XML Formatter</div><div class="tool-card-desc">Format and validate XML with proper indentation.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/dev/json-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📋</div><div class="tool-card-title">JSON Formatter</div><div class="tool-card-desc">Format, validate, and minify JSON with syntax highlighting.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/regex-tester.html" class="tool-card tc-blue"><div class="tool-card-icon">🔍</div><div class="tool-card-title">Regex Tester</div><div class="tool-card-desc">Test regular expressions with real-time match highlighting.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/base64-encoder.html" class="tool-card tc-blue"><div class="tool-card-icon">🔄</div><div class="tool-card-title">Base64 Encoder</div><div class="tool-card-desc">Encode and decode Base64. Supports URL-safe Base64URL variant.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/hash-generator.html" class="tool-card tc-blue"><div class="tool-card-icon">#️⃣</div><div class="tool-card-title">Hash Generator</div><div class="tool-card-desc">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/url-encoder.html" class="tool-card tc-blue"><div class="tool-card-icon">🔗</div><div class="tool-card-title">URL Encoder</div><div class="tool-card-desc">Encode and decode URL components with special character handling.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/sql-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">🗃️</div><div class="tool-card-title">SQL Formatter</div><div class="tool-card-desc">Format and prettify SQL queries with syntax highlighting.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/html-minifier.html" class="tool-card tc-blue"><div class="tool-card-icon">🏄</div><div class="tool-card-title">HTML Minifier</div><div class="tool-card-desc">Compress HTML by removing whitespace and optional tags.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/json-to-yaml.html" class="tool-card tc-blue"><div class="tool-card-icon">📄</div><div class="tool-card-title">JSON to YAML</div><div class="tool-card-desc">Convert JSON to YAML and vice versa with validation.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/yaml-validator.html" class="tool-card tc-blue"><div class="tool-card-icon">✅</div><div class="tool-card-title">YAML Validator</div><div class="tool-card-desc">Validate YAML syntax with line-number error reporting.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/css-minifier.html" class="tool-card tc-blue"><div class="tool-card-icon">🎨</div><div class="tool-card-title">CSS Minifier</div><div class="tool-card-desc">Compress CSS by removing whitespace, comments, and unused rules.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/js-minifier.html" class="tool-card tc-blue"><div class="tool-card-icon">⚡</div><div class="tool-card-title">JavaScript Minifier</div><div class="tool-card-desc">Minify JavaScript for production deployment.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/dev/xml-formatter.html" class="tool-card tc-blue"><div class="tool-card-icon">📰</div><div class="tool-card-title">XML Formatter</div><div class="tool-card-desc">Format and validate XML with proper indentation.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#dev-tools" class="view-all-link">Browse Dev Tools →</a></div>
         </div>
         <div class="category-section" id="generators" style="--cat-color:var(--tc-green)">
@@ -69,12 +70,12 @@
             <span class="category-count">6 tools</span>
           </div>
           <div class="tool-grid">
-<a href="generators/password-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔑</div><div class="tool-card-title">Password Generator</div><div class="tool-card-desc">Generate strong passwords with customizable length and characters.</div><div class="tool-card-link">→</div></a>
-<a href="generators/uuid-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🎲</div><div class="tool-card-title">UUID Generator</div><div class="tool-card-desc">Generate UUID v4 identifiers instantly for testing and dev.</div><div class="tool-card-link">→</div></a>
-<a href="generators/lorem-ipsum.html" class="tool-card tc-green"><div class="tool-card-icon">📝</div><div class="tool-card-title">Lorem Ipsum</div><div class="tool-card-desc">Generate placeholder text in paragraphs, words, or bytes.</div><div class="tool-card-link">→</div></a>
-<a href="generators/slug-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔤</div><div class="tool-card-title">Slug Generator</div><div class="tool-card-desc">Convert text to URL-friendly slugs with unicode support.</div><div class="tool-card-link">→</div></a>
-<a href="generators/random-string.html" class="tool-card tc-green"><div class="tool-card-icon">🎯</div><div class="tool-card-title">Random String</div><div class="tool-card-desc">Generate random strings with custom charset and length.</div><div class="tool-card-link">→</div></a>
-<a href="generators/fake-json.html" class="tool-card tc-green"><div class="tool-card-icon">📦</div><div class="tool-card-title">Fake JSON Generator</div><div class="tool-card-desc">Generate realistic mock JSON data for testing applications.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/generators/password-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔑</div><div class="tool-card-title">Password Generator</div><div class="tool-card-desc">Generate strong passwords with customizable length and characters.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/generators/uuid-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🎲</div><div class="tool-card-title">UUID Generator</div><div class="tool-card-desc">Generate UUID v4 identifiers instantly for testing and dev.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/generators/lorem-ipsum.html" class="tool-card tc-green"><div class="tool-card-icon">📝</div><div class="tool-card-title">Lorem Ipsum</div><div class="tool-card-desc">Generate placeholder text in paragraphs, words, or bytes.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/generators/slug-generator.html" class="tool-card tc-green"><div class="tool-card-icon">🔤</div><div class="tool-card-title">Slug Generator</div><div class="tool-card-desc">Convert text to URL-friendly slugs with unicode support.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/generators/random-string.html" class="tool-card tc-green"><div class="tool-card-icon">🎯</div><div class="tool-card-title">Random String</div><div class="tool-card-desc">Generate random strings with custom charset and length.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/generators/fake-json.html" class="tool-card tc-green"><div class="tool-card-icon">📦</div><div class="tool-card-title">Fake JSON Generator</div><div class="tool-card-desc">Generate realistic mock JSON data for testing applications.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#generators" class="view-all-link">Browse Generators →</a></div>
         </div>
         <div class="category-section" id="converters" style="--cat-color:var(--tc-yellow)">
@@ -84,10 +85,10 @@
             <span class="category-count">4 tools</span>
           </div>
           <div class="tool-grid">
-<a href="converters/timestamp-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">⏱️</div><div class="tool-card-title">Timestamp Converter</div><div class="tool-card-desc">Convert between Unix timestamps and human-readable dates.</div><div class="tool-card-link">→</div></a>
-<a href="converters/number-base.html" class="tool-card tc-yellow"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Number Base Converter</div><div class="tool-card-desc">Convert between binary, octal, decimal, and hexadecimal.</div><div class="tool-card-link">→</div></a>
-<a href="converters/color-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Color Converter</div><div class="tool-card-desc">Convert between HEX, RGB, HSL with color picker and palette.</div><div class="tool-card-link">→</div></a>
-<a href="converters/unit-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">📏</div><div class="tool-card-title">Unit Converter</div><div class="tool-card-desc">Convert length, weight, temperature, and more units.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/converters/timestamp-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">⏱️</div><div class="tool-card-title">Timestamp Converter</div><div class="tool-card-desc">Convert between Unix timestamps and human-readable dates.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/converters/number-base.html" class="tool-card tc-yellow"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Number Base Converter</div><div class="tool-card-desc">Convert between binary, octal, decimal, and hexadecimal.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/converters/color-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">🎨</div><div class="tool-card-title">Color Converter</div><div class="tool-card-desc">Convert between HEX, RGB, HSL with color picker and palette.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/converters/unit-converter.html" class="tool-card tc-yellow"><div class="tool-card-icon">📏</div><div class="tool-card-title">Unit Converter</div><div class="tool-card-desc">Convert length, weight, temperature, and more units.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#converters" class="view-all-link">Browse Converters →</a></div>
         </div>
         <div class="category-section" id="text-tools" style="--cat-color:var(--tc-purple)">
@@ -97,11 +98,11 @@
             <span class="category-count">5 tools</span>
           </div>
           <div class="tool-grid">
-<a href="text/word-counter.html" class="tool-card tc-purple"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Word Counter</div><div class="tool-card-desc">Count words, characters, sentences with reading time estimate.</div><div class="tool-card-link">→</div></a>
-<a href="text/case-converter.html" class="tool-card tc-purple"><div class="tool-card-icon">Aa</div><div class="tool-card-title">Case Converter</div><div class="tool-card-desc">Convert text between camelCase, PascalCase, snake_case, kebab-case.</div><div class="tool-card-link">→</div></a>
-<a href="text/diff-checker.html" class="tool-card tc-purple"><div class="tool-card-icon">📋</div><div class="tool-card-title">Diff Checker</div><div class="tool-card-desc">Compare two texts side by side with highlighted differences.</div><div class="tool-card-link">→</div></a>
-<a href="text/markdown-preview.html" class="tool-card tc-purple"><div class="tool-card-icon">📝</div><div class="tool-card-title">Markdown Preview</div><div class="tool-card-desc">Live Markdown preview with GFM support, tables, and code blocks.</div><div class="tool-card-link">→</div></a>
-<a href="text/text-diff.html" class="tool-card tc-purple"><div class="tool-card-icon">🔀</div><div class="tool-card-title">Text Diff</div><div class="tool-card-desc">Word-level and character-level text comparison tool.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/text/word-counter.html" class="tool-card tc-purple"><div class="tool-card-icon">🔢</div><div class="tool-card-title">Word Counter</div><div class="tool-card-desc">Count words, characters, sentences with reading time estimate.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/text/case-converter.html" class="tool-card tc-purple"><div class="tool-card-icon">Aa</div><div class="tool-card-title">Case Converter</div><div class="tool-card-desc">Convert text between camelCase, PascalCase, snake_case, kebab-case.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/text/diff-checker.html" class="tool-card tc-purple"><div class="tool-card-icon">📋</div><div class="tool-card-title">Diff Checker</div><div class="tool-card-desc">Compare two texts side by side with highlighted differences.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/text/markdown-preview.html" class="tool-card tc-purple"><div class="tool-card-icon">📝</div><div class="tool-card-title">Markdown Preview</div><div class="tool-card-desc">Live Markdown preview with GFM support, tables, and code blocks.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/text/text-diff.html" class="tool-card tc-purple"><div class="tool-card-icon">🔀</div><div class="tool-card-title">Text Diff</div><div class="tool-card-desc">Word-level and character-level text comparison tool.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#text-tools" class="view-all-link">Browse Text Tools →</a></div>
         </div>
         <div class="category-section" id="image-tools" style="--cat-color:var(--tc-pink)">
@@ -111,9 +112,9 @@
             <span class="category-count">3 tools</span>
           </div>
           <div class="tool-grid">
-<a href="image/qr-code-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">📱</div><div class="tool-card-title">QR Code Generator</div><div class="tool-card-desc">Generate QR codes from text, URLs, WiFi, or contact info.</div><div class="tool-card-link">→</div></a>
-<a href="image/favicon-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">🌐</div><div class="tool-card-title">Favicon Generator</div><div class="tool-card-desc">Generate favicon.ico and app icons from any image.</div><div class="tool-card-link">→</div></a>
-<a href="image/image-to-base64.html" class="tool-card tc-pink"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">Image to Base64</div><div class="tool-card-desc">Convert images to Base64 data URIs for embedding in HTML/CSS.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/image/qr-code-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">📱</div><div class="tool-card-title">QR Code Generator</div><div class="tool-card-desc">Generate QR codes from text, URLs, WiFi, or contact info.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/image/favicon-generator.html" class="tool-card tc-pink"><div class="tool-card-icon">🌐</div><div class="tool-card-title">Favicon Generator</div><div class="tool-card-desc">Generate favicon.ico and app icons from any image.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/image/image-to-base64.html" class="tool-card tc-pink"><div class="tool-card-icon">🖼️</div><div class="tool-card-title">Image to Base64</div><div class="tool-card-desc">Convert images to Base64 data URIs for embedding in HTML/CSS.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#image-tools" class="view-all-link">Browse Image Tools →</a></div>
         </div>
         <div class="category-section" id="network-tools" style="--cat-color:var(--tc-cyan)">
@@ -123,13 +124,13 @@
             <span class="category-count">7 tools</span>
           </div>
           <div class="tool-grid">
-<a href="network/my-ip.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌐</div><div class="tool-card-title">My IP Address</div><div class="tool-card-desc">Reveal your public IPv4 and IPv6 address instantly.</div><div class="tool-card-link">→</div></a>
-<a href="network/url-parser.html" class="tool-card tc-cyan"><div class="tool-card-icon">🔎</div><div class="tool-card-title">URL Parser</div><div class="tool-card-desc">Parse URLs into protocol, host, port, path, query, and fragment.</div><div class="tool-card-link">→</div></a>
-<a href="network/url-shortener.html" class="tool-card tc-cyan"><div class="tool-card-icon">✂️</div><div class="tool-card-title">URL Shortener</div><div class="tool-card-desc">Create shortened URLs from long links, entirely in your browser.</div><div class="tool-card-link">→</div></a>
-<a href="network/subnet.html" class="tool-card tc-cyan"><div class="tool-card-icon">🧮</div><div class="tool-card-title">Subnet Calculator</div><div class="tool-card-desc">Calculate CIDR, network address, and host range for any IP.</div><div class="tool-card-link">→</div></a>
-<a href="network/ip-to-int.html" class="tool-card tc-cyan"><div class="tool-card-icon">🔢</div><div class="tool-card-title">IP to Integer</div><div class="tool-card-desc">Convert IPv4 to 32-bit integer and vice versa.</div><div class="tool-card-link">→</div></a>
-<a href="network/dns-lookup.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌍</div><div class="tool-card-title">DNS Lookup</div><div class="tool-card-desc">Query A, AAAA, CNAME, MX, TXT, NS records for any domain.</div><div class="tool-card-link">→</div></a>
-<a href="network/user-agent.html" class="tool-card tc-cyan"><div class="tool-card-icon">👤</div><div class="tool-card-title">User Agent Parser</div><div class="tool-card-desc">Parse browser User-Agent strings into OS, browser, device.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/network/my-ip.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌐</div><div class="tool-card-title">My IP Address</div><div class="tool-card-desc">Reveal your public IPv4 and IPv6 address instantly.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/network/url-parser.html" class="tool-card tc-cyan"><div class="tool-card-icon">🔎</div><div class="tool-card-title">URL Parser</div><div class="tool-card-desc">Parse URLs into protocol, host, port, path, query, and fragment.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/network/url-shortener.html" class="tool-card tc-cyan"><div class="tool-card-icon">✂️</div><div class="tool-card-title">URL Shortener</div><div class="tool-card-desc">Create shortened URLs from long links, entirely in your browser.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/network/subnet.html" class="tool-card tc-cyan"><div class="tool-card-icon">🧮</div><div class="tool-card-title">Subnet Calculator</div><div class="tool-card-desc">Calculate CIDR, network address, and host range for any IP.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/network/ip-to-int.html" class="tool-card tc-cyan"><div class="tool-card-icon">🔢</div><div class="tool-card-title">IP to Integer</div><div class="tool-card-desc">Convert IPv4 to 32-bit integer and vice versa.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/network/dns-lookup.html" class="tool-card tc-cyan"><div class="tool-card-icon">🌍</div><div class="tool-card-title">DNS Lookup</div><div class="tool-card-desc">Query A, AAAA, CNAME, MX, TXT, NS records for any domain.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/network/user-agent.html" class="tool-card tc-cyan"><div class="tool-card-icon">👤</div><div class="tool-card-title">User Agent Parser</div><div class="tool-card-desc">Parse browser User-Agent strings into OS, browser, device.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#network-tools" class="view-all-link">Browse Network Tools →</a></div>
         </div>
         <div class="category-section" id="crypto-tools" style="--cat-color:var(--tc-red)">
@@ -139,11 +140,11 @@
             <span class="category-count">5 tools</span>
           </div>
           <div class="tool-grid">
-<a href="crypto/bcrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔒</div><div class="tool-card-title">bcrypt Generator</div><div class="tool-card-desc">Generate and verify bcrypt password hashes for secure storage.</div><div class="tool-card-link">→</div></a>
-<a href="crypto/htpasswd.html" class="tool-card tc-red"><div class="tool-card-icon">🔑</div><div class="tool-card-title">htpasswd Generator</div><div class="tool-card-desc">Generate Apache htpasswd files for HTTP Basic Authentication.</div><div class="tool-card-link">→</div></a>
-<a href="crypto/morse.html" class="tool-card tc-red"><div class="tool-card-icon">•••</div><div class="tool-card-title">Morse Code</div><div class="tool-card-desc">Encode and decode Morse code with audio playback support.</div><div class="tool-card-link">→</div></a>
-<a href="crypto/base32.html" class="tool-card tc-red"><div class="tool-card-icon">🔠</div><div class="tool-card-title">Base32 Encoder</div><div class="tool-card-desc">Encode and decode Base32 strings for DNS-safe identifiers.</div><div class="tool-card-link">→</div></a>
-<a href="crypto/aes-encrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔐</div><div class="tool-card-title">AES Encrypt/Decrypt</div><div class="tool-card-desc">Encrypt and decrypt text using AES-256-CBC in your browser.</div><div class="tool-card-link">→</div></a>          </div>
+<a href="/tools/crypto/bcrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔒</div><div class="tool-card-title">bcrypt Generator</div><div class="tool-card-desc">Generate and verify bcrypt password hashes for secure storage.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/crypto/htpasswd.html" class="tool-card tc-red"><div class="tool-card-icon">🔑</div><div class="tool-card-title">htpasswd Generator</div><div class="tool-card-desc">Generate Apache htpasswd files for HTTP Basic Authentication.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/crypto/morse.html" class="tool-card tc-red"><div class="tool-card-icon">•••</div><div class="tool-card-title">Morse Code</div><div class="tool-card-desc">Encode and decode Morse code with audio playback support.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/crypto/base32.html" class="tool-card tc-red"><div class="tool-card-icon">🔠</div><div class="tool-card-title">Base32 Encoder</div><div class="tool-card-desc">Encode and decode Base32 strings for DNS-safe identifiers.</div><div class="tool-card-link">→</div></a>
+<a href="/tools/crypto/aes-encrypt.html" class="tool-card tc-red"><div class="tool-card-icon">🔐</div><div class="tool-card-title">AES Encrypt/Decrypt</div><div class="tool-card-desc">Encrypt and decrypt text using AES-256-CBC in your browser.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#crypto-tools" class="view-all-link">Browse Crypto Tools →</a></div>
         </div>
         <div class="category-section" id="external-tools" style="--cat-color:var(--tc-gray)">
@@ -168,61 +169,75 @@
 <!-- FOOTER -->
 <script>
 (function() {
-  const tabs = document.querySelectorAll('.cat-tabs .category-tab');
-  const sections = {
-    'dev-tools': document.getElementById('dev-tools'),
-    'generators': document.getElementById('generators'),
-    'converters': document.getElementById('converters'),
-    'text-tools': document.getElementById('text-tools'),
-    'image-tools': document.getElementById('image-tools'),
-    'network-tools': document.getElementById('network-tools'),
-    'crypto-tools': document.getElementById('crypto-tools'),
-    'external-tools': document.getElementById('external-tools')
-  };
+  var s = document.getElementById('searchInput');
+  var d = document.getElementById('searchDropdown');
+  if (s && d) {
+    var allTools = Array.from(document.querySelectorAll('.tool-card')).map(function(c) {
+      var icon = c.querySelector('.tool-card-icon') ? c.querySelector('.tool-card-icon').textContent || '' : '';
+      var title = c.querySelector('.tool-card-title') ? c.querySelector('.tool-card-title').textContent || '' : '';
+      var desc = c.querySelector('.tool-card-desc') ? c.querySelector('.tool-card-desc').textContent || '' : '';
+      var href = c.getAttribute('href') || '';
+      var cat = c.closest('.category-section') ? c.closest('.category-section').querySelector('.category-title') ? c.closest('.category-section').querySelector('.category-title').textContent.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim() : '' : '';
+      return { icon: icon, title: title, desc: desc, href: href, cat: cat };
+    });
 
-  function updateActiveTab() {
-    const hash = window.location.hash.slice(1) || 'dev-tools';
-    tabs.forEach(tab => {
-      const href = tab.getAttribute('href').slice(1);
-      tab.classList.toggle('active', href === hash);
+    function renderDropdown(results) {
+      if (!s.value.trim()) { d.classList.remove('show'); return; }
+      d.classList.add('show');
+      if (results.length === 0) {
+        d.innerHTML = '<div class="search-dropdown-empty">No tools found</div>';
+        return;
+      }
+      d.innerHTML = results.slice(0, 8).map(function(t) {
+        return '<a href="' + t.href + '" class="search-dropdown-item">' +
+          '<span class="sdi-icon">' + t.icon + '</span>' +
+          '<div><div class="sdi-title">' + t.title + '</div><div class="sdi-desc">' + t.desc + '</div></div>' +
+          '<span class="sdi-cat">' + t.cat + '</span></a>';
+      }).join('');
+    }
+
+    s.addEventListener('input', function() {
+      var q = s.value.toLowerCase().trim();
+      if (!q) { d.classList.remove('show'); return; }
+      var results = allTools.filter(function(t) {
+        return t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q);
+      });
+      renderDropdown(results);
+    });
+
+    s.addEventListener('focus', function() {
+      if (s.value.trim()) {
+        var q = s.value.toLowerCase().trim();
+        var results = allTools.filter(function(t) {
+          return t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q);
+        });
+        renderDropdown(results);
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!s.contains(e.target) && !d.contains(e.target)) {
+        d.classList.remove('show');
+      }
     });
   }
 
-  if (window.location.hash) {
-    const target = document.getElementById(window.location.hash.slice(1));
+  // Category tabs
+  var tabs = document.querySelectorAll('.cat-tabs .category-tab');
+  if (tabs.length && window.location.hash) {
+    var target = document.getElementById(window.location.hash.slice(1));
     if (target) target.scrollIntoView({ behavior: 'smooth' });
   }
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var targetId = this.getAttribute('href').slice(1);
+      var target = document.getElementById(targetId);
       if (target) {
-        e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth' });
         history.pushState(null, '', '#' + targetId);
-        updateActiveTab();
       }
     });
   });
-
-  window.addEventListener('hashchange', updateActiveTab);
-  updateActiveTab();
-
-  // Search functionality
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    let timer;
-    searchInput.addEventListener('input', function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        const q = searchInput.value.toLowerCase().trim();
-        document.querySelectorAll('.tool-card').forEach(function(c) {
-          c.style.display = c.textContent.toLowerCase().indexOf(q) > -1 || !q ? '' : 'none';
-        });
-      }, 150);
-    });
-  }
 })();
 </script>
 

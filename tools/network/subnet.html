@@ -17,46 +17,69 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Subnet Calculator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Subnet Calculator</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🧮 Subnet Calculator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Calculate subnets, CIDR notation, network address, and host range for any IP address.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your subnet calculator input here..."></textarea>
+        <div class="tool-panel-label">IP Address</div>
+        <input type="text" id="subnet-ip" class="tool-input" placeholder="192.168.1.0" value="192.168.1.0">
+        <div class="tool-panel-label" style="margin-top:1rem;">CIDR Prefix</div>
+        <select id="subnet-cidr" class="tool-input">
+          <option value="0">/0 (0.0.0.0)</option>
+          <option value="8">/8 (255.0.0.0)</option>
+          <option value="9">/9</option>
+          <option value="10">/10</option>
+          <option value="11">/11</option>
+          <option value="12">/12</option>
+          <option value="13">/13</option>
+          <option value="14">/14</option>
+          <option value="15">/15</option>
+          <option value="16">/16 (255.255.0.0)</option>
+          <option value="17">/17</option>
+          <option value="18">/18</option>
+          <option value="19">/19</option>
+          <option value="20">/20</option>
+          <option value="21">/21</option>
+          <option value="22">/22</option>
+          <option value="23">/23</option>
+          <option value="24" selected>/24 (255.255.255.0)</option>
+          <option value="25">/25</option>
+          <option value="26">/26</option>
+          <option value="27">/27</option>
+          <option value="28">/28</option>
+          <option value="29">/29</option>
+          <option value="30">/30</option>
+          <option value="31">/31</option>
+          <option value="32">/32 (255.255.255.255)</option>
+        </select>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
-          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+          <button class="btn btn--primary" onclick="calculateSubnet()">Calculate</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
+        <div class="tool-panel-label">Results</div>
+        <div id="output" class="tool-output" style="font-family:monospace;white-space:pre-wrap;" placeholder="Results will appear here..."></div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Enter IP address and click Calculate</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Subnet Calculator used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Subnet Calculator is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-question">What is Subnet Calculator?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Calculates network address, broadcast address, subnet mask, and usable host range for a given IP and CIDR prefix.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Subnet Calculator is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser.</div>
       </div>
     </section>
   </div>
@@ -64,32 +87,58 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+function ipToInt(ip) {
+  const parts = ip.split('.').map(Number);
+  return ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0;
 }
 
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+function intToIp(int) {
+  return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
 }
 
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
+function calculateSubnet() {
+  const ipInput = document.getElementById('subnet-ip').value.trim();
+  const cidr = parseInt(document.getElementById('subnet-cidr').value);
+  const output = document.getElementById('output');
+  const stats = document.getElementById('stats');
 
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  const ipParts = ipInput.split('.');
+  if (ipParts.length !== 4 || !ipParts.every(p => { const n = parseInt(p); return !isNaN(n) && n >= 0 && n <= 255; })) {
+    output.innerHTML = 'Invalid IP address format';
+    stats.textContent = 'Error';
+    return;
+  }
+
+  const ipInt = ipToInt(ipInput);
+  const mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0;
+  const network = (ipInt & mask) >>> 0;
+  const broadcast = (network | (~mask) >>> 0) >>> 0;
+  const totalHosts = Math.pow(2, 32 - cidr);
+  const usableHosts = cidr >= 31 ? totalHosts : totalHosts - 2;
+  const firstUsable = cidr >= 31 ? network : network + 1;
+  const lastUsable = cidr >= 31 ? broadcast : broadcast - 1;
+
+  output.innerHTML = `<span style="color:var(--color-primary);">Network Information</span>
+─────────────────────────────────
+Network:       ${intToIp(network)}
+Subnet Mask:   ${intToIp(mask)}
+Broadcast:     ${intToIp(broadcast)}
+Wildcard:      ${intToIp(~mask >>> 0)}
+CIDR:          /${cidr}
+
+<span style="color:var(--color-primary);">Host Range</span>
+─────────────────────────────────
+Total Hosts:   ${totalHosts.toLocaleString()}
+Usable:        ${usableHosts.toLocaleString()}
+First Host:    ${intToIp(firstUsable)}
+Last Host:     ${intToIp(lastUsable)}
+
+<span style="color:var(--color-primary);">Binary</span>
+─────────────────────────────────
+IP Binary:     ${ipInt.toString(2).padStart(32, '0').match(/.{8}/g).join('.')}
+Mask Binary:   ${mask.toString(2).padStart(32, '0').replace(/0+$/, '')}`;
+
+  stats.textContent = `${ipInput}/${cidr} → Network: ${intToIp(network)}`;
 }
 
 function showToast(msg) {
@@ -98,12 +147,13 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
+function shareTool() { TBUtils.showShareModal('subnet', 'Subnet Calculator'); }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('subnet', 'Subnet Calculator');
+  calculateSubnet();
 });
 </script>
 </body>

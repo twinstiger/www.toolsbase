@@ -5,3 +5,7 @@
 
 [site]
   bucket = "."
+# GitHub Actions deploy uses this — build first then deploy
+[build]
+  command = "npm install && npm run build"
+  cwd = "."

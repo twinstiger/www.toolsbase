@@ -17,14 +17,16 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Number Base Converter</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Number Base Converter</h1>
-      <p class="lead-text">Convert between binary, octal, decimal, and hexadecimal. Supports big integers up to 64 bits.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Number Base Converter</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Convert between binary, octal, decimal, and hexadecimal. Supports big integers up to 64 bits.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your number base converter input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Enter a number (e.g. 255, 0xFF, 0b11111111, 0o377) in any base"></textarea>
         <div class="tool-actions">
           <button class="btn btn--primary" onclick="transform()">Transform →</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
@@ -64,12 +66,41 @@
 
 <!-- FOOTER -->
 <script>
+function detectBase(input) {
+  input = input.trim();
+  if (/^0x[0-9a-fA-F]+$/i.test(input)) return 16;
+  if (/^0b[01]+$/i.test(input)) return 2;
+  if (/^0o[0-7]+$/i.test(input)) return 8;
+  if (/^[01]+$/i.test(input)) return 2;
+  if (/^[0-7]+$/i.test(input)) return 8;
+  if (/^\d+$/.test(input)) return 10;
+  return null;
+}
+
 function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
+  const input = document.getElementById('input').value.trim();
+  if (!input) return;
+  let num, base = detectBase(input);
+  try {
+    if (base === 2) num = BigInt('0b' + input.replace(/[^01]/g, ''));
+    else if (base === 8) num = BigInt('0o' + input.replace(/[^0-7]/g, ''));
+    else if (base === 16) num = BigInt('0x' + input.replace(/[^0-9a-fA-F]/g, ''));
+    else num = BigInt(input.replace(/\D/g, ''));
+  } catch {
+    document.getElementById('output').textContent = 'Invalid number format.';
+    document.getElementById('stats').textContent = 'Error';
+    return;
+  }
+  const s = num.toString();
+  const output = [
+    `Decimal:  ${s}`,
+    `Hex:       0x${s}`,
+    `Binary:    0b${BigInt(s).toString(2)}`,
+    `Octal:     0o${BigInt(s).toString(8)}`,
+    `As BigInt: ${num.toString()}`,
+  ].join('\n');
   document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  document.getElementById('stats').textContent = 'Input base: ' + (base || 'auto-detected') + ' | Output in dec, hex, bin, oct';
 }
 
 function clearAll() {
@@ -98,12 +129,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('number-base', 'Number Base Converter'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('number-base', 'Number Base Converter');
 });
 </script>
 </body>

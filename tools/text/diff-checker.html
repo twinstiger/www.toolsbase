@@ -17,38 +17,43 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Diff Checker</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Diff Checker</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Diff Checker</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Compare two texts side by side and highlight differences line by line.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your diff checker input here..."></textarea>
-        <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
-          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
-        </div>
+        <div class="tool-panel-label">Original Text</div>
+        <textarea id="input-left" class="tool-input" placeholder="Paste original text here..."></textarea>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
+        <div class="tool-panel-label">Modified Text</div>
+        <textarea id="input-right" class="tool-input" placeholder="Paste modified text here..."></textarea>
       </div>
     </div>
 
+    <div class="tool-actions" style="justify-content:center;margin:1rem 0;">
+      <button class="btn btn--primary" onclick="computeDiff()">Compare Texts</button>
+      <button class="btn btn--secondary" onclick="clearDiff()">Clear</button>
+    </div>
+
+    <div class="tool-panel" style="margin-top:1rem;">
+      <div class="tool-panel-label">Diff Results</div>
+      <div id="diff-output" class="tool-output" style="white-space:pre-wrap;font-family:monospace;min-height:200px;" placeholder="Diff results will appear here..."></div>
+    </div>
+
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Ready — paste texts and click Compare</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is Diff Checker used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Diff Checker is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-answer">Diff Checker compares two texts and shows the differences line by line. Great for comparing code, documents, or any text content.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
@@ -64,32 +69,94 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+function computeDiff() {
+  const left = document.getElementById('input-left').value;
+  const right = document.getElementById('input-right').value;
+  const output = document.getElementById('diff-output');
+  const stats = document.getElementById('stats');
+
+  if (!left && !right) {
+    output.innerHTML = '';
+    stats.textContent = 'Ready';
+    return;
+  }
+
+  const leftLines = left.split('\n');
+  const rightLines = right.split('\n');
+  const result = [];
+  let addCount = 0, delCount = 0;
+
+  // Simple line-by-line diff using LCS-like approach
+  const lcs = computeLCS(leftLines, rightLines);
+  let li = 0, ri = 0, li2 = 0;
+
+  for (const [type, idxL, idxR] of lcs) {
+    // Output lines before match
+    while (li < idxL) {
+      result.push('<span class="diff-del">- ' + escapeHtml(leftLines[li]) + '</span>');
+      delCount++;
+      li++;
+    }
+    while (ri < idxR) {
+      result.push('<span class="diff-add">+ ' + escapeHtml(rightLines[ri]) + '</span>');
+      addCount++;
+      ri++;
+    }
+    // Matched line
+    result.push('<span class="diff-unchanged">  ' + escapeHtml(leftLines[idxL]) + '</span>');
+    li = idxL + 1;
+    ri = idxR + 1;
+  }
+  // Remaining lines
+  while (li < leftLines.length) {
+    result.push('<span class="diff-del">- ' + escapeHtml(leftLines[li]) + '</span>');
+    delCount++;
+    li++;
+  }
+  while (ri < rightLines.length) {
+    result.push('<span class="diff-add">+ ' + escapeHtml(rightLines[ri]) + '</span>');
+    addCount++;
+    ri++;
+  }
+
+  output.innerHTML = result.join('\n');
+  stats.textContent = 'Added: ' + addCount + ' lines, Removed: ' + delCount + ' lines';
 }
 
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
+function computeLCS(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i-1] === b[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+      else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+    }
+  }
+  // Backtrack to find matching sequences
+  const result = [];
+  let i = m, j = n;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && a[i-1] === b[j-1]) {
+      result.unshift(['match', i-1, j-1]);
+      i--; j--;
+    } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
+      j--;
+    } else {
+      i--;
+    }
+  }
+  return result;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function clearDiff() {
+  document.getElementById('input-left').value = '';
+  document.getElementById('input-right').value = '';
+  document.getElementById('diff-output').innerHTML = '';
   document.getElementById('stats').textContent = 'Ready';
-}
-
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
-
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
 }
 
 function showToast(msg) {
@@ -98,13 +165,20 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('diff-checker', 'Diff Checker'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('diff-checker', 'Diff Checker');
 });
 </script>
-</body>
-</html>
+<style>
+.diff-add { color: #4caf50; background: rgba(76, 175, 80, 0.1); display: block; }
+.diff-del { color: #ef5350; background: rgba(239, 83, 80, 0.1); display: block; }
+.diff-unchanged { color: var(--color-text-muted); display: block; }
+[data-theme="dark"] .diff-add { background: rgba(76, 175, 80, 0.15); }
+[data-theme="dark"] .diff-del { background: rgba(239, 83, 80, 0.15); }
+</style>

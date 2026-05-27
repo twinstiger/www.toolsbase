@@ -17,14 +17,16 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>bcrypt Generator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 bcrypt Generator</h1>
-      <p class="lead-text">Generate and verify bcrypt password hashes. Industry-standard hashing for secure password storage.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 bcrypt Generator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Generate and verify bcrypt password hashes. Industry-standard hashing for secure password storage.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your bcrypt generator input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Hash:   password||cost (e.g. mypass||10)%0aVerify: password||verify:$2y$10$..."></textarea>
         <div class="tool-actions">
           <button class="btn btn--primary" onclick="transform()">Transform →</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
@@ -64,12 +66,30 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
+// bcrypt uses a pure JS implementation loaded from CDN
+// Library: https://cdnjs.cloudflare.com/ajax/libs/bcrypt.js/2.4.3/bcrypt.min.js
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcrypt.js/2.4.3/bcrypt.min.js"></script>
+<script>
+async function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const parts = input.split('||');
+  const password = parts[0];
+  const hashOrVerify = parts[1]; // optional: hash:cost or verify:hash
+
+  if (hashOrVerify && hashOrVerify.startsWith('verify:')) {
+    // Verify mode: password||verify:$2y$10$...
+    const hash = hashOrVerify.slice(7);
+    const ok = await bcrypt.compare(password, hash);
+    document.getElementById('output').textContent = ok ? 'VERIFIED — password matches hash' : 'FAILED — password does not match hash';
+    document.getElementById('stats').textContent = ok ? 'Match' : 'No match';
+  } else {
+    // Hash mode
+    const cost = parseInt(hashOrVerify) || 10;
+    const hash = await bcrypt.hash(password, cost);
+    document.getElementById('output').textContent = hash;
+    document.getElementById('stats').textContent = 'Cost factor: ' + cost + ' | ' + password.length + ' chars hashed';
+  }
 }
 
 function clearAll() {
@@ -97,6 +117,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('bcrypt', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

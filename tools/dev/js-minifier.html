@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>JavaScript Minifier</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 JavaScript Minifier</h1>
-      <p class="lead-text">Minify JavaScript code by removing whitespace, comments, and shortening variable names where safe.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 JavaScript Minifier</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Minify JavaScript code by removing whitespace, comments, and shortening variable names where safe.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,12 +66,41 @@
 
 <!-- FOOTER -->
 <script>
+function minifyJS(js) {
+  // Remove single-line comments
+  js = js.replace(/\/\/.*$/gm, '');
+  // Remove multi-line comments
+  js = js.replace(/\/\*[\s\S]*?\*\//g, '');
+  // Collapse multiple whitespace (but not newlines in strings)
+  // Simple approach: collapse all runs of whitespace to single space
+  js = js.replace(/[ \t]+/g, ' ');
+  // Remove whitespace around operators and punctuation
+  js = js.replace(/\s*([{}();,:])\s*/g, '$1');
+  // Remove newlines between } and else/while/do
+  js = js.replace(/\}\s+(else|while|do|catch|finally)\b/g, '}$1');
+  // Collapse newlines in code (replace with single space for now - better to track string contexts)
+  // A simple approach: join lines that don't end with a statement-terminator
+  js = js.replace(/\n\s*/g, '');
+  // Clean up extra spaces
+  js = js.replace(/\s{2,}/g, ' ');
+  // Ensure proper spacing around keywords
+  ['if', 'else', 'for', 'while', 'do', 'switch', 'case', 'default', 'try', 'catch', 'finally', 'return', 'throw', 'new', 'typeof'].forEach(kw => {
+    js = js.replace(new RegExp('\\b' + kw + '\\(', 'g'), kw + '(');
+  });
+  return js;
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  try {
+    const minified = minifyJS(input);
+    document.getElementById('output').textContent = minified;
+    document.getElementById('stats').textContent = 'Minified: ' + input.length + ' → ' + minified.length + ' chars (' + Math.round((1 - minified.length / input.length) * 100) + '% smaller)';
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
@@ -97,6 +128,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('js-minifier', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

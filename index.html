@@ -51,6 +51,12 @@
   </section>
   <section class="tools-home">
     <div class="container">
+        <div class="tools-favorites" id="favoritesSection" style="display:none;">
+          <div class="section-header">
+            <h2 class="section-title"><span class="section-title-icon">⭐</span> My Favorites</h2>
+          </div>
+          <div class="tool-grid" id="favoritesGrid"></div>
+        </div>
         <div class="category-section" id="dev-tools" style="--cat-color:var(--tc-blue)">
           <div class="category-header">
             <span class="category-dot"></span>
@@ -233,6 +239,99 @@ if (s && d) {
     }
   });
 }
+
+// Favorites & History rendering
+(function() {
+  // Tool definitions for lookup
+  var toolDefs = {
+    'json-formatter': { icon: '📋', name: 'JSON Formatter', href: '/tools/dev/json-formatter.html', colorClass: 'tc-blue' },
+    'regex-tester': { icon: '🔍', name: 'Regex Tester', href: '/tools/dev/regex-tester.html', colorClass: 'tc-blue' },
+    'base64-encoder': { icon: '🔄', name: 'Base64 Encoder', href: '/tools/dev/base64-encoder.html', colorClass: 'tc-blue' },
+    'hash-generator': { icon: '#️⃣', name: 'Hash Generator', href: '/tools/dev/hash-generator.html', colorClass: 'tc-blue' },
+    'url-encoder': { icon: '🔗', name: 'URL Encoder', href: '/tools/dev/url-encoder.html', colorClass: 'tc-blue' },
+    'sql-formatter': { icon: '🗃️', name: 'SQL Formatter', href: '/tools/dev/sql-formatter.html', colorClass: 'tc-blue' },
+    'html-minifier': { icon: '🏄', name: 'HTML Minifier', href: '/tools/dev/html-minifier.html', colorClass: 'tc-blue' },
+    'json-to-yaml': { icon: '📄', name: 'JSON to YAML', href: '/tools/dev/json-to-yaml.html', colorClass: 'tc-blue' },
+    'yaml-validator': { icon: '✅', name: 'YAML Validator', href: '/tools/dev/yaml-validator.html', colorClass: 'tc-blue' },
+    'css-minifier': { icon: '🎨', name: 'CSS Minifier', href: '/tools/dev/css-minifier.html', colorClass: 'tc-blue' },
+    'js-minifier': { icon: '⚡', name: 'JavaScript Minifier', href: '/tools/dev/js-minifier.html', colorClass: 'tc-blue' },
+    'xml-formatter': { icon: '📰', name: 'XML Formatter', href: '/tools/dev/xml-formatter.html', colorClass: 'tc-blue' },
+    'password-generator': { icon: '🔑', name: 'Password Generator', href: '/tools/generators/password-generator.html', colorClass: 'tc-green' },
+    'uuid-generator': { icon: '🎲', name: 'UUID Generator', href: '/tools/generators/uuid-generator.html', colorClass: 'tc-green' },
+    'lorem-ipsum': { icon: '📝', name: 'Lorem Ipsum', href: '/tools/generators/lorem-ipsum.html', colorClass: 'tc-green' },
+    'slug-generator': { icon: '🔤', name: 'Slug Generator', href: '/tools/generators/slug-generator.html', colorClass: 'tc-green' },
+    'random-string': { icon: '🎯', name: 'Random String', href: '/tools/generators/random-string.html', colorClass: 'tc-green' },
+    'fake-json': { icon: '📦', name: 'Fake JSON Generator', href: '/tools/generators/fake-json.html', colorClass: 'tc-green' },
+    'timestamp-converter': { icon: '⏱️', name: 'Timestamp Converter', href: '/tools/converters/timestamp-converter.html', colorClass: 'tc-yellow' },
+    'number-base': { icon: '🔢', name: 'Number Base Converter', href: '/tools/converters/number-base.html', colorClass: 'tc-yellow' },
+    'color-converter': { icon: '🎨', name: 'Color Converter', href: '/tools/converters/color-converter.html', colorClass: 'tc-yellow' },
+    'unit-converter': { icon: '📏', name: 'Unit Converter', href: '/tools/converters/unit-converter.html', colorClass: 'tc-yellow' },
+    'word-counter': { icon: '🔢', name: 'Word Counter', href: '/tools/text/word-counter.html', colorClass: 'tc-purple' },
+    'case-converter': { icon: 'Aa', name: 'Case Converter', href: '/tools/text/case-converter.html', colorClass: 'tc-purple' },
+    'diff-checker': { icon: '📋', name: 'Diff Checker', href: '/tools/text/diff-checker.html', colorClass: 'tc-purple' },
+    'markdown-preview': { icon: '📝', name: 'Markdown Preview', href: '/tools/text/markdown-preview.html', colorClass: 'tc-purple' },
+    'text-diff': { icon: '🔀', name: 'Text Diff', href: '/tools/text/text-diff.html', colorClass: 'tc-purple' },
+    'qr-code-generator': { icon: '📱', name: 'QR Code Generator', href: '/tools/image/qr-code-generator.html', colorClass: 'tc-pink' },
+    'favicon-generator': { icon: '🌐', name: 'Favicon Generator', href: '/tools/image/favicon-generator.html', colorClass: 'tc-pink' },
+    'image-to-base64': { icon: '🖼️', name: 'Image to Base64', href: '/tools/image/image-to-base64.html', colorClass: 'tc-pink' },
+    'my-ip': { icon: '🌐', name: 'My IP Address', href: '/tools/network/my-ip.html', colorClass: 'tc-cyan' },
+    'url-parser': { icon: '🔎', name: 'URL Parser', href: '/tools/network/url-parser.html', colorClass: 'tc-cyan' },
+    'url-shortener': { icon: '✂️', name: 'URL Shortener', href: '/tools/network/url-shortener.html', colorClass: 'tc-cyan' },
+    'subnet': { icon: '🧮', name: 'Subnet Calculator', href: '/tools/network/subnet.html', colorClass: 'tc-cyan' },
+    'ip-to-int': { icon: '🔢', name: 'IP to Integer', href: '/tools/network/ip-to-int.html', colorClass: 'tc-cyan' },
+    'dns-lookup': { icon: '🌍', name: 'DNS Lookup', href: '/tools/network/dns-lookup.html', colorClass: 'tc-cyan' },
+    'user-agent': { icon: '👤', name: 'User Agent Parser', href: '/tools/network/user-agent.html', colorClass: 'tc-cyan' },
+    'bcrypt': { icon: '🔒', name: 'bcrypt Generator', href: '/tools/crypto/bcrypt.html', colorClass: 'tc-red' },
+    'htpasswd': { icon: '🔑', name: 'htpasswd Generator', href: '/tools/crypto/htpasswd.html', colorClass: 'tc-red' },
+    'morse': { icon: '•••', name: 'Morse Code', href: '/tools/crypto/morse.html', colorClass: 'tc-red' },
+    'base32': { icon: '🔠', name: 'Base32 Encoder', href: '/tools/crypto/base32.html', colorClass: 'tc-red' },
+    'aes-encrypt': { icon: '🔐', name: 'AES Encrypt/Decrypt', href: '/tools/crypto/aes-encrypt.html', colorClass: 'tc-red' }
+  };
+
+  function timeAgo(ts) {
+    var diff = Date.now() - ts;
+    var mins = Math.floor(diff / 60000);
+    var hours = Math.floor(diff / 3600000);
+    var days = Math.floor(diff / 86400000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return mins + 'm ago';
+    if (hours < 24) return hours + 'h ago';
+    return days + 'd ago';
+  }
+
+  // Render favorites
+  var favs = JSON.parse(localStorage.getItem('tb_favorites') || '[]');
+  if (favs.length > 0) {
+    var favGrid = document.getElementById('favoritesGrid');
+    var validFavs = favs.filter(function(id) { return toolDefs[id]; });
+    if (validFavs.length > 0) {
+      favGrid.innerHTML = validFavs.map(function(id) {
+        var t = toolDefs[id];
+        return '<a href="' + t.href + '" class="tool-card ' + t.colorClass + '" style="position:relative;">' +
+          '<button class="fav-btn active" onclick="TBUtils.toggleFavorite(\'' + id + '\');this.classList.remove(\'active\');this.querySelector(\'svg\').setAttribute(\'fill\',\'none\');return false;" aria-label="Remove from favorites">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
+          '</button>' +
+          '<div class="tool-card-icon">' + t.icon + '</div><div class="tool-card-title">' + t.name + '</div><div class="tool-card-link">→</div></a>';
+      }).join('');
+      document.getElementById('favoritesSection').style.display = 'block';
+    }
+  }
+
+  // Render history
+  var history = JSON.parse(localStorage.getItem('tb_history') || '[]');
+  if (history.length > 0) {
+    var histList = document.getElementById('historyList');
+    histList.innerHTML = history.slice(0, 5).map(function(h) {
+      if (!toolDefs[h.id]) return '';
+      var t = toolDefs[h.id];
+      return '<a href="' + t.href + '" class="history-item">' +
+        '<span class="history-item-icon">' + t.icon + '</span>' +
+        '<div class="history-item-info"><div class="history-item-title">' + t.name + '</div></div>' +
+        '<span class="history-item-time">' + timeAgo(h.time) + '</span></a>';
+    }).join('');
+    document.getElementById('historySection').style.display = 'block';
+  }
+})();
 </script>
 </body>
 </html>

@@ -17,25 +17,36 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Regex Tester</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Regex Tester</h1>
-      <p class="lead-text">Test and debug regular expressions with real-time match highlighting and capture groups.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Regex Tester</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Test and debug regular expressions with real-time match highlighting and capture groups.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your regex tester input here..."></textarea>
+        <div class="tool-panel-label">Pattern</div>
+        <textarea id="input" class="tool-input" placeholder="Enter regex pattern, e.g. \b\w+\b"></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <div class="regex-flags">
+            <label><input type="checkbox" id="flag-g" class="regex-flag" checked><span>g</span> global</label>
+            <label><input type="checkbox" id="flag-i" class="regex-flag"><span>i</span> case-insensitive</label>
+            <label><input type="checkbox" id="flag-m" class="regex-flag"><span>m</span> multiline</label>
+          </div>
+        </div>
+        <div class="tool-panel-label" style="margin-top:1rem;">Test Text</div>
+        <textarea id="test-text" class="tool-input" style="min-height:100px;" placeholder="Enter text to test against the regex..."></textarea>
+        <div class="tool-actions" style="margin-top:0.5rem;">
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div class="tool-panel-label">Highlighted Text</div>
+        <div id="test-text-output" class="tool-output" style="min-height:100px;white-space:pre-wrap;"></div>
+        <div class="tool-panel-label" style="margin-top:1rem;">Matches</div>
+        <div id="output" class="tool-output" placeholder="Matches will appear here..." style="min-height:80px;"></div>
         <div class="btn-group" style="margin-top:0.625rem;">
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
         </div>
       </div>
     </div>
@@ -64,32 +75,124 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+let lastRegex = null;
+
+function testRegex() {
+  const pattern = document.getElementById('input').value;
+  const text = document.getElementById('test-text').value;
+  const flags = getFlags();
+  const output = document.getElementById('output');
+  const stats = document.getElementById('stats');
+
+  if (!pattern) {
+    output.innerHTML = '';
+    stats.textContent = 'Enter a regex pattern';
+    return;
+  }
+
+  try {
+    lastRegex = new RegExp(pattern, flags);
+    const matches = [];
+    let match;
+    const re = new RegExp(pattern, flags);
+
+    if (flags.includes('g')) {
+      while ((match = re.exec(text)) !== null) {
+        matches.push({
+          text: match[0],
+          index: match.index,
+          groups: match.slice(1)
+        });
+        if (match[0].length === 0) re.lastIndex++;
+      }
+    } else {
+      match = re.exec(text);
+      if (match) {
+        matches.push({
+          text: match[0],
+          index: match.index,
+          groups: match.slice(1)
+        });
+      }
+    }
+
+    // Highlight matches in text
+    let highlighted = escapeHtml(text);
+    if (matches.length > 0) {
+      matches.reverse().forEach(m => {
+        const before = highlighted.substring(0, m.index);
+        const after = highlighted.substring(m.index + m.text.length);
+        highlighted = before + '<mark class="regex-match">' + escapeHtml(m.text) + '</mark>' + after;
+      });
+    }
+    document.getElementById('test-text-output').innerHTML = highlighted;
+
+    // Show match results
+    if (matches.length > 0) {
+      let html = '<div class="regex-results">';
+      matches.forEach((m, i) => {
+        html += '<div class="regex-match-item">';
+        html += '<span class="regex-match-num">#' + (i + 1) + '</span>';
+        html += '<span class="regex-match-text">"' + escapeHtml(m.text) + '"</span>';
+        html += '<span class="regex-match-pos">index: ' + m.index + '</span>';
+        if (m.groups.length > 0) {
+          html += '<div class="regex-groups">';
+          m.groups.forEach((g, gi) => {
+            html += '<span class="regex-group">$' + (gi + 1) + '="' + escapeHtml(g || '') + '"</span>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+      output.innerHTML = html;
+      stats.textContent = matches.length + ' match' + (matches.length !== 1 ? 'es' : '') + ' found';
+      stats.style.color = '#4caf50';
+    } else {
+      output.innerHTML = '<span style="color:#ffb74d;">No matches</span>';
+      stats.textContent = 'No matches found';
+      stats.style.color = '#ffb74d';
+    }
+  } catch (e) {
+    output.innerHTML = '<span style="color:#ef5350;">Invalid regex: ' + escapeHtml(e.message) + '</span>';
+    stats.textContent = 'Regex error';
+    stats.style.color = '#ef5350';
+  }
+}
+
+function getFlags() {
+  let flags = '';
+  if (document.getElementById('flag-g').checked) flags += 'g';
+  if (document.getElementById('flag-i').checked) flags += 'i';
+  if (document.getElementById('flag-m').checked) flags += 'm';
+  return flags;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('test-text').value = '';
+  document.getElementById('output').innerHTML = '';
+  document.getElementById('test-text-output').innerHTML = '';
+  document.getElementById('stats').textContent = 'Enter pattern and test text';
+  document.getElementById('stats').style.color = '';
 }
 
 function copyOutput() {
-  const text = document.getElementById('output').textContent;
+  const text = document.getElementById('test-text').value;
   if (!text) return;
   navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
 }
 
 function downloadOutput() {
-  const text = document.getElementById('output').textContent;
+  const text = document.getElementById('test-text').value;
   if (!text) return;
   const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'regex-test.txt'; a.click();
 }
 
 function showToast(msg) {
@@ -98,13 +201,30 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('regex-tester', 'Regex Tester'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.getElementById('input').addEventListener('input', testRegex);
+document.getElementById('test-text').addEventListener('input', testRegex);
+document.querySelectorAll('.regex-flag').forEach(cb => cb.addEventListener('change', testRegex));
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('regex-tester', 'Regex Tester');
 });
 </script>
+<style>
+.regex-results { display: flex; flex-direction: column; gap: 0.5rem; }
+.regex-match-item { padding: 0.75rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.regex-match-num { font-size: 0.75rem; color: var(--color-text-muted); width: 24px; }
+.regex-match-text { font-family: monospace; color: #a6e3a1; background: rgba(166, 227, 161, 0.1); padding: 0.125rem 0.375rem; border-radius: 3px; }
+.regex-match-pos { font-size: 0.75rem; color: var(--color-text-muted); margin-left: auto; }
+.regex-groups { width: 100%; display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.25rem; padding-top: 0.25rem; border-top: 1px solid var(--color-border); }
+.regex-group { font-size: 0.75rem; font-family: monospace; color: #cba6f7; background: rgba(203, 166, 247, 0.1); padding: 0.125rem 0.375rem; border-radius: 3px; }
+mark.regex-match { background: rgba(255, 183, 77, 0.3); color: inherit; border-radius: 2px; padding: 0 2px; }
+[data-theme="dark"] mark.regex-match { background: rgba(255, 183, 77, 0.2); }
+</style>
 </body>
 </html>

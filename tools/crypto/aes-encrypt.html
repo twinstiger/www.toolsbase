@@ -17,14 +17,16 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>AES Encrypt/Decrypt</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 AES Encrypt/Decrypt</h1>
-      <p class="lead-text">Encrypt and decrypt text using AES-256-CBC in your browser. No data sent to any server.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 AES Encrypt/Decrypt</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Encrypt and decrypt text using AES-256-CBC in your browser. No data sent to any server.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your aes encrypt/decrypt input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Encrypt: mypass||Hello World  |  Decrypt: mypass||base64:..."></textarea>
         <div class="tool-actions">
           <button class="btn btn--primary" onclick="transform()">Transform →</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
@@ -64,12 +66,67 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
+// AES-256-GCM using Web Crypto API
+// Input format: "password||plaintext" to encrypt, or "password||base64:..." to decrypt
+
+async function deriveKey(password, salt) {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: enc.encode(salt), iterations: 100000, hash: 'SHA-256' },
+    keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
+}
+
+async function encrypt(plaintext, password) {
+  const enc = new TextEncoder();
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(password, salt);
+  const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plaintext));
+  // Combine salt + iv + ciphertext, encode as base64
+  const combined = new Uint8Array(salt.length + iv.length + ciphertext.byteLength);
+  combined.set(salt, 0); combined.set(iv, salt.length); combined.set(new Uint8Array(ciphertext), salt.length + iv.length);
+  return btoa(String.fromCharCode(...combined));
+}
+
+async function decrypt(base64data, password) {
+  const enc = new TextEncoder();
+  try {
+    const combined = Uint8Array.from(atob(base64data), c => c.charCodeAt(0));
+    const salt = combined.slice(0, 16), iv = combined.slice(16, 28), ciphertext = combined.slice(28);
+    const key = await deriveKey(password, salt);
+    const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+    return new TextDecoder().decode(plaintext);
+  } catch {
+    return null;
+  }
+}
+
+async function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const parts = input.split('||');
+  if (parts.length < 2) {
+    document.getElementById('output').textContent = 'Format: password||text (encrypt) or password||base64:... (decrypt)\n\nExample encrypt: mypass||Hello World\nExample decrypt: mypass||base64:SaltIV...';
+    document.getElementById('stats').textContent = 'Error: missing password';
+    return;
+  }
+  const password = parts[0], data = parts.slice(1).join('||');
+  if (data.startsWith('base64:')) {
+    const result = await decrypt(data.slice(6), password);
+    if (result === null) {
+      document.getElementById('output').textContent = 'Decryption failed. Check password and input format.';
+      document.getElementById('stats').textContent = 'Error';
+      return;
+    }
+    document.getElementById('output').textContent = result;
+    document.getElementById('stats').textContent = 'Decrypted successfully';
+  } else {
+    const result = await encrypt(data, password);
+    document.getElementById('output').textContent = 'base64:' + result;
+    document.getElementById('stats').textContent = 'Encrypted (AES-256-GCM, base64 output)';
+  }
 }
 
 function clearAll() {
@@ -97,6 +154,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('aes-encrypt', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

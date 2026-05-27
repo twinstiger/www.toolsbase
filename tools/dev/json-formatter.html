@@ -17,22 +17,29 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>JSON Formatter</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 JSON Formatter</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 JSON Formatter</h1>
+        <button class="share-icon-btn" id="shareBtn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Format, validate, and minify JSON with syntax highlighting. Detect and fix errors automatically.</p>
     </div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your json formatter input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder='Paste JSON here, e.g. {"name":"test","value":123}'></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="formatJSON()">✨ Format</button>
+          <button class="btn btn--secondary" onclick="minifyJSON()">🗜️ Minify</button>
+          <button class="btn btn--secondary" onclick="validateJSON()">✓ Validate</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
         <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div id="output-wrap" style="position:relative;">
+          <pre id="output" class="tool-output" style="margin:0;white-space:pre-wrap;word-break:break-word;max-height:600px;overflow-y:auto;"></pre>
+        </div>
         <div class="btn-group" style="margin-top:0.625rem;">
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
           <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
@@ -41,14 +48,14 @@
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Ready — paste JSON and click Format</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is JSON Formatter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">JSON Formatter is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-answer">JSON Formatter formats ugly/minified JSON into readable indented output with syntax highlighting, and can minify formatted JSON back. Great for debugging APIs and config files.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
@@ -64,32 +71,103 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+function highlight(json) {
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return json.replace(
+    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    function(match) {
+      let cls = 'json-number';
+      if (/^"/.test(match)) {
+        cls = /:$/.test(match) ? 'json-key' : 'json-string';
+      } else if (/true|false/.test(match)) {
+        cls = 'json-bool';
+      } else if (/null/.test(match)) {
+        cls = 'json-null';
+      }
+      return '<span class="' + cls + '">' + match + '</span>';
+    }
+  );
+}
+
+function formatJSON() {
+  const raw = document.getElementById('input').value.trim();
+  if (!raw) return;
+  try {
+    const obj = JSON.parse(raw);
+    const formatted = JSON.stringify(obj, null, 2);
+    const lines = formatted.split('\n').length;
+    document.getElementById('output').innerHTML = highlight(formatted);
+    document.getElementById('stats').textContent = 'Valid — ' + lines + ' lines · ' + formatted.length + ' chars';
+    document.getElementById('stats').style.color = '';
+  } catch (e) {
+    showError(e, raw);
+  }
+}
+
+function minifyJSON() {
+  const raw = document.getElementById('input').value.trim();
+  if (!raw) return;
+  try {
+    const obj = JSON.parse(raw);
+    const minified = JSON.stringify(obj);
+    document.getElementById('output').textContent = minified;
+    document.getElementById('stats').textContent = 'Minified — ' + minified.length + ' chars';
+    document.getElementById('stats').style.color = '';
+  } catch (e) {
+    showError(e, raw);
+  }
+}
+
+function validateJSON() {
+  const raw = document.getElementById('input').value.trim();
+  if (!raw) return;
+  try {
+    JSON.parse(raw);
+    document.getElementById('output').innerHTML = '<span style="color:#4caf50;font-size:1.1rem;">Valid JSON</span>';
+    document.getElementById('stats').textContent = 'JSON is valid';
+    document.getElementById('stats').style.color = '#4caf50';
+  } catch (e) {
+    showError(e, raw);
+  }
+}
+
+function showError(e, raw) {
+  const msg = e.message;
+  let lineInfo = msg;
+  const posMatch = msg.match(/position\s+(\d+)/i);
+  if (posMatch) {
+    const pos = parseInt(posMatch[1]);
+    const before = raw.substring(0, pos);
+    const line = (before.match(/\n/g) || []).length + 1;
+    const col = pos - before.lastIndexOf('\n');
+    lineInfo = 'Line ' + line + ', Col ' + col;
+  }
+  document.getElementById('output').innerHTML = '<span style="color:#ef5350;">Invalid JSON</span>\n\n<span style="color:#ffb74d;">' + lineInfo + '</span>\n' + msg;
+  document.getElementById('stats').textContent = 'JSON syntax error';
+  document.getElementById('stats').style.color = '#ef5350';
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('output').innerHTML = '';
+  document.getElementById('stats').textContent = 'Ready — paste JSON and click Format';
+  document.getElementById('stats').style.color = '';
 }
 
 function copyOutput() {
-  const text = document.getElementById('output').textContent;
+  const el = document.getElementById('output');
+  const text = el.innerText || el.textContent;
   if (!text) return;
   navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
 }
 
 function downloadOutput() {
-  const text = document.getElementById('output').textContent;
+  const el = document.getElementById('output');
+  const text = el.innerText || el.textContent;
   if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
+  const blob = new Blob([text], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'formatted.json'; a.click();
 }
 
 function showToast(msg) {
@@ -98,13 +176,26 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('json-formatter', 'JSON Formatter'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+  if (e.ctrlKey && e.key === 'Enter') formatJSON();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('json-formatter', 'JSON Formatter');
 });
 </script>
+<style>
+.json-key    { color: #89dceb; }
+.json-string { color: #a6e3a1; }
+.json-number { color: #fab387; }
+.json-bool   { color: #cba6f7; }
+.json-null   { color: #f38ba8; }
+</style>
 </body>
 </html>

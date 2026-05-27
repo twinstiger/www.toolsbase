@@ -17,46 +17,41 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>User Agent Parser</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 User Agent Parser</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">👤 User Agent Parser</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Parse User-Agent strings to detect OS, browser, device type, and version.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your user agent parser input here..."></textarea>
+        <div class="tool-panel-label">User Agent String</div>
+        <textarea id="ua-input" class="tool-input" placeholder="Paste a User-Agent string here..." style="min-height:120px;"></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
-          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+          <button class="btn btn--primary" onclick="parseUA()">🔍 Parse</button>
+          <button class="btn btn--secondary" onclick="useCurrentUA()">📱 Use My UA</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
+        <div class="tool-panel-label">Parsed Result</div>
+        <div id="ua-output" class="tool-output" style="white-space:pre-wrap;font-family:monospace;" placeholder="Parsed info will appear here..."></div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Enter a User-Agent string to parse</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is User Agent Parser used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">User Agent Parser breaks down browser User-Agent strings into structured data: operating system, browser name, version, device type, and bot detection.</div>
+        <div class="faq-question">What does User Agent Parser do?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">It breaks down a User-Agent string to identify the browser, OS, device type, and version from the raw string.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. User Agent Parser is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device.</div>
       </div>
     </section>
   </div>
@@ -64,32 +59,130 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+function parseUA() {
+  const input = document.getElementById('ua-input').value.trim();
+  const output = document.getElementById('ua-output');
+  const stats = document.getElementById('stats');
+
+  if (!input) {
+    output.textContent = '';
+    stats.textContent = 'Enter a User-Agent string';
+    return;
+  }
+
+  const result = {};
+
+  // Browser detection - order matters!
+  if (input.includes('Brave')) {
+    result.browser = 'Brave';
+    const match = input.match(/Chrome\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else if (input.includes('Edg/')) {
+    result.browser = 'Edge';
+    const match = input.match(/Edg\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else if (input.includes('OPR') || input.includes('Opera')) {
+    result.browser = 'Opera';
+    const match = input.match(/OPR\/([\d.]+)/) || input.match(/Opera\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else if (input.includes('Chrome') && !input.includes('Chromium')) {
+    result.browser = 'Chrome';
+    const match = input.match(/Chrome\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else if (input.includes('Firefox')) {
+    result.browser = 'Firefox';
+    const match = input.match(/Firefox\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else if (input.includes('Safari') && !input.includes('Chrome')) {
+    result.browser = 'Safari';
+    const match = input.match(/Version\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else if (input.includes('Chromium')) {
+    result.browser = 'Chromium';
+    const match = input.match(/Chromium\/([\d.]+)/);
+    if (match) result.browserVersion = match[1];
+  } else {
+    result.browser = 'Unknown Browser';
+  }
+
+  // OS detection
+  if (input.includes('Windows')) {
+    result.os = 'Windows';
+    const match = input.match(/Windows NT ([\d.]+)/);
+    if (match) {
+      const nt = {
+        '10.0': '10/11',
+        '6.3': '8.1',
+        '6.2': '8',
+        '6.1': '7',
+        '6.0': 'Vista',
+        '5.1': 'XP'
+      };
+      result.osVersion = nt[match[1]] || match[1];
+    }
+  } else if (input.includes('Mac OS X')) {
+    result.os = 'macOS';
+    const match = input.match(/Mac OS X ([\d._]+)/);
+    if (match) result.osVersion = match[1].replace(/_/g, '.');
+  } else if (input.includes('iPhone') || input.includes('iPad')) {
+    result.os = 'iOS';
+    const match = input.match(/OS ([\d_]+)/);
+    if (match) result.osVersion = match[1].replace(/_/g, '.');
+  } else if (input.includes('Android')) {
+    result.os = 'Android';
+    const match = input.match(/Android ([\d.]+)/);
+    if (match) result.osVersion = match[1];
+  } else if (input.includes('CrOS')) {
+    result.os = 'Chrome OS';
+  } else if (input.includes('Linux')) {
+    if (input.includes('Ubuntu')) {
+      result.os = 'Ubuntu';
+    } else if (input.includes('Fedora')) {
+      result.os = 'Fedora';
+    } else if (input.includes('Debian')) {
+      result.os = 'Debian';
+    } else {
+      result.os = 'Linux';
+    }
+  } else {
+    result.os = 'Unknown OS';
+  }
+
+  // Device type
+  if (input.includes('iPad') || input.includes('Tablet')) {
+    result.device = 'Tablet';
+  } else if (input.includes('Mobile') || (input.includes('Android') && !input.includes('Mobile'))) {
+    result.device = 'Mobile';
+  } else if (input.includes('iPhone')) {
+    result.device = 'Mobile';
+  } else {
+    result.device = 'Desktop';
+  }
+
+  // Bot detection
+  if (input.includes('bot') || input.includes('crawl') || input.includes('spider')) {
+    result.device = 'Bot/Crawler';
+  }
+
+  let html = '<span style="color:var(--color-primary);">Browser</span>\n';
+  html += '─────────────────────────────────\n';
+  html += 'Name:      ' + (result.browser || '-') + '\n';
+  html += 'Version:   ' + (result.browserVersion || '-') + '\n\n';
+  html += '<span style="color:var(--color-primary);">Operating System</span>\n';
+  html += '─────────────────────────────────\n';
+  html += 'OS:        ' + (result.os || '-') + '\n';
+  html += 'Version:   ' + (result.osVersion || '-') + '\n\n';
+  html += '<span style="color:var(--color-primary);">Device</span>\n';
+  html += '─────────────────────────────────\n';
+  html += 'Type:      ' + (result.device || '-') + '\n';
+
+  output.innerHTML = html;
+  stats.textContent = result.browser + ' on ' + result.os + ' (' + result.device + ')';
 }
 
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
-}
-
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
-
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+function useCurrentUA() {
+  document.getElementById('ua-input').value = navigator.userAgent;
+  parseUA();
 }
 
 function showToast(msg) {
@@ -98,12 +191,14 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('user-agent', 'User Agent Parser'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('user-agent', 'User Agent Parser');
 });
 </script>
 </body>

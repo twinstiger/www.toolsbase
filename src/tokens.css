@@ -47,8 +47,27 @@
   --shadow-lg: 0 12px 32px rgba(0,0,0,0.1);
   --shadow-primary: 0 4px 20px rgba(14,165,233,0.3);
   --shadow-accent: 0 4px 20px rgba(139,92,246,0.3);
-  
+
   /* Layout */
   --container-max: 1200px;
   --header-height: 64px;
+}
+
+/* === DARK MODE TOKENS === */
+[data-theme="dark"] {
+  --color-primary: #58a6ff;
+  --color-primary-hover: #79b8ff;
+  --color-bg: #0d1117;
+  --color-bg-alt: #161b22;
+  --color-surface: #21262d;
+  --color-border: #30363d;
+  --color-border-subtle: #21262d;
+  --color-text: #c9d1d9;
+  --color-text-muted: #8b949e;
+  --color-text-subtle: #484f58;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
+  --shadow-primary: 0 4px 20px rgba(88,166,255,0.15);
+  --shadow-accent: 0 4px 20px rgba(139,92,246,0.15);
 }

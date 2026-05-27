@@ -17,14 +17,16 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Timestamp Converter</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Timestamp Converter</h1>
-      <p class="lead-text">Convert between Unix timestamps and human-readable dates. Supports all timezones and batch conversion.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Timestamp Converter</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Convert between Unix timestamps and human-readable dates. Supports all timezones and batch conversion.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your timestamp converter input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Enter Unix timestamp (e.g. 1717200000) or ISO date (e.g. 2024-06-01T00:00:00Z)"></textarea>
         <div class="tool-actions">
           <button class="btn btn--primary" onclick="transform()">Transform →</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
@@ -64,12 +66,47 @@
 
 <!-- FOOTER -->
 <script>
+function parseTimestamp(input) {
+  input = input.trim();
+  // Unix timestamp (seconds or milliseconds)
+  if (/^\d+$/.test(input)) {
+    let n = BigInt(input);
+    if (n < 1e12) n *= 1000n; // assume seconds
+    return new Date(Number(n));
+  }
+  // ISO 8601
+  let d = new Date(input);
+  if (!isNaN(d)) return d;
+  return null;
+}
+
+function formatDate(d) {
+  if (!d || isNaN(d)) return 'Invalid date';
+  return [
+    `ISO 8601:    ${d.toISOString()}`,
+    `UTC:         ${d.toUTCString()}`,
+    `Local:       ${d.toLocaleString()}`,
+    `Date (US):   ${d.toLocaleDateString('en-US')}`,
+    `Date (EU):   ${d.toLocaleDateString('de-DE')}`,
+    `Time (US):   ${d.toLocaleTimeString('en-US')}`,
+    `Unix (sec):  ${Math.floor(d.getTime() / 1000)}`,
+    `Unix (ms):   ${d.getTime()}`,
+    `Weekday:     ${d.toLocaleDateString('en-US', { weekday: 'long' })}`,
+    `Timezone:    ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
+  ].join('\n');
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const date = parseTimestamp(input);
+  if (!date) {
+    document.getElementById('output').textContent = 'Could not parse timestamp. Enter Unix timestamp (e.g. 1717200000) or ISO date string (e.g. 2024-06-01T00:00:00Z).';
+    document.getElementById('stats').textContent = 'Error: invalid format';
+    return;
+  }
+  document.getElementById('output').textContent = formatDate(date);
+  document.getElementById('stats').textContent = 'Parsed: ' + input.trim() + ' → ' + date.toLocaleString();
 }
 
 function clearAll() {
@@ -97,6 +134,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('timestamp-converter', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

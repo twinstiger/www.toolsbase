@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>HTML Minifier</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 HTML Minifier</h1>
-      <p class="lead-text">Compress HTML by removing whitespace, comments, and optional tags. Reduces file size by up to 30%.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 HTML Minifier</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Compress HTML by removing whitespace, comments, and optional tags. Reduces file size by up to 30%.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,12 +66,29 @@
 
 <!-- FOOTER -->
 <script>
+function minifyHTML(html) {
+  // Remove HTML comments
+  html = html.replace(/<!--[\s\S]*?-->/g, '');
+  // Remove unnecessary whitespace between tags
+  html = html.replace(/>\s+</g, '><');
+  // Collapse multiple spaces within text nodes
+  html = html.replace(/\s{2,}/g, ' ');
+  // Remove leading/trailing whitespace per tag
+  html = html.replace(/^\s+|\s+$/g, '');
+  return html;
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  try {
+    const minified = minifyHTML(input);
+    document.getElementById('output').textContent = minified;
+    document.getElementById('stats').textContent = 'Minified: ' + input.length + ' → ' + minified.length + ' chars (' + Math.round((1 - minified.length / input.length) * 100) + '% smaller)';
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
@@ -97,6 +116,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('html-minifier', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

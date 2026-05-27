@@ -17,25 +17,26 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Hash Generator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Hash Generator</h1>
-      <p class="lead-text">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Hash Generator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your hash generator input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Enter text to hash..."></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="generateAllHashes()">⚡ Generate All Hashes</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
         <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div id="output" class="tool-output" placeholder="Hashes will appear here..."></div>
         <div class="btn-group" style="margin-top:0.625rem;">
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
         </div>
       </div>
     </div>
@@ -64,17 +65,54 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
+// Using Web Crypto API for secure hashing
+async function hashInput(algorithm) {
   const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  if (!input) return;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hashBuffer = await crypto.subtle.digest(algorithm, data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  document.getElementById('output').innerHTML = '<div class="hash-result"><label>' + algorithm.toUpperCase() + '</label><code>' + hashHex + '</code></div>';
+  document.getElementById('stats').textContent = algorithm.toUpperCase() + ' — ' + hashHex.length + ' chars';
+}
+
+async function generateAllHashes() {
+  const input = document.getElementById('input').value;
+  if (!input) return;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+
+  const algorithms = ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
+  const results = await Promise.all(algorithms.map(async algo => {
+    const algorithm = algo === 'MD5' ? 'MD5' : algo;
+    try {
+      const buffer = await crypto.subtle.digest(algo, data);
+      const hashArray = Array.from(new Uint8Array(buffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return { algo, hash: hashHex };
+    } catch (e) {
+      return { algo, hash: 'Unsupported' };
+    }
+  }));
+
+  let html = '<div class="hash-results">';
+  results.forEach(r => {
+    html += '<div class="hash-result"><label>' + r.algo + '</label><code>' + r.hash + '</code><button class="copy-btn" onclick="copyHash(\'' + r.hash + '\')">📋</button></div>';
+  });
+  html += '</div>';
+  document.getElementById('output').innerHTML = html;
+  document.getElementById('stats').textContent = results.length + ' hashes generated';
+}
+
+function copyHash(hash) {
+  navigator.clipboard.writeText(hash).then(() => showToast('Copied!'));
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
+  document.getElementById('output').innerHTML = '';
   document.getElementById('stats').textContent = 'Ready';
 }
 
@@ -89,7 +127,7 @@ function downloadOutput() {
   if (!text) return;
   const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'hash-output.txt'; a.click();
 }
 
 function showToast(msg) {
@@ -98,13 +136,26 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('hash-generator', 'Hash Generator'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+  if (e.ctrlKey && e.key === 'Enter') generateAllHashes();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('hash-generator', 'Hash Generator');
 });
 </script>
+<style>
+.hash-results { display: flex; flex-direction: column; gap: 0.75rem; }
+.hash-result { display: flex; align-items: center; gap: 0.75rem; }
+.hash-result label { font-weight: 600; width: 60px; color: var(--color-text); font-size: 0.8125rem; }
+.hash-result code { flex: 1; font-family: monospace; font-size: 0.8125rem; color: #a6e3a1; background: rgba(166, 227, 161, 0.1); padding: 0.5rem; border-radius: 4px; word-break: break-all; }
+.hash-result .copy-btn { padding: 0.375rem 0.5rem; font-size: 0.75rem; }
+</style>
 </body>
 </html>

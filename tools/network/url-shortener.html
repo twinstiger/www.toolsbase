@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>URL Shortener — ToolsBase.net</title>
-  <meta name="description" content="Create shortened, shareable URLs from long links. Works entirely in your browser with no external API.">
+  <meta name="description" content="Shorten long URLs and expand shortened URLs to see the full address.">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
@@ -17,46 +17,41 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>URL Shortener</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 URL Shortener</h1>
-      <p class="lead-text">Create shortened, shareable URLs from long links. Works entirely in your browser with no external API.</p>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">✂️ URL Shortener</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Expand shortened URLs to see the full address, or analyze URL components.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your url shortener input here..."></textarea>
+        <div class="tool-panel-label">URL</div>
+        <input type="text" id="url-input" class="tool-input" placeholder="Enter a URL to analyze (e.g., bit.ly/abc123)">
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="analyzeUrl()">🔗 Analyze URL</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
+        <div class="tool-panel-label">URL Info</div>
+        <div id="url-output" class="tool-output" style="white-space:pre-wrap;font-family:monospace;" placeholder="URL details will appear here..."></div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Enter a URL to analyze</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is URL Shortener used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">URL Shortener is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-question">What does URL Shortener do?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">It parses URLs to show their components and follows redirects to show you the final destination of shortened URLs.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. URL Shortener is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device.</div>
       </div>
     </section>
   </div>
@@ -64,32 +59,93 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+async function analyzeUrl() {
+  const url = document.getElementById('url-input').value.trim();
+  const output = document.getElementById('url-output');
+  const stats = document.getElementById('stats');
+
+  if (!url) {
+    output.textContent = '';
+    stats.textContent = 'Enter a URL';
+    return;
+  }
+
+  try {
+    let urlStr = url;
+    if (!urlStr.match(/^https?:\/\//i)) {
+      urlStr = 'https://' + urlStr;
+    }
+
+    // Show that we're expanding
+    output.textContent = 'Following redirects...\n';
+    stats.textContent = 'Expanding URL...';
+
+    // Use fetch with redirect: 'follow' to automatically follow redirects
+    // and mode: 'no-cors' for CORS, then manually check the final URL
+    const response = await fetch(urlStr, {
+      method: 'HEAD',
+      redirect: 'follow',
+      cache: 'no-store'
+    });
+
+    const finalUrl = response.url;
+    const parsed = new URL(finalUrl);
+
+    let info = '';
+    info += 'Short URL:   ' + urlStr + '\n';
+    info += 'Status:      ' + response.status + ' OK\n';
+    info += '───\n';
+    info += 'Final URL:\n' + finalUrl + '\n';
+    info += '───\n';
+    info += 'Protocol:    ' + parsed.protocol.replace(':', '') + '\n';
+    info += 'Host:        ' + parsed.hostname + '\n';
+    info += 'Port:        ' + (parsed.port || '(default)') + '\n';
+    info += 'Path:        ' + (parsed.pathname || '/') + '\n';
+    if (parsed.search) {
+      info += 'Query:       ' + parsed.search + '\n';
+    }
+    if (parsed.hash) {
+      info += 'Hash:        ' + parsed.hash + '\n';
+    }
+
+    output.textContent = info;
+    stats.textContent = 'Final: ' + parsed.hostname;
+  } catch (e) {
+    // If fetch fails (CORS, etc), try to parse as regular URL
+    try {
+      let urlStr = url;
+      if (!urlStr.match(/^https?:\/\//i)) {
+        urlStr = 'https://' + urlStr;
+      }
+      const parsed = new URL(urlStr);
+
+      let info = '';
+      info += 'URL:         ' + parsed.href + '\n';
+      info += '───\n';
+      info += 'Protocol:    ' + parsed.protocol.replace(':', '') + '\n';
+      info += 'Host:        ' + parsed.hostname + '\n';
+      info += 'Port:        ' + (parsed.port || '(default)') + '\n';
+      info += 'Path:        ' + (parsed.pathname || '/') + '\n';
+      if (parsed.search) {
+        info += 'Query:       ' + parsed.search + '\n';
+      }
+      if (parsed.hash) {
+        info += 'Hash:        ' + parsed.hash + '\n';
+      }
+
+      output.textContent = info;
+      stats.textContent = 'Parsed: ' + parsed.hostname;
+    } catch (parseErr) {
+      output.textContent = 'Error: Invalid URL format\n\n' + e.message;
+      stats.textContent = 'Error: Invalid URL';
+    }
+  }
 }
 
 function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
-}
-
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
-
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  document.getElementById('url-input').value = '';
+  document.getElementById('url-output').textContent = '';
+  document.getElementById('stats').textContent = 'Enter a URL to analyze';
 }
 
 function showToast(msg) {
@@ -98,12 +154,19 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('url-shortener', 'URL Shortener'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('url-shortener', 'URL Shortener');
+
+  const input = document.getElementById('url-input');
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') analyzeUrl();
+  });
 });
 </script>
 </body>

@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Fake JSON Generator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Fake JSON Generator</h1>
-      <p class="lead-text">Generate realistic mock JSON data for testing. Create users, products, articles, and more with configurable fields.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Fake JSON Generator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Generate realistic mock JSON data for testing. Create users, products, articles, and more with configurable fields.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,18 +66,144 @@
 
 <!-- FOOTER -->
 <script>
+// Fake data generators
+const firstNames = ['James', 'Emma', 'Liam', 'Olivia', 'Noah', 'Ava', 'William', 'Sophia', 'Benjamin', 'Isabella', 'Lucas', 'Mia', 'Henry', 'Charlotte', 'Alexander', 'Amelia', 'Sebastian', 'Harper', 'Jack', 'Evelyn'];
+const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin'];
+const domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'example.com', 'test.org', 'mail.net'];
+const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
+const streets = ['Main St', 'Oak Ave', 'Maple Dr', 'Cedar Ln', 'Pine Rd', 'Elm St', 'Washington Blvd', 'Lake Dr', 'Hill Rd', 'Park Ave'];
+const companies = ['Acme Corp', 'Globex Industries', 'Initech', 'Umbrella Corp', 'Stark Industries', 'Wayne Enterprises', 'Cyberdyne Systems', 'Soylent Corp', ' Weyland-Yutani', 'Massive Dynamic'];
+const jobTitles = ['Software Engineer', 'Product Manager', 'Designer', 'Data Scientist', 'DevOps Engineer', 'Marketing Manager', 'Sales Representative', 'HR Specialist', 'Accountant', 'Customer Support'];
+const products = ['Laptop', 'Phone', 'Tablet', 'Monitor', 'Keyboard', 'Mouse', 'Headphones', 'Speaker', 'Camera', 'Smartwatch'];
+const colors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Silver', 'Gold', 'Purple', 'Orange', 'Pink'];
+
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomDate(start, end) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+function generateUser() {
+  const firstName = random(firstNames);
+  const lastName = random(lastNames);
+  const email = firstName.toLowerCase() + '.' + lastName.toLowerCase() + randomInt(1, 99) + '@' + random(domains);
+  const age = randomInt(18, 80);
+  const city = random(cities);
+  const streetNum = randomInt(100, 9999);
+  const zip = String(randomInt(10000, 99999));
+  const lat = (randomInt(-9000, 9000) / 100).toFixed(6);
+  const lng = (randomInt(-18000, 18000) / 100).toFixed(6);
+  const registered = randomDate(new Date(2020, 0, 1), new Date()).toISOString().split('T')[0];
+  const balance = (randomInt(100, 99999) / 100).toFixed(2);
+  const isActive = Math.random() > 0.3;
+
+  return {
+    id: 'usr_' + Math.random().toString(36).substr(2, 9),
+    firstName,
+    lastName,
+    email,
+    age,
+    address: {
+      street: streetNum + ' ' + random(streets),
+      city,
+      state: random(['CA', 'NY', 'TX', 'FL', 'IL', 'PA', 'OH', 'GA', 'NC', 'MI']),
+      zip,
+      country: 'USA',
+      coordinates: { lat: parseFloat(lat), lng: parseFloat(lng) }
+    },
+    phone: '+1-' + randomInt(200, 999) + '-' + randomInt(100, 999) + '-' + randomInt(1000, 9999),
+    isActive,
+    balance: '$' + balance,
+    registered,
+    tags: [random(['vip', 'new', 'premium', 'regular']), random(['web', 'mobile', 'desktop'])]
+  };
+}
+
+function generateProduct() {
+  const price = (randomInt(99, 99999) / 100).toFixed(2);
+  const stock = randomInt(0, 500);
+  const created = randomDate(new Date(2022, 0, 1), new Date()).toISOString().split('T')[0];
+
+  return {
+    id: 'prod_' + Math.random().toString(36).substr(2, 9),
+    name: random(colors) + ' ' + random(products),
+    price: '$' + price,
+    category: random(['Electronics', 'Clothing', 'Home', 'Sports', 'Books', 'Toys']),
+    inStock: stock > 0,
+    stock: stock,
+    rating: (randomInt(30, 50) / 10).toFixed(1),
+    reviews: randomInt(0, 1000),
+    created,
+    tags: [random(['bestseller', 'new', 'sale', 'featured']), random(['popular', 'trending'])]
+  };
+}
+
+function generateCompany() {
+  const employees = randomInt(1, 10000);
+  const revenue = (randomInt(100000, 999999999) / 100).toFixed(2);
+
+  return {
+    id: 'co_' + Math.random().toString(36).substr(2, 9),
+    name: random(companies) + ' ' + random(['Inc', 'LLC', 'Corp', 'Ltd', 'Group']),
+    industry: random(['Technology', 'Healthcare', 'Finance', 'Retail', 'Manufacturing', 'Education']),
+    employees,
+    founded: randomInt(1950, 2023),
+    headquarters: random(cities) + ', ' + random(['CA', 'NY', 'TX', 'FL', 'IL']),
+    revenue: '$' + revenue,
+    website: 'https://www.' + random(['example', 'test', 'demo', 'sample']) + randomInt(1, 99) + '.com',
+    ceo: random(firstNames) + ' ' + random(lastNames)
+  };
+}
+
+function generateJSON(type, count) {
+  const items = [];
+  for (let i = 0; i < count; i++) {
+    switch (type) {
+      case 'user': items.push(generateUser()); break;
+      case 'product': items.push(generateProduct()); break;
+      case 'company': items.push(generateCompany()); break;
+      default: items.push(generateUser());
+    }
+  }
+  if (count === 1) return items[0];
+  return { count, data: items };
+}
+
 function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const input = document.getElementById('input').value.trim();
+  let count = 5;
+  let type = 'user';
+
+  // Parse input: "10 users" or "user" or "5"
+  if (input) {
+    const countMatch = input.match(/(\d+)/);
+    if (countMatch) count = parseInt(countMatch[1]);
+    if (input.toLowerCase().includes('product')) type = 'product';
+    else if (input.toLowerCase().includes('company')) type = 'company';
+    else if (input.toLowerCase().includes('user')) type = 'user';
+  }
+
+  try {
+    const result = generateJSON(type, count);
+    const json = JSON.stringify(result, null, 2);
+    document.getElementById('output').textContent = json;
+    document.getElementById('stats').textContent = 'Generated ' + count + ' ' + type + '(s)';
+  } catch (e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
   document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('stats').textContent = 'Ready — enter count and type (e.g., "10 users")';
 }
 
 function copyOutput() {
@@ -87,9 +215,9 @@ function copyOutput() {
 function downloadOutput() {
   const text = document.getElementById('output').textContent;
   if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
+  const blob = new Blob([text], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'fake-data.json'; a.click();
 }
 
 function showToast(msg) {
@@ -98,12 +226,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('fake-json', 'Fake JSON Generator'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('fake-json', 'Fake JSON Generator');
 });
 </script>
 </body>

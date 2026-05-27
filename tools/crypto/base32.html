@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base32 Encoder — ToolsBase.net</title>
-  <meta name="description" content="Encode and decode Base32 strings. Case-insensitive encoding ideal for DNS-safe identifiers.">
+  <title>Base32 Encoder/Decoder — ToolsBase.net</title>
+  <meta name="description" content="Encode and decode Base32 strings. Free, local, no uploads.">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
@@ -14,49 +14,48 @@
 <main class="tool-page">
   <div class="container">
     <div class="breadcrumbs">
-      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Base32 Encoder</span>
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Base32 Encoder/Decoder</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Base32 Encoder</h1>
-      <p class="lead-text">Encode and decode Base32 strings. Case-insensitive encoding ideal for DNS-safe identifiers.</p>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔤 Base32 Encoder/Decoder</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Encode text to Base32 or decode Base32 back to text. 100% local, no uploads.</p>
     </div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your base32 encoder input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Enter text to encode, or Base32 to decode…"></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
+          <button class="btn btn--primary" onclick="encode()">🔐 Encode → Base32</button>
+          <button class="btn btn--secondary" onclick="decode()">🔓 Decode → Text</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
       <div class="tool-panel">
         <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
+        <div id="output" class="tool-output" style="white-space:pre-wrap;word-break:break-all;" placeholder="Output will appear here…"></div>
         <div class="btn-group" style="margin-top:0.625rem;">
           <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
         </div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Ready</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Base32 Encoder used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Base32 Encoder is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-question">What is Base32?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Base32 is an encoding that uses 32 ASCII characters (A-Z, 2-7) to represent binary data as text. Often used in DNS, API keys, and TOTP secrets.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Base32 Encoder is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser.</div>
       </div>
     </section>
   </div>
@@ -64,18 +63,50 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+const B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+function encode() {
+  const raw = document.getElementById('input').value;
+  if (!raw) return;
+  let bits = 0, value = 0, out = '';
+  for (let i = 0; i < raw.length; i++) {
+    value = (value << 8) | raw.charCodeAt(i);
+    bits += 8;
+    while (bits >= 5) { out += B32[(value >>> (bits - 5)) & 31]; bits -= 5; }
+  }
+  if (bits > 0) out += B32[(value << (5 - bits)) & 31];
+  while (out.length % 8 !== 0) out += '=';
+  document.getElementById('output').textContent = out;
+  document.getElementById('stats').textContent = 'Encoded — ' + out.length + ' chars';
+}
+
+function decode() {
+  const raw = document.getElementById('input').value.trim().replace(/=+$/, '');
+  if (!raw) return;
+  let bits = 0, value = 0, out = '';
+  try {
+    for (let i = 0; i < raw.length; i++) {
+      const idx = B32.indexOf(raw[i].toUpperCase());
+      if (idx === -1) { showError('Invalid Base32 character: ' + raw[i]); return; }
+      value = (value << 5) | idx; bits += 5;
+      if (bits >= 8) { out += String.fromCharCode((value >>> (bits - 8)) & 0xFF); bits -= 8; }
+    }
+    document.getElementById('output').textContent = out;
+    document.getElementById('stats').textContent = 'Decoded — ' + out.length + ' chars';
+  } catch(e) { showError(e); }
+}
+
+function showError(msg) {
+  document.getElementById('output').textContent = 'Error: ' + msg;
+  document.getElementById('stats').textContent = 'Invalid input';
+  document.getElementById('stats').style.color = '#ef5350';
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
   document.getElementById('output').textContent = '';
   document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('stats').style.color = '';
 }
 
 function copyOutput() {
@@ -84,26 +115,18 @@ function copyOutput() {
   navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
 }
 
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
-}
-
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
+function shareTool() { TBUtils.showShareModal('base32', 'Base32 Encoder/Decoder'); }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('base32', 'Base32 Encoder/Decoder');
 });
 </script>
 </body>

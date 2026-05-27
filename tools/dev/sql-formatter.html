@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>SQL Formatter</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 SQL Formatter</h1>
-      <p class="lead-text">Format and prettify SQL queries with syntax highlighting. Supports multiple SQL dialects.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 SQL Formatter</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Format and prettify SQL queries with syntax highlighting. Supports multiple SQL dialects.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,12 +66,57 @@
 
 <!-- FOOTER -->
 <script>
+const SQL_KEYWORDS = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'JOIN', 'LEFT', 'RIGHT', 'INNER', 'OUTER', 'ON', 'GROUP', 'BY', 'ORDER', 'HAVING', 'LIMIT', 'OFFSET', 'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE', 'CREATE', 'TABLE', 'ALTER', 'DROP', 'INDEX', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'UNIQUE', 'DEFAULT', 'NOT', 'NULL', 'AS', 'IN', 'BETWEEN', 'LIKE', 'IS', 'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'UNION', 'ALL', 'DISTINCT', 'ASC', 'DESC', 'WITH', 'RECURSIVE', 'OVER', 'PARTITION', 'WINDOW', 'CASCADE', 'RESTRICT', 'GRANT', 'REVOKE', 'TRUNCATE', 'MERGE', 'USING', 'RETURNING', 'CROSS', 'NATURAL', 'USING', 'LATERAL'];
+
+function formatSQL(sql) {
+  const kw = s => SQL_KEYWORDS.includes(s.toUpperCase());
+  // Normalize whitespace first
+  sql = sql.replace(/\s+/g, ' ').trim();
+  // Add newlines before major keywords
+  const major = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'OUTER JOIN', 'CROSS JOIN', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE FROM', 'CREATE TABLE', 'ALTER TABLE', 'DROP TABLE', 'UNION', 'WITH'];
+  major.forEach(k => { sql = sql.replace(new RegExp('\\s+' + k.split(' ').join('\\s+'), 'gi'), '\n' + k); });
+  // Format sub-statements
+  sql = sql.replace(/\(/g, ' ( ');
+  sql = sql.replace(/\)/g, ' ) ');
+  sql = sql.replace(/,/g, ',\n  ');
+  sql = sql.replace(/\s*=\s*/g, ' = ');
+  sql = sql.replace(/\s+AND\s+/gi, '\n  AND ');
+  sql = sql.replace(/\s+OR\s+/gi, '\n  OR ');
+  // Clean up
+  sql = sql.replace(/\n\s*\n/g, '\n');
+  sql = sql.replace(/^\s+|\s+$/g, '');
+  // Indent subqueries
+  const lines = sql.split('\n');
+  let inParens = false;
+  let depth = 0;
+  lines.forEach((line, i) => {
+    const open = (line.match(/\(/g) || []).length;
+    const close = (line.match(/\)/g) || []).length;
+    if (open > close) { inParens = true; depth++; }
+    if (close >= open && close > 0) { depth = Math.max(0, depth - close); inParens = false; }
+  });
+  return lines.map(l => {
+    const trimmed = l.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('(')) return '  '.repeat(depth) + trimmed;
+    if (trimmed.match(/^(SELECT|FROM|WHERE|AND|OR|JOIN|GROUP|ORDER|HAVING|LIMIT|INSERT|UPDATE|SET|DELETE|CREATE|ALTER|DROP|UNION|WITH)/i)) {
+      return (depth > 0 ? '  '.repeat(depth) : '') + trimmed;
+    }
+    return '  '.repeat(Math.max(0, depth)) + trimmed;
+  }).join('\n').replace(/\n{2,}/g, '\n').trim();
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  try {
+    const formatted = formatSQL(input);
+    document.getElementById('output').textContent = formatted;
+    document.getElementById('stats').textContent = 'Formatted: ' + input.length + ' → ' + formatted.length + ' chars';
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
@@ -97,6 +144,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('sql-formatter', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

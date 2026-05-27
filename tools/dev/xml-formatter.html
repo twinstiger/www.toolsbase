@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>XML Formatter</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 XML Formatter</h1>
-      <p class="lead-text">Format and validate XML documents with proper indentation and syntax highlighting.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 XML Formatter</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Format and validate XML documents with proper indentation and syntax highlighting.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,12 +66,45 @@
 
 <!-- FOOTER -->
 <script>
+function formatXML(xml) {
+  let formatted = '';
+  let indent = 0;
+  const parts = xml.replace(/>\s*</g, '>\n<').split('\n');
+  parts.forEach(node => {
+    if (!node.trim()) return;
+    if (node.match(/^<\/\w/)) {
+      // Closing tag - reduce indent first
+      indent = Math.max(0, indent - 1);
+    }
+    formatted += '  '.repeat(indent) + node.trim() + '\n';
+    if (node.match(/^<\w[^>]*[^/]>/) && !node.match(/^<\w[^>]*\/>/)) {
+      // Opening tag (not self-closing) - increase indent
+      indent++;
+    }
+  });
+  return formatted.trim();
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  try {
+    // Basic XML validation: check for matching tags
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(input, 'application/xml');
+    const parseError = doc.querySelector('parsererror');
+    if (parseError) {
+      document.getElementById('output').textContent = 'XML Error: ' + parseError.textContent;
+      document.getElementById('stats').textContent = 'Error: invalid XML';
+      return;
+    }
+    const formatted = formatXML(input);
+    document.getElementById('output').textContent = formatted;
+    document.getElementById('stats').textContent = 'Formatted: ' + input.length + ' → ' + formatted.length + ' chars';
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
@@ -97,6 +132,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('xml-formatter', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

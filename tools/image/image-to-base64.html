@@ -17,46 +17,58 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Image to Base64</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Image to Base64</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🖼️ Image to Base64</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Convert images to Base64 data URIs for embedding directly in HTML or CSS.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your image to base64 input here..."></textarea>
+        <div class="tool-panel-label">Upload Image</div>
+        <div class="image-upload-area" id="drop-zone">
+          <input type="file" id="file-input" accept="image/*" style="display:none;">
+          <div class="upload-content">
+            <p style="font-size:2rem;margin:0 0 0.5rem;">📁</p>
+            <p style="margin:0;color:var(--color-text-muted);">Drag & drop an image here</p>
+            <p style="margin:0.5rem 0 0;color:var(--color-text-muted);font-size:0.85rem;">or</p>
+            <button class="btn btn--secondary" onclick="document.getElementById('file-input').click()" style="margin-top:0.5rem;">Browse Files</button>
+          </div>
+        </div>
+        <div class="tool-panel-label" style="margin-top:1rem;">Or paste image URL</div>
+        <input type="text" id="url-input" class="tool-input" placeholder="https://example.com/image.png">
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
-          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+          <button class="btn btn--primary" onclick="loadFromURL()">🔗 Load from URL</button>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
+        <div class="tool-panel-label">Preview</div>
+        <div id="preview" class="tool-output" style="display:flex;align-items:center;justify-content:center;min-height:150px;background:var(--color-surface);border-radius:8px;">
+          <p style="color:var(--color-text-muted);">Image preview will appear here</p>
+        </div>
+        <div class="tool-panel-label" style="margin-top:1rem;">Base64 Output</div>
+        <div id="base64-output" class="tool-output" style="font-family:monospace;font-size:0.75rem;word-break:break-all;max-height:150px;overflow:auto;background:var(--color-surface);" placeholder="Base64 will appear here..."></div>
+        <div class="tool-actions" style="margin-top:0.75rem;">
+          <button class="btn btn--secondary" onclick="copyBase64()">📋 Copy Base64</button>
+          <button class="btn btn--secondary" onclick="downloadBase64()">⬇ Download as TXT</button>
         </div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Upload an image to convert to Base64</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is Image to Base64 used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Image to Base64 is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-answer">Convert images to Base64 data URIs that can be embedded directly in HTML or CSS without needing external files.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Image to Base64 is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your images never leave your device.</div>
       </div>
     </section>
   </div>
@@ -64,32 +76,99 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+let currentBase64 = '';
+let currentFileName = '';
+
+function handleImageFile(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    showError('Please select a valid image file');
+    return;
+  }
+
+  currentFileName = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    currentBase64 = base64;
+    displayResult(base64, file.name, file.size);
+  };
+  reader.onerror = function() {
+    showError('Error reading file');
+  };
+  reader.readAsDataURL(file);
 }
 
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+function displayResult(base64, fileName, fileSize) {
+  const preview = document.getElementById('preview');
+  const output = document.getElementById('base64-output');
+  const stats = document.getElementById('stats');
+
+  preview.innerHTML = '<img src="' + base64 + '" style="max-width:100%;max-height:200px;border-radius:4px;">';
+
+  output.textContent = base64;
+  stats.textContent = fileName + ' (' + formatBytes(fileSize) + ') → Base64 ready';
 }
 
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+function loadFromURL() {
+  const url = document.getElementById('url-input').value.trim();
+  if (!url) {
+    showError('Enter an image URL');
+    return;
+  }
+
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    showError('Please enter a valid HTTP or HTTPS URL');
+    return;
+  }
+
+  document.getElementById('stats').textContent = 'Loading image from URL...';
+
+  fetch(url)
+    .then(resp => {
+      if (!resp.ok) throw new Error('Failed to fetch image');
+      return resp.blob();
+    })
+    .then(blob => {
+      const file = new File([blob], 'image', { type: blob.type });
+      currentFileName = 'image_from_url';
+      handleImageFile(file);
+    })
+    .catch(err => {
+      showError('Could not load image. The server may not allow CORS.');
+    });
 }
 
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function copyBase64() {
+  if (!currentBase64) {
+    showToast('No Base64 to copy');
+    return;
+  }
+  navigator.clipboard.writeText(currentBase64).then(() => showToast('Base64 copied!'));
+}
+
+function downloadBase64() {
+  if (!currentBase64) {
+    showToast('No Base64 to download');
+    return;
+  }
+  const blob = new Blob([currentBase64], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (currentFileName || 'image') + '.base64.txt';
+  a.click();
+}
+
+function showError(msg) {
+  document.getElementById('preview').innerHTML = '<p style="color:#ef5350;">' + msg + '</p>';
+  document.getElementById('base64-output').textContent = '';
+  document.getElementById('stats').textContent = 'Error';
+  currentBase64 = '';
 }
 
 function showToast(msg) {
@@ -98,13 +177,64 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('image-to-base64', 'Image to Base64'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('image-to-base64', 'Image to Base64');
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+
+  fileInput.addEventListener('change', function(e) {
+    if (e.target.files[0]) {
+      handleImageFile(e.target.files[0]);
+    }
+  });
+
+  dropZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--color-primary)';
+    dropZone.style.background = 'var(--color-surface)';
+  });
+
+  dropZone.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    dropZone.style.borderColor = '';
+    dropZone.style.background = '';
+  });
+
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropZone.style.borderColor = '';
+    dropZone.style.background = '';
+    const file = e.dataTransfer.files[0];
+    if (file) handleImageFile(file);
+  });
+
+  // Enter key on URL input
+  document.getElementById('url-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') loadFromURL();
+  });
 });
 </script>
+<style>
+.image-upload-area {
+  border: 2px dashed var(--color-border);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.image-upload-area:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+.upload-content p { color: var(--color-text-muted); }
+</style>
 </body>
 </html>

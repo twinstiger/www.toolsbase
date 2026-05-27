@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Text Diff</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Text Diff</h1>
-      <p class="lead-text">Advanced text comparison with word-level and character-level diff highlighting.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Text Diff</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Advanced text comparison with word-level and character-level diff highlighting.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,18 +66,85 @@
 
 <!-- FOOTER -->
 <script>
+// Simple line-by-line diff implementation
+function computeLineDiff(oldText, newText) {
+  const oldLines = oldText.split('\n');
+  const newLines = newText.split('\n');
+  const result = [];
+  const maxLen = Math.max(oldLines.length, newLines.length);
+
+  for (let i = 0; i < maxLen; i++) {
+    const oldLine = oldLines[i] !== undefined ? oldLines[i] : null;
+    const newLine = newLines[i] !== undefined ? newLines[i] : null;
+
+    if (oldLine === null) {
+      result.push({ type: 'added', content: newLine, lineNum: i + 1 });
+    } else if (newLine === null) {
+      result.push({ type: 'removed', content: oldLine, lineNum: i + 1 });
+    } else if (oldLine !== newLine) {
+      result.push({ type: 'removed', content: oldLine, lineNum: i + 1 });
+      result.push({ type: 'added', content: newLine, lineNum: i + 1 });
+    } else {
+      result.push({ type: 'unchanged', content: oldLine, lineNum: i + 1 });
+    }
+  }
+  return result;
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const input = document.getElementById('input').value.trim();
+  if (!input) return;
+
+  // Support "original ||| modified" format for comparing two texts
+  const parts = input.split('|||');
+  let oldText, newText;
+
+  if (parts.length >= 2) {
+    oldText = parts[0].trim();
+    newText = parts.slice(1).join('|||').trim();
+  } else {
+    // If only one text, show a message
+    document.getElementById('output').innerHTML = '<span style="color:#ffa726;">Tip: Enter two texts separated by "|||" to compare them.\n\nExample:\nHello world\n||| Hello world!\n\nThis will show the differences between the two texts.</span>';
+    document.getElementById('stats').textContent = 'Enter two texts separated by "|||" to compare';
+    return;
+  }
+
+  const diff = computeLineDiff(oldText, newText);
+  let html = '<div style="font-family:monospace;white-space:pre-wrap;line-height:1.6;">';
+
+  let addedCount = 0, removedCount = 0, unchangedCount = 0;
+
+  diff.forEach(item => {
+    const lineNum = String(item.lineNum).padStart(4, ' ');
+    if (item.type === 'added') {
+      html += `<div style="background:#e8f5e9;color:#2e7d32;"><span style="color:#81c784;margin-right:8px;">+${lineNum}</span><span> ${escapeHtml(item.content)}</span></div>`;
+      addedCount++;
+    } else if (item.type === 'removed') {
+      html += `<div style="background:#ffebee;color:#c62828;"><span style="color:#ef9a9a;margin-right:8px;">-${lineNum}</span><span> ${escapeHtml(item.content)}</span></div>`;
+      removedCount++;
+    } else {
+      html += `<div style="color:#666;"><span style="color:#999;margin-right:8px;"> ${lineNum}</span><span> ${escapeHtml(item.content)}</span></div>`;
+      unchangedCount++;
+    }
+  });
+
+  html += '</div>';
+  document.getElementById('output').innerHTML = html;
+  document.getElementById('stats').textContent = `+${addedCount} added, -${removedCount} removed, ${unchangedCount} unchanged`;
 }
 
 function clearAll() {
   document.getElementById('input').value = '';
   document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+  document.getElementById('stats').textContent = 'Ready — enter input to start';
 }
 
 function copyOutput() {
@@ -89,7 +158,7 @@ function downloadOutput() {
   if (!text) return;
   const blob = new Blob([text], { type: 'text/plain' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+  a.download = 'diff.txt'; a.click();
 }
 
 function showToast(msg) {
@@ -98,12 +167,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('text-diff', 'Text Diff'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('text-diff', 'Text Diff');
 });
 </script>
 </body>

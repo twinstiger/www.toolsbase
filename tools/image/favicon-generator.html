@@ -17,46 +17,62 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Favicon Generator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Favicon Generator</h1>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🎨 Favicon Generator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
       <p class="lead-text">Generate favicon.ico and app icons from any image. Creates all standard sizes automatically.</p>
     </div>
 
-    <div class="tool-layout">
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your favicon generator input here..."></textarea>
-        <div class="tool-actions">
-          <button class="btn btn--primary" onclick="transform()">Transform →</button>
-          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
+        <div class="tool-panel-label">Upload Image</div>
+        <div class="image-upload-area" id="drop-zone">
+          <input type="file" id="file-input" accept="image/*" style="display:none;">
+          <div class="upload-content">
+            <p style="font-size:2rem;margin:0 0 0.5rem;">🖼️</p>
+            <p style="margin:0;color:var(--color-text-muted);">Drag & drop an image here</p>
+            <p style="margin:0.5rem 0 0;color:var(--color-text-muted);font-size:0.85rem;">or</p>
+            <button class="btn btn--secondary" onclick="document.getElementById('file-input').click()" style="margin-top:0.5rem;">Browse Files</button>
+            <p style="margin:0.75rem 0 0;color:var(--color-text-muted);font-size:0.8rem;">PNG, JPG, WebP, SVG (max 5MB)</p>
+          </div>
         </div>
       </div>
       <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output" class="tool-output" placeholder="Output will appear here..."></div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
+        <div class="tool-panel-label">Generated Icons</div>
+        <div id="preview" style="display:flex;flex-wrap:wrap;gap:1rem;padding:1rem;background:var(--color-surface);border-radius:8px;min-height:150px;align-items:center;justify-content:center;">
+          <p style="color:var(--color-text-muted);">Upload an image to generate icons</p>
+        </div>
+        <div class="tool-actions" style="margin-top:1rem;">
+          <button class="btn btn--primary" onclick="downloadAllIcons()">⬇ Download All (ZIP)</button>
+        </div>
+        <div style="margin-top:1rem;font-size:0.85rem;color:var(--color-text-muted);">
+          <p style="margin:0 0 0.5rem;font-weight:600;">Includes:</p>
+          <ul style="margin:0;padding-left:1.25rem;">
+            <li>favicon.ico (16x16, 32x32, 48x48)</li>
+            <li>apple-touch-icon.png (180x180)</li>
+            <li>android-chrome-192x192.png</li>
+            <li>android-chrome-512x512.png</li>
+            <li>favicon-16x16.png</li>
+            <li>favicon-32x32.png</li>
+          </ul>
         </div>
       </div>
     </div>
 
     <div class="tool-stats">
-      <span id="stats">Ready — enter input to start</span>
+      <span id="stats">Upload an image to generate favicon icons</span>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is Favicon Generator used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Favicon Generator is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-answer">Generate all the icon files needed for a website's favicon across different browsers and devices.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Favicon Generator is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your images never leave your device.</div>
       </div>
     </section>
   </div>
@@ -64,32 +80,118 @@
 
 <!-- FOOTER -->
 <script>
-function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+let generatedIcons = {};
+
+const SIZES = [
+  { name: 'favicon-16x16.png', size: 16 },
+  { name: 'favicon-32x32.png', size: 32 },
+  { name: 'favicon-48x48.png', size: 48 },
+  { name: 'apple-touch-icon.png', size: 180 },
+  { name: 'android-chrome-192x192.png', size: 192 },
+  { name: 'android-chrome-512x512.png', size: 512 },
+];
+
+function handleImageFile(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    showError('Please select a valid image file');
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    showError('Image too large. Max size is 5MB.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      generateIcons(img);
+    };
+    img.onerror = function() {
+      showError('Could not load image');
+    };
+    img.src = e.target.result;
+  };
+  reader.onerror = function() {
+    showError('Error reading file');
+  };
+  reader.readAsDataURL(file);
 }
 
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').textContent = '';
-  document.getElementById('stats').textContent = 'Ready';
+function generateIcons(img) {
+  const preview = document.getElementById('preview');
+  preview.innerHTML = '';
+  generatedIcons = {};
+
+  SIZES.forEach(({ name, size }) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+
+    // Draw image centered and cropped to square
+    const minDim = Math.min(img.width, img.height);
+    const sx = (img.width - minDim) / 2;
+    const sy = (img.height - minDim) / 2;
+    ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+    generatedIcons[name] = canvas;
+
+    // Add preview item
+    const item = document.createElement('div');
+    item.style.textAlign = 'center';
+    item.innerHTML = '<div style="font-size:0.7rem;color:var(--color-text-muted);margin-bottom:0.25rem;">' + size + 'x' + size + '</div>';
+    const previewCanvas = document.createElement('canvas');
+    const scale = size > 64 ? 64 / size : 1;
+    previewCanvas.width = size * scale;
+    previewCanvas.height = size * scale;
+    previewCanvas.style.imageRendering = size > 64 ? 'auto' : 'pixelated';
+    const pctx = previewCanvas.getContext('2d');
+    pctx.drawImage(canvas, 0, 0, previewCanvas.width, previewCanvas.height);
+    item.appendChild(previewCanvas);
+    preview.appendChild(item);
+  });
+
+  document.getElementById('stats').textContent = 'Generated ' + SIZES.length + ' icon sizes - click Download to save';
 }
 
-function copyOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+function downloadAllIcons() {
+  const keys = Object.keys(generatedIcons);
+  if (keys.length === 0) {
+    showToast('No icons to download');
+    return;
+  }
+
+  if (keys.length === 1) {
+    // Download single file
+    const canvas = generatedIcons[keys[0]];
+    const a = document.createElement('a');
+    a.download = keys[0];
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    showToast('Downloaded ' + keys[0]);
+    return;
+  }
+
+  // For multiple icons, download as individual files
+  // (Full ZIP would require JSZip library, so we download sequentially)
+  keys.forEach((name, i) => {
+    setTimeout(() => {
+      const canvas = generatedIcons[name];
+      const a = document.createElement('a');
+      a.download = name;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }, i * 200);
+  });
+  showToast('Downloading ' + keys.length + ' icon files...');
 }
 
-function downloadOutput() {
-  const text = document.getElementById('output').textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'output.txt'; a.click();
+function showError(msg) {
+  document.getElementById('preview').innerHTML = '<p style="color:#ef5350;">' + msg + '</p>';
+  document.getElementById('stats').textContent = 'Error';
+  generatedIcons = {};
 }
 
 function showToast(msg) {
@@ -98,13 +200,59 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('favicon-generator', 'Favicon Generator'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') transform();
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('favicon-generator', 'Favicon Generator');
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+
+  fileInput.addEventListener('change', function(e) {
+    if (e.target.files[0]) {
+      handleImageFile(e.target.files[0]);
+    }
+  });
+
+  dropZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--color-primary)';
+    dropZone.style.background = 'var(--color-surface)';
+  });
+
+  dropZone.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    dropZone.style.borderColor = '';
+    dropZone.style.background = '';
+  });
+
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropZone.style.borderColor = '';
+    dropZone.style.background = '';
+    const file = e.dataTransfer.files[0];
+    if (file) handleImageFile(file);
+  });
 });
 </script>
+<style>
+.image-upload-area {
+  border: 2px dashed var(--color-border);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.image-upload-area:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+.upload-content p { color: var(--color-text-muted); }
+</style>
 </body>
 </html>

@@ -57,11 +57,19 @@ function processFile(filePath) {
   html = html.replace('<!-- HEADER -->', headerHTML);
   html = html.replace('<!-- FOOTER -->', footerHTML);
 
-  // Fix asset paths (CSS, JS, images)
+  // Add utils.js script before </body> (after footer scripts so TBUtils is available)
+  html = html.replace('</body>', '<script src="' + prefix + 'src/utils.js"></script>\n</body>');
+
+  // Fix asset paths (CSS, JS, images) - must be done BEFORE tokens.css fix to avoid double replacement
   html = html.replace(/href="\/src\//g, `href="${prefix}src/`);
   html = html.replace(/src="\/src\//g, `src="${prefix}src/`);
   html = html.replace(/src="\//g, `src="${prefix}`);
   html = html.replace(/href="\//g, `href="${prefix}`);
+
+  // Always add tokens.css for dark mode support (must come before styles.css)
+  if (!html.includes('tokens.css')) {
+    html = html.replace('<link rel="stylesheet" href="' + prefix + 'src/styles.css">', '<link rel="stylesheet" href="' + prefix + 'src/tokens.css">\n  <link rel="stylesheet" href="' + prefix + 'src/styles.css">');
+  }
 
   return html;
 }
@@ -94,6 +102,7 @@ function build() {
   fs.mkdirSync(path.join(DIST, 'src'), { recursive: true });
   fs.cpSync(path.join(SRC, 'styles.css'), path.join(DIST, 'src', 'styles.css'));
   fs.cpSync(path.join(SRC, 'tokens.css'), path.join(DIST, 'src', 'tokens.css'));
+  fs.cpSync(path.join(SRC, 'utils.js'), path.join(DIST, 'src', 'utils.js'));
 
   // Copy root static files
   if (fs.existsSync(path.join(ROOT, 'favicon.ico'))) {

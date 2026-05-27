@@ -6,13 +6,159 @@
       </div>
       <span class="logo-name">ToolsBase</span>
     </a>
+    <div class="header-right">
     <nav class="nav">
+      <div class="recent-dropdown" id="recentDropdown">
+        <button class="recent-btn" id="recentBtn" aria-label="Recently used">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span class="recent-label">Recent</span>
+        </button>
+        <div class="recent-menu" id="recentMenu">
+          <div class="recent-menu-header">Recently Used</div>
+          <div class="recent-menu-list" id="recentMenuList"></div>
+        </div>
+      </div>
       <a href="/tools/index.html" class="nav-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2 2 0 0 1-2.83-2.83l8.5-8.5a1 1 0 0 0 0-1.4z"/></svg>Tools</a>
       <a href="/blog/index.html" class="nav-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Blog</a>
       <a href="/about.html" class="nav-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>About</a>
     </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    </div>
     <button class="mobile-menu-btn" aria-label="Menu">
       <span class="hamburger"><span></span><span></span></span>
     </button>
   </div>
 </header>
+<script>
+(function() {
+  var toggle = document.getElementById('themeToggle');
+  var saved = localStorage.getItem('theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = saved || (prefersDark ? 'dark' : 'light');
+
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.body.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+  }
+
+  if (theme === 'dark') {
+    applyTheme('dark');
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme');
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // Recently used dropdown
+  var recentBtn = document.getElementById('recentBtn');
+  var recentMenu = document.getElementById('recentMenu');
+  var recentMenuList = document.getElementById('recentMenuList');
+
+  if (recentBtn && recentMenu) {
+    recentBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      recentMenu.classList.toggle('show');
+      if (recentMenu.classList.contains('show')) {
+        loadRecentItems();
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!recentMenu.contains(e.target)) {
+        recentMenu.classList.remove('show');
+      }
+    });
+  }
+
+  function loadRecentItems() {
+    if (!recentMenuList) return;
+    var history = [];
+    try {
+      history = JSON.parse(localStorage.getItem('tb_history') || '[]');
+    } catch(e) {}
+
+    if (history.length === 0) {
+      recentMenuList.innerHTML = '<div class="recent-empty">No recent tools</div>';
+      return;
+    }
+
+    var html = '';
+    history.slice(0, 8).forEach(function(item) {
+      var toolUrl = '/tools/' + getToolUrl(item.id);
+      html += '<a href="' + toolUrl + '" class="recent-item">' +
+        '<span class="recent-item-name">' + item.name + '</span>' +
+        '<span class="recent-item-time">' + formatTime(item.time) + '</span>' +
+        '</a>';
+    });
+    recentMenuList.innerHTML = html;
+  }
+
+  function getToolUrl(toolId) {
+    // Map tool IDs to their file paths
+    var map = {
+      'my-ip': 'network/my-ip.html',
+      'url-parser': 'network/url-parser.html',
+      'url-shortener': 'network/url-shortener.html',
+      'subnet': 'network/subnet.html',
+      'ip-to-int': 'network/ip-to-int.html',
+      'dns-lookup': 'network/dns-lookup.html',
+      'user-agent': 'network/user-agent.html',
+      'json-formatter': 'dev/json-formatter.html',
+      'base64-encoder': 'dev/base64-encoder.html',
+      'hash-generator': 'dev/hash-generator.html',
+      'regex-tester': 'dev/regex-tester.html',
+      'sql-formatter': 'dev/sql-formatter.html',
+      'url-encoder': 'dev/url-encoder.html',
+      'html-minifier': 'dev/html-minifier.html',
+      'css-minifier': 'dev/css-minifier.html',
+      'js-minifier': 'dev/js-minifier.html',
+      'json-to-yaml': 'dev/json-to-yaml.html',
+      'yaml-validator': 'dev/yaml-validator.html',
+      'xml-formatter': 'dev/xml-formatter.html',
+      'password-generator': 'generators/password-generator.html',
+      'uuid-generator': 'generators/uuid-generator.html',
+      'lorem-ipsum': 'generators/lorem-ipsum.html',
+      'slug-generator': 'generators/slug-generator.html',
+      'random-string': 'generators/random-string.html',
+      'fake-json': 'generators/fake-json.html',
+      'case-converter': 'text/case-converter.html',
+      'diff-checker': 'text/diff-checker.html',
+      'markdown-preview': 'text/markdown-preview.html',
+      'text-diff': 'text/text-diff.html',
+      'word-counter': 'text/word-counter.html',
+      'timestamp-converter': 'converters/timestamp-converter.html',
+      'number-base': 'converters/number-base.html',
+      'color-converter': 'converters/color-converter.html',
+      'unit-converter': 'converters/unit-converter.html',
+      'qr-code-generator': 'image/qr-code-generator.html',
+      'favicon-generator': 'image/favicon-generator.html',
+      'image-to-base64': 'image/image-to-base64.html',
+      'aes-encrypt': 'crypto/aes-encrypt.html',
+      'bcrypt': 'crypto/bcrypt.html',
+      'htpasswd': 'crypto/htpasswd.html',
+      'morse': 'crypto/morse.html',
+      'base32': 'crypto/base32.html'
+    };
+    return map[toolId] || 'index.html';
+  }
+
+  function formatTime(timestamp) {
+    var diff = Date.now() - timestamp;
+    var mins = Math.floor(diff / 60000);
+    var hours = Math.floor(diff / 3600000);
+    var days = Math.floor(diff / 86400000);
+    if (mins < 1) return 'Just now';
+    if (mins < 60) return mins + 'm ago';
+    if (hours < 24) return hours + 'h ago';
+    if (days < 7) return days + 'd ago';
+    return Math.floor(days / 7) + 'w ago';
+  }
+})();
+</script>

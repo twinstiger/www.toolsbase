@@ -17,14 +17,16 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>YAML Validator</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 YAML Validator</h1>
-      <p class="lead-text">Validate YAML syntax and format. Detect errors with line numbers and helpful error messages.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 YAML Validator</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Validate YAML syntax and format. Detect errors with line numbers and helpful error messages.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your yaml validator input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Paste YAML here to validate syntax and formatting..."></textarea>
         <div class="tool-actions">
           <button class="btn btn--primary" onclick="transform()">Transform →</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
@@ -64,12 +66,45 @@
 
 <!-- FOOTER -->
 <script>
+function validateYAML(yaml) {
+  const errors = [];
+  const lines = yaml.split('\n');
+  let indentStack = [];
+  lines.forEach((line, idx) => {
+    if (!line.trim() || line.trim().startsWith('#')) return;
+    const trimmed = line.replace(/^\s*/, '');
+    const indent = line.length - trimmed.length;
+    // Check for tab/space inconsistency
+    if (line.match(/^\t+ /)) errors.push({ line: idx + 1, msg: 'Mixed tabs and spaces' });
+    // Check for invalid anchor/alias
+    if (trimmed.match(/^&\S+\s+\S+:/)) errors.push({ line: idx + 1, msg: 'Anchor must be alone on line before value' });
+    // Check for invalid characters in keys
+    if (trimmed.match(/^[^:]+:[^:]*$/)) {
+      const key = trimmed.split(':')[0];
+      if (key.match(/[[\]{}!|>"%@`]/)) errors.push({ line: idx + 1, msg: 'Invalid character in key: ' + key });
+    }
+    // Check indentation is multiple of 2
+    if (indent % 2 !== 0) errors.push({ line: idx + 1, msg: 'Indentation should be multiple of 2 (found ' + indent + ')' });
+  });
+  return errors;
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  try {
+    const errors = validateYAML(input);
+    if (errors.length > 0) {
+      document.getElementById('output').textContent = errors.map(e => 'Line ' + e.line + ': ' + e.msg).join('\n');
+      document.getElementById('stats').textContent = errors.length + ' warning(s) found';
+    } else {
+      document.getElementById('output').textContent = 'Valid YAML — no syntax errors found.\n\nTip: The input is also valid YAML. Try using JSON to YAML converter to validate JSON-to-YAML conversion.';
+      document.getElementById('stats').textContent = 'Valid YAML';
+    }
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
@@ -97,6 +132,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('yaml-validator', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

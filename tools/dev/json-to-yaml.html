@@ -17,9 +17,11 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>JSON to YAML</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 JSON to YAML</h1>
-      <p class="lead-text">Convert JSON to YAML format and vice versa. Supports validation, indentation adjustment, and nested structures.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 JSON to YAML</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Convert JSON to YAML format and vice versa. Supports validation, indentation adjustment, and nested structures.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
@@ -64,12 +66,115 @@
 
 <!-- FOOTER -->
 <script>
+function jsonToYaml(obj, indent) {
+  if (indent === undefined) indent = 0;
+  const sp = '  '.repeat(indent);
+  if (obj === null) return 'null\n';
+  if (obj === undefined) return '';
+  if (typeof obj === 'boolean') return (obj ? 'true' : 'false') + '\n';
+  if (typeof obj === 'number') return obj + '\n';
+  if (typeof obj === 'string') {
+    if (obj.includes('\n') || obj.includes(':') || obj.includes('#') || obj.includes('"') || obj.includes("'") || obj.startsWith(' ') || obj.endsWith(' ') || !obj) {
+      return '"' + obj.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"\n';
+    }
+    return obj + '\n';
+  }
+  if (Array.isArray(obj)) {
+    if (obj.length === 0) return '[]\n';
+    let out = '';
+    obj.forEach(item => {
+      out += sp + '- ' + jsonToYaml(item, indent + 1).replace(new RegExp('^' + sp + '- '), '');
+    });
+    return out;
+  }
+  if (typeof obj === 'object') {
+    const keys = Object.keys(obj);
+    if (keys.length === 0) return '{}\n';
+    let out = '';
+    keys.forEach(key => {
+      const safe = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(key);
+      out += sp + (safe ? key : '"' + key.replace(/"/g, '\\"') + '"') + ': ' + jsonToYaml(obj[key], indent + 1);
+    });
+    return out;
+  }
+  return String(obj) + '\n';
+}
+
+function yamlToJs(yaml) {
+  const lines = yaml.split('\n');
+  let idx = 0;
+  function parseBlock(indent) {
+    const result = {};
+    while (idx < lines.length) {
+      const line = lines[idx];
+      if (!line.trim() || line.trim().startsWith('#')) { idx++; continue; }
+      const lineIndent = line.search(/\S/);
+      if (lineIndent < indent) break;
+      if (lineIndent === indent) {
+        idx++;
+        const colonIdx = line.indexOf(':');
+        if (colonIdx === -1) continue;
+        const key = line.slice(0, colonIdx).trim();
+        const rest = line.slice(colonIdx + 1).trim();
+        if (rest === '' || rest === '|' || rest === '>') {
+          // block scalar
+          if (rest === '|' || rest === '>') {
+            const ch = rest;
+            const firstLine = lines[idx] || '';
+            let content = '';
+            while (idx < lines.length && lines[idx].search(/\S/) > indent) { content += lines[idx].trim() + '\n'; idx++; }
+            result[key] = content.trim();
+          } else {
+            const values = [];
+            while (idx < lines.length) {
+              const nline = lines[idx];
+              const nindent = nline.search(/\S/);
+              if (nindent <= indent) break;
+              if (nline.trim().startsWith('- ')) values.push(nline.replace(/^(\s*)-\s*/, '').trim());
+              else break;
+              idx++;
+            }
+            result[key] = values.length === 1 ? values[0] : values;
+          }
+        } else if (rest === 'true') result[key] = true;
+        else if (rest === 'false') result[key] = false;
+        else if (rest === 'null' || rest === '~') result[key] = null;
+        else if (/^-?\d+(\.\d+)?$/.test(rest)) result[key] = parseFloat(rest);
+        else if (rest.startsWith('"') && rest.endsWith('"')) result[key] = rest.slice(1, -1);
+        else if (rest.startsWith("'") && rest.endsWith("'")) result[key] = rest.slice(1, -1);
+        else result[key] = rest;
+      } else if (lineIndent > indent) {
+        // nested content without new key
+        break;
+      } else {
+        idx++;
+      }
+    }
+    return result;
+  }
+  return parseBlock(0);
+}
+
 function transform() {
   const input = document.getElementById('input').value;
   if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  try {
+    // Try JSON first
+    if (input.trim().startsWith('{') || input.trim().startsWith('[')) {
+      const obj = JSON.parse(input.trim());
+      const yaml = jsonToYaml(obj).trim();
+      document.getElementById('output').textContent = yaml;
+      document.getElementById('stats').textContent = 'JSON → YAML | ' + Object.keys(obj).length + ' keys';
+    } else {
+      // Treat as YAML
+      const obj = yamlToJs(input);
+      document.getElementById('output').textContent = JSON.stringify(obj, null, 2);
+      document.getElementById('stats').textContent = 'YAML → JSON | Valid YAML parsed';
+    }
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error: invalid input';
+  }
 }
 
 function clearAll() {
@@ -97,6 +202,8 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+
+function shareTool() { TBUtils.showShareModal('json-to-yaml', 'Tool'); }
 
 function toggleFaq(el) {
   el.classList.toggle('open');

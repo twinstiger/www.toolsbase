@@ -17,14 +17,16 @@
       <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Lorem Ipsum</span>
     </div>
     <div class="tool-page-header">
-      <h1 class="tool-page-title">🔧 Lorem Ipsum</h1>
-      <p class="lead-text">Generate placeholder text in paragraphs, words, or bytes. Choose from classic or random content.</p>
-    </div>
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">🔧 Lorem Ipsum</h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Generate placeholder text in paragraphs, words, or bytes. Choose from classic or random content.</p></div>
 
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder="Enter your lorem ipsum input here..."></textarea>
+        <textarea id="input" class="tool-input" placeholder="Number + format: 3 paragraphs, 100 words, 5 sentences, 500 bytes"></textarea>
         <div class="tool-actions">
           <button class="btn btn--primary" onclick="transform()">Transform →</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
@@ -64,12 +66,70 @@
 
 <!-- FOOTER -->
 <script>
+const LOREM_WORDS = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ');
+
+const LOREM_SENTENCES = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+  'Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
+  'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
+  'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.',
+  'Temporibus autem quibusdam et officiis debitis aut rerum necessitatibus saepe eveniet voluptates repudiandae.',
+  'Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias.',
+  ' consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
+  'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.',
+];
+
+function generateLorem(opts) {
+  const count = opts.count || 1;
+  const format = opts.format || 'paragraphs'; // paragraphs, words, sentences, bytes
+  const bytes = opts.bytes || 0;
+  const out = [];
+  if (format === 'words') {
+    for (let i = 0; i < count; i++) out.push(LOREM_WORDS[i % LOREM_WORDS.length]);
+    return out.join(' ') + '.';
+  }
+  if (format === 'sentences') {
+    for (let i = 0; i < count; i++) out.push(LOREM_SENTENCES[i % LOREM_SENTENCES.length]);
+    return out.join(' ');
+  }
+  if (format === 'bytes') {
+    // Generate text to approx byte count
+    let text = '', n = 0;
+    while (text.length < bytes) {
+      text += LOREM_SENTENCES[n % LOREM_SENTENCES.length] + ' ';
+      n++;
+    }
+    return text.slice(0, bytes);
+  }
+  // paragraphs (default)
+  for (let i = 0; i < count; i++) {
+    const paraWords = [];
+    const len = 20 + Math.floor(Math.random() * 30);
+    for (let j = 0; j < len; j++) paraWords.push(LOREM_WORDS[Math.floor(Math.random() * LOREM_WORDS.length)]);
+    out.push(paraWords.join(' ').charAt(0).toUpperCase() + paraWords.join(' ').slice(1) + '.');
+  }
+  return out.join('\n\n');
+}
+
 function transform() {
-  const input = document.getElementById('input').value;
-  if (!input.trim()) return;
-  const output = input;
-  document.getElementById('output').textContent = output;
-  document.getElementById('stats').textContent = '✓ ' + output.split('\n').length + ' lines · ' + output.length + ' chars';
+  const input = document.getElementById('input').value.trim();
+  // parse: count format (e.g. "5 paragraphs", "100 words", "500 bytes")
+  let count = parseInt(input) || 3;
+  let format = 'paragraphs';
+  if (input.includes('word')) format = 'words';
+  else if (input.includes('sentenc')) format = 'sentences';
+  else if (input.includes('byte')) format = 'bytes';
+  const bytes = format === 'bytes' ? count : 0;
+  try {
+    const text = generateLorem({ count, format, bytes });
+    document.getElementById('output').textContent = text;
+    document.getElementById('stats').textContent = count + ' ' + format + ' generated';
+  } catch(e) {
+    document.getElementById('output').textContent = 'Error: ' + e.message;
+    document.getElementById('stats').textContent = 'Error';
+  }
 }
 
 function clearAll() {
@@ -98,12 +158,18 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function shareTool() { TBUtils.showShareModal('lorem-ipsum', 'Lorem Ipsum'); }
+
 function toggleFaq(el) {
   el.classList.toggle('open');
 }
 
 document.getElementById('input').addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'Enter') transform();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('lorem-ipsum', 'Lorem Ipsum');
 });
 </script>
 </body>
