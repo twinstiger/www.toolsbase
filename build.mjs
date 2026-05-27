@@ -165,6 +165,41 @@ function build() {
     console.log(`  ${relPath}`);
   }
 
+  // Generate ads.txt
+  fs.writeFileSync(path.join(DIST, 'ads.txt'), 'google.com, pub-9420599375364457, DIRECT, f08c47fec0942fa0\n');
+  console.log('  ads.txt');
+
+  // Generate sitemap.xml
+  const siteUrl = 'https://toolsbase.net';
+  const urls = ['index.html', 'about.html', 'contact.html', 'terms.html', 'privacy-policy.html'];
+  const toolPages = [
+    'tools/network/my-ip.html', 'tools/network/url-parser.html', 'tools/network/url-shortener.html',
+    'tools/network/subnet.html', 'tools/network/ip-to-int.html', 'tools/network/dns-lookup.html',
+    'tools/network/user-agent.html', 'tools/dev/json-formatter.html', 'tools/dev/base64-encoder.html',
+    'tools/dev/hash-generator.html', 'tools/dev/regex-tester.html', 'tools/dev/sql-formatter.html',
+    'tools/dev/url-encoder.html', 'tools/dev/html-minifier.html', 'tools/dev/css-minifier.html',
+    'tools/dev/js-minifier.html', 'tools/dev/json-to-yaml.html', 'tools/dev/yaml-validator.html',
+    'tools/dev/xml-formatter.html', 'tools/generators/password-generator.html', 'tools/generators/uuid-generator.html',
+    'tools/generators/lorem-ipsum.html', 'tools/generators/slug-generator.html', 'tools/generators/random-string.html',
+    'tools/generators/fake-json.html', 'tools/converters/timestamp-converter.html', 'tools/converters/number-base.html',
+    'tools/converters/color-converter.html', 'tools/converters/unit-converter.html', 'tools/image/qr-code-generator.html',
+    'tools/image/favicon-generator.html', 'tools/image/image-to-base64.html', 'tools/crypto/aes-encrypt.html',
+    'tools/crypto/bcrypt.html', 'tools/crypto/htpasswd.html', 'tools/crypto/morse.html', 'tools/crypto/base32.html',
+    'tools/text/case-converter.html', 'tools/text/diff-checker.html', 'tools/text/markdown-preview.html',
+    'tools/text/text-diff.html', 'tools/text/word-counter.html', 'tools/index.html'
+  ];
+  const blogPages = fs.readdirSync(path.join(ROOT, 'blog'))
+    .filter(f => f.endsWith('.html'))
+    .map(f => 'blog/' + f);
+
+  let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  const allPages = [...urls, ...toolPages, ...blogPages].forEach(page => {
+    sitemap += '  <url><loc>' + siteUrl + '/' + page + '</loc></url>\n';
+  });
+  sitemap += '</urlset>';
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemap);
+  console.log('  sitemap.xml');
+
   console.log(`\nDone! Built ${htmlFiles.length} files to dist/`);
 }
 
