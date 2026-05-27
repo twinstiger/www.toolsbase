@@ -90,6 +90,7 @@ input, textarea, select { font-family: inherit; }
   background: #ffffff;
   display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
   animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  position: relative; z-index: 9999;
 }
 @media (max-width: 768px) {
   .hero { grid-template-columns: 1fr; padding: 3.5rem 1.5rem 3rem; gap: 2.5rem; }
@@ -111,7 +112,8 @@ input, textarea, select { font-family: inherit; }
 
 .hero-sub { font-size: 1rem; color: #6B7280; line-height: 1.75; margin-bottom: 2rem; max-width: 400px; }
 
-.hero-search { position: relative; margin-bottom: 0; }
+.hero-search { position: relative; margin-bottom: 0; z-index: 9999; }
+.hero-left { position: relative; z-index: 9999; }
 .hero-search-input {
   width: 100%; padding: 0.8rem 1rem 0.8rem 2.75rem;
   font-size: 0.9rem; background: #fff; border: 1.5px solid #D1D5DB;
@@ -121,7 +123,7 @@ input, textarea, select { font-family: inherit; }
 .hero-search-input:focus { border-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.08); }
 .hero-search-input::placeholder { color: #9CA3AF; }
 .hero-search-icon { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #9CA3AF; pointer-events: none; }
-.search-dropdown { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1.5px solid #D1D5DB; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); z-index: 200; max-height: 320px; overflow-y: auto; }
+.search-dropdown { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1.5px solid #D1D5DB; border-radius: 6px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); z-index: 9999; max-height: 320px; overflow-y: auto; }
 .search-dropdown.show { display: block; }
 .search-dropdown-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; transition: background 120ms ease; }
 .search-dropdown-item:hover { background: #F3F4F6; }
@@ -167,7 +169,7 @@ input, textarea, select { font-family: inherit; }
 
 /* === PRIVACY STRIP === */
 /* === TOOLS HOME === */
-.tools-home { padding: 0 0 5rem; }
+.tools-home { padding: 0 0 1rem; }
 .tools-home .container { display: flex; flex-direction: column; gap: 0; }
 .tools-home > .container > .category-section:first-child { border-top: 1px solid #E5E7EB; }
 
