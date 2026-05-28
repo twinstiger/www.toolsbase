@@ -82,15 +82,12 @@ function processFile(filePath, outPath) {
   // Add utils.js script before </body> (after footer scripts so TBUtils is available)
   html = html.replace('</body>', '<script src="' + prefix + 'src/utils.js"></script>\n</body>');
 
-  // Fix asset paths: use absolute paths from domain root to avoid Cloudflare URL-rewriting issues
-  // (Cloudflare strips .html from URLs, breaking relative path resolution)
-  html = html.replace(/href="(\/|\.\.\/)*src\//g, 'href="/src/');
-  html = html.replace(/src="(\/|\.\.\/)*src\//g, 'src="/src/');
-  html = html.replace(/src="\//g, `src="/`);
-
-  // Also fix any ../ prefix on absolute-looking paths
-  html = html.replace(/href="\.\.\//g, 'href="/');
-  html = html.replace(/src="\.\.\//g, 'src="/');
+    html = html.replace(/href="\.+\/src\//g, 'href="/src/');
+    html = html.replace(/src="\.+\/src\//g, 'src="/src/');
+    html = html.replace(/href="\.\/src\//g, 'href="/src/');
+    html = html.replace(/src="\.\/src\//g, 'src="/src/');
+    html = html.replace(/href="\/src\//g, 'href="/src/');
+    html = html.replace(/src="\/src\//g, 'src="/src/');
 
   // Always add tokens.css for dark mode support (must come before styles.css)
   if (!html.includes('tokens.css')) {
