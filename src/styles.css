@@ -548,15 +548,28 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
 /* Share icon button */
 .share-icon-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px; border-radius: 6px;
+  width: 34px; height: 34px; border-radius: 8px;
   font-size: 1rem; line-height: 1;
-  background: transparent; border: 1.5px solid var(--color-border);
+  background: var(--color-bg); border: 1.5px solid var(--color-border);
   color: var(--color-text-muted); cursor: pointer;
   transition: all 150ms ease;
 }
-.share-icon-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
-[data-theme="dark"] .share-icon-btn { border-color: var(--color-border); color: var(--color-text-muted); }
-[data-theme="dark"] .share-icon-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.share-icon-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  transform: scale(1.05);
+}
+[data-theme="dark"] .share-icon-btn {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+[data-theme="dark"] .share-icon-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #0d1117;
+}
 
 [data-theme="dark"] .btn--secondary { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text); }
 .btn--share {
