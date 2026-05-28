@@ -2,14 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "main",
   "compatibility_date": "2026-05-26",
-  "observability": {
-    "enabled": true
-  },
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": ".",
-    "exclude": ["node_modules/**"]
-  },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ]
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
 }
