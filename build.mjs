@@ -15,13 +15,11 @@ const footerHTML = fs.readFileSync(path.join(COMPONENTS, 'footer.html'), 'utf-8'
 // Get relative depth from root
 function getDepth(filePath) {
   const rel = path.relative(ROOT, filePath);
-  const parts = rel.split(path.sep);
-  // depth is number of directories before the filename
-  // e.g., index.html -> 0, tools/index.html -> 1, tools/dev/file.html -> 2
-  if (parts.includes('index.html')) {
-    return parts.slice(0, parts.indexOf('index.html')).filter(p => p && p !== '').length - 1;
-  }
-  return parts.filter(p => p && p !== '').length - 1;
+  // Count directory parts before the filename
+  // e.g. index.html -> 0, tools/index.html -> 1, tools/dev/index.html -> 2, tools/dev/json-formatter.html -> 2
+  const parts = rel.split(path.sep).filter(p => p && p !== '');
+  // Last part is the filename, rest are directories
+  return Math.max(0, parts.length - 1);
 }
 
 // Generate relative path prefix
