@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortgage Calculator — ToolsBase</title>
+  <meta name="description" content="Calculate monthly mortgage payments including principal, interest, taxes and insurance.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo"><div class="logo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg></div><span class="logo-name">ToolsBase</span></a>
+    <div class="header-right"><nav class="nav"><div class="recent-dropdown" id="recentDropdown"><button class="recent-btn" id="recentBtn" aria-label="Recently used"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="recent-label">Recent</span></button><div class="recent-menu" id="recentMenu"><div class="recent-menu-header">Recently Used</div><div class="recent-menu-list" id="recentMenuList"></div></div></div><a href="/tools/index.html" class="nav-btn">Tools</a><a href="/blog/index.html" class="nav-btn">Blog</a><a href="/about.html" class="nav-btn">About</a></nav><button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div><button class="mobile-menu-btn" aria-label="Menu"><span class="hamburger"><span></span><span></span></span></button>
+  </div>
+</header>
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Mortgage Calculator</span></div>
+    <div class="tool-page-header">
+      <div class="tool-title-row"><h1 class="tool-page-title">🏠 Mortgage Calculator</h1><button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button></div>
+      <p class="lead-text">Calculate monthly mortgage payments including principal and interest.</p>
+    </div>
+
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Home Price</div>
+        <div style="position:relative;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">$</span>
+          <input type="number" id="price" class="tool-input" style="padding-left:30px;" placeholder="300,000" min="0">
+        </div>
+
+        <div class="tool-panel-label" style="margin-top:1rem;">Down Payment</div>
+        <div style="position:relative;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">$</span>
+          <input type="number" id="down" class="tool-input" style="padding-left:30px;" placeholder="60,000" min="0">
+        </div>
+        <div style="margin-top:0.25rem;color:var(--color-text-muted);font-size:0.85rem;"><span id="down-percent">20</span>% of home price</div>
+
+        <div class="tool-panel-label" style="margin-top:1rem;">Loan Term</div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+          <button class="btn btn--secondary term-btn" data-years="15">15 yr</button>
+          <button class="btn btn--secondary term-btn active" data-years="30">30 yr</button>
+        </div>
+
+        <div class="tool-panel-label">Interest Rate</div>
+        <div style="position:relative;">
+          <input type="number" id="rate" class="tool-input" style="padding-right:30px;" placeholder="6.5" min="0" max="30" step="0.1">
+          <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">%</span>
+        </div>
+      </div>
+
+      <div class="tool-panel">
+        <div class="tool-panel-label">Monthly Payment</div>
+        <div style="background:var(--color-bg);border-radius:12px;padding:1.5rem;text-align:center;">
+          <div style="font-size:3rem;font-weight:700;color:var(--color-primary);">$<span id="monthly">0</span></div>
+          <div style="color:var(--color-text-muted);font-size:0.85rem;">per month</div>
+        </div>
+
+        <div style="margin-top:1rem;background:var(--color-surface);border-radius:12px;padding:1rem;border:1px solid var(--color-border);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+            <span style="color:var(--color-text-muted);">Loan Amount</span>
+            <span id="loan-amount" style="font-weight:600;">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+            <span style="color:var(--color-text-muted);">Total Interest</span>
+            <span id="total-interest" style="font-weight:600;">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="color:var(--color-text-muted);">Total Cost</span>
+            <span id="total-cost" style="font-weight:600;">$0</span>
+          </div>
+        </div>
+        <div class="tool-actions"><button class="btn btn--primary" onclick="copyResult()">📋 Copy Details</button></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a href="/" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span class="logo-name">ToolsBase</span></a><p>Free browser-based tools. No data collected, no sign-up required.</p><span class="footer-copy">&copy; 2026 ToolsBase.net &middot; <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span></div><div class="footer-links"><div class="footer-col"><h3 class="footer-col-title">Company</h3><ul><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li><li><a href="/privacy-policy.html">Privacy</a></li><li><a href="/terms.html">Terms</a></li></ul></div></div></div></footer>
+<div id="toast" class="toast">Copied!</div>
+<script src="/src/utils.js"></script>
+<script>
+let loanTerm = 30;
+
+function calculate() {
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  const down = parseFloat(document.getElementById('down').value) || 0;
+  const rate = parseFloat(document.getElementById('rate').value) || 0;
+  const principal = price - down;
+  const downPct = price > 0 ? (down / price * 100) : 0;
+  document.getElementById('down-percent').textContent = downPct.toFixed(0);
+
+  let monthly = 0, totalInterest = 0;
+  if (principal > 0 && rate > 0 && loanTerm > 0) {
+    const monthlyRate = rate / 100 / 12;
+    const numPayments = loanTerm * 12;
+    monthly = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+    totalInterest = monthly * numPayments - principal;
+  }
+
+  document.getElementById('monthly').textContent = monthly > 0 ? monthly.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
+  document.getElementById('loan-amount').textContent = '$' + principal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  document.getElementById('total-interest').textContent = '$' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  document.getElementById('total-cost').textContent = '$' + (principal + totalInterest).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function copyResult() {
+  const text = `Monthly: $${document.getElementById('monthly').textContent}, Loan: ${document.getElementById('loan-amount').textContent}, Total Interest: ${document.getElementById('total-interest').textContent}`;
+  TBUtils.copyToClipboard(text, () => TBUtils.showToast('Copied!'));
+}
+
+function shareTool() { TBUtils.showShareModal('mortgage-calculator', 'Mortgage Calculator'); }
+
+document.getElementById('price').addEventListener('input', calculate);
+document.getElementById('down').addEventListener('input', calculate);
+document.getElementById('rate').addEventListener('input', calculate);
+
+document.querySelectorAll('.term-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.term-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loanTerm = parseInt(btn.dataset.years);
+    calculate();
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('mortgage-calculator', 'Mortgage Calculator');
+  calculate();
+});
+</script>
+</body>
+</html>

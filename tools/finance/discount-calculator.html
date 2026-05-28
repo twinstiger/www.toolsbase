@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discount Calculator — ToolsBase</title>
+  <meta name="description" content="Calculate the sale price after discount and see how much you save.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo"><div class="logo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg></div><span class="logo-name">ToolsBase</span></a>
+    <div class="header-right"><nav class="nav"><div class="recent-dropdown" id="recentDropdown"><button class="recent-btn" id="recentBtn" aria-label="Recently used"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="recent-label">Recent</span></button><div class="recent-menu" id="recentMenu"><div class="recent-menu-header">Recently Used</div><div class="recent-menu-list" id="recentMenuList"></div></div></div><a href="/tools/index.html" class="nav-btn">Tools</a><a href="/blog/index.html" class="nav-btn">Blog</a><a href="/about.html" class="nav-btn">About</a></nav><button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div><button class="mobile-menu-btn" aria-label="Menu"><span class="hamburger"><span></span><span></span></span></button>
+  </div>
+</header>
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs"><a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Discount Calculator</span></div>
+    <div class="tool-page-header">
+      <div class="tool-title-row"><h1 class="tool-page-title">🏷️ Discount Calculator</h1><button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button></div>
+      <p class="lead-text">Calculate sale price and savings. Find the best deal when shopping.</p>
+    </div>
+
+    <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
+      <div class="tool-panel">
+        <div class="tool-panel-label">Original Price</div>
+        <div style="position:relative;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">$</span>
+          <input type="number" id="original" class="tool-input" style="padding-left:30px;" placeholder="99.99" min="0" step="0.01">
+        </div>
+
+        <div class="tool-panel-label" style="margin-top:1rem;">Discount Percentage</div>
+        <input type="range" id="discount-slider" min="0" max="90" value="20" style="width:100%;margin-bottom:0.5rem;">
+        <div style="text-align:center;">
+          <span style="font-size:2rem;font-weight:700;color:var(--color-primary);"><span id="discount-display">20</span>%</span>
+        </div>
+
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem;">
+          <button class="btn btn--secondary discount-preset" data-pct="10">10%</button>
+          <button class="btn btn--secondary discount-preset" data-pct="15">15%</button>
+          <button class="btn btn--secondary discount-preset active" data-pct="20">20%</button>
+          <button class="btn btn--secondary discount-preset" data-pct="25">25%</button>
+          <button class="btn btn--secondary discount-preset" data-pct="30">30%</button>
+          <button class="btn btn--secondary discount-preset" data-pct="50">50%</button>
+        </div>
+      </div>
+
+      <div class="tool-panel">
+        <div class="tool-panel-label">Results</div>
+        <div style="background:var(--color-bg);border-radius:12px;padding:1.5rem;text-align:center;">
+          <div style="margin-bottom:1rem;">
+            <div style="color:var(--color-text-muted);font-size:0.85rem;">You Save</div>
+            <div style="font-size:1.75rem;font-weight:700;color:#10b981;">$<span id="savings">0.00</span></div>
+          </div>
+          <div style="margin-bottom:1rem;">
+            <div style="color:var(--color-text-muted);font-size:0.85rem;">Final Price</div>
+            <div style="font-size:2.5rem;font-weight:700;text-decoration:line-through;color:var(--color-text-muted);">$<span id="original-display">0.00</span></div>
+          </div>
+          <div style="background:var(--color-primary);color:#fff;border-radius:12px;padding:1rem;">
+            <div style="font-size:1rem;font-weight:600;">Pay Only</div>
+            <div style="font-size:2.5rem;font-weight:700;">$<span id="final-price">0.00</span></div>
+          </div>
+        </div>
+        <div class="tool-actions"><button class="btn btn--primary" onclick="copyResult()">📋 Copy Result</button></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a href="/" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span class="logo-name">ToolsBase</span></a><p>Free browser-based tools. No data collected, no sign-up required.</p><span class="footer-copy">&copy; 2026 ToolsBase.net &middot; <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span></div><div class="footer-links"><div class="footer-col"><h3 class="footer-col-title">Company</h3><ul><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li><li><a href="/privacy-policy.html">Privacy</a></li><li><a href="/terms.html">Terms</a></li></ul></div></div></div></footer>
+<div id="toast" class="toast">Copied!</div>
+<script src="/src/utils.js"></script>
+<script>
+function calculate() {
+  const original = parseFloat(document.getElementById('original').value) || 0;
+  const discount = parseInt(document.getElementById('discount-slider').value);
+  const savings = original * discount / 100;
+  const final = original - savings;
+
+  document.getElementById('discount-display').textContent = discount;
+  document.getElementById('savings').textContent = savings.toFixed(2);
+  document.getElementById('original-display').textContent = original.toFixed(2);
+  document.getElementById('final-price').textContent = final.toFixed(2);
+}
+
+function copyResult() {
+  const text = `Original: $${document.getElementById('original-display').textContent}, Discount: ${document.getElementById('discount-display').textContent}%, Save: $${document.getElementById('savings').textContent}, Pay: $${document.getElementById('final-price').textContent}`;
+  TBUtils.copyToClipboard(text, () => TBUtils.showToast('Copied!'));
+}
+
+function shareTool() { TBUtils.showShareModal('discount-calculator', 'Discount Calculator'); }
+
+document.getElementById('original').addEventListener('input', calculate);
+document.getElementById('discount-slider').addEventListener('input', calculate);
+
+document.querySelectorAll('.discount-preset').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.discount-preset').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('discount-slider').value = btn.dataset.pct;
+    calculate();
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  TBUtils.addToHistory('discount-calculator', 'Discount Calculator');
+  calculate();
+});
+</script>
+</body>
+</html>

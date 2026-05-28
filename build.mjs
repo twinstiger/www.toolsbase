@@ -185,7 +185,9 @@ function build() {
     'tools/image/favicon-generator.html', 'tools/image/image-to-base64.html', 'tools/crypto/aes-encrypt.html',
     'tools/crypto/bcrypt.html', 'tools/crypto/htpasswd.html', 'tools/crypto/morse.html', 'tools/crypto/base32.html',
     'tools/text/case-converter.html', 'tools/text/diff-checker.html', 'tools/text/markdown-preview.html',
-    'tools/text/text-diff.html', 'tools/text/word-counter.html', 'tools/index.html'
+    'tools/text/text-diff.html', 'tools/text/word-counter.html', 'tools/finance/tip-calculator.html',
+    'tools/finance/mortgage-calculator.html', 'tools/finance/compound-interest.html', 'tools/finance/discount-calculator.html',
+    'tools/index.html'
   ];
   const blogPages = fs.readdirSync(path.join(ROOT, 'blog'))
     .filter(f => f.endsWith('.html'))
