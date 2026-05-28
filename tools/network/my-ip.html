@@ -18,7 +18,7 @@
     </div>
     <div class="tool-page-header">
       <div class="tool-title-row">
-        <h1 class="tool-page-title">🌐 My IP Address</h1>
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>My IP Address</span></h1>
         <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
       </div>
       <p class="lead-text">Instantly reveal your public IP address. Shows both IPv4 and IPv6 if available.</p>
@@ -32,7 +32,7 @@
             <p style="color:var(--color-text-muted);">Click the button below to look up your public IP</p>
           </div>
         </div>
-        <button class="btn btn--primary" onclick="fetchIPInfo()" style="font-size:1rem;padding:0.875rem 2.5rem;">🔍 Get My IP</button>
+        <button class="btn btn--primary" onclick="fetchIPInfo()" style="font-size:1rem;padding:0.875rem 2.5rem;"> Get My IP</button>
       </div>
     </div>
 
@@ -88,7 +88,7 @@ async function fetchIPInfo() {
           <div class="ip-row">
             <div class="ip-label">IPv4</div>
             <div class="ip-value">${escapeHtml(ipv4)}</div>
-            <button class="ip-copy-btn" onclick="copyIP('${ipv4}')">📋 Copy</button>
+            <button class="ip-copy-btn" onclick="copyIP('${ipv4}')"> Copy</button>
           </div>`;
       }
 
@@ -97,7 +97,7 @@ async function fetchIPInfo() {
           <div class="ip-row">
             <div class="ip-label">IPv6</div>
             <div class="ip-value ip-value-v6">${escapeHtml(ipv6)}</div>
-            <button class="ip-copy-btn" onclick="copyIP('${ipv6}')">📋 Copy</button>
+            <button class="ip-copy-btn" onclick="copyIP('${ipv6}')"> Copy</button>
           </div>`;
       }
 

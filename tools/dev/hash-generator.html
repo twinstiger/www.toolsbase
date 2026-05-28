@@ -18,7 +18,7 @@
     </div>
     <div class="tool-page-header">
       <div class="tool-title-row">
-        <h1 class="tool-page-title">🔧 Hash Generator</h1>
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg><span>Hash Generator</span></h1>
         <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
       </div>
       <p class="lead-text">Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input.</p></div>
@@ -28,7 +28,7 @@
         <div class="tool-panel-label">Input</div>
         <textarea id="input" class="tool-input" placeholder="Enter text to hash..."></textarea>
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="generateAllHashes()">⚡ Generate All Hashes</button>
+          <button class="btn btn--primary" onclick="generateAllHashes()"> Generate All Hashes</button>
           <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
         </div>
       </div>
@@ -36,7 +36,7 @@
         <div class="tool-panel-label">Output</div>
         <div id="output" class="tool-output" placeholder="Hashes will appear here..."></div>
         <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()">📋 Copy</button>
+          <button class="copy-btn" onclick="copyOutput()"> Copy</button>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@ async function generateAllHashes() {
 
   let html = '<div class="hash-results">';
   results.forEach(r => {
-    html += '<div class="hash-result"><label>' + r.algo + '</label><code>' + r.hash + '</code><button class="copy-btn" onclick="copyHash(\'' + r.hash + '\')">📋</button></div>';
+    html += '<div class="hash-result"><label>' + r.algo + '</label><code>' + r.hash + '</code><button class="copy-btn" onclick="copyHash(\'' + r.hash + '\')"></button></div>';
   });
   html += '</div>';
   document.getElementById('output').innerHTML = html;

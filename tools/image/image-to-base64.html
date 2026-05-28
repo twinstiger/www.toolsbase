@@ -18,7 +18,7 @@
     </div>
     <div class="tool-page-header">
       <div class="tool-title-row">
-        <h1 class="tool-page-title">🖼️ Image to Base64</h1>
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Image to Base64</span></h1>
         <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
       </div>
       <p class="lead-text">Convert images to Base64 data URIs for embedding directly in HTML or CSS.</p>
@@ -39,7 +39,7 @@
         <div class="tool-panel-label" style="margin-top:1rem;">Or paste image URL</div>
         <input type="text" id="url-input" class="tool-input" placeholder="https://example.com/image.png">
         <div class="tool-actions">
-          <button class="btn btn--primary" onclick="loadFromURL()">🔗 Load from URL</button>
+          <button class="btn btn--primary" onclick="loadFromURL()"> Load from URL</button>
         </div>
       </div>
       <div class="tool-panel">
@@ -50,7 +50,7 @@
         <div class="tool-panel-label" style="margin-top:1rem;">Base64 Output</div>
         <div id="base64-output" class="tool-output" style="font-family:monospace;font-size:0.75rem;word-break:break-all;max-height:150px;overflow:auto;background:var(--color-surface);" placeholder="Base64 will appear here..."></div>
         <div class="tool-actions" style="margin-top:0.75rem;">
-          <button class="btn btn--secondary" onclick="copyBase64()">📋 Copy Base64</button>
+          <button class="btn btn--secondary" onclick="copyBase64()"> Copy Base64</button>
           <button class="btn btn--secondary" onclick="downloadBase64()">⬇ Download as TXT</button>
         </div>
       </div>

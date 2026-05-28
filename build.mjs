@@ -80,7 +80,9 @@ function processFile(filePath, outPath) {
   html = html.replace('<!-- FOOTER -->', footerHTML);
 
   // Add utils.js script before </body> (after footer scripts so TBUtils is available)
-  html = html.replace('</body>', '<script src="' + prefix + 'src/utils.js"></script>\n</body>');
+  if (!html.includes('src/utils.js')) {
+    html = html.replace('</body>', '<script src="' + prefix + 'src/utils.js"></script>\n</body>');
+  }
 
     html = html.replace(/href="\.+\/src\//g, 'href="/src/');
     html = html.replace(/src="\.+\/src\//g, 'src="/src/');
@@ -167,6 +169,11 @@ function build() {
   // Generate ads.txt
   fs.writeFileSync(path.join(DIST, 'ads.txt'), 'google.com, pub-9420599375364457, DIRECT, f08c47fec0942fa0\n');
   console.log('  ads.txt');
+
+  // Generate robots.txt
+  const robotsTxt = 'User-agent: *\nAllow: /\n\nSitemap: https://toolsbase.net/sitemap.xml\n';
+  fs.writeFileSync(path.join(DIST, 'robots.txt'), robotsTxt);
+  console.log('  robots.txt');
 
   // Generate sitemap.xml
   const siteUrl = 'https://toolsbase.net';
