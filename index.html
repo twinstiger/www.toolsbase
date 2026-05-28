@@ -334,8 +334,9 @@ if (s && d) {
 
   // Render history
   var history = JSON.parse(localStorage.getItem('tb_history') || '[]');
-  if (history.length > 0) {
-    var histList = document.getElementById('historyList');
+  var histList = document.getElementById('historyList');
+  var histSection = document.getElementById('historySection');
+  if (history.length > 0 && histList) {
     histList.innerHTML = history.slice(0, 5).map(function(h) {
       if (!toolDefs[h.id]) return '';
       var t = toolDefs[h.id];
@@ -344,7 +345,7 @@ if (s && d) {
         '<div class="history-item-info"><div class="history-item-title">' + t.name + '</div></div>' +
         '<span class="history-item-time">' + timeAgo(h.time) + '</span></a>';
     }).join('');
-    document.getElementById('historySection').style.display = 'block';
+    if (histSection) histSection.style.display = 'block';
   }
 })();
 </script>

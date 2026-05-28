@@ -29,13 +29,13 @@
         <div class="tool-panel-label">Home Price</div>
         <div style="position:relative;">
           <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">$</span>
-          <input type="number" id="price" class="tool-input" style="padding-left:30px;" placeholder="300,000" min="0">
+          <input type="number" id="price" class="tool-input" style="padding-left:30px;" value="300000" min="0">
         </div>
 
         <div class="tool-panel-label" style="margin-top:1rem;">Down Payment</div>
         <div style="position:relative;">
           <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">$</span>
-          <input type="number" id="down" class="tool-input" style="padding-left:30px;" placeholder="60,000" min="0">
+          <input type="number" id="down" class="tool-input" style="padding-left:30px;" value="60000" min="0">
         </div>
         <div style="margin-top:0.25rem;color:var(--color-text-muted);font-size:0.85rem;"><span id="down-percent">20</span>% of home price</div>
 
@@ -47,7 +47,7 @@
 
         <div class="tool-panel-label">Interest Rate</div>
         <div style="position:relative;">
-          <input type="number" id="rate" class="tool-input" style="padding-right:30px;" placeholder="6.5" min="0" max="30" step="0.1">
+          <input type="number" id="rate" class="tool-input" style="padding-right:30px;" value="6.5" min="0" max="30" step="0.1">
           <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">%</span>
         </div>
       </div>
@@ -82,6 +82,9 @@
 <footer class="footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a href="/" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span class="logo-name">ToolsBase</span></a><p>Free browser-based tools. No data collected, no sign-up required.</p><span class="footer-copy">&copy; 2026 ToolsBase.net &middot; <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span></div><div class="footer-links"><div class="footer-col"><h3 class="footer-col-title">Company</h3><ul><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li><li><a href="/privacy-policy.html">Privacy</a></li><li><a href="/terms.html">Terms</a></li></ul></div></div></div></footer>
 <div id="toast" class="toast">Copied!</div>
 <script src="/src/utils.js"></script>
+<style>
+.tool-input { height: 44px; min-height: 44px; }
+</style>
 <script>
 let loanTerm = 30;
 

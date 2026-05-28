@@ -45,7 +45,7 @@
         <div class="tool-panel-label">Bill Amount</div>
         <div style="position:relative;">
           <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);">$</span>
-          <input type="number" id="bill" class="tool-input" style="padding-left:30px;" placeholder="0.00" min="0" step="0.01">
+          <input type="number" id="bill" class="tool-input" style="padding-left:30px;" value="50" placeholder="0.00" min="0" step="0.01">
         </div>
 
         <div class="tool-panel-label" style="margin-top:1rem;">Tip Percentage</div>
@@ -92,6 +92,9 @@
 <footer class="footer"><div class="container"><div class="footer-top"><div class="footer-brand"><a href="/" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#000"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span class="logo-name">ToolsBase</span></a><p>Free browser-based tools. No data collected, no sign-up required.</p><span class="footer-copy">&copy; 2026 ToolsBase.net &middot; <a href="mailto:shuanghuz1@gmail.com">shuanghuz1@gmail.com</a></span></div><div class="footer-links"><div class="footer-col"><h3 class="footer-col-title">Company</h3><ul><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li><li><a href="/privacy-policy.html">Privacy</a></li><li><a href="/terms.html">Terms</a></li></ul></div></div></div></div></footer>
 <div id="toast" class="toast">Copied!</div>
 <script src="/src/utils.js"></script>
+<style>
+.tool-input { height: 44px; min-height: 44px; }
+</style>
 <script>
 function calculate() {
   const bill = parseFloat(document.getElementById('bill').value) || 0;
