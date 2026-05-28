@@ -91,7 +91,7 @@ function processFile(filePath, outPath) {
 
   // Always add tokens.css for dark mode support (must come before styles.css)
   if (!html.includes('tokens.css')) {
-    html = html.replace('<link rel="stylesheet" href="' + prefix + 'src/styles.css">', '<link rel="stylesheet" href="' + prefix + 'src/tokens.css">\n  <link rel="stylesheet" href="' + prefix + 'src/styles.css">');
+    html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/tokens.css">\n  <link rel="stylesheet" href="/src/styles.css">');
   }
 
   // Add Google Ads script after <head> if not already present
