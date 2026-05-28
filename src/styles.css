@@ -755,6 +755,10 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
   box-shadow: 0 25px 80px rgba(0,0,0,0.25), 0 10px 30px rgba(0,0,0,0.15);
   overflow: hidden;
   animation: shareModalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid transparent;
+  background-image: linear-gradient(var(--color-surface), var(--color-surface)), linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
 }
 .share-modal-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -860,6 +864,9 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
 [data-theme="dark"] .share-url-input { background: var(--color-bg); border-color: var(--color-border); color: var(--color-text); }
 [data-theme="dark"] .share-copy-btn { background: var(--color-text); color: var(--color-bg); }
 [data-theme="dark"] .share-copy-btn:hover { opacity: 0.8; }
+[data-theme="dark"] .share-modal {
+  background-image: linear-gradient(var(--color-surface), var(--color-surface)), linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
 [data-theme="dark"] .fav-btn:hover { color: var(--color-warm); background: var(--color-bg-alt); }
 [data-theme="dark"] .history-item { background: var(--color-surface); }
 [data-theme="dark"] .history-item-title { color: var(--color-text); }
