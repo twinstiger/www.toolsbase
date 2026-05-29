@@ -522,6 +522,23 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
   .footer-bottom { flex-direction: column; text-align: center; }
   .hero-cta { flex-direction: column; }
   .hero-right { display: none; }
+
+  /* Mobile touch improvements */
+  .btn, button, .nav-btn, .category-tab {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .tool-input, input, textarea, select {
+    font-size: 16px !important; /* Prevent iOS zoom on focus */
+  }
+  .faq-question {
+    padding: 1.25rem 1rem;
+    font-size: 0.9375rem;
+  }
+  .share-options-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
 }
 @media (max-width: 480px) {
   .container { padding: 0 1rem; }
