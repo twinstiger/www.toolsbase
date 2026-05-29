@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Status Codes: The Complete Guide for Developers | ToolsBase Blog</title>
+  <meta name="description" content="Complete guide to HTTP status codes. Learn what 404, 500, 301, 429 mean, when to use each code, and how they affect SEO and user experience.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/http-status-codes.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>HTTP Status Codes</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 24, 2026 · 8 min read · 🏷️ Web Fundamentals</div>
+        <h1>HTTP Status Codes: The Complete Guide for Developers</h1>
+        <p class="lead">HTTP status codes are the backbone of web communication. Understanding them helps you debug issues, build better APIs, and improve user experience. Here's everything you need to know.</p>
+
+        <h2>The Five Classes</h2>
+        <p>HTTP responses are grouped into five classes:</p>
+        <ul>
+          <li><strong>1xx</strong> — Informational: Request received, continuing</li>
+          <li><strong>2xx</strong> — Success: Request successfully received and understood</li>
+          <li><strong>3xx</strong> — Redirection: Further action needed</li>
+          <li><strong>4xx</strong> — Client Error: Problem with the request</li>
+          <li><strong>5xx</strong> — Server Error: Server failed to fulfill request</li>
+        </ul>
+
+        <h2>2xx — Success Codes</h2>
+        <h3>200 OK</h3>
+        <p>The most common code. Request succeeded. Response body contains the result.</p>
+        <pre><code>GET /api/users/123 → 200 OK
+{ "id": 123, "name": "Alice" }</code></pre>
+
+        <h3>201 Created</h3>
+        <p>Resource was successfully created. Use for POST requests that create new records.</p>
+        <pre><code>POST /api/users → 201 Created
+Location: /api/users/456</code></pre>
+
+        <h3>204 No Content</h3>
+        <p>Success but no response body. Use for DELETE requests or successful updates where you don't return data.</p>
+        <pre><code>DELETE /api/users/123 → 204 No Content</code></pre>
+
+        <h2>3xx — Redirection Codes</h2>
+        <h3>301 Moved Permanently</h3>
+        <p>Resource has a new permanent URL. Browsers and search engines cache this. Use for SEO when changing URLs.</p>
+        <blockquote>
+          <p><strong>SEO Impact:</strong> 301 passes 90-99% of "link juice" to the new URL. Always use 301 for permanent moves.</p>
+        </blockquote>
+
+        <h3>302 Found (Temporary Redirect)</h3>
+        <p>Temporary redirect. The original URL will be used again in the future. Search engines keep the old URL indexed.</p>
+
+        <h3>304 Not Modified</h3>
+        <p>Response hasn't changed since last request. Used for caching — client uses its cached version.</p>
+        <pre><code># Client sends:
+If-Modified-Since: Mon, 01 Jan 2024 00:00:00 GMT
+# Server checks, finds unchanged:
+GET /api/data → 304 Not Modified</code></pre>
+
+        <h3>307 Temporary Redirect</h3>
+        <p>Like 302 but guarantees the request method won't change. Use when POST data must be preserved.</p>
+
+        <h2>4xx — Client Error Codes</h2>
+        <h3>400 Bad Request</h3>
+        <p>Server can't process the request due to malformed syntax or invalid data. Include error details in response.</p>
+        <pre><code>POST /api/users → 400 Bad Request
+{
+  "error": "validation_error",
+  "message": "Email format is invalid"
+}</code></pre>
+
+        <h3>401 Unauthorized</h3>
+        <p>Authentication is required or has failed. The client must provide valid credentials.</p>
+        <blockquote>
+          <p><strong>Common Mistake:</strong> 401 means "you need to log in." 403 means "you're logged in but don't have permission."</p>
+        </blockquote>
+
+        <h3>403 Forbidden</h3>
+        <p>Client is authenticated but doesn't have permission. The server understands the request but refuses to fulfill it.</p>
+
+        <h3>404 Not Found</h3>
+        <p>The resource doesn't exist. For APIs, distinguish between "doesn't exist" (404) and "endpoint not found" (501).</p>
+        <pre><code>GET /api/users/999 → 404 Not Found
+{
+  "error": "not_found",
+  "message": "User with ID 999 not found"
+}</code></pre>
+
+        <h3>405 Method Not Allowed</h3>
+        <p>HTTP method is not supported for this endpoint. Include Allow header with supported methods.</p>
+        <pre><code>DELETE /api/posts → 405 Method Not Allowed
+Allow: GET, POST</code></pre>
+
+        <h3>409 Conflict</h3>
+        <p>Request conflicts with current state. Use when trying to create a resource that already exists, or conflicting updates.</p>
+        <pre><code>POST /api/users → 409 Conflict
+{
+  "error": "conflict",
+  "message": "Username 'alice' already taken"
+}</code></pre>
+
+        <h3>422 Unprocessable Entity</h3>
+        <p>Request format is correct but content is semantically invalid. Use for validation errors that require business logic checks.</p>
+
+        <h3>429 Too Many Requests</h3>
+        <p>Rate limit exceeded. Include Retry-After header with seconds until next request is allowed.</p>
+        <pre><code>GET /api/data → 429 Too Many Requests
+Retry-After: 60
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0</code></pre>
+
+        <h2>5xx — Server Error Codes</h2>
+        <h3>500 Internal Server Error</h3>
+        <p>Something went wrong on the server side. The generic "catch-all" error. Always log the actual error for debugging.</p>
+        <blockquote>
+          <p><strong>Never expose stack traces to users in production.</strong> Log them server-side, return a generic 500 with a correlation ID.</p>
+        </blockquote>
+
+        <h3>502 Bad Gateway</h3>
+        <p>Gateway or proxy received an invalid response from upstream server. Common in microservices or CDN configurations.</p>
+
+        <h3>503 Service Unavailable</h3>
+        <p>Server is temporarily down (maintenance, overload). Include Retry-After header and consider returning a friendly maintenance page.</p>
+
+        <h3>504 Gateway Timeout</h3>
+        <p>Gateway timed out waiting for upstream server. Similar to 502 but specifically a timeout issue.</p>
+
+        <h2>Best Practices for API Design</h2>
+        <ul>
+          <li>Return appropriate codes — don't return 200 for errors</li>
+          <li>Include error details in response body (not just the code)</li>
+          <li>Use consistent error response format</li>
+          <li>Include correlation IDs for debugging 5xx errors</li>
+          <li>Document all possible response codes for each endpoint</li>
+        </ul>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

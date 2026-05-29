@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Basics: A Practical Guide for Beginners | ToolsBase Blog</title>
+  <meta name="description" content="Learn SQL from scratch. Covers SELECT, INSERT, UPDATE, DELETE, JOINs, and practical examples with realistic data scenarios.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/sql-basics.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>SQL Basics</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 25, 2026 · 9 min read · 🏷️ Database</div>
+        <h1>SQL Basics: A Practical Guide for Beginners</h1>
+        <p class="lead">SQL (Structured Query Language) is essential for working with data. This guide covers the fundamental operations you need to query and manipulate data in any relational database.</p>
+
+        <h2>The SELECT Statement</h2>
+        <p>SELECT retrieves data from one or more tables:</p>
+        <pre><code>-- Get all columns from users
+SELECT * FROM users;
+
+-- Get specific columns
+SELECT id, name, email FROM users;
+
+-- Rename columns in output
+SELECT name AS "User Name", email AS "Email Address" FROM users;</code></pre>
+
+        <h2>Filtering with WHERE</h2>
+        <p>Filter results with conditions:</p>
+        <pre><code>SELECT * FROM users WHERE age >= 18;
+SELECT * FROM products WHERE price > 100 AND category = 'Electronics';
+SELECT * FROM orders WHERE status = 'pending' OR status = 'processing';</code></pre>
+        <p>Common operators:</p>
+        <ul>
+          <li><code>=</code> Equal</li>
+          <li><code>!=</code> or <code><></code> Not equal</li>
+          <li><code>></code>, <code><</code>, <code>>=</code>, <code><=</code> Comparison</li>
+          <li><code>LIKE</code> Pattern matching</li>
+          <li><code>IN</code> Match any value in list</li>
+          <li><code>BETWEEN</code> Range check</li>
+        </ul>
+        <pre><code>-- Pattern matching with LIKE
+SELECT * FROM users WHERE name LIKE 'A%';      -- names starting with A
+SELECT * FROM users WHERE email LIKE '%@gmail.com';
+
+-- IN clause
+SELECT * FROM products WHERE category IN ('Electronics', 'Books', 'Clothing');
+
+-- BETWEEN
+SELECT * FROM orders WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31';</code></pre>
+
+        <h2>Sorting and Limiting</h2>
+        <pre><code>-- Sort by name ascending (default)
+SELECT * FROM users ORDER BY name;
+
+-- Sort by age descending
+SELECT * FROM users ORDER BY age DESC;
+
+-- Multiple columns
+SELECT * FROM products ORDER BY category, price DESC;
+
+-- Limit results
+SELECT * FROM products ORDER BY price ASC LIMIT 10;  -- 10 cheapest</code></pre>
+
+        <h2>Aggregation with GROUP BY</h2>
+        <p>Aggregate functions calculate summary statistics:</p>
+        <pre><code>-- Count users by city
+SELECT city, COUNT(*) as user_count
+FROM users
+GROUP BY city;
+
+-- Average order value by customer
+SELECT customer_id, AVG(total) as avg_order_value
+FROM orders
+GROUP BY customer_id;</code></pre>
+        <p>Common aggregate functions:</p>
+        <ul>
+          <li><code>COUNT()</code> — Count rows</li>
+          <li><code>SUM()</code> — Add values</li>
+          <li><code>AVG()</code> — Average value</li>
+          <li><code>MIN()</code> — Minimum value</li>
+          <li><code>MAX()</code> — Maximum value</li>
+        </ul>
+        <p>Filter aggregated results with HAVING (WHERE doesn't work with aggregates):</p>
+        <pre><code>SELECT city, COUNT(*) as count
+FROM users
+GROUP BY city
+HAVING count > 100;  -- only cities with over 100 users</code></pre>
+
+        <h2>Joins: Combining Tables</h2>
+        <h3>INNER JOIN</h3>
+        <p>Returns only rows with matches in both tables:</p>
+        <pre><code>SELECT orders.id, users.name, orders.total
+FROM orders
+INNER JOIN users ON orders.user_id = users.id;</code></pre>
+
+        <h3>LEFT JOIN</h3>
+        <p>Returns all rows from the left table, matching rows from right (or NULL if no match):</p>
+        <pre><code>SELECT users.name, orders.total
+FROM users
+LEFT JOIN orders ON users.id = orders.user_id;
+-- Shows all users, even those with no orders (orders.total = NULL)</code></pre>
+
+        <h3>Multiple Joins</h3>
+        <pre><code>SELECT o.id, u.name, p.title as product_name, oi.quantity
+FROM orders o
+INNER JOIN users u ON o.user_id = u.id
+INNER JOIN order_items oi ON o.id = oi.order_id
+INNER JOIN products p ON oi.product_id = p.id;</code></pre>
+
+        <h2>Inserting, Updating, Deleting</h2>
+        <h3>INSERT</h3>
+        <pre><code>-- Insert single row
+INSERT INTO users (name, email, age) VALUES ('Alice', 'alice@example.com', 25);
+
+-- Insert multiple rows
+INSERT INTO users (name, email) VALUES
+  ('Bob', 'bob@example.com'),
+  ('Charlie', 'charlie@example.com');</code></pre>
+
+        <h3>UPDATE</h3>
+        <pre><code>-- Update single row
+UPDATE users SET email = 'newemail@example.com' WHERE id = 1;
+
+-- Update multiple columns
+UPDATE users SET age = 26, city = 'New York' WHERE id = 1;
+
+-- Update based on condition
+UPDATE orders SET status = 'cancelled' WHERE created_at < '2023-01-01';</code></pre>
+
+        <h3>DELETE</h3>
+        <pre><code>-- Delete specific rows
+DELETE FROM users WHERE id = 1;
+
+-- Delete all rows (careful!)
+DELETE FROM users;</code></pre>
+        <blockquote>
+          <p><strong>Always include WHERE in UPDATE and DELETE statements.</strong> Missing it affects ALL rows.</p>
+        </blockquote>
+
+        <h2>Practical Examples</h2>
+        <h3>Find top 5 customers by total spending</h3>
+        <pre><code>SELECT u.name, SUM(o.total) as total_spent
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id
+GROUP BY u.id, u.name
+ORDER BY total_spent DESC
+LIMIT 5;</code></pre>
+
+        <h3>Find orders with their item count</h3>
+        <pre><code>SELECT o.id, o.created_at, COUNT(oi.id) as item_count
+FROM orders o
+LEFT JOIN order_items oi ON o.id = oi.order_id
+GROUP BY o.id, o.created_at;</code></pre>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

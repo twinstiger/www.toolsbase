@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Quality Best Practices for Teams | ToolsBase Blog</title>
+  <meta name="description" content="Write better code with these professional practices. Learn about naming conventions, documentation, refactoring, code reviews, and maintaining clean codebase.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/code-quality.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>Code Quality</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 30, 2026 · 8 min read · 🏷️ Best Practices</div>
+        <h1>Code Quality Best Practices for Teams</h1>
+        <p class="lead">Good code is not just about functionality — it's about readability, maintainability, and collaboration. These practices help teams write code that stands the test of time.</p>
+
+        <h2>Naming Conventions</h2>
+        <p>Names should be self-documenting. If you need a comment to explain what a variable is, rename it:</p>
+        <pre><code>// Bad
+const x = users.filter(u => u.s === 'active');
+const d = new Date();
+const tmp = processData(data);
+
+// Good
+const activeUsers = users.filter(user => user.status === 'active');
+const currentTimestamp = new Date();
+const processedData = processData(rawData);</code></pre>
+        <p><strong>Variable names:</strong> nouns, descriptive (<code>userData</code>, <code>totalAmount</code>)</p>
+        <p><strong>Function names:</strong> verbs or verb phrases (<code>fetchUser</code>, <code>calculateTotal</code>, <code>isValidEmail</code>)</p>
+        <p><strong>Constants:</strong> ALL_CAPS with underscores (<code>MAX_RETRY_COUNT</code>, <code>DEFAULT_TIMEOUT</code>)</p>
+
+        <h2>Functions: Do One Thing</h2>
+        <p>Each function should do one thing well. A good test: if you need "and" to describe what it does, split it:</p>
+        <pre><code>// Bad: Does multiple things
+function processUser(user) {
+  validateUser(user);  // validation
+  saveToDatabase(user);  // persistence
+  sendWelcomeEmail(user);  // side effect
+  return user;
+}
+
+// Good: Single responsibility
+function validateUser(user) { ... }
+function saveUser(user) { ... }
+function notifyUser(user, type) { ... }
+
+function registerUser(user) {
+  validateUser(user);
+  const savedUser = saveUser(user);
+  notifyUser(savedUser, 'welcome');
+  return savedUser;
+}</code></pre>
+
+        <h2>Keep Functions Small</h2>
+        <p>Ideal: less than 20 lines. Good: less than 50 lines. If a function exceeds 100 lines, strongly consider splitting it.</p>
+        <pre><code>// Bad: Function doing too much
+async function handleOrder(order) {
+  // 200+ lines of validation, calculation, persistence, notification...
+}
+
+// Good: Composed of smaller functions
+async function handleOrder(order) {
+  const validated = validateOrder(order);
+  const calculated = calculatePricing(validated);
+  const saved = await persistOrder(calculated);
+  await notifyCustomer(saved);
+  return saved;
+}</code></pre>
+
+        <h2>Avoid Magic Numbers</h2>
+        <pre><code>// Bad: What do these numbers mean?
+if (user.age > 18 && retryCount < 3 && timeout > 5000) {
+  processPayment(amount * 0.95);
+}
+
+// Good: Named constants explain the intent
+const MINIMUM_AGE = 18;
+const MAX_RETRY_COUNT = 3;
+const PAYMENT_TIMEOUT_MS = 5000;
+const LOYALTY_DISCOUNT = 0.05;
+
+if (user.age > MINIMUM_AGE && retryCount < MAX_RETRY_COUNT && timeout > PAYMENT_TIMEOUT_MS) {
+  processPayment(amount * (1 - LOYALTY_DISCOUNT));
+}</code></pre>
+
+        <h2>Early Returns (Guard Clauses)</h2>
+        <p>Handle edge cases and invalid inputs at the start with early returns:</p>
+        <pre><code>// Bad: Nested conditionals
+function processUser(user) {
+  if (user) {
+    if (user.email) {
+      if (user.isActive) {
+        // main logic here, deeply nested
+      }
+    }
+  }
+}
+
+// Good: Early returns for edge cases
+function processUser(user) {
+  if (!user) return null;
+  if (!user.email) return null;
+  if (!user.isActive) return null;
+
+  // main logic at top level
+  return processActiveUser(user);
+}</code></pre>
+
+        <h2>Error Handling</h2>
+        <p>Handle errors explicitly. Never swallow exceptions silently:</p>
+        <pre><code>// Bad: Silently ignoring errors
+try {
+  await sendEmail(user.email);
+} catch (e) {
+  // Nothing happens, error is lost
+}
+
+// Good: Explicit handling
+try {
+  await sendEmail(user.email);
+} catch (error) {
+  logger.error('Failed to send email', { userId: user.id, error });
+  throw new EmailDeliveryError('Failed to send notification', { cause: error });
+}
+
+// Or handle gracefully
+try {
+  await sendEmail(user.email);
+} catch (error) {
+  logger.warn('Email failed, will retry', { userId: user.id });
+  await queueForRetry(user.id);
+}</code></pre>
+
+        <h2>Comments That Add Value</h2>
+        <p>Good comments explain <em>why</em>, not <em>what</em>. The code shows what, comments explain why:</p>
+        <pre><code>// Bad: Comments that state the obvious
+// Increment counter by 1
+counter++;
+
+// Loop through users
+for (const user of users) { }
+
+// Good: Comments explain non-obvious decisions
+// Using linear search here despite O(n) because:
+// 1. Array is guaranteed to be small (< 20 items)
+// 2. Avoiding the overhead of building a Map
+// 3. Code clarity outweighs micro-optimization
+for (const user of users) {
+  if (user.id === targetId) return user;
+}
+
+// Explaining business rules
+// Per legal requirement: apply 8% tax for orders > $100
+// See: Tax Compliance Doc #2847
+const taxRate = order.total > 100 ? 0.08 : 0;</code></pre>
+
+        <h2>Consistent Code Formatting</h2>
+        <p>Use automated formatting. Debating formatting in code reviews is a waste of time:</p>
+        <pre><code>// Use Prettier for JavaScript/TypeScript
+// .prettierrc
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100
+}
+
+// Use ESLint for code quality rules
+// .eslintrc
+{
+  "extends": ["eslint:recommended"],
+  "rules": {
+    "no-unused-vars": "error",
+    "prefer-const": "error"
+  }
+}</code></pre>
+
+        <h2>Type Safety</h2>
+        <p>Use TypeScript or JSDoc for JavaScript. Types catch bugs at compile time:</p>
+        <pre><code>// Bad: Any type, no safety
+function processOrder(order) {
+  return order.total * order.quantity;  // What if these are undefined?
+}
+
+// Good: Explicit types
+interface OrderLineItem {
+  total: number;
+  quantity: number;
+}
+
+interface Order {
+  items: OrderLineItem[];
+  customerId: string;
+}
+
+function processOrder(order: Order): number {
+  return order.items.reduce((sum, item) => sum + item.total * item.quantity, 0);
+}</code></pre>
+
+        <h2>Writing Testable Code</h2>
+        <p>Testable code is usually better code. Characteristics:</p>
+        <ul>
+          <li><strong>Pure functions</strong>: Same input → Same output, no side effects</li>
+          <li><strong>Dependency injection</strong>: Pass dependencies as parameters</li>
+          <li><strong>Small, focused functions</strong>: Easy to test in isolation</li>
+          <li><strong>Single responsibility</strong>: Clear input/output</li>
+        </ul>
+        <pre><code>// Hard to test: dependencies hardcoded
+function getUser() {
+  const db = new Database();  // Hardcoded
+  return db.query('SELECT * FROM users');
+}
+
+// Easy to test: dependency injection
+function getUser(db: Database) {
+  return db.query('SELECT * FROM users');
+}
+
+// Even better: pass interface
+interface UserRepository {
+  findById(id: string): Promise<User>;
+}
+
+function getUser(repo: UserRepository, id: string) {
+  return repo.findById(id);
+}</code></pre>
+
+        <h2>Code Review Checklist</h2>
+        <p>When reviewing code, check for:</p>
+        <ul>
+          <li>Does the code do what the PR claims?</li>
+          <li>Are edge cases handled?</li>
+          <li>Is error handling appropriate?</li>
+          <li>Are there tests for new logic?</li>
+          <li>Are names descriptive?</li>
+          <li>Is the code simpler than before?</li>
+          <li>Any security concerns?</li>
+          <li>Any performance issues?</li>
+        </ul>
+
+        <h2>The Boy Scout Rule</h2>
+        <p>Leave the code a little better than you found it. Every PR is an opportunity to improve the surrounding code slightly:</p>
+        <ul>
+          <li>Rename a poorly-named variable while changing the function</li>
+          <li>Extract a magic number while adding new logic</li>
+          <li>Add a missing test while fixing a bug</li>
+        </ul>
+        <p>Small improvements compound. The codebase gets better over time, not worse.</p>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debugging JavaScript: Professional Techniques | ToolsBase Blog</title>
+  <meta name="description" content="Master JavaScript debugging with browser DevTools, console tricks, breakpoints, and professional techniques for finding and fixing bugs fast.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/javascript-debugging.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>JS Debugging</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 30, 2026 · 9 min read · 🏷️ JavaScript</div>
+        <h1>Debugging JavaScript: Professional Techniques</h1>
+        <p class="lead">Every developer spends more time debugging than writing new code. This guide covers the techniques and tools that make debugging efficient and even enjoyable.</p>
+
+        <h2>Console Beyond console.log</h2>
+        <p>Most developers know <code>console.log</code>, but there are more powerful methods:</p>
+        <pre><code>// Group related logs
+console.group('User Data');
+console.log('Name:', user.name);
+console.log('Email:', user.email);
+console.groupEnd();
+
+// Styled logging
+console.log('%cStyled Text', 'color: red; font-size: 20px');
+
+// Table for arrays/objects
+console.table(users);
+
+// Trace call stack
+console.trace('Called from:');
+
+// Assert (only logs if condition is false)
+console.assert(user.name, 'User name is missing!');
+
+// Time operations
+console.time('fetchData');
+fetch('/api/data').then(() => console.timeEnd('fetchData'));</code></pre>
+
+        <h2>Browser DevTools: Sources Panel</h2>
+        <p>The Sources panel is where breakpoints live. Key features:</p>
+        <ul>
+          <li>Set breakpoints on lines, conditions, or exceptions</li>
+          <li>Step through code line by line</li>
+          <li>Watch variables and expressions</li>
+          <li>Inspect scope variables</li>
+          <li>Call stack navigation</li>
+        </ul>
+        <p><strong>Opening DevTools:</strong> F12 or Cmd+Option+I (Mac) / Ctrl+Shift+I (Windows)</p>
+
+        <h2>Breakpoint Types</h2>
+        <h3>Line Breakpoints</h3>
+        <p>Click the line number in the Sources panel. Execution stops before that line runs.</p>
+
+        <h3>Conditional Breakpoints</h3>
+        <pre><code>// Right-click line number → "Add conditional breakpoint"
+// Only pauses when condition is true
+user && user.id === 123</code></pre>
+
+        <h3>Logpoints (Chrome)</h3>
+        <pre><code>// Right-click line → "Add logpoint"
+// Logs to console without stopping execution
+console.log('User updated:', user.name)</code></pre>
+
+        <h3>XHR Breakpoints</h3>
+        <p>Break when specific network requests are made. Right-click in Network tab → "Break on → Response"</p>
+
+        <h2>The Debugger Statement</h2>
+        <p>Add <code>debugger;</code> directly in your code:</p>
+        <pre><code>function processUser(userData) {
+  const processed = transformData(userData);
+  debugger;  // Pauses here when DevTools open
+  return saveUser(processed);
+}</code></pre>
+        <p>Useful for specific issues that are hard to reproduce, or for debugging in production (though consider using error tracking services instead).</p>
+
+        <h2>Network Debugging</h2>
+        <p>The Network tab shows all requests. Use it to:</p>
+        <ul>
+          <li>Check request/response payloads</li>
+          <li>Verify headers are sent correctly</li>
+          <li>Measure request timing</li>
+          <li>Find slow requests (Waterfall view)</li>
+        </ul>
+        <pre><code>// Copy as fetch/cURL to replay requests
+// Right-click request → Copy → Copy as Fetch</code></pre>
+
+        <h2>Common Bugs and How to Find Them</h2>
+        <h3>Asynchronous Bugs</h3>
+        <pre><code>// Bug: Closures with loops
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Logs: 3, 3, 3 (var is function-scoped)
+
+// Fix 1: Use let
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Logs: 0, 1, 2
+
+// Fix 2: Closure with IIFE
+for (var i = 0; i < 3; i++) {
+  ((j) => setTimeout(() => console.log(j), 100))(i);
+}</code></pre>
+
+        <h3>Null Reference Errors</h3>
+        <pre><code>// Bug: Not checking for null/undefined
+const name = user.profile.displayName;
+// Fails if user or profile is undefined
+
+// Fix: Optional chaining
+const name = user?.profile?.displayName ?? 'Anonymous';
+
+// Or explicit check
+const name = user && user.profile && user.profile.displayName;</code></pre>
+
+        <h3>Mutation Bugs</h3>
+        <pre><code>// Bug: Mutating shared state
+function addItem(items, newItem) {
+  items.push(newItem);  // Mutates original array!
+  return items;
+}
+
+// Fix: Create new array
+function addItem(items, newItem) {
+  return [...items, newItem];  // Immutable
+}</code></pre>
+
+        <h2>Professional Tips</h2>
+        <h3>1. Binary Search with Comments</h3>
+        <pre><code>// When you don't know where the bug is
+console.log('Checkpoint 1');
+// Part 1 of code
+console.log('Checkpoint 2');
+// Part 2
+console.log('Checkpoint 3');
+// Narrow down until you find it</code></pre>
+
+        <h3>2. Compare with a Working State</h3>
+        <pre><code>// When did it stop working?
+// Git bisect helps find the exact commit
+git bisect start
+git bisect bad  # current is broken
+git bisect good abc123  # this commit worked
+# Git tests commits automatically</code></pre>
+
+        <h3>3. Rubber Duck Debugging</h3>
+        <p>Explain your code line-by-line to a rubber duck (or coworker). The act of explaining often reveals the issue.</p>
+
+        <h3>4. Reproduce in Minimal Environment</h3>
+        <p>Copy the problematic code into a fresh HTML file or <a href="https://codepen.io" rel="noopener">CodePen</a>. Strip away everything except what's needed to reproduce the bug.</p>
+
+        <h2>Production Debugging</h2>
+        <p>For production bugs, you can't just open DevTools. Use:</p>
+        <ul>
+          <li><strong>Error tracking</strong>: Sentry, Bugsnag, LogRocket</li>
+          <li><strong>Logging</strong>: Structured logs to cloud services (Datadog, CloudWatch)</li>
+          <li><strong>Session replay</strong>: See what users did before the error</li>
+          <li><strong>Source maps</strong>: Debug production code with readable variable names</li>
+        </ul>
+        <pre><code>// Example: Sentry error tracking
+import * as Sentry from '@sentry/browser';
+Sentry.init({ dsn: 'your-dsn' });
+// Now all uncaught errors are captured with stack traces</code></pre>
+
+        <h2>VS Code Debugger</h2>
+        <p>Debug without leaving your editor:</p>
+        <pre><code>// 1. Install "Debugger for Chrome" extension
+// 2. Add launch config to .vscode/launch.json
+{
+  "type": "chrome",
+  "request": "launch",
+  "name": "Launch Chrome",
+  "url": "http://localhost:3000",
+  "webRoot": "${workspaceFolder}"
+}
+// 3. Press F5 to start debugging
+// 4. Set breakpoints in VS Code</code></pre>
+
+        <h2>Quick Reference</h2>
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="background:var(--color-bg-alt);">
+              <th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Command</th>
+              <th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:0.75rem;border:1px solid var(--color-border);">F8</td><td style="padding:0.75rem;border:1px solid var(--color-border);">Resume execution</td></tr>
+            <tr><td style="padding:0.75rem;border:1px solid var(--color-border);">F10</td><td style="padding:0.75rem;border:1px solid var(--color-border);">Step over (skip function)</td></tr>
+            <tr><td style="padding:0.75rem;border:1px solid var(--color-border);">F11</td><td style="padding:0.75rem;border:1px solid var(--color-border);">Step into (enter function)</td></tr>
+            <tr><td style="padding:0.75rem;border:1px solid var(--color-border);">Shift+F11</td><td style="padding:0.75rem;border:1px solid var(--color-border);">Step out (exit function)</td></tr>
+          </tbody>
+        </table>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

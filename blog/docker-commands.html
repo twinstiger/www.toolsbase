@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker Commands Every Developer Must Know | ToolsBase Blog</title>
+  <meta name="description" content="Essential Docker commands for developers. Learn container management, image operations, docker-compose, and common troubleshooting commands.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/docker-commands.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>Docker Commands</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 22, 2026 · 9 min read · 🏷️ DevOps</div>
+        <h1>Docker Commands Every Developer Must Know</h1>
+        <p class="lead">Docker has become essential for modern development. This guide covers the 30 most useful Docker commands with practical examples for building, running, and managing containers.</p>
+
+        <h2>Getting Started</h2>
+        <p>First, verify Docker is installed:</p>
+        <pre><code>docker --version
+docker compose version  # for docker-compose v2</code></pre>
+
+        <h2>1. Managing Images</h2>
+        <p>Images are the blueprints for your containers. Pull an image from Docker Hub:</p>
+        <pre><code>docker pull nginx:latest
+docker pull node:20-alpine</code></pre>
+        <p>List all downloaded images:</p>
+        <pre><code>docker images
+docker images -a  # show intermediate images</code></pre>
+        <p>Remove unused images to free up disk space:</p>
+        <pre><code>docker image prune -a      # remove all unused images
+docker rmi nginx:latest     # remove specific image</code></pre>
+
+        <h2>2. Running Containers</h2>
+        <p>Start a container from an image:</p>
+        <pre><code>docker run nginx
+docker run -d nginx        # run in detached mode (background)
+docker run -p 8080:80 nginx # map port 8080 to container port 80</code></pre>
+        <p>Run with a name and environment variables:</p>
+        <pre><code>docker run -d --name my-app -p 3000:3000 \
+  -e NODE_ENV=production \
+  -v $(pwd)/data:/app/data \
+  my-image:latest</code></pre>
+
+        <h2>3. Container Lifecycle</h2>
+        <p>View running containers:</p>
+        <pre><code>docker ps                # running containers only
+docker ps -a              # all containers (including stopped)
+docker ps --filter "status=exited"</code></pre>
+        <p>Start, stop, and restart containers:</p>
+        <pre><code>docker stop my-app
+docker start my-app
+docker restart my-app</code></pre>
+        <p>Remove containers:</p>
+        <pre><code>docker rm my-app          # remove stopped container
+docker rm -f my-app        # force remove (even if running)</code></pre>
+
+        <h2>4. Viewing Logs and Debugging</h2>
+        <p>Stream logs from a running container:</p>
+        <pre><code>docker logs -f my-app
+docker logs --tail 100 my-app  # last 100 lines
+docker logs --since 1h my-app   # logs from last hour</code></pre>
+        <p>Inspect container details:</p>
+        <pre><code>docker inspect my-app
+docker exec -it my-app sh      # open shell inside container</code></pre>
+
+        <h2>5. Docker Compose Commands</h2>
+        <p>Docker Compose manages multi-container applications. Start all services:</p>
+        <pre><code>docker compose up -d           # start in background
+docker compose up --build       # rebuild before starting</code></pre>
+        <p>Stop and remove all services:</p>
+        <pre><code>docker compose down
+docker compose down -v          # also remove volumes</code></pre>
+        <p>View logs and status:</p>
+        <pre><code>docker compose logs -f
+docker compose ps</code></pre>
+
+        <h2>6. Building Images</h2>
+        <p>Build a custom image from a Dockerfile:</p>
+        <pre><code>docker build -t my-app:latest .
+docker build -t my-app:latest --build-arg NODE_ENV=production .</code></pre>
+        <p>Build with no cache (useful when you need a fresh build):</p>
+        <pre><code>docker build --no-cache -t my-app:latest .</code></pre>
+
+        <h2>7. Cleaning Up</h2>
+        <p>Docker can accumulate a lot of disk space over time. Clean up all unused resources:</p>
+        <pre><code>docker system prune           # remove stopped containers, unused networks
+docker system prune -a         # also remove all unused images
+docker system df              # show disk usage</code></pre>
+
+        <h2>Common Workflows</h2>
+        <h3>Development Mode</h3>
+        <pre><code>docker compose up --build -d
+docker compose logs -f app
+docker compose exec app npm run dev</code></pre>
+        <h3>Production Deployment</h3>
+        <pre><code>docker build -t my-app:latest .
+docker tag my-app:latest registry.com/my-app:v1.0.0
+docker push registry.com/my-app:v1.0.0</code></pre>
+
+        <h2>Troubleshooting</h2>
+        <p><strong>Container exits immediately:</strong> Check logs with <code>docker logs container-name</code></p>
+        <p><strong>Port already in use:</strong> Find the process: <code>docker ps | grep 8080</code> or use <code>lsof -i :8080</code></p>
+        <p><strong>Permission denied:</strong> On Linux, you may need <code>sudo docker ...</code> or add your user to the docker group.</p>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

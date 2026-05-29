@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript ES6+ Features Every Developer Should Know | ToolsBase Blog</title>
+  <meta name="description" content="Modern JavaScript features that will transform your code. Covers arrow functions, destructuring, spread operator, async/await, modules, and more.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/javascript-es6.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>ES6 Features</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 28, 2026 · 8 min read · 🏷️ JavaScript</div>
+        <h1>JavaScript ES6+ Features Every Developer Should Know</h1>
+        <p class="lead">ES6 (ECMAScript 2015) and later versions introduced features that transformed how we write JavaScript. This guide covers the ones you'll use daily.</p>
+
+        <h2>Arrow Functions</h2>
+        <p>Concise syntax and lexical <code>this</code> binding:</p>
+        <pre><code>// Traditional function
+function add(a, b) {
+  return a + b;
+}
+
+// Arrow function
+const add = (a, b) => a + b;
+
+// With body (return needed)
+const multiply = (a, b) => {
+  return a * b;
+};
+
+// No arguments
+const logSomething = () => console.log('Hello');
+
+// Single argument (parentheses optional)
+const double = x => x * 2;</code></pre>
+        <p>Arrow functions don't have their own <code>this</code> — they inherit it from the enclosing scope.</p>
+
+        <h2>Destructuring</h2>
+        <p>Extract values from objects and arrays:</p>
+        <pre><code>// Object destructuring
+const user = { name: 'Alice', age: 25, city: 'NYC' };
+const { name, age } = user;
+
+// With renaming
+const { name: userName, age: userAge } = user;
+
+// Array destructuring
+const colors = ['red', 'green', 'blue'];
+const [first, second] = colors;
+
+// Skip elements
+const [, , third] = colors;
+
+// Function parameters
+function greet({ name, city }) {
+  return `Hello ${name} from ${city}`;
+}</code></pre>
+
+        <h2>Spread and Rest Operators</h2>
+        <p>Same syntax, different contexts:</p>
+        <pre><code>// Spread in arrays
+const a = [1, 2, 3];
+const b = [4, 5, 6];
+const combined = [...a, ...b];  // [1, 2, 3, 4, 5, 6]
+
+// Spread in objects
+const obj1 = { x: 1, y: 2 };
+const obj2 = { ...obj1, z: 3 };  // { x: 1, y: 2, z: 3 }
+
+// Rest in function parameters
+function sum(...numbers) {
+  return numbers.reduce((a, b) => a + b, 0);
+}
+sum(1, 2, 3, 4);  // 10
+
+// Rest in destructuring
+const [first, ...rest] = [1, 2, 3, 4];
+// first = 1, rest = [2, 3, 4]</code></pre>
+
+        <h2>Template Literals</h2>
+        <p>String interpolation and multi-line strings:</p>
+        <pre><code>const name = 'Alice';
+const age = 25;
+
+// String interpolation
+const greeting = `Hello, ${name}! You are ${age}.`;
+
+// Multi-line strings
+const html = `
+  <div class="card">
+    <h2>${name}</h2>
+    <p>Age: ${age}</p>
+  </div>
+`;
+
+// Expressions
+const price = 99.99;
+const message = `Total: $${(price * 1.1).toFixed(2)}`;</code></pre>
+
+        <h2>Default Parameters</h2>
+        <pre><code>function createUser(name, role = 'user', active = true) {
+  return { name, role, active };
+}
+createUser('Bob');
+// { name: 'Bob', role: 'user', active: true }</code></pre>
+
+        <h2>Object Shorthand</h2>
+        <pre><code>const name = 'Alice';
+const age = 25;
+
+// Old way
+const user = { name: name, age: age };
+
+// New way (when key and variable name match)
+const user = { name, age };
+
+// Method shorthand
+const calculator = {
+  value: 0,
+  add(n) { this.value += n; },
+  subtract(n) { this.value -= n; }
+};</code></pre>
+
+        <h2>Modules (Import/Export)</h2>
+        <pre><code>// math.js
+export const PI = 3.14159;
+export function add(a, b) { return a + b; }
+export default class Calculator { }
+
+// Named exports
+import { PI, add } from './math.js';
+
+// Default import
+import Calculator from './math.js';
+
+// All exports
+import * as math from './math.js';
+math.PI;</code></pre>
+
+        <h2>Async/Await</h2>
+        <p>Cleaner syntax for Promises:</p>
+        <pre><code>// With Promises
+function fetchUser(id) {
+  return fetch(`/api/users/${id}`)
+    .then(res => res.json())
+    .then(user => user.name);
+}
+
+// With async/await
+async function fetchUser(id) {
+  const res = await fetch(`/api/users/${id}`);
+  const user = await res.json();
+  return user.name;
+}
+
+// Error handling
+async function fetchUser(id) {
+  try {
+    const res = await fetch(`/api/users/${id}`);
+    if (!res.ok) throw new Error('User not found');
+    return await res.json();
+  } catch (error) {
+    console.error('Failed:', error);
+  }
+}</code></pre>
+
+        <h2>Optional Chaining and Nullish Coalescing</h2>
+        <pre><code>// Optional chaining (ES2020)
+const city = user?.address?.city ?? 'Unknown';
+
+// Before optional chaining
+const city = user && user.address && user.address.city;
+
+// Nullish coalescing (ES2020)
+const name = user.nickname ?? user.name ?? 'Anonymous';
+
+// Before nullish coalescing
+const name = user.nickname || user.name || 'Anonymous';
+// Problem: 0 or '' would be treated as falsy</code></pre>
+
+        <h2>Array Methods: map, filter, reduce</h2>
+        <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// map - transform each element
+const doubled = numbers.map(n => n * 2);
+
+// filter - keep elements matching condition
+const evens = numbers.filter(n => n % 2 === 0);
+
+// reduce - accumulate to single value
+const sum = numbers.reduce((acc, n) => acc + n, 0);
+
+// Chaining
+const result = numbers
+  .filter(n => n > 2)
+  .map(n => n * 10)
+  .reduce((a, b) => a + b, 0);</code></pre>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

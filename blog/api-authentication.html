@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Authentication Methods Explained | ToolsBase Blog</title>
+  <meta name="description" content="Compare API authentication methods: API Keys, Basic Auth, Bearer Tokens, OAuth 2.0, and JWT. Learn when to use each and their security trade-offs.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/api-authentication.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>API Authentication</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 29, 2026 · 8 min read · 🏷️ Security</div>
+        <h1>API Authentication Methods Explained</h1>
+        <p class="lead">Authentication is critical for API security. This guide compares the main methods — API Keys, Basic Auth, Bearer Tokens, OAuth 2.0, and JWT — with pros, cons, and when to use each.</p>
+
+        <h2>API Keys</h2>
+        <p>Simple static keys assigned to clients:</p>
+        <pre><code>curl -H "X-API-Key: your-api-key-here" https://api.example.com/data</code></pre>
+        <p><strong>Pros:</strong></p>
+        <ul>
+          <li>Simple to implement</li>
+          <li>Easy to understand and debug</li>
+          <li>Good for server-to-server communication</li>
+        </ul>
+        <p><strong>Cons:</strong></p>
+        <ul>
+          <li>No expiration (unless you implement it)</li>
+          <li>If leaked, full access until revoked</li>
+          <li>No granular permissions (all-or-nothing)</li>
+        </ul>
+        <p><strong>Best for:</strong> Internal services, simple third-party integrations</p>
+
+        <h2>Basic Authentication</h2>
+        <p>Username and password sent with each request (Base64 encoded, not encrypted):</p>
+        <pre><code># Encoding: Base64("username:password")
+curl -H "Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=" https://api.example.com/
+
+# Or use curl's built-in auth
+curl -u username:password https://api.example.com/</code></pre>
+        <p><strong>Pros:</strong></p>
+        <ul>
+          <li>Extremely simple</li>
+          <li>Universally supported</li>
+          <li>Good for testing</li>
+        </ul>
+        <p><strong>Cons:</strong></p>
+        <ul>
+          <li>Credentials sent with every request</li>
+          <li>Must always use HTTPS</li>
+          <li>No built-in expiration</li>
+        </ul>
+        <blockquote>
+          <p><strong>Never use Basic Auth over HTTP.</strong> Without TLS, credentials are sent in plain text visible to anyone watching network traffic.</p>
+        </blockquote>
+
+        <h2>Bearer Tokens (Token Authentication)</h2>
+        <p>A token is issued after authentication and sent with each request:</p>
+        <pre><code># After login, server returns token
+# Client stores token and sends with requests
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." https://api.example.com/data</code></pre>
+        <p><strong>Pros:</strong></p>
+        <ul>
+          <li>Credentials only sent once</li>
+          <li>Token can expire</li>
+          <li>Easier to revoke (delete from database)</li>
+        </ul>
+        <p><strong>Cons:</strong></p>
+        <ul>
+          <li>Requires database lookup to validate (unless using JWT)</li>
+          <li>State must be stored server-side</li>
+        </ul>
+
+        <h2>JWT (JSON Web Tokens)</h2>
+        <p>Self-contained tokens that include the data payload (stateless):</p>
+        <pre><code>// JWT has three parts: header.payload.signature
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMywicm9sZSI6ImFkbWluIn0.signature
+
+// Server verifies signature without database lookup
+const payload = jwt.verify(token, SECRET_KEY);
+console.log(payload.userId);  // 123</code></pre>
+        <p><strong>Structure:</strong></p>
+        <ul>
+          <li><strong>Header</strong>: Algorithm and token type</li>
+          <li><strong>Payload</strong>: Claims (userId, role, exp, etc.)</li>
+          <li><strong>Signature</strong>: Prevents tampering</li>
+        </ul>
+        <p><strong>Pros:</strong></p>
+        <ul>
+          <li>Stateless — no database lookup needed</li>
+          <li>Can include user data and permissions</li>
+          <li>Works across services (microservices)</li>
+        </ul>
+        <p><strong>Cons:</strong></p>
+        <ul>
+          <li>Can't revoke until expiration (use short expiry + refresh tokens)</li>
+          <li>Payload is visible (don't store sensitive data)</li>
+          <li>Larger than API keys</li>
+        </ul>
+
+        <h2>OAuth 2.0</h2>
+        <p>A proper authorization framework for third-party access:</p>
+        <pre><code># 1. User clicks "Login with Google"
+# 2. Redirect to Google with client_id and redirect_uri
+GET https://accounts.google.com/o/oauth2/v2/auth?
+  client_id=YOUR_CLIENT_ID&
+  redirect_uri=https://yourapp.com/callback&
+  response_type=code&
+  scope=openid%20profile%20email
+
+# 3. Google redirects back with authorization code
+# 4. Your server exchanges code for access token
+POST https://oauth2.googleapis.com/token
+{
+  code: "authorization_code",
+  client_id: "YOUR_CLIENT_ID",
+  client_secret: "YOUR_CLIENT_SECRET",
+  redirect_uri: "https://yourapp.com/callback",
+  grant_type: "authorization_code"
+}
+
+# 5. Response includes access token (and optionally refresh token)
+{
+  access_token: "ya29....",
+  expires_in: 3600,
+  refresh_token: "refresh_token_here"
+}</code></pre>
+        <p><strong>Grant Types:</strong></p>
+        <ul>
+          <li><strong>Authorization Code</strong>: Web apps (full flow)</li>
+          <li><strong>PKCE</strong>: Mobile/SPA apps (no client secret)</li>
+          <li><strong>Client Credentials</strong>: Server-to-server (no user)</li>
+          <li><strong>Refresh Token</strong>: Get new access tokens</li>
+        </ul>
+
+        <h2>Comparison Table</h2>
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="background:var(--color-bg-alt);">
+              <th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Method</th>
+              <th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Complexity</th>
+              <th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">API Keys</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Low</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Simple server-to-server</td>
+            </tr>
+            <tr>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Basic Auth</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Low</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Testing, internal tools</td>
+            </tr>
+            <tr>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Bearer Tokens</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Medium</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Session-based auth</td>
+            </tr>
+            <tr>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">JWT</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Medium</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Microservices, stateless auth</td>
+            </tr>
+            <tr>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">OAuth 2.0</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">High</td>
+              <td style="padding:0.75rem;border:1px solid var(--color-border);">Third-party login, social auth</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Security Best Practices</h2>
+        <ul>
+          <li><strong>Always use HTTPS</strong> — never send credentials over HTTP</li>
+          <li><strong>Use short token expiry</strong> — 15-60 minutes for access tokens</li>
+          <li><strong>Implement refresh tokens</strong> — allow re-authentication without re-login</li>
+          <li><strong>Store secrets securely</strong> — environment variables, not in code</li>
+          <li><strong>Log authentication events</strong> — detect anomalies</li>
+          <li><strong>Implement rate limiting</strong> — prevent brute force attacks</li>
+          <li><strong>Rotate secrets</strong> — change API keys periodically</li>
+        </ul>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

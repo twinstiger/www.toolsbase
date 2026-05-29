@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Design Best Practices | ToolsBase Blog</title>
+  <meta name="description" content="Build better REST APIs with these best practices. Learn about URL design, HTTP methods, error handling, versioning, pagination, and security.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/api-design.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>API Design</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 26, 2026 · 10 min read · 🏷️ Backend</div>
+        <h1>API Design Best Practices</h1>
+        <p class="lead">A well-designed API is intuitive, consistent, and developer-friendly. This guide covers the principles and patterns that make APIs a pleasure to use.</p>
+
+        <h2>Use RESTful Conventions</h2>
+        <p>REST APIs use standard HTTP methods and URL structures:</p>
+        <pre><code>GET    /users          # list all users
+GET    /users/123       # get single user
+POST   /users           # create new user
+PUT    /users/123       # update entire user
+PATCH  /users/123       # partial update
+DELETE /users/123       # delete user</code></pre>
+        <p>Key principles:</p>
+        <ul>
+          <li>Use nouns in URLs, not verbs (<code>/users</code> not <code>/getUsers</code>)</li>
+          <li>Use plural nouns consistently</li>
+          <li>Use nested resources for relationships (<code>/users/123/orders</code>)</li>
+          <li>Keep URLs lowercase with hyphens</li>
+        </ul>
+
+        <h2>Proper HTTP Status Codes</h2>
+        <p>Always return the appropriate status code:</p>
+        <pre><code>200 OK           # successful GET, PUT, PATCH
+201 Created       # successful POST creating resource
+204 No Content    # successful DELETE
+400 Bad Request   # invalid input data
+401 Unauthorized  # not authenticated
+403 Forbidden     # authenticated but not authorized
+404 Not Found     # resource doesn't exist
+422 Unprocessable Entity  # validation errors
+429 Too Many Requests    # rate limit exceeded
+500 Internal Server Error # server error</code></pre>
+
+        <h2>Consistent Error Format</h2>
+        <p>Return errors in a consistent structure:</p>
+        <pre><code>{
+  "error": "validation_error",
+  "message": "The request body contains invalid data",
+  "details": [
+    {
+      "field": "email",
+      "message": "Email format is invalid"
+    },
+    {
+      "field": "password",
+      "message": "Password must be at least 8 characters"
+    }
+  ]
+}</code></pre>
+        <p>Include enough information for developers to debug, but don't expose sensitive internals.</p>
+
+        <h2>Pagination</h2>
+        <p>Don't return unlimited results. Use cursor or offset pagination:</p>
+        <h3>Offset Pagination</h3>
+        <pre><code>GET /users?page=2&per_page=20
+
+# Response
+{
+  "data": [...],
+  "pagination": {
+    "page": 2,
+    "per_page": 20,
+    "total": 150,
+    "total_pages": 8
+  }
+}</code></pre>
+
+        <h3>Cursor Pagination (Better for Large Datasets)</h3>
+        <pre><code>GET /users?cursor=abc123&limit=20
+
+# Response
+{
+  "data": [...],
+  "pagination": {
+    "next_cursor": "def456",
+    "has_more": true
+  }
+}</code></pre>
+        <p>Cursor pagination is more efficient for large tables and real-time data.</p>
+
+        <h2>API Versioning</h2>
+        <p>Version your API to allow breaking changes without breaking clients:</p>
+        <pre><code># URL path (most common)
+GET /v1/users
+GET /v2/users
+
+# Header approach
+Accept: application/vnd.api.v2+json</code></pre>
+        <blockquote>
+          <p><strong>Tip:</strong> Start with v1 even if you don't think you'll need versions. Adding versioning later is harder than starting with it.</p>
+        </blockquote>
+
+        <h2>Filtering, Sorting, and Field Selection</h2>
+        <p>Give clients control over their queries:</p>
+        <pre><code># Filtering
+GET /orders?status=pending&created_after=2024-01-01
+
+# Sorting
+GET /products?sort=price&order=desc
+
+# Field selection (sparse fieldsets)
+GET /users?fields=id,name,email
+
+# Combining
+GET /orders?status=completed&sort=created_at&order=desc&limit=50</code></pre>
+
+        <h2>Authentication</h2>
+        <p>Use standard authentication methods:</p>
+        <pre><code># API Keys (for server-to-server)
+X-API-Key: your-api-key
+
+# Bearer Tokens (for user authentication)
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+
+# Rate Limiting Headers
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200</code></pre>
+
+        <h2>Performance Tips</h2>
+        <h3>Response Compression</h3>
+        <pre><code># Client sends
+Accept-Encoding: gzip, deflate, br
+
+# Server responds
+Content-Encoding: gzip</code></pre>
+
+        <h3>Conditional Requests</h3>
+        <pre><code># Client sends
+If-None-Match: "etag-from-previous-response"
+
+# Server checks, returns 304 if unchanged
+HTTP/1.1 304 Not Modified</code></pre>
+
+        <h3>Cache Control</h3>
+        <pre><code>Cache-Control: public, max-age=3600
+ETag: "abc123"
+Last-Modified: Wed, 01 Jan 2024 00:00:00 GMT</code></pre>
+
+        <h2>Documentation</h2>
+        <p>Good API documentation includes:</p>
+        <ul>
+          <li>Authentication instructions</li>
+          <li>All endpoints with request/response examples</li>
+          <li>Error codes and messages</li>
+          <li>Rate limits and quotas</li>
+          <li>Try-it-out sandbox</li>
+        </ul>
+        <p>Use OpenAPI/Swagger for machine-readable specs that generate documentation automatically.</p>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

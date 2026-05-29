@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Line Essentials: Terminal Basics for Developers | ToolsBase Blog</title>
+  <meta name="description" content="Master the command line with these essential commands. Learn file operations, process management, piping, permissions, and productivity tips.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/command-line.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>Command Line</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 29, 2026 · 7 min read · 🏷️ Fundamentals</div>
+        <h1>Command Line Essentials: Terminal Basics for Developers</h1>
+        <p class="lead">The command line is a developer's most powerful tool. This guide covers essential commands for navigating, manipulating files, managing processes, and automating tasks.</p>
+
+        <h2>Navigation Basics</h2>
+        <pre><code>pwd                 # print working directory (where am I?)
+cd /path/to/dir    # change directory
+cd ~               # go to home directory
+cd ..             # go up one directory
+cd -              # go to previous directory
+ls                # list files
+ls -la            # list all files with details
+ls -lh            # list with human-readable sizes</code></pre>
+
+        <h2>File Operations</h2>
+        <pre><code>touch readme.md         # create empty file
+cp file.txt backup.txt   # copy file
+mv old.txt new.txt       # rename or move
+rm file.txt              # delete file
+rm -rf folder/          # delete folder and contents (careful!)
+
+# Create directory
+mkdir new-project
+mkdir -p path/to/deep/dir  # create nested dirs
+
+# File details
+stat file.txt          # file info
+file file.txt          # file type</code></pre>
+
+        <h2>Viewing and Editing Files</h2>
+        <pre><code># View file contents
+cat file.txt           # print entire file
+head -20 file.txt     # first 20 lines
+tail -50 file.txt     # last 50 lines
+tail -f logs/app.log  # follow file (live updates)
+
+# Search in file
+grep "error" file.txt
+grep -r "TODO" ./src/  # recursive search
+
+# Edit files
+nano file.txt         # simple editor
+vim file.txt          # powerful editor
+code file.txt         # open in VS Code</code></pre>
+
+        <h2>Pipes and Redirection</h2>
+        <p>Pipes (<code>|</code>) connect commands. Redirection (<code>></code>, <code>>></code>) sends output to files:</p>
+        <pre><code># Pipe: send output of one command as input to another
+cat logs.txt | grep ERROR | head -20
+
+# Redirect output to file (overwrite)
+ls -la > directory.txt
+
+# Append output to file
+echo "Timestamp" >> log.txt
+
+# Redirect stderr (errors)
+command 2> errors.txt
+
+# Redirect both stdout and stderr
+command > all.txt 2>&1
+
+# Input from file
+sort < unsorted.txt > sorted.txt</code></pre>
+
+        <h2>Process Management</h2>
+        <pre><code># View running processes
+ps aux              # all processes with details
+top                 # real-time process monitor
+htop                # better version (if installed)
+
+# Kill processes
+kill 1234           # graceful termination
+kill -9 1234       # force kill
+killall node       # kill by name
+
+# Background processes
+command &           # run in background
+Ctrl+Z             # suspend current process
+bg                 # resume in background
+fg                 # bring to foreground</code></pre>
+
+        <h2>Permissions</h2>
+        <pre><code># View permissions
+ls -l file.txt
+# -rw-r--r-- 1 user group 4096 Jan 1 10:00 file.txt
+#  ^  ^  ^      ^    ^     ^
+#  |  |  |      |    |     + size
+#  |  |  |      |    + group
+#  |  |  |      + owner
+#  |  |  + other (read, write, execute)
+#  |  + group
+#  + owner
+
+# Change permissions
+chmod 755 script.sh      # rwxr-xr-x
+chmod +x script.sh       # add execute
+chmod -w file.txt        # remove write
+
+# Change owner
+sudo chown user:group file.txt</code></pre>
+        <p>Permission codes: <code>r=4</code>, <code>w=2</code>, <code>x=1</code>. So <code>755</code> = rwxr-xr-x (owner: 7=rwx, group: 5=r-x, other: 5=r-x)</p>
+
+        <h2>Networking Commands</h2>
+        <pre><code># Check connectivity
+ping google.com
+curl https://api.example.com
+
+# Network info
+ifconfig           # macOS
+ifconfig           # Linux
+ip addr show       # modern Linux
+
+# Port usage
+lsof -i :8080     # what's using port 8080?
+netstat -tlnp      # listening ports
+
+# Download files
+wget https://example.com/file.zip
+curl -O https://example.com/file.zip</code></pre>
+
+        <h2>Search and Find</h2>
+        <pre><code># Find files
+find . -name "*.js"              # by name
+find . -type d -name node_modules # directories only
+find . -mtime -7                 # modified in last 7 days
+find . -size +100M               # larger than 100MB
+
+# Search files by content
+grep -r "function" ./src/
+
+# Modern search (faster)
+ag "function" ./src/            # requires silversearcher
+rg "function" ./src/            # requires ripgrep</code></pre>
+
+        <h2>Archives and Compression</h2>
+        <pre><code># Tar (common on Linux/macOS)
+tar -cvf archive.tar ./folder/   # create
+tar -xvf archive.tar            # extract
+tar -czvf archive.tar.gz ./folder/  # compress
+tar -xzvf archive.tar.gz        # decompress & extract
+
+# Zip
+zip -r archive.zip ./folder/    # create
+unzip archive.zip               # extract
+
+# View without extracting
+tar -tzf archive.tar.gz</code></pre>
+
+        <h2>Useful Keyboard Shortcuts</h2>
+        <ul>
+          <li><code>Ctrl+C</code> — Cancel current command</li>
+          <li><code>Ctrl+Z</code> — Suspend to background</li>
+          <li><code>Ctrl+D</code> — Exit shell (EOF)</li>
+          <li><code>Ctrl+L</code> — Clear screen (same as <code>clear</code>)</li>
+          <li><code>Ctrl+A</code> — Go to beginning of line</li>
+          <li><code>Ctrl+E</code> — Go to end of line</li>
+          <li><code>Ctrl+R</code> — Search command history</li>
+          <li><code>Tab</code> — Auto-complete</li>
+          <li><code>!!</code> — Repeat last command</li>
+        </ul>
+
+        <h2>Environment Variables</h2>
+        <pre><code># View variables
+echo $PATH
+printenv
+
+# Set variable (temporary)
+export NODE_ENV=development
+
+# Persistent (add to ~/.bashrc or ~/.zshrc)
+export PATH="$PATH:/new/path"
+export EDITOR=vim</code></pre>
+
+        <h2>Productivity Tips</h2>
+        <pre><code># Aliases (add to ~/.bashrc or ~/.zshrc)
+alias ll='ls -la'
+alias gs='git status'
+alias gp='git push'
+alias ..='cd ..'
+
+# History navigation
+history            # show all past commands
+!234              # run command #234
+!gs               # run last command starting with 'gs'
+
+# Multiple commands
+command1 && command2    # run 2 after 1 succeeds
+command1 || command2    # run 2 if 1 fails
+command1 ; command2     # run both regardless</code></pre>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

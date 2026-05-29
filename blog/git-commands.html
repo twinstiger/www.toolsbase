@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Commands Handbook: From Basics to Advanced | ToolsBase Blog</title>
+  <meta name="description" content="Master Git with this comprehensive guide. Covers branching, merging, rebasing, stash, hooks, and workflows for individual developers and teams.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="../https://toolsbase.net/blog/git-commands.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a><span>›</span><a href="../../index.html">Blog</a><span>›</span><span>Git Handbook</span>
+      </nav>
+
+      <article class="blog-article" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;color:var(--color-text-muted);margin-bottom:1rem;">Published May 23, 2026 · 10 min read · 🏷️ Version Control</div>
+        <h1>Git Commands Handbook: From Basics to Advanced</h1>
+        <p class="lead">Git is the backbone of modern software development. This guide covers essential commands from basic commits to advanced workflows like interactive rebase and bisect.</p>
+
+        <h2>Basic Commands</h2>
+        <p>Initialize a new repository:</p>
+        <pre><code>git init
+git clone https://github.com/user/repo.git</code></pre>
+
+        <h2>Making Changes</h2>
+        <p>Stage and commit files:</p>
+        <pre><code>git add file.txt
+git add .                 # stage all changes
+git commit -m "Add feature"
+git commit -am "Fix bug"   # stage modified tracked files and commit</code></pre>
+        <p>View the current state:</p>
+        <pre><code>git status
+git diff                  # unstaged changes
+git diff --staged         # staged changes
+git diff HEAD~1..HEAD     # diff between commits</code></pre>
+
+        <h2>Working with Branches</h2>
+        <p>List, create, and switch branches:</p>
+        <pre><code>git branch                 # list local branches
+git branch -a              # list all branches (including remote)
+git branch feature/login   # create new branch
+git checkout feature/login
+git switch feature/login   # newer syntax
+git switch -c feature/login # create and switch in one command</code></pre>
+        <p>Rename and delete branches:</p>
+        <pre><code>git branch -m old-name new-name
+git branch -d feature/login  # safe delete (merged only)
+git branch -D feature/login  # force delete</code></pre>
+
+        <h2>Merging and Rebasing</h2>
+        <p>Merge a branch into current branch:</p>
+        <pre><code>git merge feature/login
+git merge --no-ff feature/login  # create merge commit even for fast-forward</code></pre>
+        <p>Rebase to keep history linear:</p>
+        <pre><code>git rebase main
+git rebase -i HEAD~3        # interactive rebase (rewrite last 3 commits)</code></pre>
+        <blockquote>
+          <p><strong>Golden Rule:</strong> Never rebase commits that have been pushed to a shared branch. Rebase only your own local commits.</p>
+        </blockquote>
+
+        <h2>Working with Remote</h2>
+        <pre><code>git remote -v
+git remote add origin https://github.com/user/repo.git
+git fetch origin
+git pull origin main
+git push origin main
+git push -u origin feature/login  # set upstream</code></pre>
+
+        <h2>Stashing Changes</h2>
+        <p>Save changes temporarily without committing:</p>
+        <pre><code>git stash
+git stash pop               # apply and remove stash
+git stash apply            # apply but keep stash
+git stash list
+git stash drop stash@{0}   # remove specific stash</code></pre>
+
+        <h2>Time Travel: Undo Changes</h2>
+        <p>Undo working directory changes:</p>
+        <pre><code>git checkout -- file.txt    # discard unstaged changes
+git restore file.txt         # newer syntax
+git restore .                # discard all unstaged changes</code></pre>
+        <p>Undo staged changes:</p>
+        <pre><code>git reset HEAD file.txt
+git restore --staged file.txt</code></pre>
+        <p>Undo commits (use with caution):</p>
+        <pre><code>git commit --amend          # modify last commit message/content
+git revert HEAD             # create new commit that undoes last
+git reset --soft HEAD~1    # uncommit but keep changes staged
+git reset --hard HEAD~1    # uncommit and discard changes</code></pre>
+
+        <h2>Finding Bugs with Bisect</h2>
+        <p>Use binary search to find the commit that introduced a bug:</p>
+        <pre><code>git bisect start
+git bisect bad              # current commit is broken
+git bisect good v1.0.0      # this version was fine
+# Git will checkout middle commit
+# Test and mark as good/bad
+git bisect reset            # finish bisect session</code></pre>
+
+        <h2>Useful Aliases</h2>
+        <p>Set up shortcuts for common commands:</p>
+        <pre><code>git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.lg "log --oneline --graph --decorate"</code></pre>
+
+        <h2>Advanced: Interactive Rebase</h2>
+        <p>Squash, edit, or reorder commits:</p>
+        <pre><code>git rebase -i HEAD~5
+# In the editor:
+pick abc123 Add login feature
+squash def456 Fix typo
+reword 789xyz Update readme
+# Save and close</code></pre>
+
+        <h2>Daily Workflow Example</h2>
+        <pre><code>git switch -c feature/dashboard
+# Make changes
+git add .
+git commit -m "Add dashboard stats"
+git push -u origin feature/dashboard
+# Create PR on GitHub, request review
+# After merge:
+git switch main
+git pull origin main
+git branch -d feature/dashboard</code></pre>
+
+      </article>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="../../index.html" class="btn btn--ghost">← Back to Blog</a>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

@@ -7,6 +7,27 @@
   <url><loc>https://toolsbase.net/privacy-policy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://toolsbase.net/terms.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://toolsbase.net/blog/index.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://toolsbase.net/blog/cron-job-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/yaml-beginners-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/xml-json-comparison.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/binary-hex-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/markdown-syntax-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/jwt-authentication.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/uuid-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/web-security-headers.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/sql-injection-prevention.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/regex-common-patterns.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/docker-commands.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/git-commands.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/http-status-codes.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/sql-basics.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/api-design.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/css-grid-flexbox.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/javascript-es6.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/command-line.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/api-authentication.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/javascript-debugging.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://toolsbase.net/blog/code-quality.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://toolsbase.net/blog/json-formatter-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://toolsbase.net/blog/regex-cheatsheet.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://toolsbase.net/blog/password-security.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
