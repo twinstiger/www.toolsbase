@@ -43,9 +43,11 @@ input, textarea, select { font-family: inherit; }
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-.header-content { height: 58px; display: flex; align-items: center; justify-content: space-between; }
+.header-content { height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.header-left { display: flex; align-items: center; gap: 0.5rem; }
+.header-right { display: flex; align-items: center; gap: 0.25rem; }
 
-.logo { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; flex-shrink: 0; }
+.logo { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; flex-shrink: 0; margin-right: 0.5rem; }
 .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: #000000; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .logo-icon span { color: #ffffff; font-size: 0.875rem; font-weight: 700; }
 .logo img { height: 26px; width: auto; }
