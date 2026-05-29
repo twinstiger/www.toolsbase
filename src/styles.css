@@ -57,16 +57,16 @@ input, textarea, select { font-family: inherit; }
 @media (min-width: 768px) { .nav { display: flex; } }
 .nav-btn, .recent-btn {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  padding: 8px 4px; border-radius: 8px;
+  padding: 8px 12px; border-radius: 8px;
   font-size: 0.7rem; font-weight: 500; color: #374151;
   transition: all 120ms ease;
-  flex: 1; min-width: 0; text-align: center;
+  flex: 1; min-width: 60px; max-width: 80px; text-align: center;
 }
 .nav-btn:hover, .recent-btn:hover { color: #000000; background: #F3F4F6; }
 .nav-btn.active, .recent-btn.active { color: #000000; font-weight: 700; }
 
 /* Recent dropdown in nav */
-.recent-dropdown { position: relative; flex: 1; min-width: 0; }
+.recent-dropdown { position: relative; flex: 1; min-width: 60px; max-width: 80px; }
 .recent-btn svg { flex-shrink: 0; }
 .recent-label { line-height: 1.2; }
 .recent-btn { background: transparent; border: none; cursor: pointer; }
