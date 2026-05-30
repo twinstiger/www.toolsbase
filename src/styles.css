@@ -429,6 +429,7 @@ body[data-theme="dark"] { background: var(--color-bg); color: var(--color-text);
   box-sizing: border-box;
 }
 .blog-card[data-hidden] { display: none !important; }
+.blog-card[data-filtered] { display: none !important; }
 .blog-card > * {
   flex-shrink: 0;
 }

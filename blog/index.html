@@ -30,15 +30,15 @@
       <div style="margin-bottom:3rem;padding:1.5rem;background:var(--color-bg-alt);border-radius:var(--radius-xl);">
         <h2 style="font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--color-text-muted);">Browse by Topic</h2>
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
-          <a href="#" onclick="filterByTag('All')" class="tag-filter active">All Articles</a>
-          <a href="#" onclick="filterByTag('Dev Tools')" class="tag-filter">Dev Tools</a>
-          <a href="#" onclick="filterByTag('Security')" class="tag-filter">Security</a>
-          <a href="#" onclick="filterByTag('DevOps')" class="tag-filter">DevOps</a>
-          <a href="#" onclick="filterByTag('JavaScript')" class="tag-filter">JavaScript</a>
-          <a href="#" onclick="filterByTag('Database')" class="tag-filter">Database</a>
-          <a href="#" onclick="filterByTag('Frontend')" class="tag-filter">Frontend</a>
-          <a href="#" onclick="filterByTag('Fundamentals')" class="tag-filter">Fundamentals</a>
-          <a href="#" onclick="filterByTag('Backend')" class="tag-filter">Backend</a>
+          <a href="#" data-tag="All" onclick="filterByTag('All'); return false;" class="tag-filter active">All Articles</a>
+          <a href="#" data-tag="Dev Tools" onclick="filterByTag('Dev Tools'); return false;" class="tag-filter">Dev Tools</a>
+          <a href="#" data-tag="Security" onclick="filterByTag('Security'); return false;" class="tag-filter">Security</a>
+          <a href="#" data-tag="DevOps" onclick="filterByTag('DevOps'); return false;" class="tag-filter">DevOps</a>
+          <a href="#" data-tag="JavaScript" onclick="filterByTag('JavaScript'); return false;" class="tag-filter">JavaScript</a>
+          <a href="#" data-tag="Database" onclick="filterByTag('Database'); return false;" class="tag-filter">Database</a>
+          <a href="#" data-tag="Frontend" onclick="filterByTag('Frontend'); return false;" class="tag-filter">Frontend</a>
+          <a href="#" data-tag="Fundamentals" onclick="filterByTag('Fundamentals'); return false;" class="tag-filter">Fundamentals</a>
+          <a href="#" data-tag="Backend" onclick="filterByTag('Backend'); return false;" class="tag-filter">Backend</a>
         </div>
       </div>
 
@@ -600,7 +600,8 @@
     function filterByTag(tag) {
       currentFilter = tag;
       document.querySelectorAll('.tag-filter').forEach(el => {
-        el.classList.toggle('active', el.textContent.includes(tag) || (tag === 'All' && el.textContent === 'All Articles'));
+        const elTag = el.getAttribute('data-tag');
+        el.classList.toggle('active', elTag === tag);
       });
       applyFilter(tag);
       showPage(1);
@@ -693,6 +694,9 @@
       color: white;
     }
     article.blog-card[data-hidden="true"] {
+      display: none;
+    }
+    article.blog-card[data-filtered="true"] {
       display: none;
     }
     .pagination {
