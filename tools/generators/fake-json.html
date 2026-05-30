@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Generate realistic mock JSON data for testing. Create users, products, articles, and more with configurable fields.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -54,16 +55,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Fake JSON Generator used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Fake JSON Generator creates realistic mock data for testing — users, products, orders, and more — with configurable fields and output quantity.</div>
+        <div class="faq-question">What is mock data and why do I need it?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Mock data is realistic-looking test data used during development when your production database is empty. High-quality mock data helps test edge cases, populate development environments, and ensure your application handles diverse inputs gracefully. It makes your test suite more maintainable than hardcoded test fixtures.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What data types can I generate?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool generates users with names, emails, addresses, phone numbers, and balances; products with names, prices, ratings, and inventory data; and companies with industry information, employee counts, and headquarters locations. Each type includes realistic field variations and proper data types.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How many records can I generate at once?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">You can generate multiple records by including a number in your input, such as "10 users" or "25 products". This creates an array of objects with realistic variations. For database seeding, you can generate hundreds of records to test pagination, search performance, and UI rendering.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I generate data for API testing?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Generated JSON is properly structured for API contract testing. You can compare responses against expected JSON schemas using the generated test data. The realistic field names and structures work well with most API testing frameworks and validation tools.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How do I generate test data for edge cases?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool generates varied data that naturally includes edge cases like users with extreme ages, products with zero inventory, or accounts with various balances. This helps ensure your application handles boundary conditions gracefully without requiring manual construction of each test scenario.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Fake JSON Generator is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All data generation happens locally in your browser using JavaScript. Your input and generated data never leave your device, making it safe for generating realistic test data without exposing sensitive information.</div>
       </div>
     </section>
   </div>

@@ -29,6 +29,7 @@
       <p class="lead-text">Calculate subnets, CIDR notation, network address, and host range for any IP address.</p>
     </div>
 
+
     <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
         <div class="tool-panel-label">IP Address</div>
@@ -79,12 +80,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Subnet Calculator?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Calculates network address, broadcast address, subnet mask, and usable host range for a given IP and CIDR prefix.</div>
+        <div class="faq-question">What does CIDR notation mean?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">CIDR (Classless Inter-Domain Routing) notation like /24 indicates how many bits of the IP address represent the network portion. A /24 means the first 24 bits define the network, leaving 8 bits for host addresses. Smaller CIDR values create larger networks (/8 = 16 million hosts), larger values create smaller networks (/30 = 4 addresses, 2 usable).</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What's the difference between network and broadcast addresses?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The network address identifies the subnet itself (all host bits are 0) and cannot be assigned to devices. The broadcast address reaches all hosts within the subnet (all host bits are 1). In a /30 with addresses 192.168.1.0-3, 192.168.1.0 is the network and 192.168.1.3 is the broadcast, leaving only 192.168.1.1 and 192.168.1.2 for actual devices.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What are private IP ranges?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Private IP ranges are reserved for internal networks and not routable on the public internet: 10.0.0.0/8 (10.x.x.x), 172.16.0.0/12 (172.16.x.x-172.31.x.x), and 192.168.0.0/16 (192.168.x.x). Your home router typically uses 192.168.x.x, and most corporate networks use the 10.x.x.x range.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser.</div>
+        <div class="faq-answer">No. All calculations happen entirely in your browser using JavaScript. Network addresses, broadcast addresses, host ranges, and binary representations are all computed locally with no network requests.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How many usable hosts are in different subnet sizes?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The formula is 2^(32-CIDR) - 2 usable hosts (except for /31 and /32 which are special cases). A /24 has 256 addresses minus 2 = 254 usable. A /26 has 64 addresses minus 2 = 62 usable. A /30 has 4 addresses minus 2 = 2 usable, commonly used for point-to-point links.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is subnetting used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Subnetting divides large networks into smaller segments for better traffic management, improved security through logical isolation, and more efficient IP address utilization. Cloud architects design VPCs with appropriate subnets, system administrators control access between segments, and developers working with containers need subnet knowledge for service networking.</div>
       </div>
     </section>
   </div>

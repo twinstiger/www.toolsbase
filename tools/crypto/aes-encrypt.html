@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Encrypt and decrypt text using AES-256-CBC in your browser. No data sent to any server.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -54,16 +55,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is AES Encrypt/Decrypt used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">AES-256 Encrypt/Decrypt lets you encrypt and decrypt text using AES-256-CBC algorithm entirely in your browser. Keys never leave your device.</div>
+        <div class="faq-question">How does AES encryption work?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">AES (Advanced Encryption Standard) is a symmetric encryption algorithm that processes data in 128-bit blocks using cryptographic keys of 128, 192, or 256 bits. Our tool uses AES-256-GCM, which provides authenticated encryption meaning you can verify that encrypted data has not been tampered with since it was encrypted.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-question">Is my data encrypted locally or sent to a server?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">All encryption and decryption happens entirely in your browser using the Web Crypto API. Your data never leaves your device and is never transmitted to any server. This means even if someone monitors network traffic, they cannot see your encrypted content.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. AES Encrypt/Decrypt is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">What is the difference between encryption and hashing?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Encryption is reversible when you have the key, making it suitable for protecting data you need to retrieve later. Hashing produces a fixed-size output that cannot be reversed, which is ideal for password storage. AES encryption is for confidentiality, while bcrypt is for secure password hashing.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What happens if I forget my encryption password?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">If you lose your password, encrypted data cannot be recovered. There is no backdoor or password recovery mechanism because encryption happens entirely in your browser. Always keep a secure backup of your passwords and consider using a password manager.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What makes a strong encryption password?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">We recommend passwords of at least 12 characters combining uppercase, lowercase, numbers, and symbols. The PBKDF2 key derivation with 100,000 iterations helps protect against brute-force attacks by making password guessing computationally expensive. Longer passwords with more complexity exponentially increase security.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I encrypt files with this tool?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">This tool is designed for text encryption. For files, you can read the file contents into the tool, encrypt the text, and store the resulting Base64 output. To decrypt, you would paste the Base64 string back in with your password to recover the original text.</div>
       </div>
     </section>
   </div>

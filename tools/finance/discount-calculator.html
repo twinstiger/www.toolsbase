@@ -29,6 +29,7 @@
       <p class="lead-text">Calculate sale price and savings. Find the best deal when shopping.</p>
     </div>
 
+
     <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
         <div class="tool-panel-label">Original Price</div>
@@ -76,16 +77,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">How do you calculate a discount?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">To calculate a discount: multiply the original price by the discount percentage, then subtract from the original price. Formula: Final Price = Original × (1 - Discount%)</div>
+        <div class="faq-question">How do you calculate a discount percentage?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">To calculate a discount: multiply the original price by the discount percentage as a decimal, then subtract from the original price. The formula is Final Price = Original x (1 - Discount%). For example, 20% off $100 = $100 x 0.80 = $80.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is a good discount to look for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Good discounts vary by category: 20-30% off electronics, 40-50% off clothing at clearance, 10-15% off at restaurants. Use this calculator to quickly see the actual savings.</div>
+        <div class="faq-answer">Good discounts vary by category: 20-30% off electronics during sales events, 40-50% off clothing at clearance, 10-15% off at restaurants. Major retail holidays like Black Friday typically offer the deepest discounts on electronics and big-ticket items.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is my purchase information stored?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All calculations happen locally in your browser. Your financial information never leaves your device.</div>
+        <div class="faq-question">How do I calculate multiple discounts?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Multiple discounts typically apply sequentially, not additively. A 20% discount followed by 10% off the sale price is different than a single 30% discount. Calculate the first discount, then apply the second to the new price. Some stores offer loyalty discounts on the original price instead.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is the difference between discount rate and markdown?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Discount rate is the percentage reduction from the original price, while markdown refers to the absolute dollar amount saved. Both concepts measure the same price reduction differently. The discount percentage is often more useful for comparing deals across different price ranges.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my purchase information stored anywhere?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All calculations happen locally in your browser. Your financial information never leaves your device and is not stored or transmitted to any server.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is a price elasticity of demand?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Price elasticity measures how demand changes when prices change. Products with high elasticity see big demand swings with small price changes, while inelastic products (like essentials) see little demand change. Retailers use this concept to optimize discount strategies and maximize revenue.</div>
       </div>
     </section>
   </div>

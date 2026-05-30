@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Live preview for Markdown with syntax highlighting. Supports GFM, tables, task lists, and code blocks.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -54,16 +55,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Markdown Preview used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Markdown Preview renders Markdown text in real-time as you type. Supports GitHub Flavored Markdown including tables, task lists, and code blocks.</div>
+        <div class="faq-question">What Markdown features are supported?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool supports standard Markdown features: headers (H1-H6), bold and italic text, links and images, code blocks with syntax highlighting hints, blockquotes, ordered and unordered lists, horizontal rules, and inline code formatting. It also supports GitHub Flavored Markdown (GFM) extensions like tables and task lists.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-answer">No. All rendering happens locally in your browser. Your Markdown content is parsed and converted to HTML entirely on your device without any network requests. This makes it safe for writing draft documentation, private notes, or any sensitive content.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Markdown Preview is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">Why doesn't my complex Markdown render correctly?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">This tool uses a custom lightweight Markdown parser optimized for common cases. Complex nested structures, certain fenced code block scenarios, or edge cases in the GFM specification may not render perfectly. For full GFM support including strikethrough and complex tables, consider using a library-based solution.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How do I create a code block?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Wrap your code in triple backticks (```) on separate lines. The content between the backticks renders in a monospace code block. For inline code, use single backticks around the text. The tool displays code blocks with pre-formatted styling but the syntax highlighting appearance depends on your CSS styling.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I export the rendered HTML?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes, click the Download button to save the rendered HTML output as a file. This creates a standalone HTML document that displays your formatted Markdown content without needing the original source. You can also copy the rendered text using the Copy button.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What keyboard shortcuts are available?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Press Ctrl+Enter (or Cmd+Enter on Mac) to render your Markdown without needing to click the button. This is convenient for quickly updating the preview as you type or make changes to your content.</div>
       </div>
     </section>
   </div>

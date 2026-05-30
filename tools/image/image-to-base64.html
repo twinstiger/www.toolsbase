@@ -29,6 +29,7 @@
       <p class="lead-text">Convert images to Base64 data URIs for embedding directly in HTML or CSS.</p>
     </div>
 
+
     <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
         <div class="tool-panel-label">Upload Image</div>
@@ -68,12 +69,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Image to Base64 used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Convert images to Base64 data URIs that can be embedded directly in HTML or CSS without needing external files.</div>
+        <div class="faq-question">What is a data URI and why would I use it?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">A data URI embeds the image directly into your HTML or CSS as an encoded text string, using the format data:image/png;base64,iVBORw0KGgo.... This eliminates external image requests, which helps with performance in single-file deployments, email attachments, and cached pages that must work offline.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What are the trade-offs of Base64 encoding?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Base64 encoding increases file size by approximately 33% compared to the original binary. A 30KB PNG becomes about 40KB when encoded. This overhead can outweigh the benefits for larger images. Best practice is to reserve Base64 embedding for small images under 5-10KB such as icons, buttons, and UI elements.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is Base64 encoding safe to use in emails?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes, embedding images as data URIs is an excellent strategy for email. Many email clients block external image requests for privacy reasons, but embedded images display regardless. Email newsletters and marketing campaigns frequently use this technique for logos, product images, and social icons.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your images never leave your device.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Images you upload are converted to Base64 entirely on your device using the FileReader API. Your original images never leave your browser.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why does loading from URL sometimes fail?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Loading images from URLs requires the remote server to allow cross-origin requests through CORS headers. Many image hosting services and CDNs support this, but some websites block external requests. If loading fails, try downloading the image first and uploading it directly instead.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How does browser caching work with data URIs?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">When you embed images as data URIs, the HTML file containing them becomes the cache target rather than separate image files. If the HTML gets revalidated, the embedded images come along. For frequently cached pages, this can improve perceived performance by reducing total HTTP requests, though the initial page size increases.</div>
       </div>
     </section>
   </div>

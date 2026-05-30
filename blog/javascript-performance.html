@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Performance: Essential Techniques for 2026 — ToolsBase Blog</title>
+  <meta name="description" content="Master JavaScript performance optimization. Learn about memory management, render optimization, and techniques that make your web apps fast.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/javascript-performance.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>JavaScript Performance: Essential Techniques for 2026</span>
+          </div>
+          <h1>JavaScript Performance: Essential Techniques for 2026</h1>
+          <p class="lead">Learn the techniques that separate sluggish web apps from lightning-fast ones. From rendering optimization to memory management, this guide covers what every JavaScript developer should know.</p>
+          <div class="blog-article-meta">
+            <span>May 31, 2026</span>
+            <span>13 min read</span>
+            <span>JavaScript</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;max-height:320px;">
+          <img src="https://picsum.photos/seed/jsperf/800/400" alt="JavaScript Performance Optimization" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+
+        <h2>Why Performance Still Matters in 2026</h2>
+<p>Performance isn't just about speed — it's about user experience and business outcomes. Studies consistently show that slower websites mean higher bounce rates, lower conversion, and frustrated users. Every 100ms improvement in load time correlates with measurable business gains.</p>
+
+<p>JavaScript runs in the browser where it directly impacts the main thread. Poorly optimized code blocks rendering, causes jank, and creates memory leaks that degrade performance over time. Understanding these patterns isn't optional — it's foundational.</p>
+
+<h2>The Critical Path: How Browsers Execute JavaScript</h2>
+<p>Browsers execute JavaScript on a single thread. While the parser and JIT compiler handle parsing and optimization, the main thread is blocked during execution. Long-running scripts create "jank" — visible stuttering that users notice immediately.</p>
+
+<h3>Understanding the Event Loop</h3>
+<p>The event loop continuously processes tasks from the queue. Each task must complete before the next begins. If any task takes too long, subsequent tasks — including rendering — are delayed:</p>
+<pre><code>// ❌ BLOCKING — 100ms of synchronous work blocks rendering
+function processLargeData() {
+  const result = [];
+  for (let i = 0; i < 1000000; i++) {
+    result.push(heavyComputation(i));
+  }
+  return result;
+}
+
+// ✅ NON-BLOCKING — Yield to the event loop between chunks
+async function processLargeData() {
+  const result = [];
+  const CHUNK_SIZE = 1000;
+
+  for (let i = 0; i < 1000000; i += CHUNK_SIZE) {
+    // Process chunk
+    for (let j = 0; j < CHUNK_SIZE; j++) {
+      result.push(heavyComputation(i + j));
+    }
+    // Yield to event loop — allows rendering
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+  return result;
+}</code></pre>
+
+<h3>Measuring Performance</h3>
+<p>Before optimizing, measure. The Performance API provides accurate timing:</p>
+<pre><code>// Measure execution time
+console.time('operation');
+doSomething();
+console.timeEnd('operation');
+
+// Performance API for detailed measurements
+const start = performance.now();
+// ... operation ...
+const end = performance.now();
+console.log(`Duration: ${end - start}ms`);
+
+// Performance Observer for long tasks
+const observer = new PerformanceObserver((list) => {
+  list.getEntries().forEach((entry) => {
+    console.log(`Long task: ${entry.duration}ms`);
+  });
+});
+observer.observe({ type: 'longtask', buffered: true });</code></pre>
+
+<h2>Rendering Optimization</h2>
+<p>The browser renders frames at 60fps — that's 16.67ms per frame. When JavaScript takes too long, frames are skipped, causing visible stuttering.</p>
+
+<h3>Avoid Layout Thrashing</h3>
+<p>Reading layout properties forces the browser to recalculate, which is expensive when interleaved with style changes:</p>
+<pre><code>// ❌ LAYOUT THRASHING — Multiple forced layouts
+const elements = document.querySelectorAll('.item');
+elements.forEach(el => {
+  const height = el.offsetHeight;           // Forces layout
+  el.style.height = (height * 2) + 'px';   // Triggers layout
+});
+
+// ✅ BATCHED — Read all, then write all
+const elements = document.querySelectorAll('.item');
+const heights = elements.map(el => el.offsetHeight); // Read all
+elements.forEach((el, i) => {
+  el.style.height = (heights[i] * 2) + 'px'; // Write all
+});
+
+// ✅ FASTEST — Use CSS transforms (no layout)
+elements.forEach(el => {
+  el.style.transform = 'scale(2)'; // GPU-accelerated
+});</code></pre>
+
+<h3>Use requestAnimationFrame for Visual Updates</h3>
+<pre><code>// ❌ BAD — Runs at any time, may conflict with rendering
+setInterval(updateSomething, 16);
+
+// ✅ GOOD — Synced with browser rendering
+function animate() {
+  updateSomething();
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);</code></pre>
+
+<h3>Debounce and Throttle Input Handlers</h3>
+<pre><code>// Debounce — wait for pauses in input
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+// Throttle — limit execution frequency
+function throttle(func, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Usage
+window.addEventListener('resize', debounce(handleResize, 200));
+element.addEventListener('scroll', throttle(handleScroll, 100));</code></pre>
+
+<h2>DOM Manipulation Best Practices</h2>
+
+<h3>Batch DOM Operations</h3>
+<pre><code>// ❌ SLOW — Individual reflows
+for (const item of items) {
+  const div = document.createElement('div');
+  div.textContent = item;
+  container.appendChild(div);  // Triggers layout
+}
+
+// ✅ FASTER — Use DocumentFragment
+const fragment = document.createDocumentFragment();
+for (const item of items) {
+  const div = document.createElement('div');
+  div.textContent = item;
+  fragment.appendChild(div);
+}
+container.appendChild(fragment);  // Single layout
+
+// ✅ FASTEST — Build string, then set innerHTML
+const html = items.map(item => `<div>${item}</div>`).join('');
+container.innerHTML = html;  // Single parsing pass</code></pre>
+
+<h3>Use CSS Selectors Efficiently</h3>
+<pre><code>// ❌ SLOW — Complex selector
+document.querySelectorAll('.container .item[data-active] .title');
+
+// ✅ FASTER — Direct IDs and simple selectors
+document.querySelectorAll('#main .item.active .title');
+
+// ✅ FASTEST — When possible, use IDs directly
+document.getElementById('unique-item');</code></pre>
+
+<h3>Cache DOM References</h3>
+<pre><code>// ❌ BAD — Repeated queries
+function update() {
+  document.querySelector('.count').textContent = counter++;
+  document.querySelector('.count').style.color = 'red';
+  document.querySelector('.count').classList.add('pulse');
+}
+
+// ✅ GOOD — Single query, cached reference
+const countEl = document.querySelector('.count');
+function update() {
+  countEl.textContent = counter++;
+  countEl.style.color = 'red';
+  countEl.classList.add('pulse');
+}</code></pre>
+
+<h2>Memory Management</h2>
+<p>JavaScript manages memory automatically through garbage collection, but developers create memory leaks through unintended references.</p>
+
+<h3>Common Memory Leak Patterns</h3>
+
+<h4>1. Forgotten Timers and Callbacks</h4>
+<pre><code>// ❌ LEAK — Timer holds reference to component
+class Component {
+  init() {
+    this.data = fetchData();
+    this.interval = setInterval(() => {
+      this.update(this.data);
+    }, 1000);
+  }
+
+  destroy() {
+    // ❌ Missing: clearInterval(this.interval)
+  }
+}
+
+// ✅ FIXED — Clean up in destroy
+destroy() {
+  clearInterval(this.interval);
+  this.interval = null;
+}</code></pre>
+
+<h4>2. Closures Holding References</h4>
+<pre><code>// ❌ LEAK — Closure captures large object
+const largeObject = loadLargeData();
+
+element.addEventListener('click', () => {
+  // This closure holds largeObject in scope
+  processData(largeObject);
+});
+
+// ✅ FIXED — Extract what's needed
+const { id, name } = loadLargeData();
+
+element.addEventListener('click', () => {
+  // Only captures minimal data
+  processUser(id, name);
+});</code></pre>
+
+<h4>3. Detached DOM Nodes</h4>
+<pre><code>// ❌ LEAK — DOM node removed but referenced in array
+const nodes = [];
+function createNode() {
+  const div = document.createElement('div');
+  container.appendChild(div);
+  nodes.push(div);  // Holds reference even after removal
+  return div;
+}
+
+// ✅ FIXED — Remove from array on cleanup
+function removeNode(div) {
+  div.remove();
+  const index = nodes.indexOf(div);
+  if (index > -1) nodes.splice(index, 1);
+}</code></pre>
+
+<h3>Monitoring Memory</h3>
+<pre><code>// Performance.memory (Chrome only)
+if (performance.memory) {
+  console.log('Used:', performance.memory.usedJSHeapSize);
+  console.log('Total:', performance.memory.totalJSHeapSize);
+  console.log('Limit:', performance.memory.jsHeapSizeLimit);
+}
+
+// Memory snapshots in DevTools
+// 1. Take heap snapshot
+// 2. Filter by class name
+// 3. Compare snapshots to find leaks</code></pre>
+
+<h2>Efficient Data Structures</h2>
+
+<h3>Use Maps and Sets for Frequent Lookups</h3>
+<pre><code>// ❌ SLOW — Array lookups are O(n)
+const users = [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}];
+const user = users.find(u => u.id === 123);  // O(n)
+
+// ✅ FASTER — Map lookups are O(1)
+const userMap = new Map([
+  [1, {name: 'Alice'}],
+  [2, {name: 'Bob'}]
+]);
+const user = userMap.get(123);  // O(1)
+
+// Use Set for unique values
+const uniqueIds = new Set([1, 2, 3, 3, 3]);  // {1, 2, 3}</code></pre>
+
+<h3>Avoid Creating Objects in Hot Paths</h3>
+<pre><code>// ❌ SLOW — Object creation on every frame
+function getPosition(time) {
+  return { x: Math.sin(time), y: Math.cos(time) };  // New object each call
+}
+
+// ✅ BETTER — Reuse object
+const pos = { x: 0, y: 0 };
+function getPosition(time) {
+  pos.x = Math.sin(time);
+  pos.y = Math.cos(time);
+  return pos;
+}
+
+// ✅ BEST — Use typed arrays for numerical data
+const buffer = new Float64Array(2);  // Pre-allocated
+function getPosition(time) {
+  buffer[0] = Math.sin(time);
+  buffer[1] = Math.cos(time);
+  return buffer;
+}</code></pre>
+
+<h2>Network Optimization</h2>
+
+<h3>Code Splitting</h3>
+<pre><code>// ❌ SLOW — Load everything upfront
+import { FeatureA, FeatureB, FeatureC } from './features';
+
+// ✅ FASTER — Load on demand
+const FeatureA = await import('./features/FeatureA');
+const FeatureB = await import('./features/FeatureB');</code></pre>
+
+<h3>Lazy Loading Components</h3>
+<pre><code>// React lazy loading
+const HeavyComponent = React.lazy(() => import('./HeavyComponent'));
+
+// Vue lazy loading
+const HeavyComponent = () => import('./HeavyComponent');
+
+// Angular lazy loading
+const routes: Routes = [
+  { path: 'heavy', loadChildren: () => import('./heavy.module') }
+];</code></pre>
+
+<h2>Web Workers for Heavy Computation</h2>
+<p>Move expensive operations off the main thread:</p>
+<pre><code>// worker.js
+self.onmessage = function(e) {
+  const result = heavyComputation(e.data);
+  self.postMessage(result);
+};
+
+// main.js
+const worker = new Worker('worker.js');
+worker.postMessage({ largeData: data });
+worker.onmessage = function(e) {
+  updateUI(e.data);  // Safe to update DOM here
+};</code></pre>
+
+<h2>Summary: Performance Checklist</h2>
+<ul>
+<li><strong>Measure first</strong> — Use Performance API, not intuition</li>
+<li><strong>Optimize the critical path</strong> — Focus on above-the-fold content</li>
+<li><strong>Batch DOM reads and writes</strong> — Never interleave style reads with writes</li>
+<li><strong>Debounce and throttle handlers</strong> — Prevent excessive event firing</li>
+<li><strong>Use requestAnimationFrame</strong> — Sync visual updates with browser</li>
+<li><strong>Clean up timers and listeners</strong> — Prevent memory leaks</li>
+<li><strong>Use Maps for O(1) lookups</strong> — Avoid linear searches</li>
+<li><strong>Move heavy work to Web Workers</strong> — Keep main thread responsive</li>
+<li><strong>Code split and lazy load</strong> — Reduce initial bundle size</li>
+<li><strong>Profile regularly</strong> — Performance degrades over time</li>
+</ul>
+
+<p>Performance optimization is an ongoing practice, not a one-time task. Build these habits into your development workflow, and your applications will consistently deliver the fast, smooth experiences users expect.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid var(--color-border);">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

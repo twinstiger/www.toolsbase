@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Compress CSS by removing whitespace, comments, and unused rules. Optimize for production delivery.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -55,15 +56,27 @@
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is CSS Minifier used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">CSS Minifier compresses stylesheets by removing whitespace, comments, and unused rules. It preserves CSS validity and works with standard CSS3 and modern properties.</div>
+        <div class="faq-answer">CSS Minifier compresses stylesheets for production deployment by removing whitespace, comments, and unnecessary punctuation. Smaller CSS files load faster, improving page render times and Core Web Vitals metrics that affect SEO rankings.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How does the minification process work?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool removes CSS comments, trims whitespace around braces and colons, removes unnecessary semicolons before closing braces, and collapses multiple spaces into single spaces. The output maintains valid CSS syntax while dramatically reducing character count.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Will my styles still work after minification?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. The minifier only removes content that browsers ignore during rendering. All selectors, properties, and values remain intact. The visual appearance and functionality of your styles will be identical to the original.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is a typical size reduction?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Well-formatted CSS typically reduces 20-40% in size. Heavily commented stylesheets or those with extensive whitespace see larger improvements. Combine minification with HTTP compression (gzip/brotli) on your server for optimal delivery.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-answer">No. All processing happens in your browser with no external communication. Your CSS code, whether proprietary or containing sensitive design logic, stays completely private on your device.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. CSS Minifier is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">What keyboard shortcuts are available?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Press Ctrl+Enter (or Cmd+Enter on Mac) while in the input field to quickly minify your CSS. This allows rapid optimization during development without interrupting your workflow.</div>
       </div>
     </section>
   </div>

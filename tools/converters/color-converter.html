@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Convert between HEX, RGB, HSL, and other color formats. Includes color picker and palette generator.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -55,15 +56,27 @@
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is Color Converter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Color Converter is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-answer">Color Converter transforms colors between HEX, RGB, HSL, HSV, and CMYK formats for use in web development, design systems, and print production. It helps developers match design specs, designers switch between tools, and anyone working with cross-platform color specifications.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What color formats are supported?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool accepts HEX (with or without #, 3 or 6 digits), RGB and RGBA (0-255 range), HSL and HSLA (hue 0-360, saturation/lightness 0-100%), and named colors like "red", "blue", "forestgreen". All formats output to all supported formats for easy conversion.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">When should I use HEX vs RGB vs HSL?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Use HEX for CSS variables, design tokens, and compact notation. Use RGB when working with canvas, image processing, or need precise channel control. Use HSL when creating color variations, adjusting brightness/saturation, or building color palettes with consistent relationships.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is CMYK and when is it needed?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">CMYK (Cyan, Magenta, Yellow, Key/Black) is used exclusively for print production. Screens emit light while printers apply pigment, so CMYK values differ from screen colors. Convert to CMYK when preparing files for offset printing, business cards, or any physical medium.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-answer">No. All color conversions happen locally in your browser with no external communication. Your color values and design work stay completely private on your device.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Color Converter is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">What keyboard shortcuts are available?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Press Ctrl+Enter (or Cmd+Enter on Mac) while in the input field to quickly convert your color. This enables rapid format switching during design work.</div>
       </div>
     </section>
   </div>

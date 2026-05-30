@@ -29,6 +29,7 @@
       <p class="lead-text">Calculate monthly mortgage payments including principal and interest.</p>
     </div>
 
+
     <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
         <div class="tool-panel-label">Home Price</div>
@@ -86,15 +87,27 @@
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">How accurate is this mortgage calculator?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">This calculator provides estimates based on principal and interest. Actual payments may include property taxes, insurance, and PMI. Check with your lender for exact figures.</div>
+        <div class="faq-answer">This calculator provides estimates based on principal and interest using the standard amortization formula. Actual payments typically include property taxes, homeowner's insurance, PMI (if down payment is below 20%), and potentially HOA fees. Check with your lender for exact payment figures including all costs.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is a good down payment percentage?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">20% or more is ideal to avoid PMI (Private Mortgage Insurance). Some loans allow as low as 3-5% down, but you'll typically pay more in interest and insurance.</div>
+        <div class="faq-answer">20% or more is ideal to avoid PMI (Private Mortgage Insurance), which adds to your monthly cost. Some loans allow as low as 3-5% down for first-time homebuyers, but you will typically pay more in interest over the life of the loan and additional insurance premiums.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is my data saved anywhere?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All calculations happen locally in your browser. Your financial information never leaves your device.</div>
+        <div class="faq-question">Should I choose a 15-year or 30-year mortgage?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">A 15-year mortgage offers lower total interest paid but higher monthly payments. A 30-year mortgage has lower payments but pays more interest over time. Choose based on your budget comfort and whether you can afford the higher payments of a 15-year term without straining your finances.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why does the total cost differ from loan amount times interest rate?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Early in a mortgage, most of your payment goes to interest rather than principal. This front-loading means you pay more interest in the beginning of the loan. The amortization schedule shows how this shifts over time, with more going toward principal as the loan matures.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my financial data saved anywhere?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. All calculations happen locally in your browser. Your financial information never leaves your device and is not stored or transmitted to any server.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What factors affect my mortgage interest rate?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Your mortgage rate depends on credit score, down payment amount, loan term, property type, and current market conditions. Higher credit scores and larger down payments typically qualify for lower rates. Federal Reserve policy, inflation, and economic conditions also influence overall rate levels.</div>
       </div>
     </section>
   </div>

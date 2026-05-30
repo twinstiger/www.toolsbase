@@ -29,6 +29,7 @@
       <p class="lead-text">Generate favicon.ico and app icons from any image. Creates all standard sizes automatically.</p>
     </div>
 
+
     <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
         <div class="tool-panel-label">Upload Image</div>
@@ -72,12 +73,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Favicon Generator used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Generate all the icon files needed for a website's favicon across different browsers and devices.</div>
+        <div class="faq-question">What icon sizes do I need for my website?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Modern websites need multiple sizes: favicon-16x16.png and favicon-32x32.png for browser tabs, apple-touch-icon.png (180x180) for iOS home screens, android-chrome-192x192.png and android-chrome-512x512.png for Android Chrome and Progressive Web Apps, and a multi-size favicon.ico file containing 16x16, 32x32, and 48x48 for legacy browser compatibility.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How do I add these icons to my website?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Place the generated files in your website root directory. Add the appropriate link tags in your HTML head section: one for the favicon.ico (with special IE handling), separate links for apple-touch-icon and android-chrome icons. Most modern browsers automatically find favicon.ico in the root, but explicit links ensure correct icons appear everywhere.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What image format should I upload?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">PNG format works best as the source image. JPG is acceptable but loses quality on transparency. WebP offers excellent quality at smaller sizes. SVG sources maintain perfect quality at any size. Avoid GIF as a source format. The upload accepts images up to 5MB, though smaller files under 1MB process faster.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your images never leave your device.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your images never leave your device. The canvas resizing happens entirely in JavaScript, making this completely private and fast even for large images.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why does my favicon look different on dark backgrounds?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">If your favicon uses dark colors, it may become nearly invisible on dark browser chrome or dark tabs. Many designers create separate versions for light and dark contexts, or use a transparent favicon with sufficient contrast. Test your favicon at actual browser tab size (16x16) on both light and dark backgrounds to verify visibility.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How should I design an effective favicon?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Effective favicons work at tiny sizes, requiring bold shapes and high contrast. Simple letter marks, iconic symbols, or single-color designs read best at 16x16 pixels. Detailed logos lose clarity when scaled down. Test your design at actual browser tab size before finalizing. Consider that the square source image will be cropped to a perfect square before generating all sizes.</div>
       </div>
     </section>
   </div>

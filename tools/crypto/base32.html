@@ -29,6 +29,7 @@
       <p class="lead-text">Encode text to Base32 or decode Base32 back to text. 100% local, no uploads.</p>
     </div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -55,12 +56,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Base32?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Base32 is an encoding that uses 32 ASCII characters (A-Z, 2-7) to represent binary data as text. Often used in DNS, API keys, and TOTP secrets.</div>
+        <div class="faq-question">What is Base32 encoding used for?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Base32 encodes binary data using a 32-character alphabet (A-Z, 2-7) selected for human readability. It is commonly used for TOTP secrets in two-factor authentication apps, DNS zone files, and anywhere encoded data might need to be manually transcribed or appear in URLs.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How is Base32 different from Base64?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Base32 uses a smaller 32-character alphabet and produces output approximately 20% larger than the original data. Base64 is more efficient for general binary transfer. Base32 is preferred when the encoded data may be manually transcribed, needs case-insensitive handling, or appears in URLs and filenames.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why does Base32 output sometimes end with equals signs?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Padding characters (=) ensure the final encoded length is a multiple of 8 characters, which simplifies decoding and prevents ambiguous representations. Some Base32 variants omit padding for specific use cases, but the standard format always includes it.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why does Base32 avoid characters like 0, O, 1, and I?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">These characters are commonly confused in transcription and display across different fonts and screens. By using only A-Z and digits 2-7, Base32 ensures unambiguous character representation whether handwritten, displayed on screens, or transmitted through various systems.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser.</div>
+        <div class="faq-answer">No. All encoding and decoding happens locally in your browser using JavaScript. Your data never leaves your device, ensuring complete privacy for any sensitive information you are working with.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What characters does this tool support for encoding?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool supports standard ASCII text encoding. For decoding, it accepts valid Base32 characters (A-Z, 2-7) along with padding characters and whitespace. Invalid characters will trigger an error message.</div>
       </div>
     </section>
   </div>

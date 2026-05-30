@@ -21,11 +21,59 @@
 
   <main class="tool-page">
     <div class="container">
-      <div class="tool-page-header" style="text-align:center;margin-bottom:3rem;">
+      <div class="tool-page-header" style="text-align:center;margin-bottom:2rem;">
         <h1 class="tool-page-title">ToolsBase Blog</h1>
-        <p class="lead-text" style="max-width:520px;margin:0.75rem auto 0;">Practical guides, tips, and how-tos for developers. From JSON formatting to JWT authentication.</p>
+        <p class="lead-text" style="max-width:680px;margin:0.75rem auto 0;">Practical guides, tips, and how-tos for developers. From JSON formatting to JWT authentication, our articles help you work smarter and build better software.</p>
       </div>
 
+      <!-- Categories Overview -->
+      <div style="margin-bottom:3rem;padding:1.5rem;background:var(--color-bg-alt);border-radius:var(--radius-xl);">
+        <h2 style="font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--color-text-muted);">Browse by Topic</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+          <a href="#" onclick="filterByTag('All')" class="tag-filter active">All Articles</a>
+          <a href="#" onclick="filterByTag('Dev Tools')" class="tag-filter">Dev Tools</a>
+          <a href="#" onclick="filterByTag('Security')" class="tag-filter">Security</a>
+          <a href="#" onclick="filterByTag('DevOps')" class="tag-filter">DevOps</a>
+          <a href="#" onclick="filterByTag('JavaScript')" class="tag-filter">JavaScript</a>
+          <a href="#" onclick="filterByTag('Database')" class="tag-filter">Database</a>
+          <a href="#" onclick="filterByTag('Frontend')" class="tag-filter">Frontend</a>
+          <a href="#" onclick="filterByTag('Fundamentals')" class="tag-filter">Fundamentals</a>
+          <a href="#" onclick="filterByTag('Backend')" class="tag-filter">Backend</a>
+        </div>
+      </div>
+
+      <!-- Featured Articles -->
+      <div style="margin-bottom:3rem;">
+        <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1.5rem;">Featured Articles</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;">
+          <a href="/blog/git-commands.html" style="text-decoration:none;color:inherit;">
+            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
+              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">VERSION CONTROL</div>
+              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">Git Commands Handbook: From Basics to Advanced</h3>
+              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">Master Git with this comprehensive guide covering branching, merging, rebasing, stash, and team workflows.</p>
+              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">10 min read</div>
+            </div>
+          </a>
+          <a href="/blog/sql-injection-prevention.html" style="text-decoration:none;color:inherit;">
+            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
+              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">SECURITY</div>
+              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">SQL Injection: How Attacks Work and How to Prevent Them</h3>
+              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">SQL injection remains one of the most dangerous web vulnerabilities. Learn how to write code that's immune.</p>
+              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">9 min read</div>
+            </div>
+          </a>
+          <a href="/blog/api-design.html" style="text-decoration:none;color:inherit;">
+            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
+              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">BACKEND</div>
+              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">API Design Best Practices</h3>
+              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">Build better REST APIs with these best practices. Learn about URL design, HTTP methods, and error handling.</p>
+              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">10 min read</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1.5rem;">All Articles</h2>
       <div class="blog-list" id="blogList">
 
         <!-- cron-job-guide -->
@@ -470,6 +518,40 @@
           </div>
         </article>
 
+        <!-- rest-api-design -->
+        <article class="blog-card blog-card--list">
+          <a href="/blog/rest-api-design.html" class="blog-card-image-link">
+            <img src="https://picsum.photos/seed/restapi/600/280" alt="REST API Design Best Practices">
+          </a>
+          <div class="blog-card-content">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">May 31, 2026</span>
+              <span class="blog-card-tag">Backend</span>
+              <span class="blog-card-read">14 min read</span>
+            </div>
+            <h2 class="blog-card-title"><a href="/blog/rest-api-design.html">REST API Design Best Practices for 2026</a></h2>
+            <p class="blog-card-excerpt">A comprehensive guide to building REST APIs that developers love to use. Learn the patterns that separate good APIs from great ones.</p>
+            <a href="/blog/rest-api-design.html" class="blog-card-link">Read article →</a>
+          </div>
+        </article>
+
+        <!-- javascript-performance -->
+        <article class="blog-card blog-card--list">
+          <a href="/blog/javascript-performance.html" class="blog-card-image-link">
+            <img src="https://picsum.photos/seed/jsperf/600/280" alt="JavaScript Performance">
+          </a>
+          <div class="blog-card-content">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">May 31, 2026</span>
+              <span class="blog-card-tag">JavaScript</span>
+              <span class="blog-card-read">13 min read</span>
+            </div>
+            <h2 class="blog-card-title"><a href="/blog/javascript-performance.html">JavaScript Performance: Essential Techniques for 2026</a></h2>
+            <p class="blog-card-excerpt">Master JavaScript performance optimization. Learn about memory management, render optimization, and techniques that make your web apps fast.</p>
+            <a href="/blog/javascript-performance.html" class="blog-card-link">Read article →</a>
+          </div>
+        </article>
+
       </div>
 
       <!-- Pagination -->
@@ -485,17 +567,29 @@
     const ARTICLES_PER_PAGE = 10;
     let currentPage = 1;
     let totalPages = 0;
+    let currentFilter = 'All';
 
     document.addEventListener('DOMContentLoaded', function() {
-      const articles = document.querySelectorAll('#blogList article.blog-card');
-      totalPages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
-      console.log('Total articles:', articles.length, 'Total pages:', totalPages);
+      // Reorder articles by date (newest first)
+      const blogList = document.getElementById('blogList');
+      const articles = Array.from(document.querySelectorAll('#blogList article.blog-card'));
 
-      // Hide all articles first
-      articles.forEach((article, index) => {
-        article.setAttribute('data-hidden', 'true');
-        console.log('Hiding article', index);
+      // Sort by date (newest first)
+      articles.sort((a, b) => {
+        const dateA = new Date(a.querySelector('.blog-card-date').textContent);
+        const dateB = new Date(b.querySelector('.blog-card-date').textContent);
+        return dateB - dateA;
       });
+
+      // Re-append in sorted order
+      articles.forEach(article => blogList.appendChild(article));
+
+      // Apply filter
+      applyFilter(currentFilter);
+
+      totalPages = Math.ceil(
+        document.querySelectorAll('#blogList article.blog-card:not([data-hidden])').length / ARTICLES_PER_PAGE
+      );
 
       if (totalPages > 1) {
         showPage(currentPage);
@@ -503,16 +597,38 @@
       }
     });
 
-    function showPage(page) {
+    function filterByTag(tag) {
+      currentFilter = tag;
+      document.querySelectorAll('.tag-filter').forEach(el => {
+        el.classList.toggle('active', el.textContent.includes(tag) || (tag === 'All' && el.textContent === 'All Articles'));
+      });
+      applyFilter(tag);
+      showPage(1);
+    }
+
+    function applyFilter(tag) {
       const articles = document.querySelectorAll('#blogList article.blog-card');
+      articles.forEach(article => {
+        const articleTag = article.querySelector('.blog-card-tag').textContent;
+        if (tag === 'All' || articleTag === tag) {
+          article.removeAttribute('data-filtered');
+        } else {
+          article.setAttribute('data-filtered', 'true');
+        }
+      });
+      updateTotalPages();
+    }
+
+    function showPage(page) {
+      const articles = Array.from(document.querySelectorAll('#blogList article.blog-card'))
+        .filter(a => !a.hasAttribute('data-filtered'));
       const start = (page - 1) * ARTICLES_PER_PAGE;
       const end = start + ARTICLES_PER_PAGE;
-      console.log('showPage:', page, 'start:', start, 'end:', end);
 
-      articles.forEach((article, index) => {
-        if (index >= start && index < end) {
+      document.querySelectorAll('#blogList article.blog-card').forEach((article, index) => {
+        const isVisible = !article.hasAttribute('data-filtered') && index >= start && index < end;
+        if (isVisible) {
           article.removeAttribute('data-hidden');
-          console.log('Showing article', index);
         } else {
           article.setAttribute('data-hidden', 'true');
         }
@@ -520,6 +636,11 @@
 
       currentPage = page;
       updatePagination();
+    }
+
+    function updateTotalPages() {
+      const visibleArticles = document.querySelectorAll('#blogList article.blog-card:not([data-hidden]):not([data-filtered])');
+      totalPages = Math.ceil(visibleArticles.length / ARTICLES_PER_PAGE) || 1;
     }
 
     function goToPage(page) {
@@ -549,6 +670,31 @@
   </script>
 
   <style>
+    .tag-filter {
+      padding: 0.5rem 1rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .tag-filter:hover {
+      background: var(--color-bg-alt);
+      border-color: var(--color-primary);
+      color: var(--color-text);
+    }
+    .tag-filter.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+    article.blog-card[data-hidden="true"] {
+      display: none;
+    }
     .pagination {
       display: flex;
       justify-content: center;

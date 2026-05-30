@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Compress HTML by removing whitespace, comments, and optional tags. Reduces file size by up to 30%.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -55,15 +56,27 @@
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is HTML Minifier used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">HTML Minifier removes unnecessary whitespace, comments, and optional tags from HTML to reduce file size — widely used for production web optimization.</div>
+        <div class="faq-answer">HTML Minifier reduces file size by removing unnecessary whitespace, comments, and optional tags from HTML documents. This improves page load times for production websites, reduces bandwidth costs, and helps meet strict file size budgets for performance-critical applications.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How much file size reduction can I expect?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Typical reductions range from 20-30% depending on the HTML content. Documents with lots of whitespace, comments, and verbose formatting see the biggest improvements. Minification is most effective on hand-written HTML rather than output from minifiers.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Will minified HTML still work correctly in browsers?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Browsers ignore unnecessary whitespace and comments in HTML. The minified output is functionally identical to the original, but browsers parse it faster due to smaller file size. The tool preserves all tags and attributes while only removing non-essential content.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What gets removed during minification?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool removes HTML comments (including IE conditional comments), unnecessary whitespace between tags, leading and trailing whitespace, and collapses multiple spaces within text content. Inline JavaScript and CSS remain intact.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-answer">No. All minification happens in your browser with no server communication. Your HTML, which may contain proprietary code or sensitive content, stays entirely on your device during processing.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. HTML Minifier is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">What keyboard shortcuts are available?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Press Ctrl+Enter (or Cmd+Enter on Mac) while in the input field to quickly minify your HTML. This enables rapid optimization without switching from your keyboard.</div>
       </div>
     </section>
   </div>

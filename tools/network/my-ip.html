@@ -29,6 +29,7 @@
       <p class="lead-text">Instantly reveal your public IP address. Shows both IPv4 and IPv6 if available.</p>
     </div>
 
+
     <div class="tool-layout" style="justify-content:center;">
       <div class="tool-panel" style="max-width:560px;text-align:center;">
         <div class="tool-panel-label">Your IP Address</div>
@@ -48,16 +49,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is My IP Address used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">My IP Address shows your public IP address that websites see when you connect to them.</div>
+        <div class="faq-question">What's the difference between IPv4 and IPv6?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">IPv4 addresses are 32-bit numbers written as four octets like 192.168.1.1. IPv6 addresses are 128-bit numbers using hexadecimal notation like 2001:0db8:85a3:0000:0000:8a2e:0370:7334. IPv4 is running out of addresses due to internet growth, while IPv6 provides a virtually unlimited address space to accommodate all current and future devices.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can someone track my location from my IP address?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Your IP address typically reveals only your city or region level, not your exact address. Websites and advertisers use this for content targeting and analytics. Using a VPN, proxy, or Tor network masks your real IP address, though this may reduce connection speeds and some services block known VPN IP ranges.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why does my IP address keep changing?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Most residential internet service providers assign dynamic IP addresses that change periodically. This is more cost-effective for ISPs and provides some security benefits. Businesses often pay for static IPs that never change, which is necessary for hosting servers, remote access, and certain networking configurations.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device.</div>
+        <div class="faq-answer">This tool queries external services (ipify.org) to discover your public IP address, as your browser cannot directly determine its external IP. However, no personal data is sent beyond the simple request to get the IP. The actual IP lookup happens on third-party DNS services.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. My IP Address is completely free, no sign-up required, no rate limits, no ads.</div>
+        <div class="faq-question">Why can't it detect my IP when I'm behind a VPN?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">When using a VPN, the detected IP is your VPN server's address, not your original IP. This is the expected behavior and demonstrates that your VPN is working correctly. The tool shows what IP address websites see, which is the VPN's IP when protection is active.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What's the difference between public and private IP addresses?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Private IP addresses (like 192.168.x.x, 10.x.x.x, and 172.16.x.x) are used within local networks and are not routable on the internet. Your router uses Network Address Translation (NAT) to map your private IP to your public IP when communicating with external servers. This tool shows your public IP, which is what the internet sees.</div>
       </div>
     </section>
   </div>

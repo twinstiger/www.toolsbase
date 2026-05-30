@@ -29,6 +29,7 @@
       <p class="lead-text">Look up DNS records for any domain. Find A, AAAA, MX, TXT, CNAME records.</p>
     </div>
 
+
     <div class="tool-layout" style="grid-template-columns: 1fr 1fr;">
       <div class="tool-panel">
         <div class="tool-panel-label">Domain</div>
@@ -59,12 +60,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What does DNS Lookup do?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">DNS Lookup shows the IP addresses and other DNS records associated with a domain name.</div>
+        <div class="faq-question">What DNS record types can I look up?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">This tool supports A records (IPv4 addresses), AAAA records (IPv6 addresses), MX records (mail servers), TXT records (verification strings, SPF, DKIM), and CNAME records (domain aliases). Select multiple record types at once to get a complete picture of a domain's DNS configuration.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why might my DNS lookup show no records?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Several reasons: the domain may not exist or be newly registered (still propagating), the specific record type may not be configured, or the record's TTL (time-to-live) may have expired from cache. Some domains intentionally omit certain record types. If you recently made DNS changes, wait 24-48 hours for global propagation.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser using Cloudflare's DNS-over-HTTPS API.</div>
+        <div class="faq-answer">Queries are sent to Cloudflare's DNS-over-HTTPS API (cloudflare-dns.com) to perform the actual DNS lookups. No other data is sent, and no logs are created of your lookups. This provides privacy by using HTTPS instead of traditional UDP DNS queries.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How can DNS lookup help diagnose email issues?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Checking MX records helps verify that your domain points to the correct mail servers for email delivery. If email is bouncing, ensure MX records exist and point to valid mail servers. TXT records contain SPF configurations that determine which servers can send email "from" your domain—missing or incorrect SPF can cause delivery problems.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What does it mean when a domain has multiple A records?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Multiple A records typically indicate load balancing or failover configurations. When multiple IP addresses exist, browsers and servers typically try them in order, which distributes traffic across servers. If one server fails, clients will eventually try the next address in the list.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What is DNS propagation?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">DNS propagation is the time it takes for DNS changes to update globally across all servers. Each DNS record has a TTL (time-to-live) setting that determines how long servers cache it before refetching. Changes typically take effect within minutes to hours, but some configurations cache records for days. Most propagation completes within 24-48 hours.</div>
       </div>
     </section>
   </div>

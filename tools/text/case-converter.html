@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Convert text between camelCase, PascalCase, snake_case, kebab-case, and more.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -52,16 +53,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Case Converter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Case Converter is a developer tool that runs entirely in your browser. Enter your input and get instant results.</div>
+        <div class="faq-question">What case formats are supported?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool supports UPPER CASE (all caps), lower case (all lowercase), Title Case (capitalizing each word), Sentence case (first letter of sentences capitalized), camelCase (first word lowercase, subsequent words capitalized), snake_case (lowercase with underscores), kebab-case (lowercase with hyphens), and PascalCase (every word capitalized).</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">When should I use each naming convention?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Use camelCase for JavaScript variables and functions. Use PascalCase for class names and React components. Use snake_case for Python, Ruby, and database column names. Use kebab-case for CSS properties, HTML attributes, and URL slugs. JavaScript identifiers cannot include hyphens, so kebab-case is only for files and URLs.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
+        <div class="faq-answer">No. All case conversion happens locally in your browser using JavaScript string methods. Your text is transformed instantly without any network requests or data leaving your device.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Case Converter is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-question">How does the tool handle acronyms like "ID" or "HTML"?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The converter intelligently handles acronyms, keeping them uppercase in most contexts. For example, "user id" becomes "userId" (camelCase), "user id" becomes "UserId" (PascalCase), and "XML HTTP request" becomes "xmlHttpRequest" with proper capitalization of each acronym word.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What happens with numbers and special characters?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool splits text on word boundaries including spaces, hyphens, underscores, and camelCase transitions. Numbers are treated as part of words where possible. Special characters are preserved but typically used as split points for determining word boundaries.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I convert programming identifiers to readable text?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes, enter any programming identifier in its original format (like userLoginCount or user-login-count) and convert it to Title Case or Sentence case for a human-readable version. This is useful for generating display labels from variable names or converting between different code conventions.</div>
       </div>
     </section>
   </div>

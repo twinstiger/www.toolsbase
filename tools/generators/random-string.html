@@ -28,6 +28,7 @@
       </div>
       <p class="lead-text">Generate random strings with custom patterns — alphanumeric, alphanumeric with symbols, or custom charset.</p></div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -54,16 +55,28 @@
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Random String used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Random String Generator creates unpredictable strings with your choice of length, character set, and pattern — useful for tokens, API keys, and test data.</div>
+        <div class="faq-question">What are random strings used for in development?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Random strings serve many purposes: session tokens for user authentication, API keys for service identification, test data for database seeding, coupon codes, one-time passwords, and cryptographic nonces. Each use case has different requirements for length and character set.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What character sets are available?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool supports alphanumeric (a-z, A-Z, 0-9), alpha only (letters), uppercase alphanumeric, numeric only, and hexadecimal (0-9, a-f). You can also specify a custom character set to include only the characters your system allows, such as avoiding confusing characters like uppercase O and lowercase l.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How many strings can I generate at once?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">You can specify the count parameter in your input, up to 100 strings per generation. Use the format count:10 to generate 10 strings. Each string is generated using cryptographically secure random numbers, ensuring true unpredictability for security-sensitive applications.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What entropy level do I need for security tokens?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Session tokens require at least 128 bits of entropy to resist brute force attacks. With alphanumeric characters (62 options per position), a 22-character string provides sufficient entropy. For encryption keys, use longer strings matching your algorithm requirements, such as 256 bits for AES-256.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is the random generation cryptographically secure?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. The tool uses the browser's crypto.getRandomValues() API which provides cryptographically secure random numbers suitable for security-sensitive applications. This is not the same as Math.random(), which is predictable and should not be used for tokens or keys.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser. Your data never leaves your device — zero server communication.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. Random String is completely free, no sign-up required, no rate limits, no ads. Just open and use.</div>
+        <div class="faq-answer">No. All string generation happens locally in your browser using cryptographically secure random number generation. Generated strings never leave your device and are not stored or transmitted to any server.</div>
       </div>
     </section>
   </div>

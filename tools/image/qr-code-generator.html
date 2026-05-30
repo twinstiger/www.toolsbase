@@ -30,6 +30,7 @@
       <p class="lead-text">Generate QR codes from text, URLs, WiFi credentials, or contact info. Download as PNG.</p>
     </div>
 
+
     <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
@@ -63,15 +64,27 @@
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What can I encode in a QR code?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Text, URLs, WiFi credentials (WIFI:T:WPA;S:networkname;P:password;;), email addresses (mailto:), phone numbers (tel:), vCards, and more.</div>
+        <div class="faq-answer">QR codes can encode text, URLs, WiFi credentials (WIFI:T:WPA;S:networkname;P:password;;), email addresses (mailto:), phone numbers (tel:), SMS messages, vCards for contact information, and calendar events. Some formats support specialized data like payment information or deep links to apps.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What error correction level should I use?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Use Level L (7% recovery) for digital displays where the code stays pristine. Choose Level M (15%) as a general-purpose default. Level Q (25%) works well for printed materials that may wear or when adding a logo overlay. Level H (30%) is best for small codes or outdoor applications where maximum durability is essential.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Why are my QR codes hard to scan?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Several factors affect scan reliability: too much data creates too many small modules, low contrast between dark and light modules, insufficient quiet zone (white space) around the code, and physical damage or smudging. For printed codes, ensure at least 300 DPI resolution and test with actual phone cameras before mass production.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. QR codes are generated entirely in your browser using a JavaScript library. Your data never leaves your device.</div>
+        <div class="faq-answer">No. QR codes are generated entirely in your browser using a JavaScript library. Your data never leaves your device, making this tool safe for sensitive information like personal URLs or private WiFi credentials.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is it free?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes, completely free, no sign-up, no ads, no watermarks.</div>
+        <div class="faq-question">Can I customize QR code colors?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">This tool generates PNG images, which you can edit in any image software to change colors. Remember that scanners need sufficient contrast between the modules and background. Dark codes on light backgrounds scan most reliably, while colored codes on colored backgrounds may fail with some scanners.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What's the difference between PNG and SVG output?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">PNG produces a raster image at a specific resolution, which is ideal for print materials and consistent display across devices. This tool currently exports PNG format. SVG would provide vector-quality codes that scale infinitely without pixelation, useful for large-format printing or responsive designs where the code size varies.</div>
       </div>
     </section>
   </div>
