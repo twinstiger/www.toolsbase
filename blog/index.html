@@ -625,8 +625,8 @@
       const start = (page - 1) * ARTICLES_PER_PAGE;
       const end = start + ARTICLES_PER_PAGE;
 
-      document.querySelectorAll('#blogList article.blog-card').forEach((article, index) => {
-        const isVisible = !article.hasAttribute('data-filtered') && index >= start && index < end;
+      articles.forEach((article, index) => {
+        const isVisible = index >= start && index < end;
         if (isVisible) {
           article.removeAttribute('data-hidden');
         } else {
