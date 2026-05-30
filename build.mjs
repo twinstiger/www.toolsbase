@@ -149,6 +149,9 @@ function build() {
   if (fs.existsSync(path.join(ROOT, 'og-image.png'))) {
     fs.cpSync(path.join(ROOT, 'og-image.png'), path.join(DIST, 'og-image.png'));
   }
+  if (fs.existsSync(path.join(ROOT, '_redirects'))) {
+    fs.cpSync(path.join(ROOT, '_redirects'), path.join(DIST, '_redirects'));
+  }
 
   // Process HTML files
   const htmlFiles = getHtmlFiles(ROOT);
