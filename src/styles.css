@@ -225,6 +225,37 @@ body[data-theme="dark"] { background: var(--color-bg); color: var(--color-text);
 
 .hero-sub { font-size: 1rem; color: #6B7280; line-height: 1.75; margin-bottom: 2rem; max-width: 400px; }
 
+.intro-banner {
+  padding: 1.5rem 0 1rem;
+}
+.intro-banner .container {
+  border-top: 2px solid var(--color-border);
+  padding-top: 1.5rem;
+}
+.intro-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 1rem;
+  text-align: center;
+}
+.intro-text {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin: 0;
+  max-width: 95%;
+  text-align: left;
+}
+.intro-highlight {
+  font-weight: 600;
+  color: var(--color-text);
+}
+.intro-brand {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
 .hero-search { position: relative; margin-bottom: 0; z-index: 9999; }
 .hero-left { position: relative; z-index: 9999; }
 .hero-search-input {

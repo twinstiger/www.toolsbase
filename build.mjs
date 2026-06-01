@@ -106,6 +106,16 @@ function processFile(filePath, outPath) {
     html = html.replace('</head>', '  ' + seoMeta + '\n</head>');
   }
 
+  // LCP optimization: preload the hero image (first /images/blog/{id}.webp)
+  if (!html.includes('rel="preload" as="image"') && !html.includes("rel='preload' as='image'")) {
+    const lcpMatch = html.match(/\/images\/blog\/([a-z0-9-]+)\.webp/);
+    if (lcpMatch) {
+      const heroHref = `/images/blog/${lcpMatch[1]}.webp`;
+      const preloadTag = `<link rel="preload" as="image" href="${heroHref}" fetchpriority="high">`;
+      html = html.replace('</head>', '  ' + preloadTag + '\n</head>');
+    }
+  }
+
   return html;
 }
 
@@ -138,6 +148,12 @@ function build() {
   fs.cpSync(path.join(SRC, 'styles.css'), path.join(DIST, 'src', 'styles.css'));
   fs.cpSync(path.join(SRC, 'tokens.css'), path.join(DIST, 'src', 'tokens.css'));
   fs.cpSync(path.join(SRC, 'utils.js'), path.join(DIST, 'src', 'utils.js'));
+
+  // Copy images directory if it exists (blog post images, etc.)
+  const imagesSrc = path.join(SRC, 'images');
+  if (fs.existsSync(imagesSrc)) {
+    fs.cpSync(imagesSrc, path.join(DIST, 'images'), { recursive: true });
+  }
 
   // Copy root static files
   if (fs.existsSync(path.join(ROOT, 'favicon.ico'))) {
