@@ -332,13 +332,10 @@ function processFile(filePath, outPath) {
     }
   }
 
-  // HTML minification (remove whitespace between tags)
+  // HTML minification (conservative - only remove between tags)
   html = html
     .replace(/>\s+</g, '><')
-    .replace(/\s{2,}/g, ' ')
-    .replace(/\n\s*/g, '')
-    .replace(/\s+>/g, '>')
-    .replace(/>\s+/g, '>');
+    .replace(/\n\s*/g, '');
 
   return html;
 }
