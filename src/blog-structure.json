@@ -1,0 +1,646 @@
+{
+  "api-authentication": {
+    "tldr": "API authentication verifies a client's identity using one of four methods: API keys (simple, low-security), Basic Auth (legacy, only over HTTPS), OAuth 2.0 (delegated access for third-party apps), or JWT (stateless tokens for distributed systems). Choose based on whether you're authenticating first-party, third-party, or machine-to-machine clients.",
+    "takeaways": [
+      "API keys are the simplest option but only prove 'who is calling' — not 'who the user is'.",
+      "OAuth 2.0 is the standard for delegated access (e.g., 'Login with Google'); don't roll your own.",
+      "JWT is best for stateless, distributed APIs; pair with refresh tokens to avoid long-lived credentials.",
+      "Always send credentials over HTTPS — Basic Auth and API keys are base64-encoded, not encrypted."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between authentication and authorization?",
+        "a": "Authentication answers 'who are you?' — it verifies the caller's identity. Authorization answers 'what are you allowed to do?' — it checks permissions after authentication succeeds. Every API request first authenticates, then authorizes."
+      },
+      {
+        "q": "Should I use API keys or OAuth 2.0 for my public API?",
+        "a": "Use API keys for first-party apps and server-to-server integrations you control. Use OAuth 2.0 when third-party developers need delegated access on behalf of end users (e.g., 'Sign in with Google'). For internal services, mTLS or service-account JWTs are often better than long-lived API keys."
+      },
+      {
+        "q": "How long should an access token live?",
+        "a": "Keep access tokens short-lived: 5 to 60 minutes. Pair them with longer-lived refresh tokens (days to weeks) so users don't have to re-login frequently, but you can revoke access quickly if a token is compromised."
+      }
+    ]
+  },
+  "api-design": {
+    "tldr": "Well-designed REST APIs use resource-oriented URLs (nouns, not verbs), proper HTTP methods (GET, POST, PUT, PATCH, DELETE), meaningful status codes, and consistent JSON conventions. Version your API from day one, paginate every list endpoint, and document errors as carefully as successes.",
+    "takeaways": [
+      "URLs should be resources (plural nouns like /users), not actions — HTTP methods express the action.",
+      "Use 2xx for success, 4xx for client errors, 5xx for server errors; never return 200 for a failure.",
+      "Pagination is not optional — return {data, page, total, hasMore} or cursor-based links for every list.",
+      "Version your API via the URL (/v1/users) or header (Accept: application/vnd.api+json;version=2) from launch day."
+    ],
+    "faqs": [
+      {
+        "q": "REST or GraphQL — which should I use?",
+        "a": "REST is simpler, more cacheable, and easier to scale with CDNs. GraphQL shines when clients need to fetch many related resources in one request and you want to avoid over-fetching. For public APIs and simple CRUD, start with REST; consider GraphQL when you have 10+ resource types with complex relationships."
+      },
+      {
+        "q": "How do I handle API errors consistently?",
+        "a": "Return a JSON error body with: a machine-readable code (e.g., 'user_not_found'), a human message, an HTTP status, and ideally a documentation URL. Example: {error: {code: 'rate_limited', message: '100 requests per minute', doc: 'https://api.example.com/docs/errors#rate_limited'}}."
+      },
+      {
+        "q": "Should API responses be wrapped in a 'data' envelope?",
+        "a": "Wrapping ({data: [...]}) is optional but useful — it gives you room to add metadata (pagination, rate limits) without breaking clients. JSON:API and some style guides require it. Plain arrays are fine for simple internal APIs but harder to evolve."
+      }
+    ]
+  },
+  "base64-guide": {
+    "tldr": "Base64 encodes binary data as ASCII text using 64 printable characters (A–Z, a–z, 0–9, +, /). It's not encryption — anyone can decode it. Use it for embedding images in CSS/HTML, attaching files to JSON, or transmitting binary over text-only protocols like email. For URLs, use Base64URL which replaces + and / with - and _.",
+    "takeaways": [
+      "Base64 inflates data by ~33% — a 1KB file becomes ~1.37KB after encoding.",
+      "It is encoding, not encryption. Never use Base64 to hide secrets — they're trivially decoded.",
+      "Base64URL ('-_') variant is URL-safe and required for JWTs, OAuth tokens, and filename encoding.",
+      "For data URIs in CSS/HTML, keep Base64 strings under 4KB to avoid layout-blocking inline content."
+    ],
+    "faqs": [
+      {
+        "q": "When should I use Base64 vs hex encoding?",
+        "a": "Base64 is ~25% smaller than hex (since 2 hex chars encode 1 byte, but 4 Base64 chars encode 3 bytes). Use hex for readability and debugging, Base64 when size matters — embedding in URLs, JSON payloads, or CSS data URIs."
+      },
+      {
+        "q": "Can I Base64-encode a large file?",
+        "a": "Yes, but expect ~33% size inflation. For files larger than a few MB, don't Base64 — send as multipart/form-data or use a binary transfer protocol. Base64 in JSON is especially bad because JSON can't stream, so the entire payload must be in memory."
+      },
+      {
+        "q": "How do I decode Base64 in JavaScript?",
+        "a": "Use atob() to decode and btoa() to encode (browser). For modern Unicode or Node.js, use Buffer.from(str, 'base64').toString() and Buffer.from(str).toString('base64'). Note: btoa/atob only work on Latin-1 strings; convert UTF-8 via TextEncoder first."
+      }
+    ]
+  },
+  "binary-hex-guide": {
+    "tldr": "Binary (base-2) uses 0 and 1 — what computers actually store. Hexadecimal (base-16) uses 0–9 and A–F, with each hex digit representing exactly 4 binary bits. One byte (8 bits) = 2 hex digits. Hex is the human-friendly shorthand for binary: easier to read, no digit-counting errors, and exactly aligned with byte boundaries.",
+    "takeaways": [
+      "Every hex digit = 4 binary bits: F = 1111, A = 1010, 0 = 0000.",
+      "One byte (8 bits) always = exactly 2 hex digits. This 1:2 ratio is why hex dominates debugging.",
+      "255 in decimal = 11111111 in binary = FF in hex — same value, different notation.",
+      "Modern languages print memory addresses, color codes, and hash digests in hex for compactness."
+    ],
+    "faqs": [
+      {
+        "q": "Why do programmers use hex instead of decimal?",
+        "a": "Hex groups bits cleanly: 2 hex digits = 1 byte, 8 hex digits = 32-bit integer, 16 = 64-bit. Decimal has no such alignment — 1 byte can be 0–255 in decimal, which is awkward to read. Hex also maps directly to binary, so you can see bit patterns (0xFF = all 1s)."
+      },
+      {
+        "q": "What is 0xFF in decimal?",
+        "a": "0xFF = 15×16 + 15 = 255. It's the maximum value of an unsigned 8-bit byte. In code you'll see it used as a bitmask (e.g., RGB & 0xFF extracts the red channel) and as a 'all bits set' sentinel."
+      },
+      {
+        "q": "How do I convert hex to binary by hand?",
+        "a": "Convert each hex digit to its 4-bit binary equivalent: 0=0000, 1=0001, ..., 9=1001, A=1010, B=1011, C=1100, D=1101, E=1110, F=1111. Example: 0x2A = 0010 1010. Then concatenate the groups. This mental shortcut is faster than doing long division."
+      }
+    ]
+  },
+  "code-quality": {
+    "tldr": "High-quality code is correct, readable, testable, and changeable. The four pillars: clear naming, small functions (one responsibility), consistent style, and tests that document intent. Refactor continuously — code quality is a habit, not a one-time cleanup. The best metric is 'how easily can a new team member change this safely?'",
+    "takeaways": [
+      "Functions should do one thing and have one level of abstraction. If you use 'and' in the description, split it.",
+      "Names should reveal intent: getUserById beats getUserData or fetch. A good name eliminates the need for a comment.",
+      "Aim for 80% test coverage on critical paths (auth, payments, data integrity); 100% is rarely worth the cost.",
+      "Boy Scout Rule: leave code cleaner than you found it. Small, daily refactors beat annual rewrites."
+    ],
+    "faqs": [
+      {
+        "q": "How do I measure code quality objectively?",
+        "a": "Use cyclomatic complexity (< 10 per function), function length (< 30 lines), duplication ratio, and test coverage. Subjective metrics like code review feedback rates and bug density (bugs per KLOC) are equally valuable. Tools: SonarQube, CodeClimate, ESLint complexity rules."
+      },
+      {
+        "q": "When should I refactor vs rewrite?",
+        "a": "Refactor when the code structure is sound but messy (extract functions, rename, simplify). Rewrite when the architecture is fundamentally wrong (tight coupling, no tests, framework lock-in). The rule of thumb: if you can't add features without breaking things, refactor; if you can't even understand the code, consider rewrite."
+      },
+      {
+        "q": "Are code reviews worth the time?",
+        "a": "Yes — studies show 60-90% of defects are caught in review, before testing. The hidden value is knowledge sharing: every review teaches two people something. Keep reviews under 400 lines and under 60 minutes for best results; beyond that, defect detection drops sharply."
+      }
+    ]
+  },
+  "command-line": {
+    "tldr": "The command line gives you speed, composability, and scriptability no GUI can match. Master 10 core commands (ls, cd, cp, mv, rm, cat, grep, find, ps, kill), learn pipes (|) and redirection (>, >>, <), and you'll be 5x more productive. The real power is chaining simple tools: cat file.txt | grep error | sort | uniq -c.",
+    "takeaways": [
+      "Pipes (|) send one command's output to another's input — Unix's killer feature for composition.",
+      "Redirect stdout to a file with > (overwrite) or >> (append); redirect stdin with < from a file.",
+      "grep, awk, and sed are the text-processing trinity — grep filters, awk structures, sed transforms.",
+      "Ctrl+R reverses-search your history; up-arrow walks back. Master both and you never retype a long command."
+    ],
+    "faqs": [
+      {
+        "q": "Bash vs Zsh vs Fish — which shell should I use?",
+        "a": "Bash is the universal default — if you write scripts, they'll run everywhere. Zsh is the macOS default since Catalina, with better autocomplete and plugin support (Oh My Zsh). Fish has the best out-of-box UX but isn't POSIX-compatible, so scripts don't translate. For most developers: Zsh on macOS, Bash on Linux."
+      },
+      {
+        "q": "How do I run a command in the background?",
+        "a": "Append & to run async: ./server &. Use jobs to see running background jobs and fg %1 to bring one back. For long-running tasks, use nohup ./cmd & or screen/tmux to survive logout. Modern alternative: systemd services or pm2 for Node processes."
+      },
+      {
+        "q": "What's the difference between && and ; in shell?",
+        "a": "&& runs the next command only if the previous succeeded (exit 0). ; always runs the next command regardless. Use && for dependent steps (cd dir && build), ; for independent steps. There's also || which runs only if the previous failed — useful for error handling: cmd || handle_error."
+      }
+    ]
+  },
+  "cron-job-guide": {
+    "tldr": "Cron runs scheduled commands on Unix systems. A cron expression has 5 fields: minute, hour, day-of-month, month, day-of-week. Use crontab -e to edit your user's crontab. Common gotchas: cron runs with a minimal environment (no PATH, no DISPLAY), so always use absolute paths and source your shell profile.",
+    "takeaways": [
+      "5 fields: minute (0-59), hour (0-23), day-of-month (1-31), month (1-12), day-of-week (0-6, Sun=0).",
+      "Use *, */5, 1,15, and 9-17 for 'every', 'every 5 units', 'specific values', and 'ranges' respectively.",
+      "Cron has a near-empty environment — always set PATH, source ~/.bashrc, and use absolute paths.",
+      "Test with online tools like crontab.guru before deploying; logs go to syslog or your MAILTO address."
+    ],
+    "faqs": [
+      {
+        "q": "Why doesn't my cron job run?",
+        "a": "Top 5 reasons: (1) Wrong PATH — cron has /usr/bin:/bin only, not your shell's PATH. (2) Missing executable bit — chmod +x the script. (3) Environment differences — variables from .bashrc aren't loaded. (4) Permissions — the cron user can't read files. (5) Syntax error — try running the exact same command from a non-interactive shell to reproduce."
+      },
+      {
+        "q": "What's the difference between crontab and /etc/cron.d?",
+        "a": "User crontabs (crontab -e) are stored per-user in /var/spool/cron/. They run as that user. /etc/cron.d/ contains system crontabs that specify a user explicitly (root run-parts /etc/cron.daily). Use crontab -e for personal jobs; use /etc/cron.d/ for system services managed by packages."
+      },
+      {
+        "q": "How do I run a cron job every 30 seconds?",
+        "a": "Cron can't do sub-minute intervals directly. Workarounds: run every minute and sleep 30s at the start (sleep 30 && /path/to/job), or use a more capable scheduler like systemd timers, fcron, or a job queue. For most use cases, 1-minute resolution is plenty."
+      }
+    ]
+  },
+  "css-grid-flexbox": {
+    "tldr": "Flexbox is one-dimensional (row OR column) — best for nav bars, card rows, centering, and distributing space. CSS Grid is two-dimensional (rows AND columns simultaneously) — best for page layouts, image galleries, and complex dashboards. Use them together: Grid for the macro layout, Flexbox for components inside grid cells.",
+    "takeaways": [
+      "Flexbox: think 'items in a line'. Use justify-content (main axis) and align-items (cross axis).",
+      "Grid: think 'rows and columns'. Use grid-template-columns/rows to define the structure explicitly.",
+      "grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) makes responsive grids with zero media queries.",
+      "Don't fight one tool to do the other's job — Flexbox inside a Grid cell is a powerful pattern."
+    ],
+    "faqs": [
+      {
+        "q": "When should I use Grid vs Flexbox?",
+        "a": "Use Grid when you need alignment in two dimensions — page layouts, image galleries, forms with aligned labels, complex dashboards. Use Flexbox for one-dimensional distribution — nav bars, button groups, card rows, vertical centering. The 'rule': if you're setting widths AND heights of children, you probably want Grid."
+      },
+      {
+        "q": "How does auto-fit minmax work?",
+        "a": "grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) creates as many columns as fit, each at least 250px, growing equally to fill space. Wrap this around a container and you get a responsive card grid with zero breakpoints. auto-fill differs by leaving empty tracks; auto-fit collapses them."
+      },
+      {
+        "q": "Why is my flex item overflowing?",
+        "a": "Flex items have a default min-width: auto which prevents shrinking below content size. To fix: add min-width: 0 (or min-height: 0 for column flex) to allow proper shrinking. This is the #1 cause of horizontal scroll on flex layouts."
+      }
+    ]
+  },
+  "docker-commands": {
+    "tldr": "Docker packages apps into portable containers with all dependencies included. The core workflow: docker build (create image from Dockerfile), docker run (start container from image), docker ps (list running), docker stop (graceful shutdown), docker rm (cleanup). Use docker compose for multi-container apps — one YAML file replaces a dozen docker run commands.",
+    "takeaways": [
+      "Images are immutable blueprints; containers are running instances. Build once, run anywhere.",
+      "Use multi-stage builds to keep final images small — copy only the build artifacts, not the toolchain.",
+      "docker compose up -d starts a stack in detached mode; docker compose logs -f tails the logs.",
+      "Always pin versions in production: FROM node:20.11-alpine, not FROM node:latest."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between Docker and a virtual machine?",
+        "a": "VMs run a full guest OS with a hypervisor — heavy (GBs, minutes to boot). Docker containers share the host kernel and only package the app + dependencies — light (MBs, seconds to boot). Containers aren't as isolated as VMs (shared kernel is a security boundary), but for most apps the trade-off is worth it."
+      },
+      {
+        "q": "How do I persist data in Docker?",
+        "a": "Use volumes: docker run -v mydata:/var/lib/data mounts a named volume. Bind mounts (-v ./host/path:/container/path) link a host directory. Volumes outlive containers; bind mounts are great for development. Never store data inside the container's writable layer — it disappears when the container is removed."
+      },
+      {
+        "q": "How do I make a Docker image smaller?",
+        "a": "Use alpine or distroless base images (5-50MB vs 200MB+ for Debian). Multi-stage builds — compile in one stage, copy only the artifact to a minimal runtime stage. Clean up apt cache in the same RUN: RUN apt-get update && apt-get install -y pkg && rm -rf /var/lib/apt/lists/*. Order layers from least-changed to most-changed for better cache hits."
+      }
+    ]
+  },
+  "git-commands": {
+    "tldr": "Git tracks file changes with snapshots, not diffs. The 10 essential commands: clone, add, commit, push, pull, status, log, diff, branch, merge. Master interactive rebase (git rebase -i) to clean history before merging, and you'll write professional-grade commit histories. The mental model: working directory → staging area → local repo → remote repo.",
+    "takeaways": [
+      "git status and git diff are your safety net — check them before every commit.",
+      "git rebase -i HEAD~3 lets you squash, reorder, or reword the last 3 commits before pushing.",
+      "Never rebase commits that have been pushed and shared — it rewrites history others depend on.",
+      "Atomic commits (one logical change per commit) make git bisect and code review dramatically easier."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between merge and rebase?",
+        "a": "Merge preserves the history of both branches and creates a merge commit — non-destructive, safe for shared branches. Rebase replays your commits on top of the target branch — linear history, cleaner, but rewrites commit hashes. Rule: rebase your local feature branch before merging; never rebase main or shared branches."
+      },
+      {
+        "q": "How do I undo a git commit?",
+        "a": "git reset --soft HEAD~1 undoes the commit but keeps changes staged. git reset HEAD~1 undoes commit and unstages. git reset --hard HEAD~1 destroys everything (use with caution). For pushed commits, use git revert <hash> which creates a new 'undo' commit — safe for shared history."
+      },
+      {
+        "q": "What is git stash and when should I use it?",
+        "a": "git stash saves uncommitted changes to a stack and reverts your working directory to HEAD. Use it when you need to switch branches but aren't ready to commit. git stash pop restores them. git stash list shows the stack. Stash with a message: git stash push -m 'wip: refactoring auth'."
+      }
+    ]
+  },
+  "http-status-codes": {
+    "tldr": "HTTP status codes are 3-digit numbers: 1xx informational, 2xx success, 3xx redirect, 4xx client error, 5xx server error. The most important: 200 OK, 201 Created, 204 No Content, 301 Moved Permanently, 304 Not Modified, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 429 Too Many Requests, 500 Internal Server Error, 503 Service Unavailable.",
+    "takeaways": [
+      "2xx = success, 3xx = redirect, 4xx = client's fault, 5xx = server's fault. Pick the most specific code.",
+      "401 means 'no/invalid auth' — try logging in. 403 means 'authenticated but not allowed' — talk to admin.",
+      "Use 404 for missing resources and 410 Gone for resources that were deleted and won't come back.",
+      "429 Too Many Requests is essential for rate limiting — always include a Retry-After header."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between 401 and 403?",
+        "a": "401 Unauthorized means 'you haven't proven who you are' — missing or invalid authentication credentials. 403 Forbidden means 'I know who you are, but you can't do this' — you're authenticated but lack permission. Many APIs misuse 403 for both; the distinction helps clients debug auth flows."
+      },
+      {
+        "q": "Should I return 404 or 400 for invalid input?",
+        "a": "400 Bad Request for malformed requests (invalid JSON, missing required fields, bad format). 404 Not Found for valid requests referencing non-existent resources. 422 Unprocessable Entity is the precise code for valid syntax but semantically wrong data (e.g., 'email already taken')."
+      },
+      {
+        "q": "What does 304 Not Modified mean?",
+        "a": "304 means 'the resource hasn't changed since you last fetched it — use your cache.' The server checks the If-Modified-Since or If-None-Match headers and returns 304 if the client's cached version is still current. This saves bandwidth dramatically for repeat requests."
+      }
+    ]
+  },
+  "javascript-debugging": {
+    "tldr": "Modern JS debugging starts with browser DevTools — Sources tab for breakpoints, Console for live evaluation, Network for API inspection, Performance for slow code. Use console.log strategically (with labels), master conditional breakpoints, and learn to read stack traces. For Node.js, use --inspect to attach Chrome DevTools to server-side code.",
+    "takeaways": [
+      "console.log('🚀 fetchUser called', { userId, timestamp }) — labels and objects beat bare values.",
+      "Conditional breakpoints (right-click → 'Edit breakpoint') pause only when X > 100 — saves hours.",
+      "The 'debugger' statement pauses execution in DevTools without setting UI breakpoints — great for production code.",
+      "Read stack traces bottom-up: the last line is the error, the lines above are the call chain that led to it."
+    ],
+    "faqs": [
+      {
+        "q": "Why is console.log not showing my object's current state?",
+        "a": "Browsers log live references, not snapshots. By the time you expand the object in DevTools, the code may have mutated it. Fix: console.log(JSON.parse(JSON.stringify(obj))) for a snapshot, or pause execution with a debugger; statement before logging."
+      },
+      {
+        "q": "How do I debug a Node.js application?",
+        "a": "Three approaches: (1) node --inspect-brk app.js starts with a breakpoint at line 1, then open chrome://inspect in Chrome. (2) Add 'inspect' or console.log strategically. (3) Use the built-in debugger module. For production, structured logging (pino, winston) beats console.log — it adds timestamps, levels, and context."
+      },
+      {
+        "q": "What's the fastest way to find a performance bottleneck?",
+        "a": "Use Chrome DevTools Performance tab — record a few seconds of interaction, then look at the flame chart. Red bars = long tasks (>50ms). The 'Bottom-Up' tab sorts functions by total time spent. For specific functions, use console.time('label') ... console.timeEnd('label') or performance.now() for micro-benchmarks."
+      }
+    ]
+  },
+  "javascript-es6": {
+    "tldr": "ES6 (2015) modernized JavaScript with arrow functions, const/let, template literals, destructuring, spread/rest, classes, modules, and Promises. The features that matter most in 2026: destructuring, spread, optional chaining, nullish coalescing, and async/await. ES2020+ added ??, ?., ?., and top-level await — learn them before older patterns.",
+    "takeaways": [
+      "Use const by default, let if you need to reassign, never var — it has function scope and hoisting surprises.",
+      "Optional chaining (?.) and nullish coalescing (??) eliminate most null-check boilerplate: user?.name ?? 'Anonymous'.",
+      "Template literals: `Hello ${name}` beats 'Hello ' + name — embedded expressions, multi-line, no escaping.",
+      "Destructuring with defaults: const { id, name = 'Anonymous' } = user; reads like a type definition."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between == and ===?",
+        "a": "== coerces types (5 == '5' is true). === requires same type and value (5 === '5' is false). Always use === — type coercion has weird edge cases ([] == false is true, [0] == false is true, but [1,2] == false is false). The only common valid use of == is == null to check both null and undefined."
+      },
+      {
+        "q": "What are arrow functions good for and not good for?",
+        "a": "Arrow functions are great for short callbacks and methods that don't need their own 'this' binding: [1,2,3].map(n => n*2). They're bad when you need 'this' (object methods, constructors, event handlers in classes) because arrows inherit 'this' lexically. They also can't be used as constructors — new (() => {}) throws."
+      },
+      {
+        "q": "When should I use async/await vs .then()?",
+        "a": "async/await is more readable for sequential logic: const data = await fetch(url). Use .then() for fire-and-forget or when you explicitly want parallel execution: Promise.all(urls.map(u => fetch(u))). Mixing them is fine but be careful with error handling — async/await needs try/catch, .then() chains need .catch()."
+      }
+    ]
+  },
+  "javascript-performance": {
+    "tldr": "Most JS performance issues come from: unnecessary re-renders, large bundle sizes, blocking the main thread, memory leaks, and network waterfalls. The big wins: code-split with dynamic imports, debounce user input handlers, virtualize long lists, use Web Workers for CPU-heavy tasks, and measure with Lighthouse and DevTools Performance tab before optimizing.",
+    "takeaways": [
+      "Bundle size matters most for first load — every 100KB adds ~1s on 3G. Use code-splitting and tree-shaking.",
+      "Long tasks (>50ms) block the main thread. Break work into chunks with requestIdleCallback or setTimeout(0).",
+      "Memory leaks come from forgotten timers, detached DOM nodes, and growing arrays in closures — use WeakMap for caches.",
+      "Profile before optimizing — DevTools Performance and Memory tabs show exactly where time and memory go."
+    ],
+    "faqs": [
+      {
+        "q": "How do I reduce my JavaScript bundle size?",
+        "a": "Use code-splitting: import() for routes and heavy features. Tree-shake unused exports (works automatically with ES modules and modern bundlers). Replace heavy libraries with smaller alternatives (moment → date-fns, lodash → individual functions). Analyze with webpack-bundle-analyzer or source-map-explorer to find the biggest chunks."
+      },
+      {
+        "q": "When should I use a Web Worker?",
+        "a": "Web Workers run JS off the main thread, perfect for: heavy computations (image processing, crypto, large data transforms), parsing large JSON, and complex search/sort algorithms. Don't use them for DOM manipulation or quick API calls — the overhead of postMessage() outweighs the benefit. Comlink library makes Worker communication ergonomic."
+      },
+      {
+        "q": "What causes a memory leak in JavaScript?",
+        "a": "Three common causes: (1) Forgotten timers — setInterval never cleared, (2) Detached DOM nodes — referenced only by closures, (3) Event listeners on removed elements. The browser's GC can't free memory that's still referenced. Fix: clear timers in cleanup, null out references when done, use AbortController for fetch + event listeners."
+      }
+    ]
+  },
+  "json-formatter-guide": {
+    "tldr": "JSON (JavaScript Object Notation) is a text format for structured data: objects ({...}), arrays ([...]), strings, numbers, booleans, and null. Always validate before parsing (use JSON.parse with try/catch), format with 2-space indent for readability, and use a schema validator (ajv, jsonschema) for critical data. JSON is not JavaScript — it doesn't support functions, undefined, comments, or trailing commas.",
+    "takeaways": [
+      "JSON syntax: double-quoted keys and strings, no trailing commas, no comments, no functions or undefined.",
+      "Always wrap JSON.parse in try/catch — it throws on malformed input, and that error is full of debugging gold.",
+      "Use schema validation (JSON Schema, Zod, Yup) for any data crossing trust boundaries — user input, APIs, configs.",
+      "For large JSON (>1MB), stream-parse with libraries like stream-json instead of JSON.parse — saves memory and time."
+    ],
+    "faqs": [
+      {
+        "q": "Why is my JSON.parse returning undefined?",
+        "a": "JSON.parse throws on invalid input, it doesn't return undefined. Common causes: single quotes instead of double, trailing commas, NaN/Infinity (not valid JSON), or undefined values (use null instead). The thrown error message usually points to the exact position. Always use try/catch."
+      },
+      {
+        "q": "JSON vs YAML vs TOML — which should I use?",
+        "a": "JSON for APIs and data interchange (universal, fast, strict). YAML for configuration files (more readable, supports comments, indentation-based). TOML for package manifests and CLI config (explicit, no indentation gotchas, fewer surprises). Avoid YAML for complex nested data — its whitespace rules are error-prone."
+      },
+      {
+        "q": "How do I pretty-print JSON in JavaScript?",
+        "a": "JSON.stringify(obj, null, 2) — the 2 is the indent spaces. For sorted keys: JSON.stringify(obj, Object.keys(obj).sort(), 2). To pretty-print in a string template, use a library like pretty-bytes or just string.replace with regex for ad-hoc formatting."
+      }
+    ]
+  },
+  "jwt-authentication": {
+    "tldr": "A JWT (JSON Web Token) is a compact, URL-safe token format with three base64url-encoded parts: Header (algorithm), Payload (claims), and Signature (HMAC or RSA). It's signed, not encrypted — anyone can read the payload, so never put passwords or PII in it. Use JWT for stateless API auth with short expiration (15-60 min) and refresh tokens for longer sessions.",
+    "takeaways": [
+      "Three parts separated by dots: xxxxx.yyyyy.zzzzz = Header.Payload.Signature.",
+      "Signed with HS256 (symmetric, shared secret) or RS256 (asymmetric, public/private key pairs).",
+      "Payload is just base64-encoded — NOT encrypted. Never store passwords, SSNs, or PII in claims.",
+      "Always validate signature, algorithm, and expiration. Never trust the 'alg' field from the token itself."
+    ],
+    "faqs": [
+      {
+        "q": "JWT vs session cookies — which should I use?",
+        "a": "JWT is best for stateless APIs, microservices, and SPAs that need to call multiple services without a shared session store. Session cookies are simpler for traditional server-rendered apps, allow immediate server-side revocation, and have built-in CSRF protection. For most web apps, httpOnly session cookies are safer; reach for JWT when you genuinely need statelessness."
+      },
+      {
+        "q": "Where should I store JWTs on the client?",
+        "a": "Best: httpOnly + Secure + SameSite=Strict cookie — immune to XSS theft but needs CSRF protection. Acceptable: in-memory (lost on refresh, no XSS risk but bad UX). Avoid: localStorage — any XSS vulnerability lets attackers steal the token and all your user's data. The httpOnly cookie approach is the industry standard for sensitive apps."
+      },
+      {
+        "q": "How do I revoke a JWT before it expires?",
+        "a": "JWTs can't be truly revoked without checking the server (defeating statelessness). Three workarounds: (1) Short expiration (15 min) + refresh tokens you can revoke, (2) Maintain a server-side 'revoked jti' list checked on every request, (3) Use a token versioning system where the user's current version is stored server-side. For most apps, short expiration + refresh tokens is the right answer."
+      }
+    ]
+  },
+  "markdown-syntax-guide": {
+    "tldr": "Markdown is a lightweight text format that converts to HTML. Core syntax: # for headings, **bold**, *italic*, [text](url) for links, ![alt](src) for images, `code` and ``` for code blocks, > for quotes, - or 1. for lists, | tables | for tables. Most platforms support GitHub-Flavored Markdown (GFM) which adds task lists, autolinks, and table support.",
+    "takeaways": [
+      "Headings: # H1, ## H2, ### H3 — start with H1 and don't skip levels for screen readers.",
+      "Lists use consistent markers: - or * for bullets, 1. for ordered. Mixed markers break some renderers.",
+      "Code fences with language hints get syntax highlighting: ```javascript, ```python, ```bash.",
+      "Two trailing spaces create a line break (`  `) — single newlines are usually collapsed into a space."
+    ],
+    "faqs": [
+      {
+        "q": "What is the difference between Markdown flavors?",
+        "a": "Common flavors: CommonMark (the strict standard), GitHub-Flavored Markdown (GFM — adds tables, task lists, autolinks), MultiMarkdown (footnotes, citations), and Pandoc Markdown (everything plus LaTeX math). Most platforms target GFM. When in doubt, stick to the core CommonMark syntax — it works everywhere."
+      },
+      {
+        "q": "How do I escape special Markdown characters?",
+        "a": "Backslash escapes most chars: \\*literal asterisk\\* renders as *literal asterisk*. For code spans and code blocks, content is rendered literally — no escaping needed. If your text has a lot of underscores or asterisks, use code formatting to avoid unintended emphasis. For literal hashtags in some renderers, prefix with \\."
+      },
+      {
+        "q": "Can I use HTML inside Markdown?",
+        "a": "Yes, all Markdown flavors allow inline HTML for things Markdown can't express: <details>, <kbd>, <sub>, <sup>, complex tables, embedded videos. Use it sparingly — pure Markdown is more portable, easier to convert to other formats, and easier to read as source. The 'Markdown for structure, HTML for edge cases' rule of thumb works well."
+      }
+    ]
+  },
+  "password-security": {
+    "tldr": "Strong passwords are long (16+ characters), unique per site, and randomly generated. The biggest risk isn't weak passwords — it's password reuse. Use a password manager (1Password, Bitwarden) to generate and store unique passwords, enable 2FA everywhere, and never store passwords in plain text. Hash with bcrypt (cost 12+) or Argon2id, never MD5 or SHA-1.",
+    "takeaways": [
+      "Length beats complexity: 'correcthorsebatterystaple' is stronger than 'P@ssw0rd!' and easier to remember.",
+      "bcrypt (cost 12+) or Argon2id are the only acceptable password hashing algorithms in 2026.",
+      "Never email passwords in plain text. Send a one-time reset link with 15-minute expiration.",
+      "Rate-limit login attempts (5 per 15 min per IP) and add CAPTCHA after 3 failed attempts to prevent brute force."
+    ],
+    "faqs": [
+      {
+        "q": "How often should I require users to change their password?",
+        "a": "NIST guidelines no longer recommend forced periodic password changes — they lead to predictable patterns (Spring2026!, Summer2026!). Force a change only when there's evidence of compromise. Instead, monitor for breached credentials (HaveIBeenPwned API) and force resets only on detected leaks or suspicious activity."
+      },
+      {
+        "q": "What's the right way to store passwords?",
+        "a": "Hash with bcrypt (cost factor 12+), scrypt, or Argon2id. Never MD5, SHA-1, or unsalted SHA-256 — they're too fast to crack. Add a unique salt per password (bcrypt does this automatically). Store the salt alongside the hash. Never log passwords, never email them, never display them in plain text after entry."
+      },
+      {
+        "q": "Is 2FA really necessary if I have a strong password?",
+        "a": "Yes. Passwords leak constantly via breaches, phishing, and keyloggers. 2FA is the single biggest account-protection upgrade available — it blocks 99.9% of automated attacks per Microsoft research. Prefer authenticator apps (Authy, Google Authenticator) or hardware keys (YubiKey) over SMS, which is vulnerable to SIM-swap attacks."
+      }
+    ]
+  },
+  "regex-cheatsheet": {
+    "tldr": "Regex is a pattern language for matching text. The essentials: . matches any char, \\d digits, \\w word chars, \\s whitespace, ^ start, $ end, * zero+, + one+, ? optional, {n,m} repeat range, [...] character class, (...) capture group, (?:...) non-capturing. Build patterns incrementally and test with regex101.com. Always escape special chars: . + * ? ^ $ ( ) [ ] { } | \\",
+    "takeaways": [
+      "Anchors ^ and $ match position, not characters — use them to avoid partial matches.",
+      "Character classes [a-z] are faster than alternation (a|b|c) for single characters.",
+      "Greedy vs lazy: .* is greedy (matches as much as possible), .*? is lazy (matches as little as possible).",
+      "Use named captures (?<year>\\d{4}) for readability and easy extraction in code."
+    ],
+    "faqs": [
+      {
+        "q": "Why is my regex not matching what I expect?",
+        "a": "Three usual suspects: (1) Missing anchors ^ and $ — /^\\d+$/ requires the whole string to be digits, but /\\d+/ matches 'abc123def'. (2) Greedy quantifiers — .* grabs too much; add ? for laziness. (3) Special characters unescaped — a literal dot needs \\., a literal paren needs \\(."
+      },
+      {
+        "q": "What's the difference between \\b and \\B?",
+        "a": "\\b matches a word boundary — the position between \\w and \\W (or string start/end). \\B matches the opposite — anywhere a word boundary is NOT. Use \\bword\\b to match 'word' but not 'sword' or 'wordy'. \\b doesn't consume characters; it's a zero-width assertion."
+      },
+      {
+        "q": "How do I make my regex faster?",
+        "a": "Avoid catastrophic backtracking: nested quantifiers like (a+)+ are exponential. Use possessive quantifiers (a++) or atomic groups ((?>a+)) when supported. Prefer character classes over alternation: [aeiou] is faster than (a|e|i|o|u). Compile once if reusing: don't re-create the regex in a loop."
+      }
+    ]
+  },
+  "regex-common-patterns": {
+    "tldr": "The 20 regex patterns you'll use most: email, URL, IPv4, phone, hex color, date, time, username, password strength, slug, IPv6, MAC address, HTML tag, JSON key, semver, credit card, UUID, file path, hashtag, mention. Each is a starting point — production regex needs testing against your specific input.",
+    "takeaways": [
+      "There is no perfect email regex. The simple pattern catches typos; the RFC-compliant pattern is unreadable.",
+      "Anchor with ^ and $ for validation: /^pattern$/. Without anchors, /pattern/ matches anywhere in the string.",
+      "Test against real-world inputs (and their edge cases) using regex101.com or your language's test runner.",
+      "For 90% of use cases, the simple patterns in this guide are good enough — perfect is the enemy of shipped."
+    ],
+    "faqs": [
+      {
+        "q": "What's the best email validation regex?",
+        "a": "For most apps: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/. It catches 99% of typos. For the truly RFC-compliant version (5300+ characters), see the emailregex.com page — but it's unreadable and the false-negative rate is actually worse. Better strategy: send a confirmation email rather than reject valid-looking addresses."
+      },
+      {
+        "q": "How do I match a URL?",
+        "a": "Simple: /https?:\\/\\/[\\w\\-]+(\\.[\\w\\-]+)+([\\/?#].*)?/. Production-grade URL parsing is a job for the URL/URI parser built into your language (URL constructor in JS, urllib in Python, java.net.URI in Java). Use regex for quick filtering, but use the parser for anything that touches user data."
+      },
+      {
+        "q": "Should I use regex to parse HTML?",
+        "a": "No. Regex is the wrong tool for HTML — it can't handle nested tags, attributes with > in them, CDATA sections, or comments reliably. Use a real HTML parser: DOMParser in JS, BeautifulSoup in Python, Nokogiri in Ruby. The Stack Overflow answer that starts 'you can't parse HTML with regex' has 13,000 upvotes for a reason."
+      }
+    ]
+  },
+  "rest-api-design": {
+    "tldr": "REST is an architectural style, not a protocol. Good REST APIs are resource-oriented (/users/123, not /getUser), use HTTP methods semantically (GET = read, POST = create, PUT = replace, PATCH = update, DELETE = remove), return proper status codes, support filtering/pagination, and document every endpoint with OpenAPI/Swagger.",
+    "takeaways": [
+      "URLs are resources (nouns, plural): /articles/42/comments. HTTP methods are actions: GET, POST, PUT, PATCH, DELETE.",
+      "Use status codes precisely: 200 OK (read), 201 Created (new resource), 204 No Content (delete success), 400/422 for bad input.",
+      "Pagination is required for any list endpoint — return {data, page, total} or use cursor-based links.",
+      "HATEOAS (hypermedia links in responses) is theoretically pure but rarely used in practice; stick with OpenAPI docs."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between PUT and PATCH?",
+        "a": "PUT replaces the entire resource — send all fields, missing ones are removed. PATCH applies a partial update — send only the fields you want to change. PUT is idempotent (same result on repeat), PATCH may or may not be. Use PUT for full updates, PATCH for incremental ones, and document the merge strategy clearly."
+      },
+      {
+        "q": "Should I use singular or plural nouns in URLs?",
+        "a": "Plural. /users/123 not /user/123. Reason: /users describes the collection, and /users/123 describes a specific item in that collection — consistent for both list and detail. Singular breaks the symmetry and forces /user/123 vs /users in different endpoints."
+      },
+      {
+        "q": "How do I version a REST API?",
+        "a": "Three options: (1) URL versioning: /v1/users — simple, cacheable, easy to test. (2) Header versioning: Accept: application/vnd.api+json;version=2 — clean URLs, harder to test in browser. (3) Query param: /users?api-version=2 — worst of both worlds. For most APIs, URL versioning wins on simplicity. Maintain at least 2 versions simultaneously for 6-12 months after a new release."
+      }
+    ]
+  },
+  "sql-basics": {
+    "tldr": "SQL has four core operations: SELECT (read), INSERT (create), UPDATE (modify), DELETE (remove). Master JOINs (INNER, LEFT, RIGHT, FULL OUTER) to combine data from multiple tables, and aggregations (GROUP BY, COUNT, SUM, AVG) for analytics. Use WHERE for filtering, ORDER BY for sorting, LIMIT for pagination, and indexes for performance.",
+    "takeaways": [
+      "JOINs: INNER (matching rows only), LEFT (all from left + matches), RIGHT (mirror of LEFT), FULL OUTER (everything).",
+      "WHERE filters before GROUP BY; HAVING filters after. You can't use column aliases in WHERE — use HAVING instead.",
+      "Use EXPLAIN before optimizing slow queries — it shows the query plan and reveals missing indexes.",
+      "Always use parameterized queries for user input. String concatenation is the #1 cause of SQL injection."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between INNER JOIN and LEFT JOIN?",
+        "a": "INNER JOIN returns only rows that have matches in both tables. LEFT JOIN returns ALL rows from the left table, with NULL for missing right-side columns. Use INNER when you only want related data (e.g., 'users with orders'). Use LEFT when you need to preserve the left side ('all users, with their orders if any')."
+      },
+      {
+        "q": "How do I count distinct values?",
+        "a": "SELECT COUNT(DISTINCT column) FROM table. For multiple columns: COUNT(DISTINCT (col1, col2)) — note the parens, it's a row-count not a tuple-count in some databases. For a count of distinct combinations, use GROUP BY instead: SELECT col1, col2, COUNT(*) FROM table GROUP BY col1, col2."
+      },
+      {
+        "q": "When should I add an index?",
+        "a": "Index columns used in WHERE, JOIN, and ORDER BY clauses — but only on tables with significant row counts. Avoid indexing: (1) small tables (<1000 rows), (2) columns with low cardinality (e.g., boolean), (3) tables with heavy INSERT/UPDATE workloads (indexes slow writes). Composite indexes help when queries filter on multiple columns in the same order."
+      }
+    ]
+  },
+  "sql-injection-prevention": {
+    "tldr": "SQL injection happens when user input is concatenated into SQL strings. Prevention: always use parameterized queries (prepared statements) — the database treats the input as data, never as code. Additional defenses: ORMs that parameterize by default, input validation, least-privilege database users, and WAFs as a last line of defense. Never trust user input, ever.",
+    "takeaways": [
+      "Parameterized queries are 100% effective against SQL injection when used correctly. There is no excuse not to use them.",
+      "Use ORMs (Sequelize, SQLAlchemy, Prisma) — they parameterize by default and prevent most mistakes.",
+      "Apply least privilege: the DB user your app uses shouldn't have DROP, GRANT, or FILE privileges.",
+      "Use stored procedures cautiously — they help, but dynamic SQL inside stored procs is still vulnerable."
+    ],
+    "faqs": [
+      {
+        "q": "Are ORMs completely safe from SQL injection?",
+        "a": "ORMs are safe for standard queries. They become unsafe when you use raw query methods (sequelize.literal, .raw()) or pass unsanitized user input to where clauses via $queryRaw. The rule: any function that lets you write SQL strings (raw queries, .raw(), .execute()) requires the same caution as raw queries — parameterize every value."
+      },
+      {
+        "q": "What is second-order SQL injection?",
+        "a": "Second-order injection happens when user input is safely stored (parameterized) but later retrieved and concatenated into a query. Example: a username 'admin'--' is stored safely, then loaded into a profile-update query built via string concatenation. Defense: parameterize every query, even those using previously-stored data — the data's origin doesn't matter, only how you use it."
+      },
+      {
+        "q": "Should I use a WAF to prevent SQL injection?",
+        "a": "A WAF (Web Application Firewall) is a useful second line of defense but never a substitute for parameterized queries. WAFs catch known patterns and can stop automated scanners, but clever attackers bypass them. Use a WAF in addition to parameterized queries, not instead. The OWASP ModSecurity Core Rule Set is a good starting point."
+      }
+    ]
+  },
+  "url-encoding-guide": {
+    "tldr": "URLs can only contain a limited set of ASCII characters: letters, digits, and a few symbols (-, _, ., ~). Everything else must be percent-encoded (%XX where XX is the hex code). Spaces become %20 or + (in query strings). For Unicode, encode to UTF-8 first then percent-encode each byte. The encodeURIComponent function in JavaScript handles this for you.",
+    "takeaways": [
+      "Reserved chars in URLs (?, &, =, #) have special meaning — they must be encoded inside values, not in the structure.",
+      "Space → %20 in paths, + in query strings (application/x-www-form-urlencoded format).",
+      "Always use encodeURIComponent() in JavaScript, never encodeURI() — the latter leaves & and = unescaped.",
+      "For non-ASCII (Chinese, emoji, accented chars), encode to UTF-8 first, then percent-encode each byte."
+    ],
+    "faqs": [
+      {
+        "q": "When should I use encodeURI vs encodeURIComponent?",
+        "a": "encodeURI is for whole URLs — it preserves URL structure (&, =, /, :, ?). encodeURIComponent is for individual values (query parameters, path segments) — it encodes everything that's not a letter, digit, or - _ . ! ~ * ' (. Rule of thumb: if you're building a URL, use encodeURI on the base; use encodeURIComponent on every value you interpolate into it."
+      },
+      {
+        "q": "Why are my spaces showing up as + in the URL?",
+        "a": "Plus signs (+) for spaces are valid only in query strings under the application/x-www-form-urlencoded content type. In paths, spaces must be %20. Browsers convert spaces in form submissions to +; APIs that accept JSON or other formats should expect %20 (or the encoded UTF-8 bytes %E7%A9%BA%E9%97%B4 for 'space' in Chinese)."
+      },
+      {
+        "q": "How do I encode Unicode characters in URLs?",
+        "a": "Modern approach: encode to UTF-8 bytes, then percent-encode each byte. The character 中 (U+4E2D) becomes %E4%B8%AD in URLs. Some legacy systems use percent-encoded UTF-16 (e.g., %u4E2D) — avoid this. Server-side, frameworks like Express (Node) and Spring (Java) auto-decode UTF-8 percent-encoded values into proper strings."
+      }
+    ]
+  },
+  "uuid-guide": {
+    "tldr": "A UUID (Universally Unique Identifier) is a 128-bit value, typically written as 32 hex chars in 5 groups: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. UUID v4 (random) is the most common — collision probability is essentially zero even at 1 billion per second for 100 years. Use UUIDs when you need globally unique IDs without coordination; use auto-increment integers when you don't.",
+    "takeaways": [
+      "UUID v4 = 122 random bits + 6 fixed bits. Collision odds: 1 in 2.71×10¹⁸ — vanishingly small.",
+      "UUID v7 (new in 2024) = timestamp + random — sortable by creation time, ideal for database primary keys.",
+      "Use UUIDs when data is created in many places (mobile, distributed systems) and merged later — no central authority needed.",
+      "Don't use UUID v1 — it leaks your MAC address and timing info. Use v4 for randomness, v7 for sortability."
+    ],
+    "faqs": [
+      {
+        "q": "Should I use UUIDs as database primary keys?",
+        "a": "It depends. UUIDs (especially v4) are great for distributed systems and exposed IDs (security through obscurity). But they're 16 bytes vs 4-8 for an integer, and random UUIDs fragment indexes badly. UUID v7 fixes the index fragmentation by being time-sortable. For most apps: use auto-increment internally, UUID externally for API exposure."
+      },
+      {
+        "q": "What's the difference between UUID and GUID?",
+        "a": "Functionally the same. GUID (Globally Unique Identifier) is Microsoft's term from COM/DCOM; UUID is the IETF standard. The format is identical (128 bits, hex with dashes). Most modern platforms accept either interchangeably. Microsoft's GUIDs use a different byte ordering in the first 3 groups but libraries normalize this transparently."
+      },
+      {
+        "q": "Can I generate UUIDs without a library?",
+        "a": "For UUID v4 you can use crypto.randomUUID() in modern browsers and Node.js, or crypto.getRandomValues() for older environments. For v7 you'll need a library (uuid npm package) since v7 includes a millisecond timestamp. For v1 (don't use it), you'd need access to the MAC address via OS-specific APIs."
+      }
+    ]
+  },
+  "web-security-headers": {
+    "tldr": "Security headers are HTTP response headers that tell browsers how to handle your site safely. The critical ones: Content-Security-Policy (controls what runs), Strict-Transport-Security (forces HTTPS), X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy: strict-origin-when-cross-origin, and Permissions-Policy (disables unused features). Missing headers = free points for attackers.",
+    "takeaways": [
+      "Content-Security-Policy: default-src 'self' blocks most XSS attacks by restricting where scripts can load from.",
+      "Strict-Transport-Security: max-age=31536000; includeSubDomains; preload forces HTTPS for 1 year on first visit.",
+      "X-Frame-Options: DENY prevents clickjacking by stopping your site from loading in an iframe.",
+      "Permissions-Policy: camera=(), microphone=(), geolocation=() disables features you don't use."
+    ],
+    "faqs": [
+      {
+        "q": "What's a good starter Content-Security-Policy?",
+        "a": "Start strict and loosen as needed: Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'. Test in report-only mode first: Content-Security-Policy-Report-Only: ... — see violations without breaking the site."
+      },
+      {
+        "q": "Do I really need all these security headers?",
+        "a": "The 5 essential ones are: Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options (or CSP frame-ancestors), Referrer-Policy, and Content-Security-Policy. Together they block 80%+ of common web attacks. Use securityheaders.com to scan your site — anything below an A grade is leaving easy wins on the table."
+      },
+      {
+        "q": "How do I add security headers on Cloudflare Pages?",
+        "a": "Create a _headers file in your project root with one header per line: /\\n  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload\\n  X-Content-Type-Options: nosniff\\n  ... The wildcards and paths follow the same syntax as Netlify. Cloudflare Pages automatically applies these to all matching routes — no server config needed."
+      }
+    ]
+  },
+  "xml-json-comparison": {
+    "tldr": "XML is verbose, supports schemas and namespaces, and dominates enterprise/document formats. JSON is compact, maps directly to JavaScript objects, and is the default for web APIs. Use JSON for APIs and data interchange; XML for documents (DOCX, RSS, SOAP), configuration with complex validation, or systems requiring namespaces. The gap is narrowing — YAML and TOML offer middle grounds.",
+    "takeaways": [
+      "JSON is ~30-50% smaller than equivalent XML — no closing tags, less repetition.",
+      "XML supports schemas (XSD), namespaces, and comments — JSON has JSON Schema and '// comments' is non-standard.",
+      "For web APIs, JSON wins on speed and ease of parsing in every language. For documents and config, both work.",
+      "JSON5 and JSONC (JSON with comments and trailing commas) bridge the gap for human-edited JSON."
+    ],
+    "faqs": [
+      {
+        "q": "Is XML still relevant in 2026?",
+        "a": "Yes, but in narrower domains: SOAP web services, RSS/Atom feeds, Microsoft Office formats (DOCX, XLSX are zipped XML), SVG, SAML, Ant build files, Android layouts. For new APIs, JSON is the default. For new document formats, Markdown is gaining ground. Learn XML, but don't reach for it as your first choice for data interchange."
+      },
+      {
+        "q": "Can I convert between XML and JSON automatically?",
+        "a": "Yes — tools like xml2js, json2xml, and xml-js handle most cases. Be aware of lossy round-trips: XML attributes, mixed content (text + child elements), and CDATA sections don't map cleanly to JSON. For complex transformations, XSLT (for XML→XML) or jq with custom scripts (for JSON→JSON) work better than direct XML↔JSON converters."
+      },
+      {
+        "q": "What's JSON Schema and is it worth learning?",
+        "a": "JSON Schema is a vocabulary for describing JSON data structure and validation rules — types, required fields, patterns, ranges. Worth learning if you build APIs that need validation, code generation, or documentation. Tools like ajv (JS), jsonschema (Python), and json-schema-validator (Java) generate validators from schemas. Many OpenAPI tools generate JSON Schema automatically."
+      }
+    ]
+  },
+  "yaml-beginners-guide": {
+    "tldr": "YAML is a human-friendly data format using indentation instead of brackets. It supports scalars, lists, and maps with minimal syntax: key: value, - list item, # comment. Common in config files (Docker Compose, Kubernetes, GitHub Actions, Ansible). Pitfalls: indentation is significant (no tabs!), special chars need quoting, and Norway/yes become booleans by default — quote them when you mean strings.",
+    "takeaways": [
+      "Indentation defines structure — use 2 spaces consistently, never tabs. The number of spaces doesn't matter, but consistency does.",
+      "Quote strings that look like other types: 'yes' (string) vs yes (boolean), '123' (string) vs 123 (number).",
+      "Use --- for document start, ... for document end when multiple YAML docs in one file.",
+      "Anchors (&) and aliases (*) let you reuse values: defaults: &defaults { retries: 3 }; jobs: { <<: *defaults }."
+    ],
+    "faqs": [
+      {
+        "q": "YAML vs JSON vs TOML — which should I use?",
+        "a": "YAML for complex config with nested structures (Kubernetes, GitHub Actions, Ansible) — readable, supports comments and anchors. JSON for data interchange (APIs, package.json) — universal, strict, fast. TOML for simple key-value config with clear sections (Cargo.toml, pyproject.toml) — explicit, no indentation gotchas. Avoid YAML for deeply nested config — indentation errors are brutal to debug."
+      },
+      {
+        "q": "Why is my YAML file failing to parse?",
+        "a": "Top 5 reasons: (1) Tabs instead of spaces — YAML rejects tabs. (2) Inconsistent indentation — mixing 2 and 4 spaces. (3) Unquoted special strings — 'yes', 'no', 'on', 'off', 'true', 'false' are booleans; quote them. (4) Missing space after colon — 'key:value' is invalid, needs 'key: value'. (5) Duplicate keys at the same level. Use yamllint or a validator before deploying."
+      },
+      {
+        "q": "Can YAML represent everything JSON can?",
+        "a": "Yes — YAML is a superset of JSON. Any valid JSON file is valid YAML (with the right parser). YAML adds comments, anchors, multi-line strings, and references. The only thing YAML doesn't have is strict type enforcement — a '5' might be parsed as a string in one place and a number in another depending on the parser. For type-safe data, use JSON Schema or a typed config format."
+      }
+    ]
+  }
+}

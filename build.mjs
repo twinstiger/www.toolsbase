@@ -12,6 +12,177 @@ const DIST = path.join(ROOT, 'dist');
 const headerHTML = fs.readFileSync(path.join(COMPONENTS, 'header.html'), 'utf-8');
 const footerHTML = fs.readFileSync(path.join(COMPONENTS, 'footer.html'), 'utf-8');
 
+// Load blog structure data (TL;DR, key takeaways, FAQs for AEO/GEO)
+const BLOG_STRUCTURE_PATH = path.join(SRC, 'blog-structure.json');
+let BLOG_STRUCTURE = {};
+if (fs.existsSync(BLOG_STRUCTURE_PATH)) {
+  BLOG_STRUCTURE = JSON.parse(fs.readFileSync(BLOG_STRUCTURE_PATH, 'utf-8'));
+}
+
+// Build TL;DR block HTML
+function tldrBlock(tldr) {
+  if (!tldr) return '';
+  return `<aside class="tldr" role="doc-tip" aria-label="Quick summary">
+  <div class="tldr-label">TL;DR</div>
+  <p class="tldr-text">${tldr}</p>
+</aside>\n`;
+}
+
+// Build Key Takeaways block HTML
+function takeawaysBlock(takeaways) {
+  if (!takeaways || takeaways.length === 0) return '';
+  const items = takeaways.map(t => `<li>${t}</li>`).join('\n          ');
+  return `<aside class="key-takeaways" aria-label="Key takeaways">
+  <h3 class="kt-heading">Key Takeaways</h3>
+  <ul class="kt-list">
+          ${items}
+  </ul>
+</aside>\n`;
+}
+
+// Build FAQ block HTML (semantic + accessible)
+function faqBlock(faqs) {
+  if (!faqs || faqs.length === 0) return '';
+  const items = faqs.map(f =>
+    `<details class="faq-item">
+    <summary class="faq-q">${f.q}</summary>
+    <div class="faq-a">
+      <p>${f.a}</p>
+    </div>
+  </details>`
+  ).join('\n  ');
+  return `<section class="faq-block" aria-label="Frequently asked questions">
+  <h2 class="faq-heading">Frequently Asked Questions</h2>
+  ${items}
+</section>\n`;
+}
+
+// Build JSON-LD structured data (TechArticle + FAQPage + BreadcrumbList)
+function jsonLd(slug, meta) {
+  const pageUrl = `https://toolsbase.net/blog/${slug}.html`;
+  const schemas = [];
+
+  // Article schema
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: meta.title,
+    description: meta.description,
+    datePublished: meta.datePublished,
+    dateModified: meta.dateModified || meta.datePublished,
+    author: { '@type': 'Organization', name: 'ToolsBase', url: 'https://toolsbase.net' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'ToolsBase',
+      url: 'https://toolsbase.net',
+      logo: { '@type': 'ImageObject', url: 'https://toolsbase.net/logo.svg' }
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
+    image: `https://toolsbase.net/images/blog/${slug}.webp`,
+    articleSection: meta.section || 'Developer Tools',
+    keywords: meta.keywords || '',
+    inLanguage: 'en',
+    wordCount: meta.wordCount,
+    timeRequired: `PT${meta.readMinutes || 5}M`,
+    about: meta.about,
+  });
+
+  // FAQPage schema (if FAQs present)
+  if (meta.faqs && meta.faqs.length > 0) {
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: meta.faqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.a,
+        },
+      })),
+    });
+  }
+
+  // BreadcrumbList
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://toolsbase.net/' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://toolsbase.net/blog/' },
+      { '@type': 'ListItem', position: 3, name: meta.title },
+    ],
+  });
+
+  return schemas.map(s => `<script type="application/ld+json">\n${JSON.stringify(s, null, 2)}\n</script>`).join('\n');
+}
+
+// Extract metadata from a blog HTML file
+function extractBlogMeta(html, slug) {
+  const title = (html.match(/<h1>([^<]+)<\/h1>/) || [])[1] || slug;
+  const description = (html.match(/<meta name="description" content="([^"]+)"/) || [])[1] || '';
+  const date = (html.match(/<span>(\d{4}-\d{2}-\d{2}|May \d+, \d{4}|[A-Z][a-z]+ \d+, \d{4})<\/span>/) || [])[1]
+    || (html.match(/<span class="blog-card-date">([^<]+)<\/span>/) || [])[1]
+    || '2026-01-01';
+  const section = (html.match(/<span>(Dev Tools|Security|DevOps|JavaScript|Database|Frontend|Fundamentals|Backend)<\/span>/) || [])[1] || 'Developer Tools';
+  const minutes = (html.match(/(\d+) min read/) || [])[1] || '5';
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+  return {
+    title,
+    description,
+    datePublished: date,
+    section,
+    readMinutes: minutes,
+    wordCount,
+  };
+}
+
+// Inject blog structure (TL;DR, takeaways, FAQ, JSON-LD) into a blog post HTML
+function injectBlogStructure(html, slug) {
+  const data = BLOG_STRUCTURE[slug];
+  if (!data) return html;
+
+  // Extract metadata
+  const meta = extractBlogMeta(html, slug);
+  meta.faqs = data.faqs;
+
+  // 1. Inject TL;DR after the cover image (or after the lead paragraph if no cover)
+  if (!html.includes('class="tldr"')) {
+    const tldr = tldrBlock(data.tldr);
+    const coverEndRegex = /<\/picture>\s*<\/div>/;
+    const leadEndRegex = /<\/p>\s*(?=<h2>)/;
+    if (coverEndRegex.test(html)) {
+      html = html.replace(coverEndRegex, m => m + '\n        ' + tldr);
+    } else if (leadEndRegex.test(html)) {
+      // Fallback: insert after the lead paragraph, before the first H2
+      html = html.replace(leadEndRegex, m => m + '\n        ' + tldr + '\n');
+    }
+  }
+
+  // 2. Inject Key Takeaways + FAQ before the "back to blog" link
+  if (!html.includes('class="faq-block"')) {
+    // Match any back-to-blog div (3 known patterns)
+    const backLinkRegex = /(\s*<div style="margin-top:3rem;padding-top:2rem;border-top:[^"]+">)/;
+    if (backLinkRegex.test(html)) {
+      const block = '\n        ' + takeawaysBlock(data.takeaways) + '\n        ' + faqBlock(data.faqs);
+      html = html.replace(backLinkRegex, m => block + m);
+    } else {
+      // Fallback: inject before </main>
+      const block = '\n        ' + takeawaysBlock(data.takeaways) + '\n        ' + faqBlock(data.faqs) + '\n      ';
+      html = html.replace(/(<\/main>)/, block + '$1');
+    }
+  }
+
+  // 3. Inject JSON-LD in <head>
+  if (!html.includes('"@type": "TechArticle"')) {
+    const jsonLdScripts = jsonLd(slug, meta);
+    html = html.replace('</head>', '  ' + jsonLdScripts + '\n</head>');
+  }
+
+  return html;
+}
+
 // Get relative depth from root
 function getDepth(filePath) {
   const rel = path.relative(ROOT, filePath);
@@ -34,6 +205,15 @@ function assetPath(filePath, asset) {
 // Google Ads script
 const GOOGLE_ADS_SCRIPT = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>';
 
+// Microsoft Clarity script
+const CLARITY_SCRIPT = `<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "x0i1qkgvxk");
+</script>`;
+
 // Process a single HTML file
 function processFile(filePath, outPath) {
   let html = fs.readFileSync(filePath, 'utf-8');
@@ -41,6 +221,13 @@ function processFile(filePath, outPath) {
   // Get depth for this file
   const depth = getDepth(filePath);
   const prefix = depth > 0 ? '../'.repeat(depth) : './';
+
+  // Inject blog structure (TL;DR, takeaways, FAQ, JSON-LD) for blog posts
+  const relPath = path.relative(ROOT, filePath);
+  const blogMatch = relPath.match(/^blog\/([a-z0-9-]+)\.html$/);
+  if (blogMatch && blogMatch[1] !== 'index') {
+    html = injectBlogStructure(html, blogMatch[1]);
+  }
 
   // Extract SEO info from existing title and description
   const titleMatch = html.match(/<title>([^<]*)<\/title>/);
@@ -99,6 +286,11 @@ function processFile(filePath, outPath) {
   // Add Google Ads script after <head> if not already present
   if (!html.includes('googlesyndication.com')) {
     html = html.replace('<head>', '<head>\n  ' + GOOGLE_ADS_SCRIPT);
+  }
+
+  // Add Microsoft Clarity script after <head> if not already present
+  if (!html.includes('clarity.ms/tag/')) {
+    html = html.replace('<head>', '<head>\n  ' + CLARITY_SCRIPT);
   }
 
   // Add SEO meta tags before </head> if og:type is missing
