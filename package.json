@@ -7,7 +7,7 @@
     "build": "node build.mjs",
     "watch": "npx watchexec -w src -w '*.html' 'npm run build'",
     "deploy": "npm run build && npx wrangler pages deploy dist",
-    "dev": "npm run build && npx serve dist"
+    "dev": "npm run build && node scripts/dev-server.mjs"
   },
   "repository": {
     "url": "git+https://github.com/twinstiger/www.toolsbase.git"
