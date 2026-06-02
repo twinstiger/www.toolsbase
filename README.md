@@ -1,36 +1,31 @@
-# www.toolsbase.net
-# ToolsBase Website
+## 🛠️ ToolsBase - Free Developer Tools
 
-## Overview
-ToolsBase is a collection of free online practical tools, designed for global users with a clean, fast and easy-to-use interface.
+Browser-based tools for developers. No signup, no tracking, fast & lightweight.
 
-## Tech Stack
-- Frontend: HTML / CSS / JavaScript
-- Hosting: GitHub Pages
-- CDN & DNS: Cloudflare
-- Domain: toolsbase.net
+### Featured Tools
 
-## Project Structure
-/
-├── index.html
-├── css/
-├── js/
-├── assets/
-└── README.md
-plaintext
+| Tool | Description |
+|------|-------------|
+| [JSON Formatter](https://toolsbase.net/tools/dev/json-formatter) | Format, validate, minify JSON |
+| [Regex Tester](https://toolsbase.net/tools/dev/regex-tester) | Test regex patterns live |
+| [Cron Generator](https://toolsbase.net/tools/dev/cron-generator) | Build cron expressions |
+| [Password Generator](https://toolsbase.net/tools/generators/password-generator) | Generate secure passwords |
+| [Base64 Encoder](https://toolsbase.net/tools/dev/base64-encoder) | Encode/decode Base64 |
+| [QR Code Generator](https://toolsbase.net/tools/image/qr-code-generator) | Create QR codes instantly |
 
-## Local Development
-Run local server:
-```bash
-python3 -m http.server 8080
-Push source code to GitHub main branch
-Enable GitHub Pages
-Bind custom domain on Cloudflare
-Configure DNS and cache rules
-Features
-Lightweight and fast loading
-Mobile friendly responsive design
-No backend dependency, pure static site
-Continuously adding new useful online tools
-License
-MIT
+### Categories
+- [Network Tools](https://toolsbase.net/tools/network/) - IP, DNS, URL parsing
+- [Developer Tools](https://toolsbase.net/tools/dev/) - JSON, Regex, Hashing
+- [Generators](https://toolsguide/tools/generators/) - Passwords, UUID, Lorem Ipsum
+- [Converters](https://toolsbase.net/tools/converters/) - Timestamp, Color, Units
+
+### Blog
+- [API Authentication Guide](https://toolsbase.net/blog/api-authentication)
+- [Cron Expression Tutorial](https://toolsbase.net/blog/cron-job-guide)
+- [Regex Common Patterns](https://toolsbase.net/blog/regex-common-patterns)
+
+**[Browse all 46 tools →](https://toolsbase.net/tools)**
+
+---
+
+**No signup required | No tracking | Works offline after first load**
