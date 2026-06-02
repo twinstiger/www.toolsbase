@@ -6,7 +6,7 @@
 
 ## Summary
 
-Shortened all public URLs to remove the `.html` extension and added 46 short aliases for popular tools. Old URLs return `301` redirects to preserve SEO equity.
+Shortened all public URLs to remove the `.html` extension and added 46 short aliases for popular tools. Aliases use `200` rewrite so the short URL stays in the address bar; old `.html` URLs use `301` redirects so visitors and search engines see the clean URL.
 
 ## URL changes (81 pages)
 
@@ -107,13 +107,23 @@ Users can now access popular tools via short paths. All 301 to the canonical lon
 
 | File | Change |
 |------|--------|
-| `_redirects` (new) | 81 wildcard redirects + 46 short aliases + 3 special `index.html` cases |
+| `_redirects` (new) | 3 special `index.html` cases (301) + 46 short aliases (200 rewrite) + 3 wildcards (301) |
 | `build.mjs` | (1) `pageUrl` calc strips `.html` and `index.html`; (2) `sitemap.xml` URLs cleaned; (3) blog JSON-LD `pageUrl` cleaned; (4) copies `_redirects` to `dist/` |
 | 47 non-blog source files | Hardcoded `og:url` updated (`.html` removed) |
 | 14 blog source files | Added missing `og:url` (had `og:type="article"` but no `og:url`) |
+| `blog/index.html` | Blog list images: `-thumb.webp` (600×280) + SVG fallback → full `.webp` (800×400), no SVG |
 | `dist/_redirects` (generated) | New file published with site |
 | `dist/sitemap.xml` (generated) | All 81 URLs use clean form |
 | `dist/**/og:url` (generated) | All pages now have correct canonical URL |
+
+## Status codes
+
+| Code | Used for | Behavior |
+|------|----------|----------|
+| `200` | 46 short aliases (`/tip`, `/base64`, `/json`, etc.) | Rewrite: serves the target page's content, request URL stays in the address bar |
+| `301` | 3 `index.html` specials + 3 wildcards (covering 81 old `.html` URLs) | Permanent redirect: browser follows, address bar updates to the clean URL |
+
+This is the key UX decision: **visiting `/tip` shows the page with `/tip` in the address bar** (because the canonical long URL is still where the page actually lives, but the user gets the short URL they typed).
 
 ## Bug fixed
 
