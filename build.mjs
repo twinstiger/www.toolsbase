@@ -244,16 +244,25 @@ function processFile(filePath, outPath) {
     .replace(/\.html$/, '');
   const pageUrl = siteUrl + cleanPath;
 
-  // Build dynamic SEO meta tags
+  // Detect if this is a blog post and use its own image
+  const isBlogPost = blogMatch && blogMatch[1] !== 'index';
+  const slug = blogMatch ? blogMatch[1] : null;
+  // Blog posts use their own featured image; others use default OG image
+  const ogImage = isBlogPost && slug
+    ? `${siteUrl}/images/blog/${slug}.webp`
+    : `${siteUrl}/og-image.png`;
+
+  // Build dynamic SEO meta tags with per-post OG image
   const seoMeta = `<meta property="og:type" content="website">
   <meta property="og:title" content="${pageTitle}">
   <meta property="og:description" content="${pageDesc}">
   <meta property="og:url" content="${pageUrl}">
   <meta property="og:site_name" content="ToolsBase">
-  <meta property="og:image" content="${siteUrl}/og-image.png">
+  <meta property="og:image" content="${ogImage}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${pageTitle}">
-  <meta name="twitter:description" content="${pageDesc}">`;
+  <meta name="twitter:description" content="${pageDesc}">
+  <meta name="twitter:image" content="${ogImage}">`;
 
   // Replace header
   const headerMatch = html.match(/<header class="header">[\s\S]*?<\/header>\s*/);
@@ -301,6 +310,16 @@ function processFile(filePath, outPath) {
   // Add SEO meta tags before </head> if og:type is missing
   if (!html.includes('property="og:type"')) {
     html = html.replace('</head>', '  ' + seoMeta + '\n</head>');
+  } else {
+    // og:type exists but might be missing og:image or twitter:image
+    if (!html.includes('property="og:image"')) {
+      const ogImgTag = `<meta property="og:image" content="${ogImage}">`;
+      html = html.replace('</head>', '  ' + ogImgTag + '\n</head>');
+    }
+    if (!html.includes('name="twitter:image"')) {
+      const twitterImgTag = `<meta name="twitter:image" content="${ogImage}">`;
+      html = html.replace('</head>', '  ' + twitterImgTag + '\n</head>');
+    }
   }
 
   // LCP optimization: preload the hero image (first /images/blog/{id}.webp)
@@ -312,6 +331,14 @@ function processFile(filePath, outPath) {
       html = html.replace('</head>', '  ' + preloadTag + '\n</head>');
     }
   }
+
+  // HTML minification (remove whitespace between tags)
+  html = html
+    .replace(/>\s+</g, '><')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\n\s*/g, '')
+    .replace(/\s+>/g, '>')
+    .replace(/>\s+/g, '>');
 
   return html;
 }
@@ -366,7 +393,10 @@ function build() {
     fs.cpSync(path.join(ROOT, '_redirects'), path.join(DIST, '_redirects'));
     console.log('  _redirects');
   }
-
+  if (fs.existsSync(path.join(ROOT, '_headers'))) {
+    fs.cpSync(path.join(ROOT, '_headers'), path.join(DIST, '_headers'));
+    console.log('  _headers');
+  }
   // Process HTML files
   const htmlFiles = getHtmlFiles(ROOT);
 

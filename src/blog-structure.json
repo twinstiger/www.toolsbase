@@ -642,5 +642,28 @@
         "a": "Yes — YAML is a superset of JSON. Any valid JSON file is valid YAML (with the right parser). YAML adds comments, anchors, multi-line strings, and references. The only thing YAML doesn't have is strict type enforcement — a '5' might be parsed as a string in one place and a number in another depending on the parser. For type-safe data, use JSON Schema or a typed config format."
       }
     ]
+  },
+  "http-headers-guide": {
+    "tldr": "HTTP headers control caching, security, CORS, and authentication. Five essential security headers: CSP (XSS prevention), HSTS (HTTPS enforcement), X-Frame-Options (clickjacking), X-Content-Type-Options (MIME sniffing), Referrer-Policy (URL leaking). Cache-Control with max-age is simpler than ETag for most cases. CORS should whitelist specific origins, not use *.",
+    "takeaways": [
+      "Security headers prevent common attacks: set CSP, HSTS, X-Frame-Options, X-Content-Type-Options on every production site.",
+      "Cache-Control: max-age=N with immutable is the simplest caching strategy for versioned static assets.",
+      "CORS should use specific whitelisted origins, not * — except for truly public APIs with no credentials.",
+      "Always test headers with curl -I or browser DevTools before deploying to production."
+    ],
+    "faqs": [
+      {
+        "q": "What's the difference between Cache-Control and ETag?",
+        "a": "Cache-Control with max-age tells the browser to use cached content for N seconds without asking. ETag is a validator — the browser sends If-None-Match with the ETag hash, and the server returns 304 if unchanged (no body). Use Cache-Control for simple expiration; use ETag when you need to validate freshness without full downloads. They're often used together: Cache-Control says 'use for 1 hour', ETag lets you skip the download if nothing changed before the hour is up."
+      },
+      {
+        "q": "How do I debug CORS errors?",
+        "a": "Check the browser console for CORS errors — they'll name the blocked header. Verify your server sends Access-Control-Allow-Origin for the requesting origin (check request headers Origin). For credentials, the origin must be specific, not *. Make sure you're not sending Access-Control-Allow-Credentials: true with Access-Control-Allow-Origin: *. Use curl to test preflight requests: curl -X OPTIONS -H 'Origin: ...' -H 'Access-Control-Request-Method: PUT' https://api.example.com"
+      },
+      {
+        "q": "What headers should every API response include?",
+        "a": "Minimum set: Content-Type (application/json), Cache-Control (no-store for sensitive data), X-Content-Type-Options: nosniff. For public APIs: Access-Control-Allow-Origin, RateLimit-Limit + RateLimit-Remaining (standardized rate limit headers). For APIs with auth: WWW-Authenticate on 401 responses. Security headers (CSP, HSTS) belong on the whole site, not just API responses."
+      }
+    ]
   }
 }

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Headers: The Complete Guide for Developers — ToolsBase</title>
+  <meta name="description" content="Learn every HTTP header that matters: caching, security, CORS, authentication, and performance. Includes practical examples and debugging tips.">
+  <link rel="canonical" href="https://toolsbase.net/blog/http-headers-guide.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+  <!-- Pinterest verification -->
+  <meta name="pinterest-rich-pin" content="false">
+</head>
+<body>
+  <!-- HEADER -->
+  <main class="tool-page"><div class="container--narrow">
+    <nav class="breadcrumbs"><a href="../index.html">Home</a><span>›</span><a href="index.html">Blog</a><span>›</span><span>HTTP Headers Guide</span></nav>
+    <article class="blog-article">
+      <header class="blog-article-header">
+        <h1>HTTP Headers: The Complete Guide for Developers</h1>
+        <div class="blog-article-meta"><span>📅 June 2, 2026</span><span>⏱️ 10 min read</span><span>🔤 Backend</span></div>
+      </header>
+
+      <p class="lead">HTTP headers are the invisible glue that makes the web work. They control caching, enforce security, enable authentication, and shape performance. Most developers only know a handful — this guide covers all the ones that actually matter.</p>
+
+      <h2>How HTTP Headers Work</h2>
+      <p>Every HTTP request and response carries headers: key-value pairs that pass metadata between client and server. Headers are divided into four categories:</p>
+      <ul>
+        <li><strong>General</strong> — Apply to both requests and responses (Date, Connection)</li>
+        <li><strong>Request</strong> — Sent by the client (Accept, Authorization, User-Agent)</li>
+        <li><strong>Response</strong> — Sent by the server (Content-Type, Cache-Control, Set-Cookie)</li>
+        <li><strong>Entity</strong> — Describe the body content (Content-Length, Content-Encoding)</li>
+      </ul>
+
+      <h2>Security Headers (Essential)</h2>
+      <p>These five headers prevent the most common web attacks. Set them on every production site:</p>
+
+      <h3>Content-Security-Policy (CSP)</h3>
+      <p>Controls which resources the browser can load. Prevents XSS by specifying allowed sources:</p>
+      <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com; style-src 'self' 'unsafe-inline'</code></pre>
+      <p>Start with 'none', then add exceptions as you discover them. Use report-uri to catch violations:</p>
+      <pre><code>Content-Security-Policy: default-src 'none'; report-uri /csp-violation</code></pre>
+
+      <h3>X-Content-Type-Options</h3>
+      <p>Prevents MIME type sniffing. Without this header, browsers might execute files they shouldn't:</p>
+      <pre><code>X-Content-Type-Options: nosniff</code></pre>
+
+      <h3>X-Frame-Options</h3>
+      <p>Prevents clickjacking by controlling whether your page can be embedded in iframes:</p>
+      <pre><code>X-Frame-Options: DENY  # No embedding allowed
+X-Frame-Options: SAMEORIGIN  # Only same-site embedding</code></pre>
+
+      <h3>Strict-Transport-Security (HSTS)</h3>
+      <p>Forces HTTPS connections. Browser remembers to only use HTTPS for your domain:</p>
+      <pre><code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code></pre>
+      <p>Start with a short max-age (like 60 seconds) while testing, then increase. The preload flag lets you submit to the HSTS preload list for maximum protection.</p>
+
+      <h3>Referrer-Policy</h3>
+      <p>Controls how much referrer information is sent with requests. Prevents leaking sensitive URLs:</p>
+      <pre><code>Referrer-Policy: strict-origin-when-cross-origin  # Default for most sites
+Referrer-Policy: no-referrer  # Most private option
+Referrer-Policy: same-origin  # Only send for same-site requests</code></pre>
+
+      <h2>Caching Headers</h2>
+      <p>Proper caching makes your site fast and reduces server load. There are two models:</p>
+
+      <h3>Expiration Model (Cache-Control)</h3>
+      <p>Tell browsers how long to cache a resource:</p>
+      <pre><code># Cache for 1 year (for versioned/hash files)
+Cache-Control: public, max-age=31536000, immutable
+
+# Cache for 1 hour, but allow stale responses while revalidating
+Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Don't cache at all
+Cache-Control: no-cache, no-store, must-revalidate</code></pre>
+
+      <h3>Validation Model (ETag / Last-Modified)</h3>
+      <p>Check if cached content is still valid without downloading it:</p>
+      <pre><code># Server response includes:
+ETag: "33a64df551425fcc55e4d42a148795d9f25f89d4"
+Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT
+
+# Next request asks if changed:
+If-None-Match: "33a64df551425fcc55e4d42a148795d9f25f89d4"
+If-Modified-Since: Wed, 21 Oct 2015 07:28:00 GMT
+
+# Server returns 304 Not Modified if still valid (no body)</code></pre>
+
+      <h3>Cacheable Responses</h3>
+      <p>Not everything should be cached. Rules:</p>
+      <ul>
+        <li><strong>GET / HEAD</strong> — Cachable by default</li>
+        <li><strong>POST / PATCH / PUT / DELETE</strong> — Never cached automatically</li>
+        <li><strong>Responses with Set-Cookie</strong> — Never cache</li>
+        <li><strong>Authenticated requests</strong> — Usually private, unless using shared caches</li>
+      </ul>
+
+      <h2>CORS Headers</h2>
+      <p>Cross-Origin Resource Sharing headers control which domains can access your API:</p>
+
+      <pre><code># Allow specific origin (preferred)
+Access-Control-Allow-Origin: https://trusted-app.com
+
+# Allow any origin (for public APIs, combined with Vary: Origin)
+Access-Control-Allow-Origin: *
+
+# Preflight request for non-simple methods/headers
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Max-Age: 86400  # Cache preflight for 24 hours</code></pre>
+
+      <p>Never use <code>Access-Control-Allow-Origin: *</code> with credentials (cookies, auth headers):</p>
+      <pre><code># Wrong — browsers reject this
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Credentials: true
+
+# Correct — use a specific origin
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Credentials: true</code></pre>
+
+      <h2>Authentication Headers</h2>
+
+      <h3>Basic Authentication</h3>
+      <pre><code># Client sends:
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+# (Base64 encoded "username:password")
+
+# Server responds 401:
+WWW-Authenticate: Basic realm="Protected Area"</code></pre>
+
+      <h3>Bearer Tokens (JWT, API Keys)</h3>
+      <pre><code>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+
+      <h3>Custom Headers</h3>
+      <p>Many APIs use custom headers for authentication:</p>
+      <pre><code>X-API-Key: your-api-key-here
+X-Auth-Token: session-token
+Authorization: ApiKey your-api-key</code></pre>
+
+      <h2>Content Negotiation</h2>
+      <p>Tell the server what format you want back:</p>
+
+      <pre><code># Accept specific content type
+Accept: application/json
+
+# Accept multiple formats (server chooses best match)
+Accept: application/json, application/xml, text/html
+
+# Prefer compressed responses
+Accept-Encoding: gzip, deflate, br
+
+# Prefer English, but accept Chinese
+Accept-Language: en, zh;q=0.9</code></pre>
+
+      <h2>Performance Headers</h2>
+
+      <h3>Compression</h3>
+      <pre><code># Server sends compressed response
+Content-Encoding: gzip  # or br (Brotli), deflate
+
+# Client advertises supported compression
+Accept-Encoding: gzip, deflate, br</code></pre>
+
+      <h3>Range Requests</h3>
+      <p>For resumable downloads and video streaming:</p>
+      <pre><code># Client requests specific bytes
+Range: bytes=0-99
+
+# Server responds with portion
+Content-Range: bytes 0-99/total_file_size</code></pre>
+
+      <h3>Early Hints</h3>
+      <p>Send resource hints before the full response is ready:</p>
+      <pre><code># Early hint response (HTTP 103)
+Link: &lt;https://fonts.googleapis.com&gt;; rel=preload; as=style
+
+# Followed by final response
+103 Early Hint
+200 OK</code></pre>
+
+      <h2>Debugging Headers</h2>
+      <p>Tools to inspect and test headers:</p>
+      <ul>
+        <li><strong>Chrome DevTools</strong> — Network tab shows all headers</li>
+        <li><strong>curl -I</strong> — Show response headers only</li>
+        <li><strong>httpbin.org</strong> — Test headers interactively</li>
+        <li><strong>securityheaders.com</strong> — Grade your security headers</li>
+      </ul>
+
+      <pre><code># View headers with curl
+curl -I https://example.com
+
+# Send custom headers
+curl -H "Authorization: Bearer token" https://api.example.com
+
+# Show request and response headers
+curl -v https://example.com</code></pre>
+
+      <h2>Minimum Viable Header Set</h2>
+      <p>Every production site should have at minimum:</p>
+      <pre><code>Content-Type: text/html; charset=utf-8
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin</code></pre>
+
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>Security headers (CSP, HSTS, X-Frame-Options) prevent common attacks — set them on every site</li>
+        <li>Cache-Control with max-age is simpler than ETag validation for most use cases</li>
+        <li>Use immutable + long max-age for versioned assets (JS, CSS with hashes in filenames)</li>
+        <li>CORS headers should whitelist specific origins, not use * (except for truly public APIs)</li>
+        <li>Always test headers with curl or DevTools before deploying to production</li>
+      </ul>
+
+      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">
+        <a href="index.html" style="color:var(--color-primary);font-weight:600;">← Back to Blog</a>
+      </div>
+    </article>
+  </div></main>
+  <!-- FOOTER -->
+  <div id="toast" class="toast">Copied!</div>
+  <script src="../src/utils.js"></script>
+</body>
+</html>
