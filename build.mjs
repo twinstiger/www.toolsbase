@@ -332,10 +332,23 @@ function processFile(filePath, outPath) {
     }
   }
 
-  // HTML minification (conservative - only remove between tags)
-  html = html
-    .replace(/>\s+</g, '><')
-    .replace(/\n\s*/g, '');
+  // HTML minification: collapse whitespace between tags, but NOT between </script> and <script>
+  // Strategy: split by </script>, minify each non-script part, rejoin with </script>
+  const segments = html.split('</script>');
+  html = segments.map((seg, i) => {
+    // Last segment ends with </body> or </html>, not a script
+    if (i < segments.length - 1) {
+      // This segment ends with </script>, minify the part before it
+      const lastScriptOpen = seg.lastIndexOf('<script');
+      if (lastScriptOpen !== -1) {
+        const beforeScript = seg.substring(0, lastScriptOpen);
+        const scriptContent = seg.substring(lastScriptOpen);
+        return beforeScript.replace(/>\s+</g, '><').replace(/\n\s*/g, '') + scriptContent;
+      }
+    }
+    // No script tag in this segment, minify entirely
+    return seg.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
+  }).join('</script>');
 
   return html;
 }
