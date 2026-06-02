@@ -59,7 +59,7 @@ function faqBlock(faqs) {
 
 // Build JSON-LD structured data (TechArticle + FAQPage + BreadcrumbList)
 function jsonLd(slug, meta) {
-  const pageUrl = `https://toolsbase.net/blog/${slug}.html`;
+  const pageUrl = `https://toolsbase.net/blog/${slug}`;
   const schemas = [];
 
   // Article schema
@@ -237,7 +237,12 @@ function processFile(filePath, outPath) {
   const siteUrl = 'https://toolsbase.net';
   // Convert output path to web path (e.g., dist/tools/foo.html -> tools/foo.html)
   const webPath = outPath.replace(DIST, '').replace(/^\//, '').replace(/\\/g, '/');
-  const pageUrl = siteUrl + '/' + webPath;
+  // Strip .html and index.html for clean URLs (e.g., /tools/dev/foo.html -> /tools/dev/foo,
+  // /blog/index.html -> /blog, /index.html -> /)
+  const cleanPath = ('/' + webPath)
+    .replace(/\/index\.html$/, '/')
+    .replace(/\.html$/, '');
+  const pageUrl = siteUrl + cleanPath;
 
   // Build dynamic SEO meta tags
   const seoMeta = `<meta property="og:type" content="website">
@@ -357,6 +362,10 @@ function build() {
   if (fs.existsSync(path.join(ROOT, 'og-image.png'))) {
     fs.cpSync(path.join(ROOT, 'og-image.png'), path.join(DIST, 'og-image.png'));
   }
+  if (fs.existsSync(path.join(ROOT, '_redirects'))) {
+    fs.cpSync(path.join(ROOT, '_redirects'), path.join(DIST, '_redirects'));
+    console.log('  _redirects');
+  }
 
   // Process HTML files
   const htmlFiles = getHtmlFiles(ROOT);
@@ -409,8 +418,11 @@ function build() {
     .map(f => 'blog/' + f);
 
   let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  const cleanPage = (p) => ('/' + p)
+    .replace(/\/index\.html$/, '/')
+    .replace(/\.html$/, '');
   const allPages = [...urls, ...toolPages, ...blogPages].forEach(page => {
-    sitemap += '  <url><loc>' + siteUrl + '/' + page + '</loc></url>\n';
+    sitemap += '  <url><loc>' + siteUrl + cleanPage(page) + '</loc></url>\n';
   });
   sitemap += '</urlset>';
   fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemap);

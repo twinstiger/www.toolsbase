@@ -1,0 +1,67 @@
+# Cloudflare Pages redirects
+# Order matters: explicit rules first, then wildcards.
+
+# === Special: index.html (must come before wildcard to avoid /index) ===
+/index.html           /                   301
+/tools/index.html     /tools              301
+/blog/index.html      /blog               301
+
+# === Short aliases (46) — entry points to popular tools ===
+/base64               /tools/dev/base64-encoder                       301
+/css                  /tools/dev/css-minifier                          301
+/hash                 /tools/dev/hash-generator                        301
+/html                 /tools/dev/html-minifier                         301
+/js                   /tools/dev/js-minifier                           301
+/json                 /tools/dev/json-formatter                        301
+/json-yaml            /tools/dev/json-to-yaml                          301
+/regex                /tools/dev/regex-tester                          301
+/sql                  /tools/dev/sql-formatter                         301
+/url-encode           /tools/dev/url-encoder                           301
+/xml                  /tools/dev/xml-formatter                         301
+/yaml                 /tools/dev/yaml-validator                        301
+
+/dns                  /tools/network/dns-lookup                        301
+/ip                   /tools/network/ip-to-int                         301
+/myip                 /tools/network/my-ip                             301
+/subnet               /tools/network/subnet                            301
+/url                  /tools/network/url-parser                        301
+/shorten              /tools/network/url-shortener                     301
+/ua                   /tools/network/user-agent                        301
+
+/color                /tools/converters/color-converter                301
+/base                 /tools/converters/number-base                    301
+/timestamp            /tools/converters/timestamp-converter            301
+/units                /tools/converters/unit-converter                 301
+
+/aes                  /tools/crypto/aes-encrypt                        301
+/base32               /tools/crypto/base32                             301
+/bcrypt               /tools/crypto/bcrypt                             301
+/htpasswd             /tools/crypto/htpasswd                           301
+/morse                /tools/crypto/morse                              301
+
+/fav                  /tools/image/favicon-generator                   301
+/img-base64           /tools/image/image-to-base64                     301
+/qr                   /tools/image/qr-code-generator                   301
+
+/fake-json            /tools/generators/fake-json                      301
+/lorem                /tools/generators/lorem-ipsum                    301
+/password             /tools/generators/password-generator             301
+/random               /tools/generators/random-string                  301
+/slug                 /tools/generators/slug-generator                 301
+/uuid                 /tools/generators/uuid-generator                 301
+
+/case                 /tools/text/case-converter                       301
+/diff                 /tools/text/diff-checker                         301
+/markdown             /tools/text/markdown-preview                     301
+/text-diff            /tools/text/text-diff                            301
+/words                /tools/text/word-counter                         301
+
+/compound             /tools/finance/compound-interest                 301
+/discount             /tools/finance/discount-calculator               301
+/mortgage             /tools/finance/mortgage-calculator               301
+/tip                  /tools/finance/tip-calculator                    301
+
+# === Wildcards: strip .html extension ===
+/:a/:b/:c.html        /:a/:b/:c                                        301
+/:a/:b.html           /:a/:b                                           301
+/:a.html              /:a                                              301
