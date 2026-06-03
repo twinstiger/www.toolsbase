@@ -13,6 +13,10 @@
 /tools/index.html     /tools              301
 /blog/index.html      /blog               301
 
+# === /api — 200 rewrite so the file /api/index.html is served at /api/ ===
+/api                  /api/index.html     200
+/api/                 /api/index.html     200
+
 # === Short aliases (46) — entry points to popular tools ===
 /base64 /tools/dev/base64-encoder 200
 /css /tools/dev/css-minifier 200

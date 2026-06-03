@@ -205,6 +205,70 @@ function assetPath(filePath, asset) {
 // Google Ads script
 const GOOGLE_ADS_SCRIPT = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9420599375364457" crossorigin="anonymous"></script>';
 
+// API base for fetching doc fragments (overridable via env var for local dev)
+const API_BASE = process.env.TOOLSBASE_API_URL || 'https://api.toolsbase.net';
+
+// Cache for the doc fragment so we only fetch once per build
+let cachedDocsHtml = null;
+
+async function fetchDocsFragment() {
+  if (cachedDocsHtml !== null) return cachedDocsHtml;
+  const url = `${API_BASE}/docs/html`;
+  console.log(`  Fetching doc fragment from ${url}`);
+  try {
+    const res = await fetch(url, {
+      headers: { 'Accept': 'text/html' }
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} ${res.statusText}`);
+    }
+    cachedDocsHtml = await res.text();
+    return cachedDocsHtml;
+  } catch (err) {
+    console.warn(`  ⚠️  Could not fetch doc fragment: ${err.message}`);
+    console.warn(`  ⚠️  Using placeholder. Deploy the api worker first: cd api.toolsbase && npx wrangler deploy`);
+    return PLACEHOLDER_DOCS;
+  }
+}
+
+const PLACEHOLDER_DOCS = `<div class="api-page-header"><h1>API Reference</h1><p class="lead" style="color:#dc2626;">⚠️ Doc fragment unavailable. The api worker has not been deployed yet, or the build cannot reach it. Run: <code>cd api.toolsbase &amp;&amp; npx wrangler deploy</code></p></div>
+
+<div class="api-layout">
+  <aside class="api-sidebar">
+    <h3>API</h3>
+    <ul class="tree-leaf"><li class="tree-current"><span class="dot"></span><span>Weather</span></li></ul>
+  </aside>
+  <main class="api-main">
+    <div class="api-tabs"><button class="api-tab active">Status</button></div>
+    <section class="api-panel active md-content" style="padding:2rem;">
+      <h2>Worker not reachable</h2>
+      <p>The build could not fetch the doc fragment from <code>${API_BASE}/docs/html</code>.</p>
+      <p>To fix this:</p>
+      <ol>
+        <li>Deploy the api worker: <code>cd api.toolsbase && npx wrangler deploy</code></li>
+        <li>Re-run the build: <code>cd toolsbase && node build.mjs</code></li>
+      </ol>
+      <p>Or set <code>TOOLSBASE_API_URL</code> to a different endpoint.</p>
+    </section>
+  </main>
+</div>`;
+
+// Split the worker's doc fragment into <style> block (for <head>) and body content.
+// The shell template starts with an HTML comment that mentions `<style>`, `<main>`,
+// etc. as literal text — we must strip those comments first, otherwise the lazy
+// regex below matches the literal `<style>` inside the comment instead of the
+// real one, and the resulting CSS chunk is invalid.
+function splitDocsFragment(fragment) {
+  const stripped = fragment.replace(/<!--[\s\S]*?-->/g, '');
+  const styleMatch = stripped.match(/<style[\s\S]*?<\/style>/);
+  if (!styleMatch) {
+    return { css: '', body: stripped };
+  }
+  const css = styleMatch[0];
+  const body = stripped.replace(css, '').trim();
+  return { css, body };
+}
+
 // Microsoft Clarity script
 const CLARITY_SCRIPT = `<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -214,6 +278,139 @@ const CLARITY_SCRIPT = `<script type="text/javascript">
     })(window, document, "clarity", "script", "x0i1qkgvxk");
 </script>`;
 
+// Process the /api/index.html page: fetches doc fragment from API worker,
+// splits it into CSS (for <head>) and body content, then runs the standard
+// HEADER/FOOTER injection.
+async function processApiPage(html, outPath) {
+  const fragment = await fetchDocsFragment();
+  const { css, body } = splitDocsFragment(fragment);
+
+  // Replace placeholders
+  html = html.replace('<!-- DOCS_CSS -->', css);
+  html = html.replace('<!-- DOCS -->', body);
+
+  // Run through the standard pipeline (HEADER/FOOTER/SEO/minify).
+  // Wrap in a sync helper so we can reuse the existing logic in processFile.
+  return finalizeHtml(html);
+}
+
+// Apply HEADER/FOOTER injection, SEO meta, and minification. Used for the
+// /api page after the doc fragment has been inlined.
+function finalizeHtml(html) {
+  const depth = 1; // api/index.html is at depth 1
+  const prefix = '../';
+
+  // Replace header
+  const headerMatch = html.match(/<header class="header">[\s\S]*?<\/header>\s*/);
+  if (headerMatch) {
+    html = html.replace(headerMatch[0], '<!-- HEADER -->\n');
+  }
+
+  // Replace footer
+  const footerMatch = html.match(/<footer class="footer">[\s\S]*?<\/footer>\s*<div id="toast"[\s\S]*?<\/div>\s*<\/body>/);
+  if (footerMatch) {
+    html = html.replace(footerMatch[0], '<!-- FOOTER -->\n</body>');
+  }
+
+  // Insert components
+  html = html.replace('<!-- HEADER -->', headerHTML);
+  html = html.replace('<!-- FOOTER -->', footerHTML);
+
+  // Add utils.js
+  if (!html.includes('src/utils.js')) {
+    html = html.replace('</body>', '<script src="' + prefix + 'src/utils.js"></script>\n</body>');
+  }
+
+  // Normalize /src/ paths to absolute
+  html = html.replace(/href="\.+\/src\//g, 'href="/src/');
+  html = html.replace(/src="\.+\/src\//g, 'src="/src/');
+  html = html.replace(/href="\.\/src\//g, 'href="/src/');
+  html = html.replace(/src="\.\/src\//g, 'src="/src/');
+  html = html.replace(/href="\/src\//g, 'href="/src/');
+  html = html.replace(/src="\/src\//g, 'src="/src/');
+
+  // Add tokens.css for dark mode
+  if (!html.includes('tokens.css')) {
+    html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/tokens.css">\n  <link rel="stylesheet" href="/src/styles.css">');
+  }
+
+  // Add Google Ads script
+  if (!html.includes('googlesyndication.com')) {
+    html = html.replace('<head>', '<head>\n  ' + GOOGLE_ADS_SCRIPT);
+  }
+
+  // Add Microsoft Clarity script
+  if (!html.includes('clarity.ms/tag/')) {
+    html = html.replace('<head>', '<head>\n  ' + CLARITY_SCRIPT);
+  }
+
+  // Add SEO meta tags if missing
+  if (!html.includes('property="og:type"')) {
+    const pageTitle = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || 'ToolsBase';
+    const pageDesc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || 'Free online developer tools';
+    const pageUrl = 'https://toolsbase.net/api/';
+    const ogImage = 'https://toolsbase.net/og-image.png';
+    const seoMeta = `<meta property="og:type" content="article">
+  <meta property="og:title" content="${pageTitle}">
+  <meta property="og:description" content="${pageDesc}">
+  <meta property="og:url" content="${pageUrl}">
+  <meta property="og:site_name" content="ToolsBase">
+  <meta property="og:image" content="${ogImage}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${pageTitle}">
+  <meta name="twitter:description" content="${pageDesc}">
+  <meta name="twitter:image" content="${ogImage}">`;
+    html = html.replace('</head>', '  ' + seoMeta + '\n</head>');
+  } else {
+    // og:type exists but og:site_name, og:image, twitter:card, twitter:title,
+    // twitter:description, twitter:image might be missing. Fill them in so the
+    // api page is on equal SEO footing with the rest of the site.
+    const pageUrl = 'https://toolsbase.net/api/';
+    const ogImage = 'https://toolsbase.net/og-image.png';
+    const pageTitle = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || 'ToolsBase';
+    const pageDesc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || 'Free online developer tools';
+    const missing = [];
+    if (!html.includes('property="og:site_name"')) {
+      missing.push(`<meta property="og:site_name" content="ToolsBase">`);
+    }
+    if (!html.includes('property="og:image"')) {
+      missing.push(`<meta property="og:image" content="${ogImage}">`);
+    }
+    if (!html.includes('name="twitter:card"')) {
+      missing.push(`<meta name="twitter:card" content="summary_large_image">`);
+    }
+    if (!html.includes('name="twitter:title"')) {
+      missing.push(`<meta name="twitter:title" content="${pageTitle}">`);
+    }
+    if (!html.includes('name="twitter:description"')) {
+      missing.push(`<meta name="twitter:description" content="${pageDesc}">`);
+    }
+    if (!html.includes('name="twitter:image"')) {
+      missing.push(`<meta name="twitter:image" content="${ogImage}">`);
+    }
+    if (missing.length > 0) {
+      html = html.replace('</head>', '  ' + missing.join('\n  ') + '\n</head>');
+    }
+  }
+
+  // Minify (preserve <pre> and <script> blocks)
+  const preBlocks = [];
+  html = html.replace(/<pre[\s\S]*?<\/pre>/g, (m) => {
+    preBlocks.push(m);
+    return `\u0000PREBLOCK_${preBlocks.length - 1}\u0000`;
+  });
+  const scriptBlocks = [];
+  html = html.replace(/<script[\s\S]*?<\/script>/g, (m) => {
+    scriptBlocks.push(m);
+    return `\u0000SCRIPTBLOCK_${scriptBlocks.length - 1}\u0000`;
+  });
+  html = html.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
+  html = html.replace(/\u0000SCRIPTBLOCK_(\d+)\u0000/g, (_, i) => scriptBlocks[+i]);
+  html = html.replace(/\u0000PREBLOCK_(\d+)\u0000/g, (_, i) => preBlocks[+i]);
+
+  return html;
+}
+
 // Process a single HTML file
 function processFile(filePath, outPath) {
   let html = fs.readFileSync(filePath, 'utf-8');
@@ -222,8 +419,15 @@ function processFile(filePath, outPath) {
   const depth = getDepth(filePath);
   const prefix = depth > 0 ? '../'.repeat(depth) : './';
 
-  // Inject blog structure (TL;DR, takeaways, FAQ, JSON-LD) for blog posts
+  // Special handling for /api/index.html: fetch the doc fragment from the API
+  // worker and inline it. The api/index.html template has <!-- DOCS_CSS --> in
+  // <head> and <!-- DOCS --> in <body> as placeholders.
   const relPath = path.relative(ROOT, filePath);
+  if (relPath === 'api/index.html') {
+    return processApiPage(html, outPath);
+  }
+
+  // Inject blog structure (TL;DR, takeaways, FAQ, JSON-LD) for blog posts
   const blogMatch = relPath.match(/^blog\/([a-z0-9-]+)\.html$/);
   if (blogMatch && blogMatch[1] !== 'index') {
     html = injectBlogStructure(html, blogMatch[1]);
@@ -332,23 +536,21 @@ function processFile(filePath, outPath) {
     }
   }
 
-  // HTML minification: collapse whitespace between tags, but NOT between </script> and <script>
-  // Strategy: split by </script>, minify each non-script part, rejoin with </script>
-  const segments = html.split('</script>');
-  html = segments.map((seg, i) => {
-    // Last segment ends with </body> or </html>, not a script
-    if (i < segments.length - 1) {
-      // This segment ends with </script>, minify the part before it
-      const lastScriptOpen = seg.lastIndexOf('<script');
-      if (lastScriptOpen !== -1) {
-        const beforeScript = seg.substring(0, lastScriptOpen);
-        const scriptContent = seg.substring(lastScriptOpen);
-        return beforeScript.replace(/>\s+</g, '><').replace(/\n\s*/g, '') + scriptContent;
-      }
-    }
-    // No script tag in this segment, minify entirely
-    return seg.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
-  }).join('</script>');
+  // HTML minification: collapse whitespace between tags, but NOT inside <pre>, <code>, or <script>
+  // Strategy: extract <pre>...</pre> blocks, split by </script>, minify the rest, then reinsert.
+  const preBlocks = [];
+  html = html.replace(/<pre[\s\S]*?<\/pre>/g, (m) => {
+    preBlocks.push(m);
+    return `\u0000PREBLOCK_${preBlocks.length - 1}\u0000`;
+  });
+  const scriptBlocks = [];
+  html = html.replace(/<script[\s\S]*?<\/script>/g, (m) => {
+    scriptBlocks.push(m);
+    return `\u0000SCRIPTBLOCK_${scriptBlocks.length - 1}\u0000`;
+  });
+  html = html.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
+  html = html.replace(/\u0000SCRIPTBLOCK_(\d+)\u0000/g, (_, i) => scriptBlocks[+i]);
+  html = html.replace(/\u0000PREBLOCK_(\d+)\u0000/g, (_, i) => preBlocks[+i]);
 
   return html;
 }
@@ -368,7 +570,7 @@ function getHtmlFiles(dir, files = []) {
 }
 
 // Build all files
-function build() {
+async function build() {
   console.log('Building...');
 
   // Clear and create dist
@@ -417,8 +619,8 @@ function build() {
     // Create directory if needed
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-    // Process and write
-    const processed = processFile(file, outputPath);
+    // Process and write (api page is async — it fetches from the API worker)
+    const processed = await processFile(file, outputPath);
     fs.writeFileSync(outputPath, processed);
     console.log(`  ${relPath}`);
   }
@@ -434,7 +636,7 @@ function build() {
 
   // Generate sitemap.xml
   const siteUrl = 'https://toolsbase.net';
-  const urls = ['index.html', 'about.html', 'contact.html', 'terms.html', 'privacy-policy.html'];
+  const urls = ['index.html', 'about.html', 'contact.html', 'terms.html', 'privacy-policy.html', 'api/index.html'];
   const toolPages = [
     'tools/network/my-ip.html', 'tools/network/url-parser.html', 'tools/network/url-shortener.html',
     'tools/network/subnet.html', 'tools/network/ip-to-int.html', 'tools/network/dns-lookup.html',
