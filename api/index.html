@@ -5,26 +5,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Reference — ToolsBase.net</title>
-  <meta name="description" content="ToolsBase API reference: live testing, code examples, response schemas, and error handling for the Weather, Currency, and Timezone APIs.">
+  <meta name="description" content="Free developer APIs for weather, currency exchange, timezone, air quality, sunrise/sunset, moon phase, postcode lookup, country data, public holidays, and DNS queries. Unified JSON responses, simple auth.">
   <meta property="og:title" content="API Reference — ToolsBase.net">
-  <meta property="og:description" content="Live API testing, code examples, and full response schema documentation for the ToolsBase developer APIs.">
+  <meta property="og:description" content="Live API testing, code examples, and full response schema documentation for all ToolsBase developer APIs.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://toolsbase.net/api/">
   <meta property="og:site_name" content="ToolsBase">
   <meta property="og:image" content="https://toolsbase.net/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="API Reference — ToolsBase.net">
-  <meta name="twitter:description" content="Live API testing, code examples, and full response schema documentation for the ToolsBase developer APIs.">
+  <meta name="twitter:description" content="Live API testing, code examples, and full response schema documentation for all ToolsBase developer APIs.">
   <meta name="twitter:image" content="https://toolsbase.net/og-image.png">
   <link rel="canonical" href="https://toolsbase.net/api/">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <!-- DOCS_CSS -->
 </head>
 <body>
 <!-- HEADER -->
 
-<!-- DOCS -->
+<div id="api-shell">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:60vh;color:#64748b;font-family:system-ui,sans-serif;">
+    <span>Loading API docs…</span>
+  </div>
+</div>
+
+<script>
+(function() {
+  var SHELL = document.getElementById('api-shell');
+
+  function mount(html) {
+    // Strip the docs-shell HTML comment block (contains literal text like
+    // <style>, <main> that confuses the browser DOM parser).
+    html = html.replace(/<!--[\s\S]*?-->/, '');
+
+    // Pull out the <style> block and inject it into <head>.
+    var styleMatch = html.match(/<style>[\s\S]*?<\/style>/);
+    if (styleMatch) {
+      var styleEl = document.createElement('style');
+      styleEl.textContent = styleMatch[0].replace(/<\/?style>/g, '');
+      document.head.appendChild(styleEl);
+    }
+
+    // Extract the trailing <script> block (it won't auto-execute when inserted
+    // via innerHTML, so we extract it and eval it after the HTML is mounted).
+    var scriptContent = '';
+    var scriptMatch = html.match(/<script>\s*\(function\(\)\s*\{[\s\S]*?\}\)\(\);\s*<\/script>/);
+    if (scriptMatch) {
+      scriptContent = scriptMatch[0].replace(/<\/?script>/g, '').trim();
+      html = html.replace(scriptMatch[0], '');
+    }
+
+    // Remove the style block, then strip api-page-header
+    // (we already have the site header from HEADER injection).
+    var body = html.replace(/<style>[\s\S]*?<\/style>/, '');
+    body = body.replace(/<div class="api-page-header"[\s\S]*?<\/div>\s*/, '');
+    SHELL.innerHTML = body;
+
+    // Execute the script now that the DOM is in place.
+    if (scriptContent) {
+      eval(scriptContent);
+    }
+  }
+
+  function onError() {
+    SHELL.innerHTML = '<div style="padding:2rem;color:#dc2626;font-family:system-ui,sans-serif;">Failed to load API docs. Please refresh or try again later.</div>';
+  }
+
+  fetch('https://api.toolsbase.net/docs/html')
+    .then(function(r) { return r.ok ? r.text() : null; })
+    .then(function(html) {
+      if (!html) { onError(); return; }
+      mount(html);
+    })
+    .catch(onError);
+})();
+</script>
 
 <!-- FOOTER -->
 </body>

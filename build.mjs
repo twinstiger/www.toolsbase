@@ -208,67 +208,6 @@ const GOOGLE_ADS_SCRIPT = '<script async src="https://pagead2.googlesyndication.
 // API base for fetching doc fragments (overridable via env var for local dev)
 const API_BASE = process.env.TOOLSBASE_API_URL || 'https://api.toolsbase.net';
 
-// Cache for the doc fragment so we only fetch once per build
-let cachedDocsHtml = null;
-
-async function fetchDocsFragment() {
-  if (cachedDocsHtml !== null) return cachedDocsHtml;
-  const url = `${API_BASE}/docs/html`;
-  console.log(`  Fetching doc fragment from ${url}`);
-  try {
-    const res = await fetch(url, {
-      headers: { 'Accept': 'text/html' }
-    });
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status} ${res.statusText}`);
-    }
-    cachedDocsHtml = await res.text();
-    return cachedDocsHtml;
-  } catch (err) {
-    console.warn(`  ⚠️  Could not fetch doc fragment: ${err.message}`);
-    console.warn(`  ⚠️  Using placeholder. Deploy the api worker first: cd api.toolsbase && npx wrangler deploy`);
-    return PLACEHOLDER_DOCS;
-  }
-}
-
-const PLACEHOLDER_DOCS = `<div class="api-page-header"><h1>API Reference</h1><p class="lead" style="color:#dc2626;">⚠️ Doc fragment unavailable. The api worker has not been deployed yet, or the build cannot reach it. Run: <code>cd api.toolsbase &amp;&amp; npx wrangler deploy</code></p></div>
-
-<div class="api-layout">
-  <aside class="api-sidebar">
-    <h3>API</h3>
-    <ul class="tree-leaf"><li class="tree-current"><span class="dot"></span><span>Weather</span></li></ul>
-  </aside>
-  <main class="api-main">
-    <div class="api-tabs"><button class="api-tab active">Status</button></div>
-    <section class="api-panel active md-content" style="padding:2rem;">
-      <h2>Worker not reachable</h2>
-      <p>The build could not fetch the doc fragment from <code>${API_BASE}/docs/html</code>.</p>
-      <p>To fix this:</p>
-      <ol>
-        <li>Deploy the api worker: <code>cd api.toolsbase && npx wrangler deploy</code></li>
-        <li>Re-run the build: <code>cd toolsbase && node build.mjs</code></li>
-      </ol>
-      <p>Or set <code>TOOLSBASE_API_URL</code> to a different endpoint.</p>
-    </section>
-  </main>
-</div>`;
-
-// Split the worker's doc fragment into <style> block (for <head>) and body content.
-// The shell template starts with an HTML comment that mentions `<style>`, `<main>`,
-// etc. as literal text — we must strip those comments first, otherwise the lazy
-// regex below matches the literal `<style>` inside the comment instead of the
-// real one, and the resulting CSS chunk is invalid.
-function splitDocsFragment(fragment) {
-  const stripped = fragment.replace(/<!--[\s\S]*?-->/g, '');
-  const styleMatch = stripped.match(/<style[\s\S]*?<\/style>/);
-  if (!styleMatch) {
-    return { css: '', body: stripped };
-  }
-  const css = styleMatch[0];
-  const body = stripped.replace(css, '').trim();
-  return { css, body };
-}
-
 // Microsoft Clarity script
 const CLARITY_SCRIPT = `<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -277,22 +216,6 @@ const CLARITY_SCRIPT = `<script type="text/javascript">
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "x0i1qkgvxk");
 </script>`;
-
-// Process the /api/index.html page: fetches doc fragment from API worker,
-// splits it into CSS (for <head>) and body content, then runs the standard
-// HEADER/FOOTER injection.
-async function processApiPage(html, outPath) {
-  const fragment = await fetchDocsFragment();
-  const { css, body } = splitDocsFragment(fragment);
-
-  // Replace placeholders
-  html = html.replace('<!-- DOCS_CSS -->', css);
-  html = html.replace('<!-- DOCS -->', body);
-
-  // Run through the standard pipeline (HEADER/FOOTER/SEO/minify).
-  // Wrap in a sync helper so we can reuse the existing logic in processFile.
-  return finalizeHtml(html);
-}
 
 // Apply HEADER/FOOTER injection, SEO meta, and minification. Used for the
 // /api page after the doc fragment has been inlined.
@@ -419,13 +342,10 @@ function processFile(filePath, outPath) {
   const depth = getDepth(filePath);
   const prefix = depth > 0 ? '../'.repeat(depth) : './';
 
-  // Special handling for /api/index.html: fetch the doc fragment from the API
-  // worker and inline it. The api/index.html template has <!-- DOCS_CSS --> in
-  // <head> and <!-- DOCS --> in <body> as placeholders.
+  // No special handling for /api/index.html — it uses client-side fetch from
+  // api.toolsbase.net/docs/html at runtime, so it just gets HEADER/FOOTER
+  // injected like any other page.
   const relPath = path.relative(ROOT, filePath);
-  if (relPath === 'api/index.html') {
-    return processApiPage(html, outPath);
-  }
 
   // Inject blog structure (TL;DR, takeaways, FAQ, JSON-LD) for blog posts
   const blogMatch = relPath.match(/^blog\/([a-z0-9-]+)\.html$/);
