@@ -13,9 +13,11 @@
 /tools/index.html     /tools              301
 /blog/index.html      /blog               301
 
-# === /api — redirect to api.toolsbase.net/docs (content served by Worker) ===
-/api/  https://api.toolsbase.net/docs  301
-/api   https://api.toolsbase.net/docs  301
+# === /api — let Pages serve dist/api/index.html directly ===
+# No _redirects rule needed: the static asset binding resolves /api and
+# /api/ to dist/api/index.html with no rewrite/redirect. Adding a rule
+# here causes a 307 redirect loop (Pages canonicalizes the directory
+# path while the rule keeps re-targeting it).
 
 # === Short aliases (46) — entry points to popular tools ===
 /base64 /tools/dev/base64-encoder 200
