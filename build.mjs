@@ -375,12 +375,15 @@ function processFile(filePath, outPath) {
   const ogImage = isBlogPost && slug
     ? `${siteUrl}/images/blog/${slug}.webp`
     : `${siteUrl}/og-image.png`;
+  // Blog posts use "article" og:type, all other pages use "website"
+  const ogType = isBlogPost ? 'article' : 'website';
 
   // Build dynamic SEO meta tags with per-post OG image
-  const seoMeta = `<meta property="og:type" content="website">
+  const seoMeta = `<meta property="og:type" content="${ogType}">
   <meta property="og:title" content="${pageTitle}">
   <meta property="og:description" content="${pageDesc}">
   <meta property="og:url" content="${pageUrl}">
+  <link rel="canonical" href="${pageUrl}">
   <meta property="og:site_name" content="ToolsBase">
   <meta property="og:image" content="${ogImage}">
   <meta name="twitter:card" content="summary_large_image">
@@ -445,6 +448,18 @@ function processFile(filePath, outPath) {
       html = html.replace('</head>', '  ' + twitterImgTag + '\n</head>');
     }
   }
+  // Strip hard-coded SEO meta from source files before injecting dynamic ones
+  html = html.replace(/<meta property="og:title"[^>]*>/g, '');
+  html = html.replace(/<meta property="og:description"[^>]*>/g, '');
+  html = html.replace(/<meta property="og:url"[^>]*>/g, '');
+  html = html.replace(/<meta property="og:type"[^>]*>/g, '');
+  html = html.replace(/<meta property="og:image"[^>]*>/g, '');
+  html = html.replace(/<meta property="og:site_name"[^>]*>/g, '');
+  html = html.replace(/<meta name="twitter:card"[^>]*>/g, '');
+  html = html.replace(/<meta name="twitter:title"[^>]*>/g, '');
+  html = html.replace(/<meta name="twitter:description"[^>]*>/g, '');
+  html = html.replace(/<meta name="twitter:image"[^>]*>/g, '');
+  html = html.replace(/<link rel="canonical"[^>]*>/g, '');
 
   // LCP optimization: preload the hero image (first /images/blog/{id}.webp)
   if (!html.includes('rel="preload" as="image"') && !html.includes("rel='preload' as='image'")) {
