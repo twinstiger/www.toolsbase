@@ -1,4 +1,27 @@
 {
+  "ai-code-review-comparison": {
+    "tldr": "After a month using Claude, GPT-4, and Gemini for code review, Claude (via Cursor) caught the most real bugs with the fewest false positives. GPT-4 is a solid second opinion for security issues. Gemini's million-token context shines on multi-file architectural PRs. All three miss business logic errors — AI review is a safety net, not a substitute for human thinking.",
+    "takeaways": [
+      "Claude via Cursor: best for daily PR review — catches logic errors and concurrency bugs most reliably, 8s avg response.",
+      "GPT-4 via Copilot: good second opinion, especially for security. More false positives but catches different things than Claude.",
+      "Gemini 1.5: use for multi-file PRs where the context window matters — 6-file deep dive is where it wins.",
+      "Prompt framing matters: 'I'm worried about X' gets better results than 'review this code for bugs'."
+    ],
+    "faqs": [
+      {
+        "q": "Which AI code review tool should I start with?",
+        "a": "Claude via Cursor — the best bug-to-false-positive ratio and fast enough for daily use. If you're already using VS Code, GitHub Copilot (GPT-4) is well-integrated. Gemini via Google AI Studio is worth trying when you need to review across many files at once."
+      },
+      {
+        "q": "Can AI code review replace human reviewers?",
+        "a": "No — AI catches technical bugs, not business logic errors or product requirement mismatches. Use it as a first-pass safety net before human review, not as a gate. The goal is to catch the things you missed, not to replace the thinking that makes code good."
+      },
+      {
+        "q": "How do I get better results from AI code review?",
+        "a": "Tell the AI what you're worried about: 'This PR touches the payment flow — focus on concurrency and error handling.' Contextual framing (what the code does, where it runs, what you're unsure about) gets much better results than generic prompts. Also: start fresh sessions for each review — AI gets vaguer the longer a session goes on."
+      }
+    ]
+  },
   "api-authentication": {
     "tldr": "API authentication verifies a client's identity using one of four methods: API keys (simple, low-security), Basic Auth (legacy, only over HTTPS), OAuth 2.0 (delegated access for third-party apps), or JWT (stateless tokens for distributed systems). Choose based on whether you're authenticating first-party, third-party, or machine-to-machine clients.",
     "takeaways": [

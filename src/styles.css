@@ -732,6 +732,16 @@ body[data-theme="dark"] { background: var(--color-bg); color: var(--color-text);
 .footer-info p { font-size: 0.8125rem; color: #6B7280; margin: 0; line-height: 1.4; }
 .footer-copy { font-size: 0.775rem; color: #9CA3AF; margin: 0; }
 .footer-badge { display: flex; justify-content: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #E5E7EB; }
+.badge-carousel { display: flex; gap: 2rem; align-items: center; overflow: hidden; position: relative; }
+.badge-carousel a { flex-shrink: 0; opacity: 0.85; transition: opacity 150ms ease; }
+.badge-carousel a:hover { opacity: 1; }
+.badge-carousel::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, transparent, var(--color-surface, #fff)); pointer-events: none; }
+[data-theme="dark"] .badge-carousel::after { background: linear-gradient(to right, transparent, var(--color-bg, #0d1117)); }
+.badge-carousel a { animation: badgeScroll 20s linear infinite; }
+@keyframes badgeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 .footer-nav { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
 .footer-nav a { font-size: 0.8125rem; color: #6B7280; transition: color 120ms ease; }
 .footer-nav a:hover { color: #000000; }

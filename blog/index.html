@@ -39,6 +39,7 @@
           <a href="#" data-tag="Frontend" onclick="filterByTag('Frontend'); return false;" class="tag-filter">Frontend</a>
           <a href="#" data-tag="Fundamentals" onclick="filterByTag('Fundamentals'); return false;" class="tag-filter">Fundamentals</a>
           <a href="#" data-tag="Backend" onclick="filterByTag('Backend'); return false;" class="tag-filter">Backend</a>
+          <a href="#" data-tag="AI" onclick="filterByTag('AI'); return false;" class="tag-filter">AI</a>
         </div>
       </div>
 
@@ -46,6 +47,14 @@
       <div style="margin-bottom:3rem;">
         <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1.5rem;">Featured Articles</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;">
+          <a href="/blog/ai-code-review-comparison.html" style="text-decoration:none;color:inherit;">
+            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
+              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">AI</div>
+              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">Claude vs GPT-4 vs Gemini: Real Code Review After 1 Month</h3>
+              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">I used all three AI assistants for code review on real PRs. Here are the actual bugs caught, false positives, and which one actually helps.</p>
+              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">18 min read</div>
+            </div>
+          </a>
           <a href="/blog/git-commands.html" style="text-decoration:none;color:inherit;">
             <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
               <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">VERSION CONTROL</div>
@@ -60,14 +69,6 @@
               <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">SQL Injection: How Attacks Work and How to Prevent Them</h3>
               <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">SQL injection remains one of the most dangerous web vulnerabilities. Learn how to write code that's immune.</p>
               <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">9 min read</div>
-            </div>
-          </a>
-          <a href="/blog/api-design.html" style="text-decoration:none;color:inherit;">
-            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
-              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">BACKEND</div>
-              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">API Design Best Practices</h3>
-              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">Build better REST APIs with these best practices. Learn about URL design, HTTP methods, and error handling.</p>
-              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">10 min read</div>
             </div>
           </a>
         </div>
@@ -653,6 +654,26 @@
             <h2 class="blog-card-title"><a href="/blog/http-headers-guide.html">HTTP Headers: The Complete Guide for Developers</a></h2>
             <p class="blog-card-excerpt">Learn every HTTP header that matters: caching, security, CORS, authentication, and performance. Includes practical examples and debugging tips.</p>
             <a href="/blog/http-headers-guide.html" class="blog-card-link">Read article →</a>
+          </div>
+        </article>
+
+        <!-- ai-code-review-comparison -->
+        <article class="blog-card blog-card--list">
+          <a href="/blog/ai-code-review-comparison.html" class="blog-card-image-link">
+            <picture>
+  <source type="image/webp" srcset="/images/blog/ai-code-review-comparison-thumb.webp" sizes="(max-width: 600px) 100vw, 600px">
+  <img src="/images/blog/ai-code-review-comparison-thumb.webp" alt="AI Code Review Comparison" width="600" height="280" loading="lazy" decoding="async">
+</picture>
+          </a>
+          <div class="blog-card-content">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">June 4, 2026</span>
+              <span class="blog-card-tag">AI</span>
+              <span class="blog-card-read">18 min read</span>
+            </div>
+            <h2 class="blog-card-title"><a href="/blog/ai-code-review-comparison.html">Claude vs GPT-4 vs Gemini for Code Review: Real Results After 1 Month</a></h2>
+            <p class="blog-card-excerpt">I spent a month using all three AI assistants for code review on real PRs. Here's what actually happened, with actual bugs caught and false positives.</p>
+            <a href="/blog/ai-code-review-comparison.html" class="blog-card-link">Read article →</a>
           </div>
         </article>
 
