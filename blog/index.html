@@ -21,61 +21,40 @@
 
   <main class="tool-page">
     <div class="container">
-      <div class="tool-page-header" style="text-align:center;margin-bottom:2rem;">
-        <h1 class="tool-page-title">ToolsBase Blog</h1>
-        <p class="lead-text" style="max-width:680px;margin:0.75rem auto 0;">Practical guides, tips, and how-tos for developers. From JSON formatting to JWT authentication, our articles help you work smarter and build better software.</p>
+      <div class="blog-header">
+        <div class="blog-header-left">
+          <h1 class="tool-page-title">ToolsBase Blog</h1>
+        </div>
+        <div class="blog-header-right">
+          <p class="lead-text" style="font-size:0.9rem;margin:0;">Practical guides, tips, and how-tos for developers. From JSON formatting to JWT authentication, our articles help you work smarter and build better software.</p>
+        </div>
       </div>
 
       <!-- Categories Overview -->
-      <div style="margin-bottom:3rem;padding:1.5rem;background:var(--color-bg-alt);border-radius:var(--radius-xl);">
-        <h2 style="font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--color-text-muted);">Browse by Topic</h2>
-        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
-          <a href="#" data-tag="All" onclick="filterByTag('All'); return false;" class="tag-filter active">All Articles</a>
-          <a href="#" data-tag="Dev Tools" onclick="filterByTag('Dev Tools'); return false;" class="tag-filter">Dev Tools</a>
-          <a href="#" data-tag="Security" onclick="filterByTag('Security'); return false;" class="tag-filter">Security</a>
-          <a href="#" data-tag="DevOps" onclick="filterByTag('DevOps'); return false;" class="tag-filter">DevOps</a>
-          <a href="#" data-tag="JavaScript" onclick="filterByTag('JavaScript'); return false;" class="tag-filter">JavaScript</a>
-          <a href="#" data-tag="Database" onclick="filterByTag('Database'); return false;" class="tag-filter">Database</a>
-          <a href="#" data-tag="Frontend" onclick="filterByTag('Frontend'); return false;" class="tag-filter">Frontend</a>
-          <a href="#" data-tag="Fundamentals" onclick="filterByTag('Fundamentals'); return false;" class="tag-filter">Fundamentals</a>
-          <a href="#" data-tag="Backend" onclick="filterByTag('Backend'); return false;" class="tag-filter">Backend</a>
-          <a href="#" data-tag="AI" onclick="filterByTag('AI'); return false;" class="tag-filter">AI</a>
-        </div>
+      <div class="blog-tag-bar">
+        <a href="#" data-tag="All" onclick="filterByTag('All'); return false;" class="tag-filter active">All</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="Dev Tools" onclick="filterByTag('Dev Tools'); return false;" class="tag-filter">Dev Tools</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="Security" onclick="filterByTag('Security'); return false;" class="tag-filter">Security</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="DevOps" onclick="filterByTag('DevOps'); return false;" class="tag-filter">DevOps</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="JavaScript" onclick="filterByTag('JavaScript'); return false;" class="tag-filter">JavaScript</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="Database" onclick="filterByTag('Database'); return false;" class="tag-filter">Database</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="Frontend" onclick="filterByTag('Frontend'); return false;" class="tag-filter">Frontend</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="Fundamentals" onclick="filterByTag('Fundamentals'); return false;" class="tag-filter">Fundamentals</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="Backend" onclick="filterByTag('Backend'); return false;" class="tag-filter">Backend</a>
+<span class="tag-sep">|</span>
+        <a href="#" data-tag="AI" onclick="filterByTag('AI'); return false;" class="tag-filter">AI</a>
       </div>
 
-      <!-- Featured Articles -->
-      <div style="margin-bottom:3rem;">
-        <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1.5rem;">Featured Articles</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;">
-          <a href="/blog/ai-code-review-comparison.html" style="text-decoration:none;color:inherit;">
-            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
-              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">AI</div>
-              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">Claude vs GPT-4 vs Gemini: Real Code Review After 1 Month</h3>
-              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">I used all three AI assistants for code review on real PRs. Here are the actual bugs caught, false positives, and which one actually helps.</p>
-              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">18 min read</div>
-            </div>
-          </a>
-          <a href="/blog/git-commands.html" style="text-decoration:none;color:inherit;">
-            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
-              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">VERSION CONTROL</div>
-              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">Git Commands Handbook: From Basics to Advanced</h3>
-              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">Master Git with this comprehensive guide covering branching, merging, rebasing, stash, and team workflows.</p>
-              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">10 min read</div>
-            </div>
-          </a>
-          <a href="/blog/sql-injection-prevention.html" style="text-decoration:none;color:inherit;">
-            <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:1.5rem;transition:all 0.2s;">
-              <div style="font-size:0.75rem;color:var(--color-primary);font-weight:600;margin-bottom:0.5rem;">SECURITY</div>
-              <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:0.75rem;">SQL Injection: How Attacks Work and How to Prevent Them</h3>
-              <p style="font-size:0.9rem;color:var(--color-text-muted);line-height:1.6;">SQL injection remains one of the most dangerous web vulnerabilities. Learn how to write code that's immune.</p>
-              <div style="margin-top:1rem;font-size:0.8rem;color:var(--color-text-muted);">9 min read</div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1.5rem;">All Articles</h2>
-      <div class="blog-list" id="blogList">
+      <h2 class="blog-list-heading">All Articles</h2>
+      <div class="blog-list blog-list--compact" id="blogList">
 
         <!-- cron-job-guide -->
         <article class="blog-card blog-card--list">
@@ -796,93 +775,125 @@
   </script>
 
   <style>
-    .tag-filter {
-      padding: 0.5rem 1rem;
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 999px;
-      color: var(--color-text-muted);
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .tag-filter:hover {
-      background: var(--color-bg-alt);
-      border-color: var(--color-primary);
-      color: var(--color-text);
-    }
-    .tag-filter.active {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
-      color: white;
-    }
-    article.blog-card[data-hidden="true"] {
-      display: none;
-    }
-    article.blog-card[data-filtered="true"] {
-      display: none;
-    }
-    .pagination {
-      display: flex;
-      justify-content: center;
+    .blog-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
       align-items: center;
-      gap: 0.5rem;
-      margin: 3rem 0;
-      padding: 2rem 0;
+      margin-bottom: 1.25rem;
+    }
+    .blog-header-left { flex-shrink: 0; }
+    .blog-header-right { color: var(--color-text-muted); }
+
+    /* Tag bar */
+    .blog-tag-bar {
+      display: flex; flex-wrap: wrap; gap: 0;
+      align-items: center;
+      padding-bottom: 0.625rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .blog-tag-bar .tag-filter {
+      padding: 0 0.5rem 2px;
+      background: none; border: none; border-radius: 0;
+      color: #374151; font-size: 0.8125rem; font-weight: 500;
+      font-family: 'Inter', sans-serif; letter-spacing: 0.01em;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.15s; cursor: pointer;
+    }
+    .blog-tag-bar .tag-filter:first-child { padding-left: 0; }
+    .blog-tag-bar .tag-filter:hover { color: #000; }
+    .blog-tag-bar .tag-filter:hover::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; left: 0.5rem; right: 0.5rem;
+      height: 1.5px;
+      background: #374151;
+    }
+    .blog-tag-bar .tag-filter.active {
+      color: #000; font-weight: 700; letter-spacing: 0;
+    }
+    .blog-tag-bar .tag-filter.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; left: 0.5rem; right: 0.5rem;
+      height: 2px;
+      background: #000;
+      border-radius: 1px;
+    }
+    .blog-tag-bar .tag-sep {
+      color: #E5E7EB; font-size: 0.65rem;
+      pointer-events: none; user-select: none; line-height: 1;
+      margin-top: 1px;
+    }
+
+    [data-theme="dark"] .blog-tag-bar { border-bottom-color: #1F2937; }
+    [data-theme="dark"] .blog-tag-bar .tag-filter { color: #9CA3AF; }
+    [data-theme="dark"] .blog-tag-bar .tag-filter:hover { color: #fff; }
+    [data-theme="dark"] .blog-tag-bar .tag-filter:hover::after { background: #fff; }
+    [data-theme="dark"] .blog-tag-bar .tag-filter.active { color: #fff; }
+    [data-theme="dark"] .blog-tag-bar .tag-filter.active::after { background: #fff; }
+    [data-theme="dark"] .blog-tag-bar .tag-sep { color: #1F2937; }
+
+    .blog-list-heading {
+      font-size: 0.9rem; font-weight: 700;
+      color: var(--color-text-muted);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .blog-list--compact .blog-card {
+      margin-bottom: 0.5rem;
+      border-radius: 0.75rem;
+    }
+    .blog-list--compact .blog-card-image-link img {
+      height: 130px; object-fit: cover;
+      border-radius: 0.625rem;
+    }
+    .blog-list--compact .blog-card-content {
+      padding: 0.75rem 1rem;
+    }
+    .blog-list--compact .blog-card-excerpt {
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    article.blog-card[data-hidden="true"] { display: none; }
+    article.blog-card[data-filtered="true"] { display: none; }
+
+    .pagination {
+      display: flex; justify-content: center; align-items: center;
+      gap: 0.4rem; margin: 2rem 0 0;
+      padding: 1.5rem 0;
       border-top: 1px solid var(--color-border);
     }
     .pagination-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.875rem;
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      color: var(--color-text);
-      cursor: pointer;
-      font-weight: 500;
+      color: var(--color-text); cursor: pointer;
+      font-weight: 500; font-size: 0.85rem;
       transition: all 0.2s;
     }
     .pagination-btn:hover:not(:disabled) {
-      background: var(--color-bg-alt);
-      border-color: var(--color-primary);
+      background: var(--color-bg-alt); border-color: var(--color-primary);
     }
-    .pagination-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-    .pagination-numbers {
-      display: flex;
-      gap: 0.25rem;
-      align-items: center;
-    }
+    .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pagination-numbers { display: flex; gap: 0.25rem; align-items: center; }
     .page-num {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
       border-radius: var(--radius-lg);
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--color-text-muted);
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: transparent; border: 1px solid transparent;
+      color: var(--color-text-muted); font-weight: 500;
+      font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
     }
-    .page-num:hover {
-      background: var(--color-bg-alt);
-      color: var(--color-text);
-    }
-    .page-num.active {
-      background: var(--color-primary);
-      color: white;
-      border-color: var(--color-primary);
-    }
-    .page-ellipsis {
-      color: var(--color-text-muted);
-      padding: 0 0.5rem;
-    }
+    .page-num:hover { background: var(--color-bg-alt); color: var(--color-text); }
+    .page-num.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+    .page-ellipsis { color: var(--color-text-muted); padding: 0 0.5rem; font-size: 0.85rem; }
   </style>
 
 <!-- FOOTER -->

@@ -9,7 +9,10 @@ const COMPONENTS = path.join(SRC, 'components');
 const DIST = path.join(ROOT, 'dist');
 
 // Load components
-const headerHTML = fs.readFileSync(path.join(COMPONENTS, 'header.html'), 'utf-8');
+// Header with cat-nav (for home and tools pages)
+const headerWithCatNav = fs.readFileSync(path.join(COMPONENTS, 'header.html'), 'utf-8');
+// Header without cat-nav (for blog, api, static pages)
+const headerNoCatNav = headerWithCatNav.replace(/\n<!-- Category Sub-nav -->[\s\S]*?<\/nav>\n/, '\n');
 const footerHTML = fs.readFileSync(path.join(COMPONENTS, 'footer.html'), 'utf-8');
 
 // Load blog structure data (TL;DR, key takeaways, FAQs for AEO/GEO)
@@ -235,8 +238,8 @@ function finalizeHtml(html) {
     html = html.replace(footerMatch[0], '<!-- FOOTER -->\n</body>');
   }
 
-  // Insert components
-  html = html.replace('<!-- HEADER -->', headerHTML);
+  // Insert components (no cat-nav on api page)
+  html = html.replace('<!-- HEADER -->', headerNoCatNav);
   html = html.replace('<!-- FOOTER -->', footerHTML);
 
   // Add utils.js
@@ -403,8 +406,10 @@ function processFile(filePath, outPath) {
     html = html.replace(footerMatch[0], '<!-- FOOTER -->\n</body>');
   }
 
-  // Insert components
-  html = html.replace('<!-- HEADER -->', headerHTML);
+  // Insert components — cat-nav only on home and tools index
+  const useCatNav = (relPath === 'index.html' || relPath === 'tools/index.html');
+  const headerToUse = useCatNav ? headerWithCatNav : headerNoCatNav;
+  html = html.replace('<!-- HEADER -->', headerToUse);
   html = html.replace('<!-- FOOTER -->', footerHTML);
 
   // Add utils.js script before </body> (after footer scripts so TBUtils is available)
@@ -518,7 +523,10 @@ async function build() {
   fs.mkdirSync(path.join(DIST, 'src'), { recursive: true });
   fs.cpSync(path.join(SRC, 'styles.css'), path.join(DIST, 'src', 'styles.css'));
   fs.cpSync(path.join(SRC, 'tokens.css'), path.join(DIST, 'src', 'tokens.css'));
+  fs.cpSync(path.join(SRC, 'index.css'), path.join(DIST, 'src', 'index.css'));
   fs.cpSync(path.join(SRC, 'utils.js'), path.join(DIST, 'src', 'utils.js'));
+  fs.cpSync(path.join(SRC, 'header.js'), path.join(DIST, 'src', 'header.js'));
+  fs.cpSync(path.join(SRC, 'javascript-runner.js'), path.join(DIST, 'src', 'javascript-runner.js'));
 
   // Copy images directory if it exists (blog post images, etc.)
   const imagesSrc = path.join(SRC, 'images');
@@ -573,6 +581,7 @@ async function build() {
   const siteUrl = 'https://toolsbase.net';
   const urls = ['index.html', 'about.html', 'contact.html', 'terms.html', 'privacy-policy.html', 'api/index.html'];
   const toolPages = [
+    'tools/run/python.html', 'tools/run/javascript.html', 'tools/run/lua.html', 'tools/run/sql.html', 'tools/run/regex-runner.html', 'tools/run/brainfuck.html',
     'tools/network/my-ip.html', 'tools/network/url-parser.html', 'tools/network/url-shortener.html',
     'tools/network/subnet.html', 'tools/network/ip-to-int.html', 'tools/network/dns-lookup.html',
     'tools/network/user-agent.html', 'tools/dev/json-formatter.html', 'tools/dev/base64-encoder.html',

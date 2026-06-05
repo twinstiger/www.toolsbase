@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Runner — ToolsBase.net</title>
+  <meta name="description" content="Run JavaScript code in your browser. Execute JS instantly with a sandboxed iframe — no server needed.">
+  <meta property="og:title" content="JavaScript Runner — ToolsBase.net">
+  <meta property="og:description" content="Execute JavaScript code instantly in your browser.">
+  <meta property="og:url" content="https://toolsbase.net/tools/run/javascript">
+  <link rel="canonical" href="https://toolsbase.net/tools/run/javascript.html">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>JavaScript Runner</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>JavaScript Runner</span></h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Execute JavaScript code instantly in your browser. Powered by a sandboxed iframe — fully client-side, no server required.</p>
+    </div>
+
+    <div class="code-runner">
+      <div class="code-panel">
+        <div class="code-panel-header">Code</div>
+        <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
+        <div class="code-run-actions">
+          <button class="run-btn" id="runBtn" onclick="runJS()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <button class="run-btn run-btn--ghost" onclick="clearCode()">Clear</button>
+          <span class="run-status" id="runStatus"></span>
+        </div>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">Output</div>
+        <div id="codeOutput" class="code-output"><span class="output-empty">// Output will appear here</span></div>
+        <div class="code-run-actions">
+          <button class="run-btn run-btn--ghost" onclick="copyOutput()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item"><summary class="faq-q">Is this JavaScript runner safe?</summary><div class="faq-a"><p>Yes. Code runs inside a sandboxed iframe with no access to the parent page, cookies, or localStorage. The sandbox attribute restricts capabilities to script execution only.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What can I do with it?</summary><div class="faq-a"><p>You can run any standard JavaScript — array operations, string manipulation, math, objects, async/await, and more. It's great for quick prototyping, algorithm testing, and learning.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. All execution happens locally in your browser. Nothing is transmitted over the network.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What doesn't work?</summary><div class="faq-a"><p>DOM manipulation, <code>window</code>, <code>document</code>, external network requests (fetch/XHR), and browser APIs are not available inside the sandbox.</p></div></div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+
+<script src="/src/javascript-runner.js" defer></script>
+<script>
+function shareTool() { TBUtils.showShareModal('javascript-runner', 'JavaScript Runner'); }
+</script>
+</body>
+</html>

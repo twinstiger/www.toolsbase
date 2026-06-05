@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainfuck Runner — ToolsBase.net</title>
+  <meta name="description" content="Run Brainfuck code in your browser with a pure JavaScript interpreter. No server needed.">
+  <meta property="og:title" content="Brainfuck Runner — ToolsBase.net">
+  <meta property="og:description" content="Execute Brainfuck code instantly in your browser.">
+  <meta property="og:url" content="https://toolsbase.net/tools/run/brainfuck">
+  <link rel="canonical" href="https://toolsbase.net/tools/run/brainfuck.html">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Brainfuck Runner</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Brainfuck Runner</span></h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Execute Brainfuck code in your browser. Pure JavaScript interpreter with step limit protection — no server required.</p>
+    </div>
+
+    <div class="code-runner">
+      <div class="code-panel">
+        <div class="code-panel-header">Brainfuck Code</div>
+        <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
+        <div class="code-run-actions">
+          <button class="run-btn" id="runBtn" onclick="runBrainfuck()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <button class="run-btn run-btn--ghost" onclick="clearCode()">Clear</button>
+          <span class="run-status" id="runStatus"></span>
+        </div>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">Output</div>
+        <div id="codeOutput" class="code-output"><span class="output-empty">// Write Brainfuck and click Run</span></div>
+        <div class="code-run-actions">
+          <button class="run-btn run-btn--ghost" onclick="copyOutput()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item"><summary class="faq-q">What is Brainfuck?</summary><div class="faq-a"><p>Brainfuck is an esoteric programming language with only 8 commands: <code>&gt;</code> <code>&lt;</code> <code>+</code> <code>-</code> <code>.</code> <code>,</code> <code>[</code> <code>]</code>. It operates on a tape of memory cells using a pointer.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What do the commands do?</summary><div class="faq-a"><p><code>&gt;</code> move pointer right &nbsp; <code>&lt;</code> move pointer left &nbsp; <code>+</code> increment cell &nbsp; <code>-</code> decrement cell &nbsp; <code>.</code> output char &nbsp; <code>,</code> input char &nbsp; <code>[</code>/<code>]</code> loop while cell != 0</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. The interpreter runs entirely in your browser as pure JavaScript.</p></div></div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+
+<script>
+(function() {
+  var outputEl = document.getElementById('codeOutput');
+  var statusEl = document.getElementById('runStatus');
+  var btn = document.getElementById('runBtn');
+
+  // Set placeholder via JS to avoid HTML minifier collapsing newlines
+  var ed = document.getElementById('codeEditor');
+  if (ed) {
+    ed.placeholder = '-- Hello World in Brainfuck\n++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.';
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  window.runBrainfuck = function() {
+    var code = document.getElementById('codeEditor').value;
+    if (!code.trim()) {
+      outputEl.innerHTML = '<span class="output-empty">// No code to run</span>';
+      return;
+    }
+
+    btn.disabled = true;
+    statusEl.textContent = 'Running...';
+
+    // Use setTimeout to avoid blocking the UI
+    setTimeout(function() {
+      try {
+        var result = executeBrainfuck(code);
+        if (result.error) {
+          outputEl.innerHTML = '<span class="output-line output-line--error">&#10060; ' + escHtml(result.error) + '</span>';
+        } else {
+          var out = result.output;
+          if (!out) {
+            outputEl.innerHTML = '<span class="output-empty">// (no output)</span>';
+          } else {
+            outputEl.innerHTML = '<span class="output-line">' + escHtml(out) + '</span>';
+          }
+        }
+      } catch(e) {
+        outputEl.innerHTML = '<span class="output-line output-line--error">&#10060; ' + escHtml(e.message || String(e)) + '</span>';
+      }
+
+      btn.disabled = false;
+      statusEl.textContent = '';
+    }, 10);
+  }
+
+  function executeBrainfuck(code) {
+    var tape = [0];
+    var ptr = 0;
+    var output = '';
+    var inputPtr = 0;
+    var steps = 0;
+    var MAX_STEPS = 1000000;
+
+    // Pre-process: find matching brackets
+    var matching = {};
+    var stack = [];
+    for (var i = 0; i < code.length; i++) {
+      if (code[i] === '[') {
+        stack.push(i);
+      } else if (code[i] === ']') {
+        if (stack.length === 0) {
+          return { error: 'Unmatched ] at position ' + i };
+        }
+        var open = stack.pop();
+        matching[i] = open;
+        matching[open] = i;
+      }
+    }
+    if (stack.length > 0) {
+      return { error: 'Unmatched [ at position ' + stack[0] };
+    }
+
+    for (var i = 0; i < code.length; i++) {
+      steps++;
+      if (steps > MAX_STEPS) {
+        return { error: 'Execution limit reached (' + MAX_STEPS.toLocaleString() + ' steps) — possible infinite loop' };
+      }
+
+      var cmd = code[i];
+      if (cmd === '>') {
+        ptr++;
+        if (ptr >= tape.length) tape.push(0);
+      } else if (cmd === '<') {
+        ptr--;
+        if (ptr < 0) return { error: 'Pointer moved below zero at step ' + steps };
+      } else if (cmd === '+') {
+        tape[ptr] = (tape[ptr] + 1) & 0xff; // 8-bit wrap
+      } else if (cmd === '-') {
+        tape[ptr] = (tape[ptr] - 1) & 0xff;
+      } else if (cmd === '.') {
+        output += String.fromCharCode(tape[ptr]);
+      } else if (cmd === ',') {
+        // No interactive input in browser — set cell to 0
+        tape[ptr] = 0;
+      } else if (cmd === '[') {
+        if (tape[ptr] === 0) {
+          i = matching[i];
+        }
+      } else if (cmd === ']') {
+        if (tape[ptr] !== 0) {
+          i = matching[i];
+        }
+      }
+    }
+
+    return { output: output };
+  }
+
+  window.clearCode = function() {
+    var ed = document.getElementById('codeEditor');
+    var out = document.getElementById('codeOutput');
+    var stat = document.getElementById('runStatus');
+    if (ed) ed.value = '';
+    if (out) out.innerHTML = '<span class="output-empty">// Write Brainfuck and click Run</span>';
+    if (stat) stat.textContent = '';
+  };
+
+  window.copyOutput = function() {
+    var text = document.getElementById('codeOutput').innerText || '';
+    if (text) {
+      navigator.clipboard.writeText(text).then(function() {
+        var el = document.getElementById('runStatus');
+        el.textContent = 'Copied!';
+        setTimeout(function() { el.textContent = ''; }, 1500);
+      });
+    }
+  };
+
+  // Ctrl/Cmd + Enter to run
+  document.getElementById('codeEditor').addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runBrainfuck();
+    }
+  });
+})();
+
+function shareTool() { TBUtils.showShareModal('brainfuck-runner', 'Brainfuck Runner'); }
+</script>
+</body>
+</html>

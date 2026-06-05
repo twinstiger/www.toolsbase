@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Runner — ToolsBase.net</title>
+  <meta name="description" content="Run SQL queries in your browser with a full SQLite engine. Powered by sql.js (SQLite compiled to WebAssembly), 100% client-side.">
+  <meta property="og:title" content="SQL Runner — ToolsBase.net">
+  <meta property="og:description" content="Execute SQL queries instantly in your browser.">
+  <meta property="og:url" content="https://toolsbase.net/tools/run/sql">
+  <link rel="canonical" href="https://toolsbase.net/tools/run/sql.html">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>SQL Runner</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>SQL Runner</span></h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Execute SQL queries against a pre-loaded SQLite database. Powered by sql.js (SQLite compiled to WebAssembly) — no server, no signup.</p>
+    </div>
+
+    <div class="code-runner">
+      <div class="code-panel">
+        <div class="code-panel-header">SQL Query</div>
+        <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
+        <div class="code-run-actions">
+          <button class="run-btn" id="runBtn" onclick="runSQL()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="runLabel">Run</span>
+          </button>
+          <button class="run-btn run-btn--ghost" onclick="clearCode()">Clear</button>
+          <span class="run-status" id="runStatus"></span>
+        </div>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">Result</div>
+        <div id="codeOutput" class="code-output"><span class="output-empty">// Loading SQLite engine...</span></div>
+        <div class="code-run-actions">
+          <button class="run-btn run-btn--ghost" onclick="copyOutput()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item"><summary class="faq-q">What database is loaded?</summary><div class="faq-a"><p>A sample SQLite database with tables for <code>users</code>, <code>orders</code>, and <code>products</code> is pre-created. You can also run <code>CREATE TABLE</code>, <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> to modify data within the session.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What SQL features work?</summary><div class="faq-a"><p>Most SQLite features: <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code>, joins, subqueries, aggregates, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, views, and more.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Is my data persisted?</summary><div class="faq-a"><p>No. The database lives entirely in memory for the current browser session. Refreshing the page resets it to the sample data.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. sql.js runs SQLite entirely in your browser via WebAssembly. The WASM file is downloaded once and cached.</p></div></div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+
+<script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js"></script>
+<script>
+(function() {
+  var db = null;
+  var loading = false;
+  var loaded = false;
+
+  var outputEl = document.getElementById('codeOutput');
+  var statusEl = document.getElementById('runStatus');
+  var btn = document.getElementById('runBtn');
+  var labelEl = document.getElementById('runLabel');
+
+  // Set placeholder via JS to avoid HTML minifier collapsing newlines
+  var ed = document.getElementById('codeEditor');
+  if (ed) {
+    ed.placeholder = '-- Sample tables are pre-loaded:\n-- users (id, name, email, country)\n-- orders (id, user_id, product, amount)\n-- products (id, name, price, category)\n\nSELECT * FROM users;\n\n-- SELECT u.name, o.product, o.amount\n-- FROM users u\n-- JOIN orders o ON u.id = o.user_id\n-- ORDER BY o.amount DESC\n-- LIMIT 5;';
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  async function initSQL() {
+    if (loaded || loading) return db;
+    loading = true;
+    outputEl.innerHTML = '<span class="output-empty">// Loading SQLite engine... (~500KB)</span>';
+    try {
+      var SQL = await initSqlJs({
+        locateFile: function(file) {
+          return 'https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/' + file;
+        }
+      });
+      db = new SQL.Database();
+
+      // Create sample tables
+      db.run('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT, country TEXT)');
+      db.run("INSERT INTO users VALUES (1, 'Alice', 'alice@example.com', 'USA')");
+      db.run("INSERT INTO users VALUES (2, 'Bob', 'bob@example.com', 'UK')");
+      db.run("INSERT INTO users VALUES (3, 'Carol', 'carol@example.com', 'Canada')");
+      db.run("INSERT INTO users VALUES (4, 'Dave', 'dave@example.com', 'Australia')");
+      db.run("INSERT INTO users VALUES (5, 'Eve', 'eve@example.com', 'Germany')");
+
+      db.run('CREATE TABLE orders (id INTEGER PRIMARY KEY, user_id INTEGER, product TEXT, amount REAL)');
+      db.run("INSERT INTO orders VALUES (1, 1, 'Laptop', 999.99)");
+      db.run("INSERT INTO orders VALUES (2, 2, 'Mouse', 29.99)");
+      db.run("INSERT INTO orders VALUES (3, 1, 'Keyboard', 79.99)");
+      db.run("INSERT INTO orders VALUES (4, 3, 'Monitor', 249.99)");
+      db.run("INSERT INTO orders VALUES (5, 4, 'Headphones', 149.99)");
+      db.run("INSERT INTO orders VALUES (6, 2, 'Webcam', 59.99)");
+      db.run("INSERT INTO orders VALUES (7, 5, 'SSD', 119.99)");
+      db.run("INSERT INTO orders VALUES (8, 3, 'Mousepad', 19.99)");
+
+      db.run('CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price REAL, category TEXT)');
+      db.run("INSERT INTO products VALUES (1, 'Laptop', 999.99, 'Electronics')");
+      db.run("INSERT INTO products VALUES (2, 'Mouse', 29.99, 'Electronics')");
+      db.run("INSERT INTO products VALUES (3, 'Keyboard', 79.99, 'Electronics')");
+      db.run("INSERT INTO products VALUES (4, 'Monitor', 249.99, 'Electronics')");
+      db.run("INSERT INTO products VALUES (5, 'Headphones', 149.99, 'Audio')");
+
+      loaded = true;
+      loading = false;
+      outputEl.innerHTML = '<span class="output-empty">// Ready — write a SQL query and click Run</span>';
+      labelEl.textContent = 'Run';
+      btn.disabled = false;
+    } catch(e) {
+      outputEl.innerHTML = '<span class="output-error">// Failed to load SQLite: ' + escHtml(e.message) + '</span>';
+      loading = false;
+    }
+    return db;
+  }
+
+  // Pre-init on page load
+  initSQL();
+
+  function renderTable(result) {
+    if (!result || result.length === 0) {
+      return '<span class="output-empty">// (no results)</span>';
+    }
+    var cols = result[0].columns;
+    var rows = result[0].values;
+    var html = '<div class="sql-table-wrap"><table class="sql-table"><thead><tr>';
+    cols.forEach(function(c) {
+      html += '<th>' + escHtml(String(c)) + '</th>';
+    });
+    html += '</tr></thead><tbody>';
+    rows.forEach(function(row) {
+      html += '<tr>';
+      row.forEach(function(cell) {
+        html += '<td>' + escHtml(String(cell === null ? 'NULL' : cell)) + '</td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    return html;
+  }
+
+  function renderError(msg) {
+    return '<span class="output-line output-line--error">&#10060; ' + escHtml(msg) + '</span>';
+  }
+
+  function renderInfo(msg) {
+    return '<span class="output-line output-line--info">' + escHtml(msg) + '</span>';
+  }
+
+  window.runSQL = function() {
+    var code = document.getElementById('codeEditor').value;
+    if (!code.trim()) {
+      outputEl.innerHTML = renderError('No query to run');
+      return;
+    }
+
+    if (!loaded) {
+      outputEl.innerHTML = renderError('SQLite engine still loading — please wait a moment');
+      return;
+    }
+
+    btn.disabled = true;
+    labelEl.textContent = 'Running...';
+    statusEl.textContent = 'Executing...';
+
+    try {
+      var results = db.exec(code);
+      if (results.length === 0) {
+        // Check if it's a write operation
+        var changes = db.getRowsModified();
+        if (changes > 0) {
+          outputEl.innerHTML = '<span class="output-line output-line--info">&#10004; ' + changes + ' row(s) affected</span>';
+        } else {
+          outputEl.innerHTML = '<span class="output-empty">// Query executed successfully (no results)</span>';
+        }
+      } else {
+        outputEl.innerHTML = renderTable(results);
+      }
+    } catch(e) {
+      outputEl.innerHTML = renderError(e.message || String(e));
+    }
+
+    btn.disabled = false;
+    labelEl.textContent = 'Run';
+    statusEl.textContent = '';
+  };
+
+  window.clearCode = function() {
+    var ed = document.getElementById('codeEditor');
+    var out = document.getElementById('codeOutput');
+    var stat = document.getElementById('runStatus');
+    if (ed) ed.value = '';
+    if (out) out.innerHTML = loaded
+      ? '<span class="output-empty">// Ready — write a SQL query and click Run</span>'
+      : '<span class="output-empty">// Loading SQLite engine...</span>';
+    if (stat) stat.textContent = '';
+  };
+
+  window.copyOutput = function() {
+    var text = document.getElementById('codeOutput').innerText || '';
+    if (text) {
+      navigator.clipboard.writeText(text).then(function() {
+        var el = document.getElementById('runStatus');
+        el.textContent = 'Copied!';
+        setTimeout(function() { el.textContent = ''; }, 1500);
+      });
+    }
+  };
+
+  // Ctrl/Cmd + Enter to run
+  document.getElementById('codeEditor').addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runSQL();
+    }
+  });
+})();
+
+function shareTool() { TBUtils.showShareModal('sql-runner', 'SQL Runner'); }
+</script>
+</body>
+</html>

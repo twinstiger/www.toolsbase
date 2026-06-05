@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lua Runner — ToolsBase.net</title>
+  <meta name="description" content="Run Lua code in your browser. Powered by Fengari — Lua 5.3 implemented in pure JavaScript, fully client-side.">
+  <meta property="og:title" content="Lua Runner — ToolsBase.net">
+  <meta property="og:description" content="Execute Lua code instantly in your browser.">
+  <meta property="og:url" content="https://toolsbase.net/tools/run/lua">
+  <link rel="canonical" href="https://toolsbase.net/tools/run/lua.html">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Lua Runner</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 1 5 5v2h2v1H5v-1h2V7a5 5 0 0 1 5-5z"/><path d="M5 10v1h2v6h2v-6h2v6h2v-6h2v-1h-2v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2z"/></svg><span>Lua Runner</span></h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Execute Lua 5.3 code instantly in your browser. Powered by Fengari (pure JavaScript) — fully client-side, no server required.</p>
+    </div>
+
+    <div class="code-runner">
+      <div class="code-panel">
+        <div class="code-panel-header">Code (Lua 5.3)</div>
+        <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
+        <div class="code-run-actions">
+          <button class="run-btn" id="runBtn" onclick="runLua()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="runLabel">Run</span>
+          </button>
+          <button class="run-btn run-btn--ghost" onclick="clearCode()">Clear</button>
+          <span class="run-status" id="runStatus"></span>
+        </div>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">Output</div>
+        <div id="codeOutput" class="code-output"><span class="output-empty">// Ready — write Lua and click Run</span></div>
+        <div class="code-run-actions">
+          <button class="run-btn run-btn--ghost" onclick="copyOutput()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item"><summary class="faq-q">What is Fengari?</summary><div class="faq-a"><p>Fengari is an implementation of Lua 5.3 written entirely in JavaScript (compiled from the C source using GopherJS). No plugins or server needed.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What can I do with it?</summary><div class="faq-a"><p>You can run standard Lua — loops, functions, tables, string operations, math, and more. It's great for learning Lua or running quick scripts.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What doesn't work?</summary><div class="faq-a"><p>File I/O (<code>io.*</code>), OS calls (<code>os.execute</code>, <code>os.exit</code>), and networking are not available. The standard <code>print()</code> function is supported.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. All execution happens locally in your browser using Fengari's pure-JS Lua engine.</p></div></div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+
+<script src="https://cdn.jsdelivr.net/npm/fengari-web@0.1.4/dist/fengari-web.js"></script>
+<script>
+(function() {
+  var outputEl = document.getElementById('codeOutput');
+  var statusEl = document.getElementById('runStatus');
+  var btn = document.getElementById('runBtn');
+  var labelEl = document.getElementById('runLabel');
+
+  // Set placeholder via JS to avoid HTML minifier collapsing newlines
+  var ed = document.getElementById('codeEditor');
+  if (ed) {
+    ed.placeholder = '-- Write your Lua here\n\nprint("Hello, world!")\n\nfor i = 1, 5 do\n    print(i .. "^2 = " .. i*i)\nend\n\n-- Output:\n-- Hello, world!\n-- 1^2 = 1\n-- 2^2 = 4\n-- 3^2 = 9\n-- 4^2 = 16\n-- 5^2 = 25';
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function renderOutput(lines) {
+    if (lines.length === 0) {
+      outputEl.innerHTML = '<span class="output-empty">// (no output)</span>';
+      return;
+    }
+    outputEl.innerHTML = lines.map(function(l) {
+      if (l && l.t === 'error') return '<span class="output-line output-line--error">&#10060; ' + escHtml(l.v) + '</span>';
+      return '<span class="output-line">' + escHtml(String(l)) + '</span>';
+    }).join('\n');
+  }
+
+  window.runLua = function() {
+    var code = document.getElementById('codeEditor').value;
+    if (!code.trim()) {
+      outputEl.innerHTML = '<span class="output-empty">// No code to run</span>';
+      return;
+    }
+
+    if (typeof fengari === 'undefined') {
+      outputEl.innerHTML = '<span class="output-line output-line--error">&#10060; Fengari is still loading. Please wait and try again.</span>';
+      return;
+    }
+
+    btn.disabled = true;
+    labelEl.textContent = 'Running...';
+    statusEl.textContent = 'Executing...';
+
+    var lines = [];
+
+    try {
+      var L = fengari.L;
+      var lua = fengari.lua;
+      var lauxlib = fengari.lauxlib;
+      var to_luastring = fengari.to_luastring;
+      var to_jsstring = fengari.to_jsstring;
+
+      // Create a JS function to intercept print()
+      var myPrint = function(ls) {
+        var n = lua.lua_gettop(ls);
+        var output = '';
+        for (var i = 1; i <= n; i++) {
+          if (i > 1) output += '\t';
+          var t = lua.lua_type(ls, i);
+          if (t === lua.LUA_TSTRING) {
+            output += to_jsstring(lua.lua_tostring(ls, i));
+          } else if (t === lua.LUA_TNUMBER) {
+            if (lua.lua_isinteger(ls, i)) {
+              output += lua.lua_tointeger(ls, i);
+            } else {
+              output += lua.lua_tonumber(ls, i);
+            }
+          } else {
+            output += lua.lua_typename(ls, t);
+          }
+        }
+        lines.push(output);
+        return 0;
+      };
+
+      // Redirect Lua print() to our JS function
+      lua.lua_pushcfunction(L, myPrint);
+      lua.lua_setglobal(L, to_luastring('print'));
+
+      // Run the user code
+      var status = lauxlib.luaL_dostring(L, to_luastring(code));
+
+      if (status === fengari.lua.LUA_OK) {
+        renderOutput(lines);
+      } else {
+        var err = to_jsstring(lua.lua_tostring(L, -1));
+        lua.lua_pop(L, 1);
+        lines.push({ t: 'error', v: err });
+        renderOutput(lines);
+      }
+    } catch(e) {
+      lines.push({ t: 'error', v: e.message || String(e) });
+      renderOutput(lines);
+    }
+
+    btn.disabled = false;
+    labelEl.textContent = 'Run';
+    statusEl.textContent = '';
+  };
+
+  window.clearCode = function() {
+    var ed = document.getElementById('codeEditor');
+    var out = document.getElementById('codeOutput');
+    var stat = document.getElementById('runStatus');
+    if (ed) ed.value = '';
+    if (out) out.innerHTML = '<span class="output-empty">// Ready — write Lua and click Run</span>';
+    if (stat) stat.textContent = '';
+  };
+
+  window.copyOutput = function() {
+    var text = document.getElementById('codeOutput').innerText || '';
+    if (text) {
+      navigator.clipboard.writeText(text).then(function() {
+        var el = document.getElementById('runStatus');
+        el.textContent = 'Copied!';
+        setTimeout(function() { el.textContent = ''; }, 1500);
+      });
+    }
+  };
+
+  // Ctrl/Cmd + Enter to run
+  document.getElementById('codeEditor').addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runLua();
+    }
+  });
+})();
+
+function shareTool() { TBUtils.showShareModal('lua-runner', 'Lua Runner'); }
+</script>
+</body>
+</html>

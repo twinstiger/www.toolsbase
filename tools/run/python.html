@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Runner — ToolsBase.net</title>
+  <meta name="description" content="Run Python code in your browser. Powered by Pyodide — full Python 3 interpreter in WebAssembly, 100% client-side.">
+  <meta property="og:title" content="Python Runner — ToolsBase.net">
+  <meta property="og:description" content="Execute Python code instantly in your browser.">
+  <meta property="og:url" content="https://toolsbase.net/tools/run/python">
+  <link rel="canonical" href="https://toolsbase.net/tools/run/python.html">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Python Runner</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 1 5 5v2h2v1H5v-1h2V7a5 5 0 0 1 5-5z"/><path d="M5 10v1h2v6h2v-6h2v6h2v-6h2v-1h-2v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2z"/></svg><span>Python Runner</span></h1>
+        <button class="share-icon-btn" onclick="shareTool()" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Execute Python code instantly in your browser. Powered by Pyodide (Python 3.11 in WebAssembly) — no server, no signup, fully client-side.</p>
+    </div>
+
+    <div class="code-runner">
+      <div class="code-panel">
+        <div class="code-panel-header">Code</div>
+        <textarea id="codeEditor" class="code-editor" spellcheck="false" placeholder="# Write your Python here&#10;print('Hello, world!')&#10;&#10;for i in range(5):&#10;    print(i ** 2)&#10;&#10;# Output:&#10;# Hello, world!&#10;# 0&#10;# 1&#10;# 4&#10;# 9&#10;# 16"></textarea>
+        <div class="code-run-actions">
+          <button class="run-btn" id="runBtn" onclick="runPython()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="runLabel">Run</span>
+          </button>
+          <button class="run-btn" style="background:transparent;color:#374151;border:1px solid #d1d5db;" onclick="clearCode()">Clear</button>
+          <span class="run-status" id="runStatus"></span>
+        </div>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header">Output</div>
+        <div id="codeOutput" class="code-output"><span class="output-empty">// Loading Pyodide... (first load ~10MB)</span></div>
+        <div class="code-run-actions">
+          <button class="run-btn" style="background:transparent;color:#374151;border:1px solid #d1d5db;" onclick="copyOutput()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item"><summary class="faq-q">Is Python installed on my machine?</summary><div class="faq-a"><p>No. Python runs entirely in your browser via Pyodide — a WebAssembly port of CPython. No installation needed.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What packages are available?</summary><div class="faq-a"><p>Pyodide includes many standard packages: <code>math</code>, <code>json</code>, <code>re</code>, <code>itertools</code>, <code>random</code>, <code>datetime</code>, <code>urllib</code>, <code>html</code>, <code>collections</code>, and more. NumPy is also included.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Can I import external packages?</summary><div class="faq-a"><p>Some packages like NumPy, Pandas, and Matplotlib are available via <code>import pyodide-http</code> followed by <code>pyodide_http.patch_all()</code>. Network access from Python is restricted.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. Everything runs locally in your browser. The Pyodide runtime is downloaded once (~10MB) and cached.</p></div></div>
+      <div class="faq-item"><summary class="faq-q">What doesn't work?</summary><div class="faq-a"><p>File I/O, sockets, subprocess, threading, and OS-level operations are not available. Python runs in a sandboxed browser environment.</p></div></div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+<script>
+(function() {
+  var pyodide = null;
+  var loading = false;
+  var loaded = false;
+
+  var outputEl = document.getElementById('codeOutput');
+  var statusEl = document.getElementById('runStatus');
+  var btn = document.getElementById('runBtn');
+  var labelEl = document.getElementById('runLabel');
+
+  async function loadPyodideRuntime() {
+    if (loaded || loading) return pyodide;
+    loading = true;
+    outputEl.innerHTML = '<span class="output-empty">// Loading Pyodide runtime... (first load ~10MB)</span>';
+    try {
+      pyodide = await loadPyodide({
+        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.1/full/',
+      });
+      loaded = true;
+      loading = false;
+      outputEl.innerHTML = '<span class="output-empty">// Pyodide ready — write Python and click Run</span>';
+      labelEl.textContent = 'Run';
+    } catch(e) {
+      outputEl.innerHTML = '<span class="output-error">// Failed to load Pyodide: ' + escHtml(e.message) + '</span>';
+      loading = false;
+    }
+    return pyodide;
+  }
+
+  // Preload on page load
+  loadPyodideRuntime().then(function(p) {
+    if (p) {
+      labelEl.textContent = 'Run';
+      btn.disabled = false;
+    }
+  });
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  window.runPython = async function() {
+    var code = document.getElementById('codeEditor').value;
+    if (!code.trim()) {
+      outputEl.innerHTML = '<span class="output-empty">// No code to run</span>';
+      return;
+    }
+
+    var p = await loadPyodideRuntime();
+    if (!p) {
+      outputEl.innerHTML = '<span class="output-error">// Pyodide failed to load. Please refresh the page.</span>';
+      return;
+    }
+
+    btn.disabled = true;
+    labelEl.textContent = 'Running...';
+    statusEl.textContent = 'Executing...';
+
+    var lines = [];
+    var errLines = [];
+
+    p.setStdout({ batched: function(s) { lines.push(s); } });
+    p.setStderr({ batched: function(s) { errLines.push(s); } });
+
+    try {
+      var result = await p.runPythonAsync(code);
+      var allLines = [];
+      lines.forEach(function(l) { allLines.push({t:'log', v:l}); });
+      errLines.forEach(function(l) { allLines.push({t:'error', v:l}); });
+      if (result !== undefined && result !== null) {
+        allLines.push({t:'info', v:'→ ' + String(result)});
+      }
+      if (allLines.length === 0) {
+        outputEl.innerHTML = '<span class="output-empty">// (no output)</span>';
+      } else {
+        outputEl.innerHTML = allLines.map(function(l) {
+          if (l.t === 'error') return '<span class="output-line output-line--error">❌ ' + escHtml(l.v) + '</span>';
+          if (l.t === 'info') return '<span class="output-line output-line--info">' + escHtml(l.v) + '</span>';
+          return '<span class="output-line">' + escHtml(l.v) + '</span>';
+        }).join('\n');
+      }
+    } catch(e) {
+      var errMsg = String(e.message || e);
+      errMsg = errMsg.replace(/^PythonError: /, '');
+      outputEl.innerHTML = '<span class="output-line output-line--error">❌ ' + escHtml(errMsg) + '</span>';
+    }
+
+    btn.disabled = false;
+    labelEl.textContent = 'Run';
+    statusEl.textContent = '';
+  };
+
+  window.clearCode = function() {
+    document.getElementById('codeEditor').value = '';
+    document.getElementById('codeOutput').innerHTML = loaded
+      ? '<span class="output-empty">// Output will appear here</span>'
+      : '<span class="output-empty">// Loading Pyodide... (first load ~10MB)</span>';
+    document.getElementById('runStatus').textContent = '';
+  };
+
+  window.copyOutput = function() {
+    var text = document.getElementById('codeOutput').innerText || '';
+    if (text) {
+      navigator.clipboard.writeText(text).then(function() {
+        var el = document.getElementById('runStatus');
+        el.textContent = 'Copied!';
+        setTimeout(function() { el.textContent = ''; }, 1500);
+      });
+    }
+  };
+
+  // Keyboard shortcut: Ctrl/Cmd + Enter to run
+  document.getElementById('codeEditor').addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runPython();
+    }
+  });
+})();
+
+function shareTool() { TBUtils.showShareModal('python-runner', 'Python Runner'); }
+</script>
+</body>
+</html>
