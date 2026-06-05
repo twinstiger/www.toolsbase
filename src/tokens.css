@@ -1,4 +1,4 @@
-/* === DESIGN TOKENS v6 — Aurora Gradient === */
+/* === DESIGN TOKENS v7 — Aurora Gradient === */
 :root {
   /* Brand Colors */
   --color-primary: #0ea5e9;
@@ -7,25 +7,36 @@
   --color-warm: #f97316;
   --color-cool: #06b6d4;
   --color-hot: #ec4899;
-  
+
   /* Neutrals */
   --color-bg: #fafaf9;
   --color-bg-alt: #f5f4f2;
   --color-surface: #ffffff;
   --color-border: #e2e8f0;
   --color-border-subtle: #f0f0ee;
-  
+
   /* Text */
   --color-text: #0f172a;
   --color-text-muted: #64748b;
   --color-text-subtle: #a8a29e;
-  
+
   /* Aurora gradient tokens */
   --aurora-1: #0ea5e9;
   --aurora-2: #8b5cf6;
   --aurora-3: #ec4899;
   --aurora-4: #06b6d4;
   --aurora-blur: 80px;
+
+  /* Category color tokens — used via --cat-color on .category-section */
+  --tc-blue:   #3b82f6;
+  --tc-green:  #10b981;
+  --tc-yellow: #f59e0b;
+  --tc-purple: #8b5cf6;
+  --tc-pink:   #ec4899;
+  --tc-orange: #f97316;
+  --tc-red:    #ef4444;
+  --tc-cyan:   #06b6d4;
+  --tc-gray:   #6b7280;
   
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

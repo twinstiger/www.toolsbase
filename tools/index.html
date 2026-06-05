@@ -32,18 +32,20 @@
 <body>
 <!-- HEADER -->
 <main class="tool-page">
-  <div class="container">
-    <div class="breadcrumbs"><a href="/">Home</a><span>&rsaquo;</span><span>50+ Tools</span></div>
-    <div class="tool-page-header">
-      <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><span>50+ Tools</span></h1>
-      <p class="lead-text">46 built-in tools + 9 curated external tools across 9+ categories.</p>
+  <div class="page-hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="/">Home</a><span>&rsaquo;</span><span>50+ Tools</span></div>
+      <h1 class="page-hero-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><span>50+ Tools</span></h1>
+      <p class="page-hero-sub">46 built-in tools + 9 curated external tools across 9+ categories.</p>
       <div class="hero-search" style="margin-top:1rem">
         <span class="hero-search-icon"></span>
         <input type="text" class="hero-search-input" id="searchInput" placeholder="Search tools..." autocomplete="off">
         <div class="search-dropdown" id="searchDropdown"></div>
       </div>
     </div>
-        <div class="category-section" id="run-tools" style="--cat-color:var(--tc-green)">
+  </div>
+  <div class="container">
+          <div class="category-section" id="run-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Run Tools</h2></div>
@@ -58,7 +60,7 @@
 <a href="/tools/run/brainfuck.html" class="tool-card tc-cyan"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="tool-card-title">Brainfuck Runner</div><div class="tool-card-desc">Execute Brainfuck code with a pure JavaScript interpreter. Step limit protection included.</div><div class="tool-card-link">→</div></a>
           </div>
         </div>
-        <div class="category-section" id="finance-tools" style="--cat-color:var(--tc-green)">
+        <div class="category-section" id="finance-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Finance Tools</h2></div>
@@ -71,7 +73,7 @@
 <a href="/discount" class="tool-card tc-green"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><div class="tool-card-title">Discount Calculator</div><div class="tool-card-desc">Calculate sale price and savings. Find the best deal when shopping.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#finance-tools" class="view-all-link">Browse Finance Tools →</a></div>
         </div>
-        <div class="category-section" id="dev-tools" style="--cat-color:var(--tc-blue)">
+        <div class="category-section" id="dev-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Dev Tools</h2></div>
@@ -92,7 +94,7 @@
 <a href="/xml" class="tool-card tc-blue"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H4"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="tool-card-title">XML Formatter</div><div class="tool-card-desc">Format and validate XML with proper indentation.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#dev-tools" class="view-all-link">Browse Dev Tools →</a></div>
         </div>
-        <div class="category-section" id="generators" style="--cat-color:var(--tc-green)">
+        <div class="category-section" id="generators">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Generators</h2></div>
@@ -107,7 +109,7 @@
 <a href="/fake-json" class="tool-card tc-green"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div class="tool-card-title">Fake JSON Generator</div><div class="tool-card-desc">Generate realistic mock JSON data for testing applications.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#generators" class="view-all-link">Browse Generators →</a></div>
         </div>
-        <div class="category-section" id="converters" style="--cat-color:var(--tc-yellow)">
+        <div class="category-section" id="converters">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title">🔄 Converters</h2></div>
@@ -120,7 +122,7 @@
 <a href="/units" class="tool-card tc-yellow"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div><div class="tool-card-title">Unit Converter</div><div class="tool-card-desc">Convert length, weight, temperature, and more units.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#converters" class="view-all-link">Browse Converters →</a></div>
         </div>
-        <div class="category-section" id="text-tools" style="--cat-color:var(--tc-purple)">
+        <div class="category-section" id="text-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title">📝 Text Tools</h2></div>
@@ -134,7 +136,7 @@
 <a href="/text-diff" class="tool-card tc-purple"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div><div class="tool-card-title">Text Diff</div><div class="tool-card-desc">Word-level and character-level text comparison tool.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#text-tools" class="view-all-link">Browse Text Tools →</a></div>
         </div>
-        <div class="category-section" id="image-tools" style="--cat-color:var(--tc-pink)">
+        <div class="category-section" id="image-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Image Tools</h2></div>
@@ -146,7 +148,7 @@
 <a href="/img-base64" class="tool-card tc-pink"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="tool-card-title">Image to Base64</div><div class="tool-card-desc">Convert images to Base64 data URIs for embedding in HTML/CSS.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#image-tools" class="view-all-link">Browse Image Tools →</a></div>
         </div>
-        <div class="category-section" id="network-tools" style="--cat-color:var(--tc-cyan)">
+        <div class="category-section" id="network-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Network Tools</h2></div>
@@ -162,7 +164,7 @@
 <a href="/ua" class="tool-card tc-cyan"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="tool-card-title">User Agent Parser</div><div class="tool-card-desc">Parse browser User-Agent strings into OS, browser, device.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#network-tools" class="view-all-link">Browse Network Tools →</a></div>
         </div>
-        <div class="category-section" id="crypto-tools" style="--cat-color:var(--tc-red)">
+        <div class="category-section" id="crypto-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title">🔒 Crypto Tools</h2></div>
@@ -176,7 +178,7 @@
 <a href="/aes" class="tool-card tc-red"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="tool-card-title">AES Encrypt/Decrypt</div><div class="tool-card-desc">Encrypt and decrypt text using AES-256-CBC in your browser.</div><div class="tool-card-link">→</div></a>          </div>
           <div class="view-all-row"><a href="/tools/index.html#crypto-tools" class="view-all-link">Browse Crypto Tools →</a></div>
         </div>
-        <div class="category-section" id="external-tools" style="--cat-color:var(--tc-gray)">
+        <div class="category-section" id="external-tools">
           <div class="category-header">
             <span class="category-dot"></span>
             <div class="category-info"><h2 class="category-title"> Recommended External Tools</h2></div>
