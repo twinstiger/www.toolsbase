@@ -255,9 +255,9 @@ function finalizeHtml(html) {
   html = html.replace(/href="\/src\//g, 'href="/src/');
   html = html.replace(/src="\/src\//g, 'src="/src/');
 
-  // Add tokens.css for dark mode
-  if (!html.includes('tokens.css')) {
-    html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/tokens.css">\n  <link rel="stylesheet" href="/src/styles.css">');
+  // Add critical.css for dark mode support (tokens merged into styles.css)
+  if (!html.includes('critical.css')) {
+    html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/critical.css">\n  <link rel="stylesheet" href="/src/styles.css">');
   }
 
   // Add Google Ads script
@@ -424,9 +424,9 @@ function processFile(filePath, outPath) {
     html = html.replace(/href="\/src\//g, 'href="/src/');
     html = html.replace(/src="\/src\//g, 'src="/src/');
 
-  // Always add tokens.css for dark mode support (must come before styles.css)
-  if (!html.includes('tokens.css')) {
-    html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/tokens.css">\n  <link rel="stylesheet" href="/src/styles.css">');
+  // Always add critical.css + styles.css (tokens merged into styles.css)
+  if (!html.includes('critical.css')) {
+    html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/critical.css">\n  <link rel="stylesheet" href="/src/styles.css">');
   }
 
   // Add Google Ads script after <head> if not already present
@@ -522,11 +522,17 @@ async function build() {
   // Copy static assets
   fs.mkdirSync(path.join(DIST, 'src'), { recursive: true });
   fs.cpSync(path.join(SRC, 'styles.css'), path.join(DIST, 'src', 'styles.css'));
-  fs.cpSync(path.join(SRC, 'tokens.css'), path.join(DIST, 'src', 'tokens.css'));
-  fs.cpSync(path.join(SRC, 'index.css'), path.join(DIST, 'src', 'index.css'));
+  fs.cpSync(path.join(SRC, 'critical.css'), path.join(DIST, 'src', 'critical.css'));
   fs.cpSync(path.join(SRC, 'utils.js'), path.join(DIST, 'src', 'utils.js'));
   fs.cpSync(path.join(SRC, 'header.js'), path.join(DIST, 'src', 'header.js'));
   fs.cpSync(path.join(SRC, 'javascript-runner.js'), path.join(DIST, 'src', 'javascript-runner.js'));
+
+  // Copy fonts directory (self-hosted fonts)
+  const fontsSrc = path.join(SRC, 'fonts');
+  if (fs.existsSync(fontsSrc)) {
+    fs.mkdirSync(path.join(DIST, 'src', 'fonts'), { recursive: true });
+    fs.cpSync(fontsSrc, path.join(DIST, 'src', 'fonts'), { recursive: true });
+  }
 
   // Copy images directory if it exists (blog post images, etc.)
   const imagesSrc = path.join(SRC, 'images');
