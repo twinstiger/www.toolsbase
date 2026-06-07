@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSON Formatter — ToolsBase.net</title>
-  <meta name="description" content="Format, validate, and minify JSON with syntax highlighting. Detect and fix errors automatically.">
-  <meta property="og:title" content="JSON Formatter — ToolsBase.net">
-  <meta property="og:description" content="Format, validate, and minify JSON with syntax highlighting.">
-  <meta property="og:url" content="https://toolsbase.net/tools/dev/json-formatter">
+  <meta name="description" content="Format, validate, minify, clean, convert JSON. All-in-one JSON toolkit.">
   <link rel="canonical" href="https://toolsbase.net/tools/dev/json-formatter.html">
   <link rel="stylesheet" href="/src/styles.css">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -25,62 +22,143 @@
         <h1 class="tool-page-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg><span>JSON Formatter</span></h1>
         <button class="share-icon-btn" id="shareBtn" onclick="shareTool()" title="Share">↗</button>
       </div>
-      <p class="lead-text">Format, validate, and minify JSON with syntax highlighting. Detect and fix errors automatically.</p>
+      <p class="lead-text">Format, validate, minify, clean, convert JSON. Auto-formats on paste.</p>
     </div>
 
-
-    <div class="tool-layout">
-      <div class="tool-panel">
-        <div class="tool-panel-label">Input</div>
-        <textarea id="input" class="tool-input" placeholder='Paste JSON here, e.g. {"name":"test","value":123}'></textarea>
-        <div class="tool-actions">
-          <button class="btn btn--primary" onclick="formatJSON()">✨ Format</button>
-          <button class="btn btn--secondary" onclick="minifyJSON()">🗜️ Minify</button>
-          <button class="btn btn--secondary" onclick="validateJSON()">✓ Validate</button>
-          <button class="btn btn--secondary" onclick="clearAll()">Clear</button>
-        </div>
-      </div>
-      <div class="tool-panel">
-        <div class="tool-panel-label">Output</div>
-        <div id="output-wrap" style="position:relative;">
-          <pre id="output" class="tool-output" style="margin:0;white-space:pre-wrap;word-break:break-word;max-height:600px;overflow-y:auto;"></pre>
-        </div>
-        <div class="btn-group" style="margin-top:0.625rem;">
-          <button class="copy-btn" onclick="copyOutput()"> Copy</button>
-          <button class="copy-btn" onclick="downloadOutput()">⬇ Download</button>
-        </div>
-      </div>
+    <!-- Tabs -->
+    <div class="json-tabs">
+      <button class="json-tab active" data-tab="main">Main</button>
+      <button class="json-tab" data-tab="diff">Diff</button>
     </div>
 
-    <div class="tool-stats">
-      <span id="stats">Ready — paste JSON and click Format</span>
+    <!-- MAIN TAB -->
+    <div class="json-tab-panel active" id="tab-main">
+
+      <!-- Toolbar -->
+      <div class="json-toolbar">
+        <button class="js-btn active" onclick="doOp('format')" id="btn-format" title="Format">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('minify')" id="btn-minify" title="Minify">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('clean')" id="btn-clean" title="Clean">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('sort')" id="btn-sort" title="Sort Keys">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="9" y2="18"/></svg>
+        </button>
+        <span class="tb-sep"></span>
+        <button class="js-btn" onclick="doOp('yaml')" id="btn-yaml" title="JSON to YAML">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('xml')" id="btn-xml" title="JSON to XML">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('url')" id="btn-url" title="URL Encode">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('base64')" id="btn-base64" title="Base64 Encode">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </button>
+        <button class="js-btn" onclick="doOp('escape')" id="btn-escape" title="Escape">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+        </button>
+        <span class="tb-sep"></span>
+        <button class="js-btn" onclick="doOp('compress')" id="btn-compress" title="Compress Estimate">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+        <span class="tb-sep"></span>
+        <button class="js-btn" onclick="loadSample()" title="Load Sample">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </button>
+        <button class="js-btn" onclick="doCopy()" title="Copy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+        <button class="js-btn" onclick="doDownload()" title="Download">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+        <button class="js-btn" onclick="doClear()" title="Clear">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="json-stats-bar" id="statsBar">
+        <span id="statStatus"></span>
+        <span class="stat-pip" id="statLines"></span>
+        <span class="stat-pip" id="statSize"></span>
+        <span class="stat-pip" id="statDepth"></span>
+        <span class="stat-pip" id="statKeys"></span>
+        <span class="stat-pip" id="statTypes"></span>
+        <span class="stat-pip" id="statGzip"></span>
+      </div>
+
+      <!-- Input / Output -->
+      <div class="tool-layout">
+        <div class="tool-panel">
+          <div class="tool-panel-label">Input <span class="panel-hint">auto-formats on paste</span></div>
+          <textarea id="jsonInput" class="tool-input" placeholder='Paste JSON here... e.g. {"name":"test","value":123}'></textarea>
+        </div>
+        <div class="tool-panel">
+          <div class="tool-panel-label">Output <span class="panel-hint" id="resultCount"></span>
+            <span class="panel-mode" id="modeLabel">—</span>
+          </div>
+          <pre id="jsonOutput" class="tool-output" style="margin:0;white-space:pre-wrap;word-break:break-word;max-height:500px;overflow-y:auto;"></pre>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DIFF TAB -->
+    <div class="json-tab-panel" id="tab-diff">
+      <div class="tool-layout">
+        <div class="tool-panel">
+          <div class="tool-panel-label">Original
+            <div style="float:right;display:flex;gap:0.2rem;">
+              <button class="js-btn" onclick="loadDiffA()" title="Load Sample A" style="padding:0.2rem 0.4rem;font-size:0.75rem;">A</button>
+              <button class="js-btn" onclick="loadDiffB()" title="Load Sample B" style="padding:0.2rem 0.4rem;font-size:0.75rem;">B</button>
+            </div>
+          </div>
+          <textarea id="diffA" class="tool-input" placeholder="First JSON (original)"></textarea>
+        </div>
+        <div class="tool-panel">
+          <div class="tool-panel-label">Modified</div>
+          <textarea id="diffB" class="tool-input" placeholder="Second JSON (modified)"></textarea>
+        </div>
+      </div>
+      <div style="text-align:center;margin:0.5rem 0;">
+        <button class="btn btn--primary" onclick="runDiff()">Compare</button>
+      </div>
+      <div class="tool-panel" style="max-width:100%;">
+        <div class="tool-panel-label">Diff Result <span id="diffStats"></span>
+          <div style="float:right;">
+            <button class="js-btn" onclick="copyDiffRes()" title="Copy" style="padding:0.2rem 0.4rem;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <pre id="diffOutput" class="tool-output" style="margin:0;white-space:pre-wrap;word-break:break-word;max-height:350px;overflow-y:auto;"></pre>
+      </div>
     </div>
 
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is JSON Formatter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">JSON Formatter formats ugly or minified JSON into readable indented output with syntax highlighting. It's essential for debugging API responses, cleaning up configuration files, validating data exports from databases, and learning JSON structure from various sources.</div>
+        <div class="faq-answer">JSON Formatter formats ugly or minified JSON into readable indented output with syntax highlighting. Essential for debugging API responses, cleaning configuration files, and validating data exports.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What can I do with this tool?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Three main functions: <strong>Format</strong> — beautifies JSON with proper indentation for readability; <strong>Minify</strong> — compresses JSON by removing whitespace for production use; <strong>Validate</strong> — checks JSON syntax and reports errors with line and column numbers.</div>
+        <div class="faq-question">What operations does this tool support?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><strong>Format</strong> — beautify with indentation (default); <strong>Minify</strong> — remove whitespace; <strong>Clean</strong> — strip null, empty strings, arrays and objects; <strong>Sort</strong> — sort object keys alphabetically; <strong>YAML / XML</strong> — convert JSON to YAML or XML; <strong>URL</strong> — URL-encode raw text; <strong>Base64</strong> — Base64 encode; <strong>Escape</strong> — escape special characters; <strong>Diff</strong> — compare two JSON documents side by side.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Is my data sent to a server?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">No. All processing happens locally in your browser using JavaScript. Your JSON never leaves your device — zero server communication. Whether you're handling API keys, customer data, or proprietary information, it stays on your machine.</div>
+        <div class="faq-answer">No. All processing happens locally in your browser. Your JSON never leaves your device.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What keyboard shortcuts are available?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Press <code>Ctrl + Enter</code> (or <code>Cmd + Enter</code> on Mac) to format JSON instantly. This speeds up workflow when processing multiple JSON snippets.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">How does error detection work?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">When JSON has syntax errors, the tool displays the error message with exact line and column numbers. This makes it easy to locate and fix issues in large JSON files.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">Is this free to use?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Yes. JSON Formatter is completely free with no sign-up required, no rate limits, and no ads. Use it as much as you need.</div>
+        <div class="faq-question">Keyboard shortcuts?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><code>Ctrl+Enter</code> (or <code>Cmd+Enter</code> on Mac) to format instantly.</div>
       </div>
     </section>
   </div>
@@ -88,126 +166,541 @@
 
 <!-- FOOTER -->
 <script>
-function highlight(json) {
-  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return json.replace(
+// ================================================================
+// Syntax Highlighting
+// ================================================================
+function syntaxHighlight(str) {
+  var esc = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return esc.replace(
     /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-    function(match) {
-      let cls = 'json-number';
-      if (/^"/.test(match)) {
-        cls = /:$/.test(match) ? 'json-key' : 'json-string';
-      } else if (/true|false/.test(match)) {
-        cls = 'json-bool';
-      } else if (/null/.test(match)) {
-        cls = 'json-null';
-      }
-      return '<span class="' + cls + '">' + match + '</span>';
+    function(m) {
+      var cls = 'json-number';
+      if (/^"/.test(m)) cls = /:$/.test(m) ? 'json-key' : 'json-string';
+      else if (/true|false/.test(m)) cls = 'json-bool';
+      else if (/null/.test(m)) cls = 'json-null';
+      return '<span class="' + cls + '">' + m + '</span>';
     }
   );
 }
 
-function formatJSON() {
-  const raw = document.getElementById('input').value.trim();
+// ================================================================
+// Helpers
+// ================================================================
+function parseJson(raw) {
+  try { return { data: JSON.parse(raw), err: null }; }
+  catch (e) { return { data: null, err: e }; }
+}
+
+function getErrorPos(err, raw) {
+  var m = err.message.match(/position\s+(\d+)/i);
+  if (!m) return { line: 1, col: 1 };
+  var pos = parseInt(m[1]);
+  var before = raw.substring(0, pos);
+  return { line: (before.match(/\n/g) || []).length + 1, col: pos - before.lastIndexOf('\n') };
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function setOutput(html, text) {
+  var el = document.getElementById('jsonOutput');
+  if (html !== undefined) { el.innerHTML = html; }
+  else if (text !== undefined) { el.textContent = text; }
+}
+
+// ================================================================
+// Active button state
+// ================================================================
+var activeOp = 'format';
+
+function setActiveOp(op) {
+  activeOp = op;
+  document.querySelectorAll('.js-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.getElementById('btn-' + op);
+  if (btn) btn.classList.add('active');
+}
+
+// ================================================================
+// Stats
+// ================================================================
+function calcStats(obj, depth) {
+  depth = depth || 0;
+  var s = { maxDepth: 0, totalKeys: 0, arrays: 0, objects: 0, strings: 0, numbers: 0, booleans: 0, nulls: 0 };
+  walkStats(obj, depth, s);
+  return s;
+}
+
+function walkStats(obj, depth, s) {
+  if (depth > s.maxDepth) s.maxDepth = depth;
+  if (obj === null) { s.nulls++; return; }
+  if (typeof obj === 'boolean') { s.booleans++; return; }
+  if (typeof obj === 'number') { s.numbers++; return; }
+  if (typeof obj === 'string') { s.strings++; return; }
+  if (Array.isArray(obj)) { s.arrays++; for (var i = 0; i < obj.length; i++) walkStats(obj[i], depth + 1, s); }
+  else if (typeof obj === 'object') { s.objects++; var keys = Object.keys(obj); s.totalKeys += keys.length; for (var j = 0; j < keys.length; j++) walkStats(obj[keys[j]], depth + 1, s); }
+}
+
+function updateStats(raw) {
+  var bar = document.getElementById('statsBar');
+  if (!raw) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  var result = parseJson(raw);
+  if (result.err) {
+    var pos = getErrorPos(result.err, raw);
+    document.getElementById('statStatus').innerHTML = '<span style="color:#ef5350;font-weight:700;">&#10007; Invalid &mdash; Line ' + pos.line + ', Col ' + pos.col + '</span>';
+    document.getElementById('statLines').textContent = '';
+    document.getElementById('statSize').textContent = '';
+    document.getElementById('statDepth').textContent = '';
+    document.getElementById('statKeys').textContent = '';
+    document.getElementById('statTypes').textContent = '';
+    document.getElementById('statGzip').textContent = '';
+    return;
+  }
+  var s = calcStats(result.data);
+  var minified = JSON.stringify(result.data);
+  var gzip = Math.round(minified.length * 0.35);
+  var types = [];
+  if (s.objects) types.push('obj:' + s.objects);
+  if (s.arrays) types.push('arr:' + s.arrays);
+  if (s.strings) types.push('str:' + s.strings);
+  if (s.numbers) types.push('num:' + s.numbers);
+  if (s.booleans) types.push('bool:' + s.booleans);
+  if (s.nulls) types.push('null:' + s.nulls);
+  document.getElementById('statStatus').innerHTML = '<span style="color:#4caf50;">&#10003; Valid JSON</span>';
+  document.getElementById('statLines').textContent = raw.split('\n').length + ' lines';
+  document.getElementById('statSize').textContent = minified.length + ' chars';
+  document.getElementById('statDepth').textContent = 'depth:' + s.maxDepth;
+  document.getElementById('statKeys').textContent = s.totalKeys + ' keys';
+  document.getElementById('statTypes').textContent = types.join('  ');
+  document.getElementById('statGzip').textContent = 'gzip:~' + gzip;
+}
+
+// ================================================================
+// Operations
+// ================================================================
+function doOp(op) {
+  var raw = document.getElementById('jsonInput').value.trim();
+  setActiveOp(op);
   if (!raw) return;
-  try {
-    const obj = JSON.parse(raw);
-    const formatted = JSON.stringify(obj, null, 2);
-    const lines = formatted.split('\n').length;
-    document.getElementById('output').innerHTML = highlight(formatted);
-    document.getElementById('stats').textContent = 'Valid — ' + lines + ' lines · ' + formatted.length + ' chars';
-    document.getElementById('stats').style.color = '';
-  } catch (e) {
-    showError(e, raw);
+  var result = parseJson(raw);
+
+  if (result.err) {
+    var pos = getErrorPos(result.err, raw);
+    var html = '<span style="color:#ef5350;font-weight:700;">&#10007; Invalid JSON</span>\n\n' +
+      '<span style="color:#ffb74d;">Line ' + pos.line + ', Col ' + pos.col + '</span>\n' +
+      '<span style="color:#ff8a80;">' + escHtml(result.err.message) + '</span>';
+    setOutput(html);
+    document.getElementById('modeLabel').textContent = '\u2014 Invalid';
+    document.getElementById('modeLabel').style.color = '#ef5350';
+    document.getElementById('resultCount').textContent = '';
+    updateStats(raw);
+    return;
   }
-}
 
-function minifyJSON() {
-  const raw = document.getElementById('input').value.trim();
-  if (!raw) return;
-  try {
-    const obj = JSON.parse(raw);
-    const minified = JSON.stringify(obj);
-    document.getElementById('output').textContent = minified;
-    document.getElementById('stats').textContent = 'Minified — ' + minified.length + ' chars';
-    document.getElementById('stats').style.color = '';
-  } catch (e) {
-    showError(e, raw);
+  var out, modeLabel, modeColor;
+
+  if (op === 'format') {
+    out = JSON.stringify(result.data, null, 2);
+    modeLabel = 'Formatted'; modeColor = 'var(--color-text-muted)';
+    setOutput(syntaxHighlight(out));
+  } else if (op === 'minify') {
+    out = JSON.stringify(result.data);
+    modeLabel = 'Minified'; modeColor = 'var(--color-text-muted)';
+    setOutput(out);
+  } else if (op === 'clean') {
+    out = JSON.stringify(cleanDeep(result.data), null, 2);
+    modeLabel = 'Cleaned'; modeColor = 'var(--color-text-muted)';
+    setOutput(syntaxHighlight(out));
+  } else if (op === 'sort') {
+    out = JSON.stringify(sortDeep(result.data), null, 2);
+    modeLabel = 'Sorted'; modeColor = 'var(--color-text-muted)';
+    setOutput(syntaxHighlight(out));
+  } else if (op === 'yaml') {
+    out = jsonToYaml(result.data, 0);
+    modeLabel = 'YAML'; modeColor = 'var(--color-text-muted)';
+    setOutput(undefined, out);
+  } else if (op === 'xml') {
+    out = jsonToXml(result.data, 'root');
+    modeLabel = 'XML'; modeColor = 'var(--color-text-muted)';
+    setOutput(undefined, out);
+  } else if (op === 'url') {
+    out = encodeURIComponent(raw);
+    modeLabel = 'URL Encoded'; modeColor = 'var(--color-text-muted)';
+    setOutput(out);
+  } else if (op === 'base64') {
+    try { out = btoa(unescape(encodeURIComponent(raw))); }
+    catch(e) { out = 'Error: ' + e.message; }
+    modeLabel = 'Base64'; modeColor = 'var(--color-text-muted)';
+    setOutput(out);
+  } else if (op === 'escape') {
+    out = raw.replace(/["'\\]/g, function(c) { return '\\' + c; })
+      .replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t');
+    modeLabel = 'Escaped'; modeColor = 'var(--color-text-muted)';
+    setOutput(out);
+  } else if (op === 'compress') {
+    var min = JSON.stringify(result.data);
+    var gzip = Math.round(min.length * 0.35);
+    var brotli = Math.round(min.length * 0.22);
+    out = 'Raw: ' + raw.length + ' chars\nMinified: ' + min.length + ' chars\nGzip est: ~' + gzip + ' chars\nBrotli est: ~' + brotli + ' chars';
+    modeLabel = 'Compress'; modeColor = 'var(--color-text-muted)';
+    setOutput(out);
   }
+
+  document.getElementById('modeLabel').textContent = '\u2014 ' + modeLabel;
+  document.getElementById('modeLabel').style.color = modeColor;
+  updateStats(raw);
 }
 
-function validateJSON() {
-  const raw = document.getElementById('input').value.trim();
-  if (!raw) return;
-  try {
-    JSON.parse(raw);
-    document.getElementById('output').innerHTML = '<span style="color:#4caf50;font-size:1.1rem;">Valid JSON</span>';
-    document.getElementById('stats').textContent = 'JSON is valid';
-    document.getElementById('stats').style.color = '#4caf50';
-  } catch (e) {
-    showError(e, raw);
+// ================================================================
+// Auto-format on paste
+// ================================================================
+document.getElementById('jsonInput').addEventListener('input', function() {
+  var raw = this.value;
+  if (!raw.trim()) {
+    document.getElementById('statsBar').style.display = 'none';
+    document.getElementById('jsonOutput').innerHTML = '';
+    document.getElementById('modeLabel').textContent = '\u2014';
+    document.getElementById('modeLabel').style.color = 'var(--color-text-subtle)';
+    return;
   }
-}
-
-function showError(e, raw) {
-  const msg = e.message;
-  let lineInfo = msg;
-  const posMatch = msg.match(/position\s+(\d+)/i);
-  if (posMatch) {
-    const pos = parseInt(posMatch[1]);
-    const before = raw.substring(0, pos);
-    const line = (before.match(/\n/g) || []).length + 1;
-    const col = pos - before.lastIndexOf('\n');
-    lineInfo = 'Line ' + line + ', Col ' + col;
-  }
-  document.getElementById('output').innerHTML = '<span style="color:#ef5350;">Invalid JSON</span>\n\n<span style="color:#ffb74d;">' + lineInfo + '</span>\n' + msg;
-  document.getElementById('stats').textContent = 'JSON syntax error';
-  document.getElementById('stats').style.color = '#ef5350';
-}
-
-function clearAll() {
-  document.getElementById('input').value = '';
-  document.getElementById('output').innerHTML = '';
-  document.getElementById('stats').textContent = 'Ready — paste JSON and click Format';
-  document.getElementById('stats').style.color = '';
-}
-
-function copyOutput() {
-  const el = document.getElementById('output');
-  const text = el.innerText || el.textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
-}
-
-function downloadOutput() {
-  const el = document.getElementById('output');
-  const text = el.innerText || el.textContent;
-  if (!text) return;
-  const blob = new Blob([text], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'formatted.json'; a.click();
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
-}
-
-function shareTool() { TBUtils.showShareModal('json-formatter', 'JSON Formatter'); }
-
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
-
-document.getElementById('input').addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 'Enter') formatJSON();
+  setActiveOp('format');
+  doOp('format');
 });
 
+// ================================================================
+// Keyboard shortcut
+// ================================================================
+document.getElementById('jsonInput').addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); setActiveOp('format'); doOp('format'); }
+});
+
+// ================================================================
+// Actions
+// ================================================================
+function doClear() {
+  document.getElementById('jsonInput').value = '';
+  document.getElementById('jsonOutput').innerHTML = '';
+  document.getElementById('statsBar').style.display = 'none';
+  document.getElementById('modeLabel').textContent = '\u2014';
+  document.getElementById('modeLabel').style.color = 'var(--color-text-subtle)';
+  setActiveOp('format');
+}
+
+function loadSample() {
+  document.getElementById('jsonInput').value = JSON.stringify({
+    user: { id: 1, name: 'Alice', email: 'alice@example.com', active: true, score: 94.5 },
+    posts: [
+      { id: 101, title: 'Getting Started', tags: ['intro', 'js'], views: 1200 },
+      { id: 102, title: 'Advanced Tips', tags: ['advanced'], views: 890 }
+    ],
+    meta: { page: 1, per_page: 20, total: 42 }
+  }, null, 2);
+  setActiveOp('format');
+  doOp('format');
+}
+
+function doCopy() {
+  var t = document.getElementById('jsonOutput').innerText;
+  if (!t) return;
+  navigator.clipboard.writeText(t).then(function() { showToast('Copied!'); });
+}
+
+function doDownload() {
+  var t = document.getElementById('jsonOutput').innerText;
+  if (!t) return;
+  var blob = new Blob([t], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'output.json';
+  a.click();
+}
+
+// ================================================================
+// Convert helpers
+// ================================================================
+function jsonToYaml(obj, indent) {
+  var pad = '  '.repeat(indent);
+  if (obj === null) return 'null\n';
+  if (typeof obj !== 'object') return typeof obj === 'string' ? obj : String(obj);
+  if (Array.isArray(obj)) {
+    if (obj.length === 0) return '[]\n';
+    return obj.map(function(v) {
+      var inner = jsonToYaml(v, indent + 1);
+      return pad + '- ' + (typeof v === 'object' && v !== null ? inner.trim().split('\n').join('\n' + pad + '  ') : inner.trim());
+    }).join('\n');
+  }
+  return Object.keys(obj).map(function(k) {
+    var inner = jsonToYaml(obj[k], indent + 1);
+    return pad + k + ': ' + (typeof obj[k] === 'object' && obj[k] !== null ? '\n' + inner.split('\n').join('\n' + pad + '  ') : inner.trim());
+  }).join('\n');
+}
+
+function jsonToXml(obj, tag) {
+  if (obj === null) return '<' + tag + '/>';
+  if (typeof obj !== 'object') return '<' + tag + '>' + escHtml(String(obj)) + '</' + tag + '>';
+  if (Array.isArray(obj)) {
+    return '<item>' + obj.map(function(v) { return jsonToXml(v, 'item'); }).join('\n') + '</item>';
+  }
+  var children = Object.keys(obj).map(function(k) { return jsonToXml(obj[k], k); }).join('\n');
+  return '<' + tag + '>\n' + children + '\n</' + tag + '>';
+}
+
+function cleanDeep(obj) {
+  if (Array.isArray(obj)) return obj.map(cleanDeep).filter(function(v) {
+    return v !== null && v !== undefined && v !== '' && v !== false && !isEmpty(v);
+  });
+  if (obj !== null && typeof obj === 'object') {
+    var out = {};
+    Object.keys(obj).forEach(function(k) {
+      var cv = cleanDeep(obj[k]);
+      if (cv !== null && cv !== undefined && cv !== '' && cv !== false && !isEmpty(cv)) out[k] = cv;
+    });
+    return out;
+  }
+  return obj;
+}
+
+function isEmpty(v) {
+  if (Array.isArray(v)) return v.length === 0;
+  if (typeof v === 'object' && v !== null) return Object.keys(v).length === 0;
+  return false;
+}
+
+function sortDeep(obj) {
+  if (Array.isArray(obj)) return obj.map(sortDeep);
+  if (obj !== null && typeof obj === 'object') {
+    var sorted = {};
+    Object.keys(obj).sort().forEach(function(k) { sorted[k] = sortDeep(obj[k]); });
+    return sorted;
+  }
+  return obj;
+}
+
+// ================================================================
+// Diff
+// ================================================================
+function runDiff() {
+  var aRaw = document.getElementById('diffA').value.trim();
+  var bRaw = document.getElementById('diffB').value.trim();
+  if (!aRaw || !bRaw) return;
+  var aR = parseJson(aRaw), bR = parseJson(bRaw);
+  if (aR.err || bR.err) {
+    document.getElementById('diffOutput').innerHTML = '<span style="color:#ef5350;">Invalid JSON in one or both inputs</span>';
+    return;
+  }
+  var diffs = [];
+  walkDiff(aR.data, bR.data, [], diffs);
+  var el = document.getElementById('diffOutput');
+  if (diffs.length === 0) {
+    el.innerHTML = '<span style="color:#4caf50;font-weight:700;">&#10003; Identical \u2014 no differences found</span>';
+    document.getElementById('diffStats').textContent = '';
+  } else {
+    var added = diffs.filter(function(d) { return d.type === 'added'; }).length;
+    var removed = diffs.filter(function(d) { return d.type === 'removed'; }).length;
+    var changed = diffs.filter(function(d) { return d.type === 'changed'; }).length;
+    document.getElementById('diffStats').textContent = ' \u2014 +' + added + ' / -' + removed + ' / ~' + changed;
+    el.innerHTML = diffs.map(function(d) {
+      var color = d.type === 'added' ? '#4caf50' : d.type === 'removed' ? '#ef5350' : '#ffb74d';
+      var sign = d.type === 'added' ? '+' : d.type === 'removed' ? '-' : '~';
+      var pathStr = d.path || '(root)';
+      var valStr = d.type === 'removed' ? JSON.stringify(d.valA) :
+        (d.type === 'changed' ? '<span style="color:#ef5350;text-decoration:line-through">' + JSON.stringify(d.valA) + '</span> &#8594; <span style="color:#4caf50">' + JSON.stringify(d.valB) + '</span>' : JSON.stringify(d.valB));
+      return '<div style="color:' + color + ';font-family:monospace;font-size:0.85rem;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><strong>' + sign + '</strong> ' + pathStr + '  ' + valStr + '</div>';
+    }).join('');
+  }
+}
+
+function walkDiff(a, b, path, diffs) {
+  if (a === null || typeof a !== 'object' || b === null || typeof b !== 'object') {
+    if (a !== b) diffs.push({ type: 'changed', path: path.join('.'), valA: a, valB: b });
+    return;
+  }
+  var aIsArr = Array.isArray(a), bIsArr = Array.isArray(b);
+  if (aIsArr !== bIsArr) { diffs.push({ type: 'changed', path: path.join('.'), valA: a, valB: b }); return; }
+  if (aIsArr) {
+    var maxLen = Math.max(a.length, b.length);
+    for (var i = 0; i < maxLen; i++) {
+      if (i >= a.length) diffs.push({ type: 'added', path: path.concat('[' + i + ']').join(''), valB: b[i] });
+      else if (i >= b.length) diffs.push({ type: 'removed', path: path.concat('[' + i + ']').join(''), valA: a[i] });
+      else walkDiff(a[i], b[i], path.concat('[' + i + ']'), diffs);
+    }
+  } else {
+    var allKeys = Object.keys(a).concat(Object.keys(b)).filter(function(v, i, arr) { return arr.indexOf(v) === i; });
+    for (var j = 0; j < allKeys.length; j++) {
+      var k = allKeys[j];
+      if (!(k in a)) diffs.push({ type: 'added', path: path.concat(k).join('.'), valB: b[k] });
+      else if (!(k in b)) diffs.push({ type: 'removed', path: path.concat(k).join('.'), valA: a[k] });
+      else walkDiff(a[k], b[k], path.concat(k), diffs);
+    }
+  }
+}
+
+function loadDiffA() {
+  document.getElementById('diffA').value = JSON.stringify({ name: 'Alice', age: 30, city: 'NY', active: true, score: 85 }, null, 2);
+}
+
+function loadDiffB() {
+  document.getElementById('diffB').value = JSON.stringify({ name: 'Alice', age: 31, city: 'LA', active: true, role: 'admin' }, null, 2);
+}
+
+function copyDiffRes() {
+  var t = document.getElementById('diffOutput').innerText;
+  if (!t) return;
+  navigator.clipboard.writeText(t).then(function() { showToast('Copied!'); });
+}
+
+// ================================================================
+// Tab Switching
+// ================================================================
+document.querySelectorAll('.json-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.json-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.json-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ================================================================
+// Toast & Init
+// ================================================================
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 1800);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('json-formatter', 'JSON Formatter'); }
+
 document.addEventListener('DOMContentLoaded', function() {
-  TBUtils.addToHistory('json-formatter', 'JSON Formatter');
+  if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('json-formatter', 'JSON Formatter');
 });
 </script>
 <style>
+.json-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--color-border);
+}
+.json-tab {
+  padding: 0.5rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: color 150ms, border-color 150ms;
+  border-radius: 6px 6px 0 0;
+}
+.json-tab:hover { color: var(--color-text); }
+.json-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+.json-tab-panel { display: none; }
+.json-tab-panel.active { display: block; }
+
+/* Toolbar */
+.json-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.2rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+  overflow: visible;
+  position: relative;
+}
+.tb-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--color-border);
+  flex-shrink: 0;
+  margin: 0 0.1rem;
+}
+
+.js-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  transition: background 120ms, color 120ms, border-color 120ms;
+  flex-shrink: 0;
+  min-width: 0;
+  position: relative;
+}
+.js-btn:hover {
+  background: var(--color-bg-alt);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.js-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.js-btn:hover::after {
+  content: attr(title);
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Stats bar */
+.json-stats-bar {
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+}
+.stat-pip {
+  padding: 0.1rem 0.35rem;
+  background: var(--color-bg-alt);
+  border-radius: 3px;
+  font-size: 0.72rem;
+  color: var(--color-text-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.panel-hint { font-size: 0.75rem; color: var(--color-text-subtle); font-weight: 400; margin-left: 0.5rem; }
+.panel-mode { font-size: 0.72rem; color: var(--color-text-subtle); font-family: var(--font-mono); margin-left: auto; }
+
+/* Syntax colors */
 .json-key    { color: #89dceb; }
 .json-string { color: #a6e3a1; }
 .json-number { color: #fab387; }
