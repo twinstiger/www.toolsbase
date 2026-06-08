@@ -95,12 +95,12 @@ input,textarea,select{font-family:inherit}
 
 /* === Header === */
 .header{position:sticky;top:0;z-index:100;height:58px;background:#ffffff;border-bottom:1px solid #D1D5DB;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.header > .container{max-width:1400px}
 .header-content{height:58px;display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
-.header-left{display:flex;align-items:center;gap:0;flex:1;min-width:0}
+.header-left{display:flex;align-items:center;gap:0;flex:0 0 auto}
 .header-right{display:flex;align-items:center;gap:4px;flex-shrink:0}
-.logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;flex-shrink:0}
-.logo-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#0ea5e9 0%,#8b5cf6 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-name{font-size:1rem;font-weight:800;color:#000000;letter-spacing:-0.025em}
+.logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0}
+.logo-name{display:block;height:30px;width:auto;color:#000000;flex-shrink:0;letter-spacing:0}
 .header-nav{display:flex;align-items:center;flex-shrink:0;margin-left:2rem;padding-left:2rem;border-left:1px solid #e2e8f0}
 .header-nav-link{padding:0 16px;height:58px;display:flex;align-items:center;font-size:0.9375rem;font-weight:600;color:#374151;text-decoration:none;border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:0.05em;transition:color 150ms ease,border-color 150ms ease}
 .header-nav-link:hover{color:var(--color-primary);border-bottom-color:#d1d5db}
@@ -228,3 +228,44 @@ html[data-theme="dark"] .page-hero .hero-search-icon{color:#6e7681}
 @keyframes scaleIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes dropIn{from{opacity:0;transform:translateY(-6px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* === Tool grid (critical — prevents giant-icon FOUC on first paint) === */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0.75rem}
+.tool-card{display:flex;flex-direction:column;align-items:flex-start;padding:1.25rem 1.25rem;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;text-decoration:none;transition:border-color 150ms ease,box-shadow 150ms ease,transform 150ms ease}
+.tool-card-icon{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-bottom:0.75rem}
+.tool-card-icon svg{width:32px;height:32px;display:block;stroke-width:2.25}
+.hp-popular > .container{max-width:100%;padding-left:2rem;padding-right:2rem}
+.hp-popular-grid{gap:1.25rem;grid-template-columns:repeat(5,1fr);max-width:80%;margin-left:auto;margin-right:auto}
+@media (max-width:1400px){.hp-popular-grid{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:1000px){.hp-popular-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.hp-popular-grid{grid-template-columns:repeat(2,1fr)}}
+.hp-popular .hp-section-title{font-size:clamp(2rem,4vw,2.75rem);font-weight:900;letter-spacing:-0.035em;white-space:nowrap}
+.hp-popular .hp-section-sub{white-space:nowrap;max-width:none;font-size:0.9375rem;color:#6B7280;line-height:1.6;margin:0.5rem auto 0}
+.hp-categories .hp-section-sub{white-space:nowrap;max-width:none;margin:0.5rem auto 0}
+
+/* === /tools/index.html catalog grid: 5 cols, responsive (mirrors .hp-popular-grid) === */
+.tool-page .tool-grid{grid-template-columns:repeat(5,1fr);gap:1.25rem}
+@media (max-width:1024px){.tool-page .tool-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.tool-page .tool-grid{grid-template-columns:repeat(2,1fr)}}
+.tool-page .tool-card-icon{width:48px;height:48px;margin-bottom:1rem}
+.tool-page .tool-card-icon svg{width:40px;height:40px;stroke-width:2}
+
+/* === FOUC guards: constrain SVG icons before async CSS arrives === */
+.hp-trust-item svg{width:16px;height:16px;flex-shrink:0;color:#10B981}
+.hp-why-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:10px}
+.hp-why-icon svg{width:22px;height:22px;display:block}
+
+/* === Colorful tool icons (specificity beats dark-mode gray override) === */
+.tc-blue.tool-card .tool-card-icon{color:#3b82f6}
+.tc-red.tool-card .tool-card-icon{color:#ef4444}
+.tc-green.tool-card .tool-card-icon{color:#10b981}
+.tc-yellow.tool-card .tool-card-icon{color:#f59e0b}
+.tc-purple.tool-card .tool-card-icon{color:#8b5cf6}
+.tc-pink.tool-card .tool-card-icon{color:#ec4899}
+.tc-cyan.tool-card .tool-card-icon{color:#06b6d4}
+.tc-orange.tool-card .tool-card-icon{color:#f97316}
+.tc-gray.tool-card .tool-card-icon{color:#6b7280}
+.hp-section-header{margin-bottom:1.5rem;text-align:center}
+.hp-section-kicker{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#0ea5e9;background:#e0f2fe;padding:0.3rem 0.75rem;border-radius:9999px;margin-bottom:0.75rem}
+.hp-section-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;line-height:1.15;letter-spacing:-0.03em;color:#0f172a;margin:0 0 0.5rem}
+.hp-section-sub{font-size:0.9375rem;color:#6B7280;line-height:1.6;max-width:600px;margin:0 auto}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why my cron job ran twice (and the one line that fixed it) — ToolsBase Blog</title>
+  <meta name="description" content="A backup job firing twice a morning, two identical hosts, and the cheap S3 lock that finally shut it up.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolsbase.net/blog/cron-ran-twice.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+
+  <main class="tool-page">
+    <div class="container--narrow">
+      <div class="blog-article">
+        <div class="blog-article-header">
+          <div class="breadcrumbs">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="index.html">Blog</a>
+            <span>›</span>
+            <span>Why my cron job ran twice</span>
+          </div>
+          <h1>Why my cron job ran twice (and the one line that fixed it)</h1>
+          <p class="lead">A backup job firing twice every morning, two identical hosts that shouldn't both have existed, and ninety minutes I'd rather not have spent inside <code>/var/log/syslog</code>.</p>
+          <div class="blog-article-meta">
+            <span>June 7, 2026</span>
+            <span>6 min read</span>
+            <span>DevOps</span>
+          </div>
+        </div>
+
+        <div class="blog-article-cover" style="margin-bottom:2rem;border-radius:16px;overflow:hidden;">
+          <picture>
+  <source type="image/webp" srcset="/images/blog/cron-job-guide.webp" sizes="(max-width: 800px) 100vw, 800px">
+  <img src="/images/blog/cron-job-guide.webp" alt="A terminal showing duplicate cron output" width="800" height="400" loading="eager" decoding="async" fetchpriority="high">
+</picture>
+        </div>
+
+<p>Last Tuesday I got paged at 07:14. Same backup job, two emails, ninety seconds apart. The script — which I had written, debugged, and forgotten about three months ago — was running twice. Then it stopped. Then it ran twice again the next morning.</p>
+
+<p>If you have ever spent half a Saturday inside <code>/var/log/syslog</code> wondering why the moon is conspiring against your crontab, this one is for you.</p>
+
+<h2>What I checked first, and was wrong about</h2>
+
+<p>The obvious guess: someone added a duplicate entry. I ran <code>crontab -l</code> on the box. One line. The same line I had written in March:</p>
+
+<pre><code>14 7 * * *  /opt/backups/run.sh</code></pre>
+
+<p>Not the bug.</p>
+
+<p>Next guess: maybe <code>run.sh</code> was being invoked by something else. I checked the system timers:</p>
+
+<pre><code>$ systemctl list-timers --all | grep backup
+(no output)</code></pre>
+
+<p>Nothing in <code>/etc/cron.d/</code>, nothing in <code>/etc/cron.daily/</code>, no <code>at</code> jobs, no anacron. The script was only referenced by the user crontab, which had exactly one line.</p>
+
+<p>Then I noticed the thing I should have noticed in the first thirty seconds. The morning's syslog had two matching CMD entries:</p>
+
+<pre><code>Jun  2 07:14:01 backup-01 CRON[28412]: (root) CMD (/opt/backups/run.sh)
+Jun  2 07:14:02 backup-01 CRON[14501]: (root) CMD (/opt/backups/run.sh)</code></pre>
+
+<p>Different PIDs. One second apart. Same hostname. Which is normal, except this server only had one cron daemon.</p>
+
+<h2>The actual cause</h2>
+
+<p>The host had been migrated to a new instance the week before. The old instance, which everyone (including me) believed had been destroyed, was still running. Both machines were named <code>backup-01</code>. Both had the same crontab, deployed from the same Ansible role. Both pointed at the same S3 bucket. So at 07:14 every morning, both ran the same script, both uploaded to the same key, and both emailed the same address. The PIDs were different because they were different processes on different boxes.</p>
+
+<p>This is not really a cron bug. It's a "we forgot to terminate the old VM" bug. But cron made it look like a cron bug, which is why I spent ninety minutes inside the wrong file.</p>
+
+<h2>The local fix, and why it wasn't enough</h2>
+
+<p>The fix on the cron side took ten seconds. I wrapped the script in <code>flock</code> so two copies on the same host couldn't run concurrently:</p>
+
+<pre><code>14 7 * * *  flock -n /tmp/backup.lock /opt/backups/run.sh</code></pre>
+
+<p><code>flock -n</code> tries to grab the lock and exits immediately if it can't. Useful if your cron entry sometimes overlaps itself — a slow job that hasn't finished by the time the next minute ticks. It is the right reflex.</p>
+
+<p>It was also useless for my problem. Two hosts, two local <code>/tmp</code> locks, no coordination between them. Both still ran. Both still emailed.</p>
+
+<h2>What actually fixed it</h2>
+
+<p>I needed a lock that lived somewhere both hosts could see. The cheap version is an object in the bucket they both write to. At the top of <code>run.sh</code>:</p>
+
+<pre><code>#!/bin/bash
+set -e
+
+BUCKET="acme-backups"
+LOCK_KEY="locks/backup-$(date +%F).flag"
+
+# Try to claim today's slot. If the object already exists, bail.
+if aws s3api head-object --bucket "$BUCKET" --key "$LOCK_KEY" 2&gt;/dev/null; then
+  echo "[$(date)] $LOCK_KEY exists, another host is running. Exiting."
+  exit 0
+fi
+
+# Claim the slot. If two hosts race here, last writer wins — the
+# backup itself is idempotent, so we accepted the risk.
+echo "$(hostname -f) pid=$$" | aws s3 cp - "s3://$BUCKET/$LOCK_KEY"
+
+# Do the actual work.
+./backup-database
+./backup-files</code></pre>
+
+<p>Whichever host writes the flag first wins. The other one sees the key, prints a line, and exits clean. No second email.</p>
+
+<p>There is a small race window — both hosts could call <code>head-object</code> before either writes — and in that case both will still run. In our case the backup is idempotent and overwriting the same S3 key with the same data is fine, so we shrugged at the race. If your work isn't idempotent, use a real coordination service (a DynamoDB conditional <code>PutItem</code>, Consul, etcd, Postgres advisory lock) instead of trusting an HTTP HEAD and a hope.</p>
+
+<h2>Two small things I wish I had done from day one</h2>
+
+<p>I would not have named two machines the same string. The migration runbook had a step that said <em>rename old host to <code>backup-01-old</code> before bringing up new host</em>. That step was checked off in the ticket. It was not actually done. Hostnames are cheap. Identical hostnames across an environment are not.</p>
+
+<p>I would also have logged the hostname inside the script itself. Cron's default <code>MAILTO</code> subject is the user@host of the sending machine, but when both senders look identical to your inbox, you have no signal at all. Two lines at the top of <code>run.sh</code>:</p>
+
+<pre><code>echo "Host: $(hostname -f)"
+echo "PID:  $$"</code></pre>
+
+<p>would have told me within thirty seconds what took ninety minutes.</p>
+
+<h2>The thing to keep, if you only keep one thing</h2>
+
+<p>When a scheduled job misbehaves, check whether your scheduled job is even the thing misbehaving. Most of the time the answer is upstream of cron. Cron is dumb. It runs exactly what you told it, on every host you installed it on, including the ones you forgot.</p>
+
+        <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid var(--color-border);">
+          <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+<!-- FOOTER -->
+</body>
+</html>

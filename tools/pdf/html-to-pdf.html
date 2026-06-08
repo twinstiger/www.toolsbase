@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to PDF — Convert HTML to PDF Free | ToolsBase.net</title>
+  <meta name="description" content="Convert HTML source code or a URL to a PDF document. Edit HTML with live preview, set page size and orientation. 100% browser-based, private.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="stylesheet" href="/src/pdf-tools.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>HTML to PDF</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span>HTML to PDF</span>
+        </h1>
+        <button class="share-icon-btn" id="shareBtn" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Write or paste HTML source, see a live preview, and download as a PDF. Choose page size, orientation, and rendering quality. 100% private.</p>
+    </div>
+
+    <!-- Source tabs -->
+    <div class="pdf-options" style="margin-bottom:1rem;">
+      <div style="display:flex;gap:0.5rem;border-bottom:1px solid var(--color-border);margin-bottom:1rem;">
+        <button class="pdf-btn tab-btn active" data-tab="html" style="border-radius:6px 6px 0 0;border-bottom:2px solid var(--color-primary);">HTML Source</button>
+        <button class="pdf-btn tab-btn" data-tab="url" style="border-radius:6px 6px 0 0;">From URL</button>
+      </div>
+
+      <div id="htmlTab">
+        <div class="html-editor">
+          <div class="html-editor-pane">
+            <label class="pdf-option-label">HTML Source</label>
+            <textarea id="htmlSource" class="html-editor-textarea" placeholder="&lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;p&gt;Start typing or paste your HTML here.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;List item 1&lt;/li&gt;
+  &lt;li&gt;List item 2&lt;/li&gt;
+&lt;/ul&gt;">
+<h1>Hello from ToolsBase</h1>
+<p>This is a <strong>live preview</strong>. Edit the HTML on the left to see changes here.</p>
+<h2>Features</h2>
+<ul>
+  <li>Write HTML with inline CSS</li>
+  <li>Live preview as you type</li>
+  <li>One-click PDF export</li>
+  <li>100% private, no upload</li>
+</ul>
+<p style="color:#666;font-size:0.9em;">Tip: You can use &lt;style&gt; tags for custom styling.</p>
+</textarea>
+          </div>
+          <div class="html-editor-pane">
+            <label class="pdf-option-label">Live Preview</label>
+            <div id="htmlPreview" class="html-editor-preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="urlTab" style="display:none;">
+        <div class="pdf-option">
+          <label class="pdf-option-label">Page URL</label>
+          <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
+          <p style="font-size:0.8rem;color:var(--color-text-muted);margin-top:0.4rem;">
+            Note: The page must allow iframe embedding. Some sites block this with X-Frame-Options or CSP headers.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PDF Options -->
+    <div class="pdf-options">
+      <div class="pdf-options-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        PDF Settings
+      </div>
+      <div class="pdf-options-grid">
+        <div class="pdf-option">
+          <label class="pdf-option-label">Page Size</label>
+          <select id="pageSize">
+            <option value="a4" selected>A4</option>
+            <option value="letter">Letter</option>
+            <option value="legal">Legal</option>
+            <option value="a3">A3</option>
+            <option value="a5">A5</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Orientation</label>
+          <select id="orientation">
+            <option value="portrait" selected>Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Rendering Scale</label>
+          <select id="scale">
+            <option value="1">1× (fastest, smaller file)</option>
+            <option value="2" selected>2× (recommended)</option>
+            <option value="3">3× (sharpest, larger file)</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">File Name</label>
+          <input type="text" id="fileName" value="document" maxlength="60">
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="pdf-actions">
+      <button class="pdf-btn pdf-btn--primary" onclick="convertToPDF()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Convert to PDF
+      </button>
+      <button class="pdf-btn" onclick="loadSample()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Load Sample
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="pdf-progress" id="progress">
+      <div class="pdf-progress-bar" id="progressBar"></div>
+      <div class="pdf-progress-text" id="progressText">0%</div>
+    </div>
+
+    <!-- Result -->
+    <div class="pdf-result" id="result">
+      <div class="pdf-result-header">
+        <div class="pdf-result-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          PDF Created
+        </div>
+        <div class="pdf-result-stats" id="resultStats"></div>
+      </div>
+      <div class="pdf-result-actions">
+        <button class="pdf-btn pdf-btn--success" onclick="downloadResult()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
+        <button class="pdf-btn" onclick="resetResult()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Convert Another
+        </button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How does HTML to PDF work?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">The tool renders your HTML in a hidden browser container, captures it as a high-resolution image (canvas), then wraps that image in a PDF page. This means you get exactly what the browser would render, including CSS styling, custom fonts, and images.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I use CSS and images in my HTML?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. Inline styles, &lt;style&gt; tags, and base64-embedded images all work. External images (URLs) also work as long as the browser can fetch them. Custom Google Fonts may not load if the browser blocks third-party requests.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What about the "From URL" mode?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">When using the URL mode, the page is loaded into a hidden iframe, then captured. Some sites block this via X-Frame-Options or Content-Security-Policy headers. If a URL doesn't work, paste its HTML source manually.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my HTML safe?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. All rendering and PDF generation happens in your browser. Nothing is uploaded to any server.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>
+let activeTab = 'html';
+let resultBlob = null;
+
+const htmlSource = document.getElementById('htmlSource');
+const htmlPreview = document.getElementById('htmlPreview');
+const urlInput = document.getElementById('urlInput');
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    document.getElementById('htmlTab').style.display = activeTab === 'html' ? 'block' : 'none';
+    document.getElementById('urlTab').style.display = activeTab === 'url' ? 'block' : 'none';
+  });
+});
+
+// Live preview
+function updatePreview() {
+  htmlPreview.innerHTML = htmlSource.value;
+}
+htmlSource.addEventListener('input', updatePreview);
+updatePreview();
+
+window.loadSample = function() {
+  htmlSource.value = `<h1>Sample Document</h1>
+<p>This is a <strong>sample</strong> document to demonstrate the HTML to PDF tool.</p>
+<h2>Section 1</h2>
+<p>You can use <em>emphasized</em>, <strong>bold</strong>, and <u>underlined</u> text. Lists are also supported:</p>
+<ul>
+  <li>Item one</li>
+  <li>Item two with <a href="#">a link</a></li>
+  <li>Item three</li>
+</ul>
+<h2>Section 2</h2>
+<p>Inline <code style="background:#f3f4f6;padding:0.1rem 0.3rem;border-radius:3px;">code</code> is rendered too.</p>
+<blockquote style="border-left:4px solid #ccc;padding-left:1rem;color:#666;margin:1rem 0;">
+  Blockquotes for important callouts.
+</blockquote>
+<hr>
+<p style="text-align:center;color:#888;font-size:0.9em;">Generated by ToolsBase.net</p>`;
+  updatePreview();
+};
+
+const PAGE_SIZES = {
+  a4:     { w: 210, h: 297 },
+  letter: { w: 216, h: 279 },
+  legal:  { w: 216, h: 356 },
+  a3:     { w: 297, h: 420 },
+  a5:     { w: 148, h: 210 }
+};
+
+window.resetResult = function() {
+  resultBlob = null;
+  document.getElementById('result').classList.remove('show');
+};
+
+async function convertToPDF() {
+  const pageSize = document.getElementById('pageSize').value;
+  const orientation = document.getElementById('orientation').value;
+  const scale = parseInt(document.getElementById('scale').value, 10);
+  const fileName = (document.getElementById('fileName').value || 'document').replace(/[^a-zA-Z0-9_\-]/g, '_');
+
+  const progress = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  progress.classList.add('show');
+
+  try {
+    // Build a hidden render container
+    progressText.textContent = 'Preparing content...';
+    progressBar.style.width = '20%';
+
+    const renderHost = document.createElement('div');
+    renderHost.style.cssText = 'position:fixed;top:-99999px;left:-99999px;width:800px;background:#fff;color:#000;font-family:Arial,sans-serif;padding:20px;box-sizing:border-box;';
+    document.body.appendChild(renderHost);
+
+    if (activeTab === 'html') {
+      renderHost.innerHTML = htmlSource.value;
+    } else {
+      // URL mode: load into iframe
+      const url = urlInput.value.trim();
+      if (!url) {
+        showToast('Enter a URL');
+        document.body.removeChild(renderHost);
+        progress.classList.remove('show');
+        return;
+      }
+      renderHost.innerHTML = '<p style="color:#666;">Loading page...</p>';
+      try {
+        const resp = await fetch(url, { mode: 'cors' });
+        const html = await resp.text();
+        // Strip script tags for safety
+        const safe = html.replace(/<script[\s\S]*?<\/script>/gi, '');
+        renderHost.innerHTML = safe;
+      } catch (err) {
+        showToast('Failed to load URL (CORS may be blocking)');
+        document.body.removeChild(renderHost);
+        progress.classList.remove('show');
+        return;
+      }
+    }
+
+    progressText.textContent = 'Capturing render...';
+    progressBar.style.width = '50%';
+    await new Promise(r => setTimeout(r, 200)); // let images settle
+
+    const canvas = await html2canvas(renderHost, {
+      scale: scale,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false
+    });
+    document.body.removeChild(renderHost);
+
+    progressText.textContent = 'Building PDF...';
+    progressBar.style.width = '80%';
+
+    const { jsPDF } = window.jspdf;
+    const dims = PAGE_SIZES[pageSize];
+    const pdfW = orientation === 'landscape' ? dims.h : dims.w;
+    const pdfH = orientation === 'landscape' ? dims.w : dims.h;
+    const pdf = new jsPDF({
+      orientation: orientation,
+      unit: 'mm',
+      format: [pdfW, pdfH]
+    });
+
+    const imgW = pdfW;
+    const imgH = (canvas.height * pdfW) / canvas.width;
+
+    if (imgH <= pdfH) {
+      pdf.addImage(canvas, 'PNG', 0, 0, imgW, imgH);
+    } else {
+      // Multi-page: split canvas vertically
+      const pageCanvasHeight = (canvas.width * pdfH) / pdfW;
+      let yOffset = 0;
+      let pageNum = 0;
+      while (yOffset < canvas.height) {
+        if (pageNum > 0) pdf.addPage();
+        const sliceHeight = Math.min(pageCanvasHeight, canvas.height - yOffset);
+        const slice = document.createElement('canvas');
+        slice.width = canvas.width;
+        slice.height = sliceHeight;
+        const ctx = slice.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, slice.width, slice.height);
+        ctx.drawImage(canvas, 0, yOffset, canvas.width, sliceHeight, 0, 0, slice.width, slice.height);
+        const sliceH = (slice.height * pdfW) / slice.width;
+        pdf.addImage(slice, 'PNG', 0, 0, pdfW, sliceH);
+        yOffset += sliceHeight;
+        pageNum++;
+      }
+    }
+
+    pdf.setProperties({
+      title: fileName,
+      creator: 'ToolsBase.net',
+      producer: 'ToolsBase.net HTML to PDF'
+    });
+
+    resultBlob = pdf.output('blob');
+
+    progressBar.style.width = '100%';
+    progressText.textContent = 'Done!';
+
+    setTimeout(() => {
+      progress.classList.remove('show');
+      progressBar.style.width = '0%';
+      showResult();
+    }, 400);
+  } catch (err) {
+    progress.classList.remove('show');
+    showToast('Error: ' + err.message);
+    console.error(err);
+  }
+}
+
+function showResult() {
+  const result = document.getElementById('result');
+  const stats = document.getElementById('resultStats');
+  const name = (document.getElementById('fileName').value || 'document') + '.pdf';
+  stats.innerHTML = `
+    <span><strong>${name}</strong></span>
+    <span><strong>${formatSize(resultBlob.size)}</strong></span>
+  `;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+window.downloadResult = function() {
+  if (!resultBlob) return;
+  const name = (document.getElementById('fileName').value || 'document') + '.pdf';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(resultBlob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('html-to-pdf', 'HTML to PDF'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('html-to-pdf', 'HTML to PDF');
+  document.getElementById('shareBtn')?.addEventListener('click', shareTool);
+});
+</script>
+</body>
+</html>

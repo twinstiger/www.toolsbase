@@ -523,6 +523,7 @@ async function build() {
   fs.mkdirSync(path.join(DIST, 'src'), { recursive: true });
   fs.cpSync(path.join(SRC, 'styles.css'), path.join(DIST, 'src', 'styles.css'));
   fs.cpSync(path.join(SRC, 'critical.css'), path.join(DIST, 'src', 'critical.css'));
+  fs.cpSync(path.join(SRC, 'pdf-tools.css'), path.join(DIST, 'src', 'pdf-tools.css'));
   fs.cpSync(path.join(SRC, 'utils.js'), path.join(DIST, 'src', 'utils.js'));
   fs.cpSync(path.join(SRC, 'header.js'), path.join(DIST, 'src', 'header.js'));
   fs.cpSync(path.join(SRC, 'javascript-runner.js'), path.join(DIST, 'src', 'javascript-runner.js'));
@@ -603,6 +604,8 @@ async function build() {
     'tools/text/case-converter.html', 'tools/text/diff-checker.html', 'tools/text/markdown-preview.html',
     'tools/text/text-diff.html', 'tools/text/word-counter.html', 'tools/finance/tip-calculator.html',
     'tools/finance/mortgage-calculator.html', 'tools/finance/compound-interest.html', 'tools/finance/discount-calculator.html',
+    'tools/pdf/merge.html', 'tools/pdf/split.html', 'tools/pdf/rotate.html', 'tools/pdf/watermark.html',
+    'tools/pdf/compress.html', 'tools/pdf/image-to-pdf.html', 'tools/pdf/pdf-to-image.html', 'tools/pdf/html-to-pdf.html',
     'tools/index.html'
   ];
   const blogPages = fs.readdirSync(path.join(ROOT, 'blog'))

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Watermark — Add Watermark to PDF Free | ToolsBase.net</title>
+  <meta name="description" content="Add a custom text watermark to every page of your PDF. Choose font, size, color, opacity, rotation, and position. 100% browser-based, private.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="stylesheet" href="/src/pdf-tools.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>PDF Watermark</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          <span>PDF Watermark</span>
+        </h1>
+        <button class="share-icon-btn" id="shareBtn" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Add a custom text watermark to every page. Configure text, font, size, color, opacity, rotation, and position. 100% private.</p>
+    </div>
+
+    <!-- Upload Zone -->
+    <label class="pdf-upload" id="uploadZone">
+      <div class="pdf-upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <h3>Drop a PDF file here or click to upload</h3>
+      <p>Add a watermark to every page of your document.</p>
+      <span class="pdf-upload-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        Choose PDF File
+      </span>
+      <input type="file" id="fileInput" accept="application/pdf">
+    </label>
+
+    <!-- File Info -->
+    <div class="pdf-file-list" id="fileList" style="display:none;"></div>
+
+    <!-- Watermark Options -->
+    <div class="pdf-options" id="options" style="display:none;">
+      <div class="pdf-options-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        Watermark Text
+      </div>
+      <div class="pdf-options-grid">
+        <div class="pdf-option">
+          <label class="pdf-option-label">Text</label>
+          <input type="text" id="wmText" value="CONFIDENTIAL" maxlength="60">
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Font</label>
+          <select id="wmFont">
+            <option value="Helvetica">Helvetica</option>
+            <option value="Helvetica-Bold">Helvetica Bold</option>
+            <option value="Helvetica-Oblique">Helvetica Italic</option>
+            <option value="Times-Roman">Times Roman</option>
+            <option value="Times-Bold">Times Bold</option>
+            <option value="Courier">Courier</option>
+            <option value="Courier-Bold">Courier Bold</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Font Size: <span id="wmSizeLabel">60</span>pt</label>
+          <input type="range" id="wmSize" min="20" max="160" value="60" style="width:100%;">
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Color</label>
+          <input type="color" id="wmColor" value="#ff0000" style="height:36px;cursor:pointer;">
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Opacity: <span id="wmOpacityLabel">30</span>%</label>
+          <input type="range" id="wmOpacity" min="5" max="100" value="30" style="width:100%;">
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Rotation: <span id="wmRotationLabel">-30</span>°</label>
+          <input type="range" id="wmRotation" min="-90" max="90" value="-30" style="width:100%;">
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Position</label>
+          <select id="wmPosition">
+            <option value="center">Center (diagonal)</option>
+            <option value="center-straight">Center (straight)</option>
+            <option value="top">Top center</option>
+            <option value="bottom">Bottom center</option>
+            <option value="tile">Tile (repeated)</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Pages</label>
+          <select id="wmPages">
+            <option value="all">All pages</option>
+            <option value="first">First page only</option>
+            <option value="last">Last page only</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Preview -->
+      <div class="watermark-preview" id="previewBox">
+        <div class="watermark-preview-text" id="previewText">CONFIDENTIAL</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="pdf-actions" id="actions" style="display:none;">
+      <button class="pdf-btn pdf-btn--primary" onclick="applyWatermark()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Apply Watermark
+      </button>
+      <button class="pdf-btn" onclick="resetAll()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        Reset
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="pdf-progress" id="progress">
+      <div class="pdf-progress-bar" id="progressBar"></div>
+      <div class="pdf-progress-text" id="progressText">0%</div>
+    </div>
+
+    <!-- Result -->
+    <div class="pdf-result" id="result">
+      <div class="pdf-result-header">
+        <div class="pdf-result-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Watermark Applied
+        </div>
+        <div class="pdf-result-stats" id="resultStats"></div>
+      </div>
+      <div class="pdf-result-actions">
+        <button class="pdf-btn pdf-btn--success" onclick="downloadResult()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Watermarked PDF
+        </button>
+        <button class="pdf-btn" onclick="watermarkAnother()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Watermark Another
+        </button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Will the watermark be removable?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No. The watermark is drawn directly into the page content stream, not added as an overlay. Once applied, it becomes part of the page like any other text. To remove it, the recipient would need to edit the raw PDF content.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I use a custom font?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">This tool uses pdf-lib's built-in standard fonts (Helvetica, Times, Courier) to keep things simple and dependency-free. For custom fonts, embedding a TTF file in the same tool would require file loading code we don't include by default.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What does "Tile" position do?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Tile mode repeats the watermark across the entire page in a diagonal grid. Useful for marking draft documents where you want a clear visual signal on every part of the page.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my PDF safe?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. All processing happens in your browser using pdf-lib. Your file never leaves your device.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+const { PDFDocument, StandardFonts, degrees, rgb } = PDFLib;
+let pdfFile = null;
+let pdfBytes = null;
+let pdfDoc = null;
+let pageCount = 0;
+let resultBlob = null;
+
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') loadFile(file);
+});
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadFile(file);
+  fileInput.value = '';
+});
+
+// Live preview
+['wmText', 'wmFont', 'wmSize', 'wmColor', 'wmOpacity', 'wmRotation', 'wmPosition'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updatePreview);
+});
+
+function hexToRgb(hex) {
+  const m = hex.replace('#', '').match(/.{1,2}/g);
+  return rgb(
+    parseInt(m[0], 16) / 255,
+    parseInt(m[1], 16) / 255,
+    parseInt(m[2], 16) / 255
+  );
+}
+
+function updatePreview() {
+  const text = document.getElementById('wmText').value || 'WATERMARK';
+  const size = parseInt(document.getElementById('wmSize').value, 10);
+  const color = document.getElementById('wmColor').value;
+  const opacity = parseInt(document.getElementById('wmOpacity').value, 10) / 100;
+  const rotation = parseInt(document.getElementById('wmRotation').value, 10);
+  const position = document.getElementById('wmPosition').value;
+
+  document.getElementById('wmSizeLabel').textContent = size;
+  document.getElementById('wmOpacityLabel').textContent = parseInt(document.getElementById('wmOpacity').value, 10);
+  document.getElementById('wmRotationLabel').textContent = rotation;
+
+  const preview = document.getElementById('previewText');
+  preview.textContent = text;
+  preview.style.fontSize = (size * 0.6) + 'px';
+  preview.style.color = color;
+  preview.style.opacity = opacity;
+
+  const box = document.getElementById('previewBox');
+  if (position === 'tile') {
+    box.style.background = `repeating-linear-gradient(${rotation}deg, transparent, transparent 80px, rgba(0,0,0,0.02) 80px, rgba(0,0,0,0.02) 160px)`;
+    preview.style.transform = `rotate(${rotation}deg) translate(0, 0)`;
+  } else {
+    box.style.background = '#f3f4f6';
+    if (position === 'top') {
+      preview.style.transform = `rotate(${rotation}deg) translateY(-50px)`;
+    } else if (position === 'bottom') {
+      preview.style.transform = `rotate(${rotation}deg) translateY(50px)`;
+    } else {
+      preview.style.transform = `rotate(${rotation}deg)`;
+    }
+  }
+}
+
+async function loadFile(file) {
+  pdfFile = file;
+  pdfBytes = await file.arrayBuffer();
+  try {
+    pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  } catch (err) {
+    showToast('Failed to load PDF: ' + err.message);
+    return;
+  }
+  pageCount = pdfDoc.getPageCount();
+
+  const list = document.getElementById('fileList');
+  list.style.display = 'flex';
+  list.innerHTML = `
+    <div class="pdf-file-item">
+      <div class="pdf-file-thumb">PDF</div>
+      <div class="pdf-file-info">
+        <div class="pdf-file-name">${escapeHtml(file.name)}</div>
+        <div class="pdf-file-meta">${formatSize(file.size)} · ${pageCount} pages</div>
+      </div>
+      <div class="pdf-file-actions">
+        <button class="pdf-file-remove" onclick="resetAll()" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('options').style.display = 'block';
+  document.getElementById('actions').style.display = 'flex';
+  updatePreview();
+}
+
+window.resetAll = function() {
+  pdfFile = null;
+  pdfBytes = null;
+  pdfDoc = null;
+  pageCount = 0;
+  resultBlob = null;
+  document.getElementById('fileList').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+  document.getElementById('actions').style.display = 'none';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('fileInput').value = '';
+};
+
+async function applyWatermark() {
+  if (!pdfDoc) return;
+  const text = document.getElementById('wmText').value || 'WATERMARK';
+  const fontName = document.getElementById('wmFont').value;
+  const size = parseInt(document.getElementById('wmSize').value, 10);
+  const color = hexToRgb(document.getElementById('wmColor').value);
+  const opacity = parseInt(document.getElementById('wmOpacity').value, 10) / 100;
+  const rotation = parseInt(document.getElementById('wmRotation').value, 10);
+  const position = document.getElementById('wmPosition').value;
+  const pageMode = document.getElementById('wmPages').value;
+
+  const font = await pdfDoc.embedFont(StandardFonts[fontName]);
+
+  const progress = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  progress.classList.add('show');
+
+  try {
+    const pages = pdfDoc.getPages();
+    const targetIndices = [];
+    if (pageMode === 'all') {
+      for (let i = 0; i < pages.length; i++) targetIndices.push(i);
+    } else if (pageMode === 'first') {
+      targetIndices.push(0);
+    } else {
+      targetIndices.push(pages.length - 1);
+    }
+
+    for (let p = 0; p < targetIndices.length; p++) {
+      const idx = targetIndices[p];
+      const page = pages[idx];
+      const { width, height } = page.getSize();
+      const textWidth = font.widthOfTextAtSize(text, size);
+      const textHeight = size;
+
+      progressText.textContent = `Watermarking page ${idx + 1}/${pages.length}`;
+      progressBar.style.width = ((p / targetIndices.length) * 90) + '%';
+
+      if (position === 'tile') {
+        // Repeat watermark in a grid
+        const stepX = textWidth + 80;
+        const stepY = textHeight + 80;
+        for (let y = 0; y < height + textHeight; y += stepY) {
+          for (let x = 0; x < width + textWidth; x += stepX) {
+            page.drawText(text, {
+              x: x,
+              y: y,
+              size: size,
+              font: font,
+              color: color,
+              opacity: opacity,
+              rotate: degrees(rotation)
+            });
+          }
+        }
+      } else {
+        let x, y, rot = rotation;
+        if (position === 'top') {
+          x = (width - textWidth) / 2;
+          y = height - textHeight - 30;
+        } else if (position === 'bottom') {
+          x = (width - textWidth) / 2;
+          y = 30;
+        } else if (position === 'center-straight') {
+          x = (width - textWidth) / 2;
+          y = (height - textHeight) / 2;
+          rot = 0;
+        } else {
+          // center diagonal
+          x = (width - textWidth) / 2;
+          y = (height - textHeight) / 2;
+        }
+        page.drawText(text, {
+          x: x, y: y, size: size, font: font,
+          color: color, opacity: opacity, rotate: degrees(rot)
+        });
+      }
+    }
+
+    progressText.textContent = 'Saving...';
+    progressBar.style.width = '95%';
+
+    pdfDoc.setProducer('ToolsBase.net PDF Watermark');
+    pdfDoc.setCreator('ToolsBase.net');
+    const outBytes = await pdfDoc.save({ useObjectStreams: true });
+    resultBlob = new Blob([outBytes], { type: 'application/pdf' });
+
+    progressBar.style.width = '100%';
+    progressText.textContent = 'Done!';
+
+    setTimeout(() => {
+      progress.classList.remove('show');
+      progressBar.style.width = '0%';
+      showResult();
+    }, 400);
+  } catch (err) {
+    progress.classList.remove('show');
+    showToast('Error: ' + err.message);
+    console.error(err);
+  }
+}
+
+function showResult() {
+  const result = document.getElementById('result');
+  const stats = document.getElementById('resultStats');
+  stats.innerHTML = `
+    <span><strong>${pageCount}</strong> pages</span>
+    <span><strong>${formatSize(resultBlob.size)}</strong> output</span>
+  `;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+window.downloadResult = function() {
+  if (!resultBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(resultBlob);
+  a.download = 'watermarked-' + Date.now() + '.pdf';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+window.watermarkAnother = function() {
+  resetAll();
+  fileInput.click();
+};
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('pdf-watermark', 'PDF Watermark'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('pdf-watermark', 'PDF Watermark');
+  updatePreview();
+});
+</script>
+</body>
+</html>
