@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Merge — Combine PDFs Online Free | ToolsBase.net</title>
+  <meta name="description" content="Merge multiple PDF files into one document for free. Drag to reorder pages, works 100% in your browser. No upload, no sign-up, no limits.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="stylesheet" href="/src/pdf-tools.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>PDF Merge</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+          <span>PDF Merge</span>
+        </h1>
+        <button class="share-icon-btn" id="shareBtn" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Combine multiple PDF files into a single document. Drag to reorder, no file size limits, 100% private.</p>
+    </div>
+
+    <!-- Upload Zone -->
+    <label class="pdf-upload" id="uploadZone">
+      <div class="pdf-upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3>Drop PDF files here or click to upload</h3>
+      <p>Add as many PDFs as you want. No file size limit.</p>
+      <span class="pdf-upload-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        Choose PDF Files
+      </span>
+      <input type="file" id="fileInput" accept="application/pdf" multiple>
+    </label>
+
+    <!-- File List -->
+    <div class="pdf-file-list" id="fileList" style="display:none;"></div>
+
+    <!-- Actions -->
+    <div class="pdf-actions" id="actions" style="display:none;">
+      <button class="pdf-btn pdf-btn--primary" onclick="mergePDFs()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><rect x="8" y="8" width="12" height="12" rx="2"/></svg>
+        Merge PDFs
+      </button>
+      <button class="pdf-btn" onclick="addMore()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add More
+      </button>
+      <button class="pdf-btn" onclick="clearAll()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        Clear All
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="pdf-progress" id="progress">
+      <div class="pdf-progress-bar" id="progressBar"></div>
+      <div class="pdf-progress-text" id="progressText">0%</div>
+    </div>
+
+    <!-- Result -->
+    <div class="pdf-result" id="result">
+      <div class="pdf-result-header">
+        <div class="pdf-result-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Merge Complete
+        </div>
+        <div class="pdf-result-stats" id="resultStats"></div>
+      </div>
+      <div class="pdf-result-actions">
+        <button class="pdf-btn pdf-btn--success" onclick="downloadResult()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Merged PDF
+        </button>
+        <button class="pdf-btn" onclick="mergeAnother()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Merge More
+        </button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How does PDF merge work?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">All processing happens locally in your browser using the pdf-lib library. We never upload your files to any server. The merged PDF is generated in memory and downloaded directly to your device.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is there a limit on file size or number of files?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No hard limits. Since everything runs in your browser, performance depends on your device's memory. Most modern devices can handle 10+ PDFs totaling several hundred MB.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I reorder files before merging?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. After uploading, simply drag any file card up or down to reorder them. The merge order matches the list order from top to bottom.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data safe?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Absolutely. Your files never leave your device. All processing is client-side, and the resulting PDF is generated and downloaded directly from your browser.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+const { PDFDocument } = PDFLib;
+let fileList = [];
+let resultBlob = null;
+let resultSize = 0;
+
+// === File handling ===
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+
+uploadZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadZone.classList.add('dragover');
+});
+uploadZone.addEventListener('dragleave', () => {
+  uploadZone.classList.remove('dragover');
+});
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+  addFiles(files);
+});
+
+fileInput.addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  addFiles(files);
+  fileInput.value = '';
+});
+
+function addMore() { fileInput.click(); }
+
+function addFiles(files) {
+  for (const file of files) {
+    if (file.type !== 'application/pdf') continue;
+    fileList.push({
+      file: file,
+      name: file.name,
+      size: file.size,
+      pages: null
+    });
+  }
+  loadPageCounts();
+  renderFileList();
+}
+
+async function loadPageCounts() {
+  for (const item of fileList) {
+    if (item.pages !== null) continue;
+    try {
+      const bytes = await item.file.arrayBuffer();
+      const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
+      item.pages = doc.getPageCount();
+    } catch (err) {
+      item.pages = 0;
+    }
+  }
+  renderFileList();
+}
+
+function renderFileList() {
+  const list = document.getElementById('fileList');
+  const actions = document.getElementById('actions');
+  if (fileList.length === 0) {
+    list.style.display = 'none';
+    actions.style.display = 'none';
+    return;
+  }
+  list.style.display = 'flex';
+  actions.style.display = 'flex';
+
+  list.innerHTML = fileList.map((item, i) => `
+    <div class="pdf-file-item" draggable="true" data-index="${i}">
+      <div class="pdf-file-handle" title="Drag to reorder">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+      </div>
+      <div class="pdf-file-thumb">PDF</div>
+      <div class="pdf-file-info">
+        <div class="pdf-file-name">${escapeHtml(item.name)}</div>
+        <div class="pdf-file-meta">${formatSize(item.size)} · ${item.pages === null ? '...' : item.pages + ' pages'}</div>
+      </div>
+      <div class="pdf-file-actions">
+        <button class="pdf-file-remove" onclick="removeFile(${i})" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  // Setup drag & drop reordering
+  setupDragAndDrop();
+}
+
+let dragSrc = null;
+function setupDragAndDrop() {
+  document.querySelectorAll('.pdf-file-item').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      dragSrc = parseInt(item.dataset.index);
+      item.classList.add('sortable-ghost');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('sortable-ghost');
+    });
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    });
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const target = parseInt(item.dataset.index);
+      if (dragSrc === null || dragSrc === target) return;
+      const moved = fileList.splice(dragSrc, 1)[0];
+      fileList.splice(target, 0, moved);
+      renderFileList();
+    });
+  });
+}
+
+function removeFile(i) {
+  fileList.splice(i, 1);
+  renderFileList();
+}
+
+function clearAll() {
+  fileList = [];
+  resultBlob = null;
+  document.getElementById('result').classList.remove('show');
+  renderFileList();
+}
+
+// === Merge ===
+async function mergePDFs() {
+  if (fileList.length < 2) {
+    showToast('Add at least 2 PDF files to merge');
+    return;
+  }
+  const progress = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  progress.classList.add('show');
+
+  try {
+    const merged = await PDFDocument.create();
+    let totalPages = 0;
+
+    for (let i = 0; i < fileList.length; i++) {
+      progressText.textContent = `Processing ${fileList[i].name} (${i + 1}/${fileList.length})`;
+      progressBar.style.width = ((i / fileList.length) * 90) + '%';
+
+      const bytes = await fileList[i].file.arrayBuffer();
+      const doc = await PDFDocument.load(bytes, { ignoreEncryption: true });
+      const indices = doc.getPageIndices();
+      const copied = await merged.copyPages(doc, indices);
+      copied.forEach(p => merged.addPage(p));
+      totalPages += copied.length;
+    }
+
+    progressBar.style.width = '95%';
+    progressText.textContent = 'Saving merged PDF...';
+
+    merged.setTitle('Merged PDF');
+    merged.setProducer('ToolsBase.net PDF Merge');
+    merged.setCreator('ToolsBase.net');
+    merged.setCreationDate(new Date());
+
+    const outBytes = await merged.save({ useObjectStreams: true });
+    resultBlob = new Blob([outBytes], { type: 'application/pdf' });
+    resultSize = outBytes.length;
+
+    progressBar.style.width = '100%';
+    progressText.textContent = 'Done!';
+
+    setTimeout(() => {
+      progress.classList.remove('show');
+      progressBar.style.width = '0%';
+      showResult(totalPages);
+    }, 400);
+  } catch (err) {
+    progress.classList.remove('show');
+    showToast('Error: ' + err.message);
+    console.error(err);
+  }
+}
+
+function showResult(totalPages) {
+  const result = document.getElementById('result');
+  const stats = document.getElementById('resultStats');
+  const originalSize = fileList.reduce((s, f) => s + f.size, 0);
+  stats.innerHTML = `
+    <span><strong>${fileList.length}</strong> files</span>
+    <span><strong>${totalPages}</strong> pages</span>
+    <span><strong>${formatSize(resultSize)}</strong> output</span>
+  `;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function downloadResult() {
+  if (!resultBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(resultBlob);
+  a.download = 'merged-' + Date.now() + '.pdf';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function mergeAnother() {
+  clearAll();
+  fileInput.click();
+}
+
+// === Helpers ===
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('pdf-merge', 'PDF Merge'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('pdf-merge', 'PDF Merge');
+});
+</script>
+</body>
+</html>

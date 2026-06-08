@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to Image — Convert PDF to PNG/JPG Free | ToolsBase.net</title>
+  <meta name="description" content="Convert each PDF page into a PNG or JPG image. Choose resolution (DPI), output format, and pages. 100% browser-based, private.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="stylesheet" href="/src/pdf-tools.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>PDF to Image</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>PDF to Image</span>
+        </h1>
+        <button class="share-icon-btn" id="shareBtn" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Convert each PDF page into a PNG or JPG image. Choose resolution, format, and pages. 100% private, no upload.</p>
+    </div>
+
+    <!-- Upload Zone -->
+    <label class="pdf-upload" id="uploadZone">
+      <div class="pdf-upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3>Drop a PDF file here or click to upload</h3>
+      <p>Each page will be converted to an image you can download.</p>
+      <span class="pdf-upload-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        Choose PDF File
+      </span>
+      <input type="file" id="fileInput" accept="application/pdf">
+    </label>
+
+    <!-- File Info -->
+    <div class="pdf-file-list" id="fileList" style="display:none;"></div>
+
+    <!-- Options -->
+    <div class="pdf-options" id="options" style="display:none;">
+      <div class="pdf-options-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Conversion Settings
+      </div>
+      <div class="pdf-options-grid">
+        <div class="pdf-option">
+          <label class="pdf-option-label">Output Format</label>
+          <select id="format">
+            <option value="png" selected>PNG (lossless, larger)</option>
+            <option value="jpeg">JPEG (smaller, slightly lossy)</option>
+            <option value="webp">WebP (modern, balanced)</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Resolution (DPI)</label>
+          <select id="dpi">
+            <option value="72">72 DPI (web)</option>
+            <option value="150" selected>150 DPI (standard)</option>
+            <option value="200">200 DPI (high)</option>
+            <option value="300">300 DPI (print)</option>
+          </select>
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">JPEG Quality: <span id="qualityLabel">92</span>%</label>
+          <input type="range" id="jpegQuality" min="40" max="100" value="92" style="width:100%;">
+        </div>
+        <div class="pdf-option">
+          <label class="pdf-option-label">Pages</label>
+          <select id="pageMode">
+            <option value="all" selected>All pages</option>
+            <option value="first">First page only</option>
+            <option value="range">Custom range (e.g. 1-3, 5)</option>
+          </select>
+        </div>
+        <div class="pdf-option" id="rangeOption" style="display:none;">
+          <label class="pdf-option-label">Range</label>
+          <input type="text" id="rangeInput" placeholder="e.g. 1-3, 5" value="1">
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="pdf-actions" id="actions" style="display:none;">
+      <button class="pdf-btn pdf-btn--primary" onclick="convertToImages()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Convert to Images
+      </button>
+      <button class="pdf-btn" onclick="resetAll()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        Reset
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="pdf-progress" id="progress">
+      <div class="pdf-progress-bar" id="progressBar"></div>
+      <div class="pdf-progress-text" id="progressText">0%</div>
+    </div>
+
+    <!-- Result -->
+    <div class="pdf-result" id="result">
+      <div class="pdf-result-header">
+        <div class="pdf-result-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Conversion Complete
+        </div>
+        <div class="pdf-result-stats" id="resultStats"></div>
+      </div>
+      <div class="pdf-output-grid" id="outputGrid"></div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What's the difference between PNG and JPEG?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><strong>PNG</strong> is lossless and best for documents, screenshots, and anything with text or sharp edges. <strong>JPEG</strong> is smaller and best for photos or scanned content. <strong>WebP</strong> offers the best size/quality tradeoff for the web.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What DPI should I choose?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><strong>72 DPI</strong> is screen-resolution. <strong>150 DPI</strong> is good for most everyday uses. <strong>300 DPI</strong> is print quality and produces much larger files. Higher DPI = sharper image + bigger file.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How do I download all pages at once?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Browsers don't allow multiple simultaneous downloads in a single click. Click "Download" on each image individually, or click "Download All" to trigger them in sequence (some browsers may prompt for permission).</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my PDF safe?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. All processing happens in your browser using pdfjs-dist. Your file never leaves your device.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<script type="module">
+import * as pdfjsLib from 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+
+let pdfFile = null;
+let pdfBytes = null;
+let pdfDoc = null;
+let outputBlobs = [];
+
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+const pageMode = document.getElementById('pageMode');
+const rangeOption = document.getElementById('rangeOption');
+const jpegQuality = document.getElementById('jpegQuality');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') loadFile(file);
+});
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadFile(file);
+  fileInput.value = '';
+});
+
+pageMode.addEventListener('change', () => {
+  rangeOption.style.display = pageMode.value === 'range' ? 'flex' : 'none';
+});
+
+jpegQuality.addEventListener('input', () => {
+  document.getElementById('qualityLabel').textContent = jpegQuality.value;
+});
+
+async function loadFile(file) {
+  pdfFile = file;
+  pdfBytes = await file.arrayBuffer();
+  pdfDoc = await pdfjsLib.getDocument({ data: pdfBytes.slice(0) }).promise;
+  const pageCount = pdfDoc.numPages;
+
+  const list = document.getElementById('fileList');
+  list.style.display = 'flex';
+  list.innerHTML = `
+    <div class="pdf-file-item">
+      <div class="pdf-file-thumb">PDF</div>
+      <div class="pdf-file-info">
+        <div class="pdf-file-name">${escapeHtml(file.name)}</div>
+        <div class="pdf-file-meta">${formatSize(file.size)} · ${pageCount} pages</div>
+      </div>
+      <div class="pdf-file-actions">
+        <button class="pdf-file-remove" onclick="resetAll()" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('options').style.display = 'block';
+  document.getElementById('actions').style.display = 'flex';
+}
+
+window.resetAll = function() {
+  pdfFile = null;
+  pdfBytes = null;
+  pdfDoc = null;
+  outputBlobs = [];
+  document.getElementById('fileList').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+  document.getElementById('actions').style.display = 'none';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('fileInput').value = '';
+};
+
+function parsePageRange(str, total) {
+  const indices = [];
+  for (const part of str.split(',').map(s => s.trim()).filter(Boolean)) {
+    if (part.includes('-')) {
+      const [a, b] = part.split('-').map(n => parseInt(n.trim(), 10));
+      if (isNaN(a) || isNaN(b) || a < 1 || b > total || a > b) continue;
+      for (let i = a; i <= b; i++) indices.push(i);
+    } else {
+      const n = parseInt(part, 10);
+      if (!isNaN(n) && n >= 1 && n <= total) indices.push(n);
+    }
+  }
+  return Array.from(new Set(indices)).sort((a, b) => a - b);
+}
+
+async function convertToImages() {
+  if (!pdfDoc) return;
+  const format = document.getElementById('format').value;
+  const dpi = parseInt(document.getElementById('dpi').value, 10);
+  const quality = parseInt(jpegQuality.value, 10) / 100;
+  const pageModeVal = pageMode.value;
+  const totalPages = pdfDoc.numPages;
+
+  let targetPages;
+  if (pageModeVal === 'all') {
+    targetPages = [];
+    for (let i = 1; i <= totalPages; i++) targetPages.push(i);
+  } else if (pageModeVal === 'first') {
+    targetPages = [1];
+  } else {
+    targetPages = parsePageRange(document.getElementById('rangeInput').value, totalPages);
+    if (targetPages.length === 0) {
+      showToast('Enter valid page range');
+      return;
+    }
+  }
+
+  const mimeType = format === 'png' ? 'image/png' : format === 'jpeg' ? 'image/jpeg' : 'image/webp';
+  const ext = format === 'png' ? 'png' : format === 'jpeg' ? 'jpg' : 'webp';
+
+  const progress = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  progress.classList.add('show');
+  outputBlobs = [];
+
+  try {
+    // DPI to scale: standard PDF base is 72 DPI
+    const scale = dpi / 72;
+
+    for (let i = 0; i < targetPages.length; i++) {
+      const pageNum = targetPages[i];
+      progressText.textContent = `Converting page ${i + 1}/${targetPages.length}`;
+      progressBar.style.width = ((i / targetPages.length) * 90) + '%';
+
+      const page = await pdfDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+
+      // White background for JPEG (no alpha)
+      if (format === 'jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      await page.render({ canvasContext: ctx, viewport, background: 'white' }).promise;
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, mimeType, quality));
+      const baseName = pdfFile.name.replace(/\.pdf$/i, '');
+      outputBlobs.push({
+        blob,
+        name: `${baseName}-page-${pageNum}.${ext}`,
+        dataUrl: canvas.toDataURL(mimeType, quality),
+        page: pageNum
+      });
+    }
+
+    progressBar.style.width = '100%';
+    progressText.textContent = 'Done!';
+
+    setTimeout(() => {
+      progress.classList.remove('show');
+      progressBar.style.width = '0%';
+      showResult();
+    }, 400);
+  } catch (err) {
+    progress.classList.remove('show');
+    showToast('Error: ' + err.message);
+    console.error(err);
+  }
+}
+
+function showResult() {
+  const result = document.getElementById('result');
+  const grid = document.getElementById('outputGrid');
+  const stats = document.getElementById('resultStats');
+  const totalSize = outputBlobs.reduce((s, o) => s + o.blob.size, 0);
+  stats.innerHTML = `
+    <span><strong>${outputBlobs.length}</strong> images</span>
+    <span><strong>${formatSize(totalSize)}</strong> total</span>
+    <button class="pdf-output-dl" onclick="downloadAll()">Download All</button>
+  `;
+  grid.innerHTML = outputBlobs.map((o, i) => `
+    <div class="pdf-output-item">
+      <img src="${o.dataUrl}" class="pdf-output-img" alt="Page ${o.page}">
+      <div class="pdf-output-info">
+        <span>Page ${o.page}</span>
+        <button class="pdf-output-dl" onclick="downloadOutput(${i})">Download</button>
+      </div>
+    </div>
+  `).join('');
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+window.downloadOutput = function(i) {
+  const o = outputBlobs[i];
+  if (!o) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(o.blob);
+  a.download = o.name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+window.downloadAll = function() {
+  outputBlobs.forEach((o, i) => {
+    setTimeout(() => downloadOutput(i), i * 400);
+  });
+};
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('pdf-to-image', 'PDF to Image'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('pdf-to-image', 'PDF to Image');
+  if (typeof TBUtils !== 'undefined') document.getElementById('shareBtn').addEventListener('click', shareTool);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Rotate — Rotate PDF Pages Free | ToolsBase.net</title>
+  <meta name="description" content="Rotate individual pages or the whole PDF by 90, 180, or 270 degrees. 100% browser-based, no upload, no sign-up, no limits.">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="stylesheet" href="/src/pdf-tools.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="tool-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>PDF Rotate</span>
+    </div>
+    <div class="tool-page-header">
+      <div class="tool-title-row">
+        <h1 class="tool-page-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M21.5 15a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0z"/><polyline points="21.5 12 21.5 15 18.5 15"/></svg>
+          <span>PDF Rotate</span>
+        </h1>
+        <button class="share-icon-btn" id="shareBtn" title="Share">↗</button>
+      </div>
+      <p class="lead-text">Rotate all pages or individual pages of your PDF by 90°, 180°, or 270°. Visual previews, no file size limit, 100% private.</p>
+    </div>
+
+    <!-- Upload Zone -->
+    <label class="pdf-upload" id="uploadZone">
+      <div class="pdf-upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+      <h3>Drop a PDF file here or click to upload</h3>
+      <p>Rotate pages individually or apply a global rotation.</p>
+      <span class="pdf-upload-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        Choose PDF File
+      </span>
+      <input type="file" id="fileInput" accept="application/pdf">
+    </label>
+
+    <!-- File Info -->
+    <div class="pdf-file-list" id="fileList" style="display:none;"></div>
+
+    <!-- Rotation Options -->
+    <div class="pdf-options" id="options" style="display:none;">
+      <div class="pdf-options-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Rotation
+      </div>
+      <div class="pdf-options-grid">
+        <div class="pdf-option">
+          <label class="pdf-option-label">Apply To</label>
+          <select id="applyMode">
+            <option value="all">All pages</option>
+            <option value="selected">Selected pages only</option>
+            <option value="individual">Per-page rotation</option>
+          </select>
+        </div>
+        <div class="pdf-option" id="globalRotationOption">
+          <label class="pdf-option-label">Rotation Angle</label>
+          <select id="globalRotation">
+            <option value="90">90° clockwise</option>
+            <option value="180">180°</option>
+            <option value="270">270° clockwise (90° CCW)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Selection -->
+    <div id="pageSelection" style="display:none;">
+      <div class="pdf-stats">
+        <div class="pdf-stat">
+          <span>Total pages:</span>
+          <span class="pdf-stat-value" id="totalPages">0</span>
+        </div>
+        <div class="pdf-stat pdf-stat--warning">
+          <span>Rotated:</span>
+          <span class="pdf-stat-value" id="rotatedPages">0</span>
+        </div>
+        <div class="pdf-stat" style="margin-left:auto;">
+          <button class="pdf-btn" style="padding:0.4rem 0.8rem;font-size:0.8rem;" onclick="rotateAll90()">Rotate all 90°</button>
+          <button class="pdf-btn" style="padding:0.4rem 0.8rem;font-size:0.8rem;" onclick="resetRotations()">Reset</button>
+        </div>
+      </div>
+      <div class="pdf-preview-grid" id="previewGrid"></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="pdf-actions" id="actions" style="display:none;">
+      <button class="pdf-btn pdf-btn--primary" onclick="applyRotation()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Apply Rotation
+      </button>
+      <button class="pdf-btn" onclick="resetAll()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        Reset
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="pdf-progress" id="progress">
+      <div class="pdf-progress-bar" id="progressBar"></div>
+      <div class="pdf-progress-text" id="progressText">0%</div>
+    </div>
+
+    <!-- Result -->
+    <div class="pdf-result" id="result">
+      <div class="pdf-result-header">
+        <div class="pdf-result-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Rotation Complete
+        </div>
+        <div class="pdf-result-stats" id="resultStats"></div>
+      </div>
+      <div class="pdf-result-actions">
+        <button class="pdf-btn pdf-btn--success" onclick="downloadResult()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Rotated PDF
+        </button>
+        <button class="pdf-btn" onclick="rotateAnother()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Rotate Another
+        </button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">What's the difference between the three modes?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><strong>All pages</strong> applies the same rotation to every page. <strong>Selected pages</strong> rotates only the pages you click on, by the global angle. <strong>Per-page rotation</strong> lets you set a different angle for each page using buttons under each thumbnail.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Does rotation affect page content or just orientation?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">pdf-lib applies rotation at the page level, which is a metadata change. The visual content is rendered rotated when viewed, with no quality loss. This is the same as how Adobe Reader rotates pages.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I rotate by arbitrary angles?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">PDFs only support 90°, 180°, and 270° rotations natively. For arbitrary angles, you'd need to convert pages to images first and rotate them — a more advanced operation not offered here.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my PDF safe?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. All processing happens in your browser using pdf-lib and pdfjs-dist. Your file never leaves your device.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script type="module">
+import * as pdfjsLib from 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.min.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+
+const { PDFDocument, degrees } = PDFLib;
+let pdfFile = null;
+let pdfBytes = null;
+let pdfDoc = null;
+let pageCount = 0;
+let pageRotations = []; // rotations in degrees per page
+let selectedPages = new Set();
+let resultBlob = null;
+
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+const applyMode = document.getElementById('applyMode');
+const globalRotationOption = document.getElementById('globalRotationOption');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') loadFile(file);
+});
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadFile(file);
+  fileInput.value = '';
+});
+
+applyMode.addEventListener('change', () => {
+  globalRotationOption.style.display = applyMode.value === 'individual' ? 'none' : 'flex';
+  renderPreviews();
+});
+
+async function loadFile(file) {
+  pdfFile = file;
+  pdfBytes = await file.arrayBuffer();
+  try {
+    pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  } catch (err) {
+    showToast('Failed to load PDF: ' + err.message);
+    return;
+  }
+  pageCount = pdfDoc.getPageCount();
+  pageRotations = new Array(pageCount).fill(0);
+  selectedPages = new Set();
+
+  const list = document.getElementById('fileList');
+  list.style.display = 'flex';
+  list.innerHTML = `
+    <div class="pdf-file-item">
+      <div class="pdf-file-thumb">PDF</div>
+      <div class="pdf-file-info">
+        <div class="pdf-file-name">${escapeHtml(file.name)}</div>
+        <div class="pdf-file-meta">${formatSize(file.size)} · ${pageCount} pages</div>
+      </div>
+      <div class="pdf-file-actions">
+        <button class="pdf-file-remove" onclick="resetAll()" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('options').style.display = 'block';
+  document.getElementById('pageSelection').style.display = 'block';
+  document.getElementById('actions').style.display = 'flex';
+  document.getElementById('totalPages').textContent = pageCount;
+  document.getElementById('rotatedPages').textContent = '0';
+
+  await renderPreviews();
+}
+
+async function renderPreviews() {
+  const grid = document.getElementById('previewGrid');
+  const pdfjsDoc = await pdfjsLib.getDocument({ data: pdfBytes.slice(0) }).promise;
+
+  const mode = applyMode.value;
+  let html = '';
+  for (let i = 1; i <= pageCount; i++) {
+    const rotation = pageRotations[i - 1];
+    const isSelected = selectedPages.has(i);
+    const showCheckbox = mode === 'selected';
+    const showPerPage = mode === 'individual';
+    html += `<div class="pdf-preview-item ${isSelected ? 'selected' : ''}" data-page="${i}" onclick="handlePageClick(${i}, '${mode}')">
+      ${showCheckbox ? '<div class="pdf-preview-check">✓</div>' : ''}
+      <div class="pdf-preview-thumb-wrap" style="overflow:hidden;border-radius:4px;background:#fff;margin-bottom:0.5rem;">
+        <canvas id="thumb-${i}" class="pdf-preview-thumb" style="transform:rotate(${rotation}deg);transform-origin:center;transition:transform 200ms ease;"></canvas>
+      </div>
+      <div class="pdf-preview-info">
+        <span class="pdf-preview-page-num">Page ${i}</span>
+        <span class="pdf-stat-value" style="font-size:0.7rem;">${rotation}°</span>
+      </div>
+      ${showPerPage ? `<div style="display:flex;gap:0.25rem;margin-top:0.5rem;flex-wrap:wrap;">
+        <button class="pdf-btn" style="padding:0.2rem 0.4rem;font-size:0.7rem;flex:1;" onclick="event.stopPropagation();rotatePage(${i}, 90)">90°</button>
+        <button class="pdf-btn" style="padding:0.2rem 0.4rem;font-size:0.7rem;flex:1;" onclick="event.stopPropagation();rotatePage(${i}, 180)">180°</button>
+        <button class="pdf-btn" style="padding:0.2rem 0.4rem;font-size:0.7rem;flex:1;" onclick="event.stopPropagation();rotatePage(${i}, 270)">270°</button>
+      </div>` : ''}
+    </div>`;
+  }
+  grid.innerHTML = html;
+
+  // Render thumbnails
+  const max = Math.min(pageCount, 8);
+  for (let i = 1; i <= max; i++) {
+    renderThumbnail(pdfjsDoc, i);
+  }
+  for (let i = max + 1; i <= pageCount; i++) {
+    setTimeout(() => renderThumbnail(pdfjsDoc, i), (i - max) * 50);
+  }
+  updateRotatedCount();
+}
+
+async function renderThumbnail(pdfjsDoc, pageNum) {
+  try {
+    const page = await pdfjsDoc.getPage(pageNum);
+    const viewport = page.getViewport({ scale: 0.4 });
+    const canvas = document.getElementById('thumb-' + pageNum);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({ canvasContext: ctx, viewport }).promise;
+  } catch (err) { /* silent */ }
+}
+
+window.handlePageClick = function(pageNum, mode) {
+  if (mode === 'selected') {
+    if (selectedPages.has(pageNum)) {
+      selectedPages.delete(pageNum);
+    } else {
+      selectedPages.add(pageNum);
+    }
+    document.querySelector(`.pdf-preview-item[data-page="${pageNum}"]`).classList.toggle('selected');
+  }
+};
+
+window.rotatePage = function(pageNum, angle) {
+  pageRotations[pageNum - 1] = (pageRotations[pageNum - 1] + angle) % 360;
+  const canvas = document.getElementById('thumb-' + pageNum);
+  if (canvas) canvas.style.transform = `rotate(${pageRotations[pageNum - 1]}deg)`;
+  const item = document.querySelector(`.pdf-preview-item[data-page="${pageNum}"]`);
+  if (item) {
+    const info = item.querySelector('.pdf-stat-value');
+    if (info) info.textContent = pageRotations[pageNum - 1] + '°';
+  }
+  updateRotatedCount();
+};
+
+window.rotateAll90 = function() {
+  for (let i = 0; i < pageCount; i++) {
+    pageRotations[i] = (pageRotations[i] + 90) % 360;
+  }
+  renderPreviews();
+};
+
+window.resetRotations = function() {
+  pageRotations = new Array(pageCount).fill(0);
+  selectedPages.clear();
+  renderPreviews();
+};
+
+window.resetAll = function() {
+  pdfFile = null;
+  pdfBytes = null;
+  pdfDoc = null;
+  pageCount = 0;
+  pageRotations = [];
+  selectedPages.clear();
+  resultBlob = null;
+  document.getElementById('fileList').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+  document.getElementById('pageSelection').style.display = 'none';
+  document.getElementById('actions').style.display = 'none';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('previewGrid').innerHTML = '';
+  document.getElementById('fileInput').value = '';
+};
+
+function updateRotatedCount() {
+  const count = pageRotations.filter(r => r !== 0).length;
+  document.getElementById('rotatedPages').textContent = count;
+}
+
+async function applyRotation() {
+  if (!pdfDoc) return;
+  const mode = applyMode.value;
+  const globalAngle = parseInt(document.getElementById('globalRotation').value, 10);
+
+  const progress = document.getElementById('progress');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  progress.classList.add('show');
+
+  try {
+    progressText.textContent = 'Applying rotation...';
+    progressBar.style.width = '40%';
+
+    const pages = pdfDoc.getPages();
+    for (let i = 0; i < pages.length; i++) {
+      let angle = 0;
+      if (mode === 'all') {
+        angle = globalAngle;
+      } else if (mode === 'selected') {
+        if (selectedPages.has(i + 1)) angle = globalAngle;
+      } else {
+        angle = pageRotations[i];
+      }
+      if (angle !== 0) {
+        const current = pages[i].getRotation().angle;
+        pages[i].setRotation(degrees((current + angle) % 360));
+      }
+      progressBar.style.width = (40 + (i / pages.length) * 50) + '%';
+    }
+
+    progressText.textContent = 'Saving...';
+    progressBar.style.width = '95%';
+
+    pdfDoc.setProducer('ToolsBase.net PDF Rotate');
+    pdfDoc.setCreator('ToolsBase.net');
+    const outBytes = await pdfDoc.save({ useObjectStreams: true });
+    resultBlob = new Blob([outBytes], { type: 'application/pdf' });
+
+    progressBar.style.width = '100%';
+    progressText.textContent = 'Done!';
+
+    setTimeout(() => {
+      progress.classList.remove('show');
+      progressBar.style.width = '0%';
+      showResult();
+    }, 400);
+  } catch (err) {
+    progress.classList.remove('show');
+    showToast('Error: ' + err.message);
+    console.error(err);
+  }
+}
+
+function showResult() {
+  const result = document.getElementById('result');
+  const stats = document.getElementById('resultStats');
+  stats.innerHTML = `
+    <span><strong>${pageCount}</strong> pages</span>
+    <span><strong>${formatSize(resultBlob.size)}</strong> output</span>
+  `;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+window.downloadResult = function() {
+  if (!resultBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(resultBlob);
+  a.download = 'rotated-' + Date.now() + '.pdf';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+window.rotateAnother = function() {
+  resetAll();
+  fileInput.click();
+};
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('pdf-rotate', 'PDF Rotate'); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('pdf-rotate', 'PDF Rotate');
+});
+</script>
+</body>
+</html>
