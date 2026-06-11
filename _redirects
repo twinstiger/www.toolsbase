@@ -74,6 +74,8 @@
 /mortgage /tools/finance/mortgage-calculator 200
 /tip /tools/finance/tip-calculator 200
 
+/calendar /tools/calendar/calendar.html 200
+
 # === Finance tools: .html → clean URL redirect ===
 /tools/finance/compound-interest.html   /tools/finance/compound-interest   301
 /tools/finance/discount-calculator.html   /tools/finance/discount-calculator 301

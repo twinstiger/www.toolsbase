@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Calendar — ToolsBase.net</title>
+  <meta name="description" content="View public holidays and calendar for USA, UK, Canada, Australia, Germany, and France. Auto-detects your location.">
+  <link rel="canonical" href="https://toolsbase.net/calendar">
+  <link rel="stylesheet" href="/src/styles.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<!-- HEADER -->
+
+<main class="calendar-page">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a><span>›</span><a href="/tools/index.html">Tools</a><span>›</span><span>Calendar</span>
+    </div>
+
+    <!-- Page Header -->
+    <div class="cal-page-header">
+      <div class="cal-country-title" id="calTitle">United States 2026 Calendar</div>
+      <p class="cal-subtitle">Full year calendar with all holidays, moon phases, and sunrise/sunset times.</p>
+    </div>
+
+    <div class="location-hint" id="locationHint" style="display:none;">
+      <span id="locationText"></span>
+    </div>
+
+    <!-- Country Tabs -->
+    <div class="country-tabs" id="countryTabs">
+      <button class="country-tab active" data-country="US"><span class="flag">🇺🇸</span><span class="tab-label">USA</span></button>
+      <button class="country-tab" data-country="GB"><span class="flag">🇬🇧</span><span class="tab-label">UK</span></button>
+      <button class="country-tab" data-country="CA"><span class="flag">🇨🇦</span><span class="tab-label">Canada</span></button>
+      <button class="country-tab" data-country="AU"><span class="flag">🇦🇺</span><span class="tab-label">Australia</span></button>
+      <button class="country-tab" data-country="DE"><span class="flag">🇩🇪</span><span class="tab-label">Germany</span></button>
+      <button class="country-tab" data-country="FR"><span class="flag">🇫🇷</span><span class="tab-label">France</span></button>
+    </div>
+
+    <!-- Year Navigation -->
+    <div class="year-nav">
+      <button class="year-nav-btn" id="prevYear">← Previous</button>
+      <span class="year-display" id="yearDisplay">2026</span>
+      <button class="year-nav-btn" id="nextYear">Next →</button>
+    </div>
+
+    <!-- Monthly Calendar Grid -->
+    <div class="year-calendar" id="yearCalendar"></div>
+
+    <!-- Print Button -->
+    <div class="cal-print-row">
+      <button class="btn btn--secondary" onclick="window.print()">🖨 Print Calendar</button>
+    </div>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<script>
+const COUNTRIES = {
+  US: { name: 'United States', flag:'🇺🇸', timezone: 'America/New_York' },
+  GB: { name: 'United Kingdom', flag:'🇬🇧', timezone: 'Europe/London' },
+  CA: { name: 'Canada', flag:'🇨🇦', timezone: 'America/Toronto' },
+  AU: { name: 'Australia', flag:'🇦🇺', timezone: 'Australia/Sydney' },
+  DE: { name: 'Germany', flag:'🇩🇪', timezone: 'Europe/Berlin' },
+  FR: { name: 'France', flag:'🇫🇷', timezone: 'Europe/Paris' }
+};
+
+const TYPE_COLORS = {
+  'National': '#dc2626',
+  'Federal': '#dc2626',
+  'Férié': '#dc2626',
+  'Public': '#dc2626',
+  'Bank Holiday': '#2563eb',
+  'Bank': '#2563eb',
+  'Traditional': '#ca8a04',
+  'Traditionnel': '#ca8a04',
+  'Observance': '#7c3aed'
+};
+
+const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+let currentCountry = 'US';
+let currentYear = new Date().getFullYear();
+let holidaysCache = {};
+let allHolidays = [];
+
+async function loadHolidays(country) {
+  if (holidaysCache[country]) return holidaysCache[country];
+  try {
+    const res = await fetch(`/src/data/holidays/${country}.json`);
+    if (!res.ok) throw new Error('Not found');
+    const data = await res.json();
+    holidaysCache[country] = data;
+    return data;
+  } catch (e) { return null; }
+}
+
+async function detectCountry() {
+  try {
+    const res = await fetch('https://ip-api.com/json/?fields=countryCode');
+    const data = await res.json();
+    const code = data.countryCode;
+    const codeMap = { US:['US','USA'], GB:['GB','UK','GBR'], CA:['CA','CAN'], AU:['AU','AUS'], DE:['DE','DEU'], FR:['FR','FRA'] };
+    for (const [c, codes] of Object.entries(codeMap)) {
+      if (codes.includes(code)) return c;
+    }
+  } catch (e) {}
+  return 'US';
+}
+
+function getHolidayColor(type) {
+  if (!type) return '#6b7280';
+  for (const [k, v] of Object.entries(TYPE_COLORS)) {
+    if (type.includes(k)) return v;
+  }
+  return '#6b7280';
+}
+
+function getHolidayCat(type) {
+  if (!type) return 'Traditional';
+  if (type.includes('National') || type.includes('Federal') || type.includes('Férié') || type.includes('Public')) return 'Public';
+  if (type.includes('Bank')) return 'Bank';
+  if (type.includes('Traditional') || type.includes('Traditionnel')) return 'Traditional';
+  return 'Observance';
+}
+
+function getMoonPhase(year, month) {
+  const phases = ['🌑 New', '🌓 First Quarter', '🌕 Full', '🌗 Last Quarter'];
+  const monthStart = new Date(year, month, 1);
+  const dayOfYear = Math.floor((monthStart - new Date(year, 0, 1)) / 86400000);
+  return phases[Math.floor((dayOfYear % 29.53) / 7.38) % 4];
+}
+
+function getSunTimes(month) {
+  const times = [
+    { s: '07:15', e: '17:05', d: '9h 50m' },
+    { s: '07:00', e: '17:45', d: '10h 45m' },
+    { s: '06:20', e: '18:20', d: '12h 00m' },
+    { s: '05:30', e: '18:55', d: '13h 25m' },
+    { s: '04:50', e: '19:25', d: '14h 35m' },
+    { s: '04:45', e: '19:50', d: '15h 05m' },
+    { s: '05:10', e: '19:45', d: '14h 35m' },
+    { s: '05:40', e: '19:15', d: '13h 35m' },
+    { s: '06:10', e: '18:30', d: '12h 20m' },
+    { s: '06:45', e: '17:40', d: '10h 55m' },
+    { s: '07:20', e: '17:00', d: '9h 40m' },
+    { s: '07:30', e: '16:50', d: '9h 20m' }
+  ];
+  return times[month];
+}
+
+function renderMonthCalendar(year, month, holidayMap) {
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+  const moon = getMoonPhase(year, month);
+  const sun = getSunTimes(month);
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // Build calendar grid rows (weeks)
+  let html = `<div class="month-cal">
+    <div class="month-hdr">
+      <span class="month-name">${monthNames[month]}</span>
+      <span class="month-astro">🌙 ${moon}</span>
+      <span class="month-sun">☀ ${sun.s} - ${sun.e} (${sun.d})</span>
+    </div>
+    <div class="cal-grid">
+      <div class="wk-row">${WEEKDAYS.map(d => `<div class="wk-hdr">${d}</div>`).join('')}</div>`;
+
+  let day = 1;
+  let weekStr = '';
+  for (let w = 0; w < 6; w++) {
+    weekStr = '<div class="wk-row">';
+    for (let d = 0; d < 7; d++) {
+      const cellIdx = w * 7 + d;
+      if (w === 0 && d < firstDay) {
+        weekStr += '<div class="day-cell empty"></div>';
+      } else if (day > daysInMonth) {
+        weekStr += '<div class="day-cell empty"></div>';
+      } else {
+        const dateStr = `${year}-${String(month + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const holiday = holidayMap[dateStr];
+        const isToday = isCurrentMonth && day === today.getDate();
+        const dayOfWeek = new Date(year, month, day).getDay();
+        const satSunClass = dayOfWeek === 0 ? ' sun' : dayOfWeek === 6 ? ' sat' : '';
+
+        if (holiday) {
+          const color = getHolidayColor(holiday.type);
+          weekStr += `<div class="day-cell holiday${satSunClass}" style="--hc:${color};">
+            <span class="day-n${isToday ? ' today' : ''}" style="color:${color};text-decoration:underline;">${day}</span>
+          </div>`;
+        } else {
+          weekStr += `<div class="day-cell${satSunClass}${isToday ? ' today-cell' : ''}">
+            <span class="day-n${isToday ? ' today' : ''}">${day}</span>
+          </div>`;
+        }
+        day++;
+      }
+    }
+    weekStr += '</div>';
+    html += weekStr;
+    if (day > daysInMonth && w >= 5) break;
+  }
+
+  html += '</div>';
+
+  // List holidays for this month below the calendar
+  const monthStr = String(month + 1).padStart(2, '0');
+  const monthHols = Object.entries(holidayMap)
+    .filter(([date]) => date.startsWith(`${year}-${monthStr}`))
+    .sort((a, b) => a[0].localeCompare(b[0]));
+
+  if (monthHols.length > 0) {
+    html += '<div class="month-hols">';
+    for (const [date, holiday] of monthHols) {
+      const d = new Date(date + 'T00:00:00');
+      const dayNum = d.getDate();
+      const color = getHolidayColor(holiday.type);
+      const isTodayHol = isCurrentMonth && dayNum === today.getDate();
+      html += `<div class="mh-item" style="--hc:${color};">
+        <span class="mh-day${isTodayHol ? ' today' : ''}">${dayNum}</span>
+        <span class="mh-name">${holiday.name}</span>
+        <span class="mh-type">${holiday.type || ''}</span>
+      </div>`;
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function renderYearCalendar(holidayMap) {
+  const container = document.getElementById('yearCalendar');
+  document.getElementById('yearDisplay').textContent = currentYear;
+  document.getElementById('calTitle').textContent = `${COUNTRIES[currentCountry].name} ${currentYear} Calendar`;
+
+  let html = '<div class="months-row">';
+  for (let m = 0; m < 12; m++) {
+    html += renderMonthCalendar(currentYear, m, holidayMap);
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+async function switchCountry(country) {
+  currentCountry = country;
+  sessionStorage.setItem('preferredCountry', country);
+  document.querySelectorAll('.country-tab').forEach(t => t.classList.toggle('active', t.dataset.country === country));
+
+  const data = await loadHolidays(country);
+  if (data) {
+    allHolidays = data.holidays;
+    const holidayMap = {};
+    for (const h of data.holidays) holidayMap[h.date] = h;
+    renderYearCalendar(holidayMap);
+  }
+}
+
+function changeYear(delta) {
+  currentYear += delta;
+  const data = holidaysCache[currentCountry];
+  if (data) {
+    const holidayMap = {};
+    for (const h of data.holidays) holidayMap[h.date] = h;
+    renderYearCalendar(holidayMap);
+  }
+}
+
+async function init() {
+  const preferred = sessionStorage.getItem('preferredCountry');
+  if (preferred && COUNTRIES[preferred]) {
+    await switchCountry(preferred);
+    return;
+  }
+  const detected = await detectCountry();
+  if (detected !== 'US') {
+    document.getElementById('locationHint').style.display = 'inline-block';
+    document.getElementById('locationText').textContent = `Auto selected: ${COUNTRIES[detected].name}`;
+  }
+  await switchCountry(detected);
+}
+
+document.querySelectorAll('.country-tab').forEach(t => t.addEventListener('click', () => switchCountry(t.dataset.country)));
+document.getElementById('prevYear').addEventListener('click', () => changeYear(-1));
+document.getElementById('nextYear').addEventListener('click', () => changeYear(1));
+document.addEventListener('DOMContentLoaded', init);
+</script>
+<style>
+.calendar-page { padding: 1.5rem 0; }
+
+.cal-page-header { margin-bottom: 1.25rem; text-align: center; }
+.cal-country-title { font-size: 1.75rem; font-weight: 800; color: var(--color-text); margin-bottom: 0.375rem; }
+.cal-subtitle { font-size: 0.9375rem; color: var(--color-text-muted); }
+
+.location-hint {
+  font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 0.75rem;
+  padding: 0.25rem 0.5rem; background: var(--color-bg-alt); border-radius: 4px; display: inline-block;
+}
+
+.country-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.country-tab {
+  display: flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.875rem;
+  border: 1.5px solid var(--color-border); border-radius: 8px; background: var(--color-surface);
+  color: var(--color-text); font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 150ms ease;
+}
+.country-tab:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.country-tab.active { border-color: var(--color-primary); background: var(--color-primary); color: #fff; }
+.country-tab .flag { font-size: 1.125rem; }
+.country-tab .tab-label { white-space: nowrap; }
+
+.cal-controls {
+  display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
+  margin-bottom: 1.25rem; padding: 0.875rem 1rem;
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px;
+}
+.cal-legend { display: flex; gap: 1rem; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: var(--color-text); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.cal-filter select {
+  padding: 0.375rem 0.625rem; border: 1px solid var(--color-border); border-radius: 6px;
+  background: var(--color-bg); color: var(--color-text); font-size: 0.8125rem; cursor: pointer;
+}
+
+.year-nav { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+.year-nav-btn {
+  padding: 0.5rem 1rem; border: 1.5px solid var(--color-border); border-radius: 8px;
+  background: var(--color-surface); color: var(--color-text); font-size: 0.875rem; font-weight: 600; cursor: pointer;
+}
+.year-nav-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.year-display { font-size: 1.5rem; font-weight: 800; color: var(--color-text); min-width: 80px; text-align: center; }
+
+/* Year Calendar -3 months per row */
+.year-calendar { margin-bottom: 2rem; }
+.months-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+.month-cal {
+  background: #fff; border: 2px solid #222; border-radius: 12px; overflow: hidden;
+}
+[data-theme="dark"] .month-cal { background: #1e1e2e; border-color: #444; }
+
+.month-hdr {
+  display: flex; gap: 0.5rem; padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #fafafa, #f0f0f0);
+  border-bottom: 1px solid #eee; font-size: 0.75rem;
+}
+[data-theme="dark"] .month-hdr { background: linear-gradient(135deg, #2a2a3a, #252535); border-bottom: 1px solid #333; }
+.month-name { font-weight: 700; color: #333; text-transform: uppercase; letter-spacing: 0.08em; flex: 1; font-size: 0.875rem; }
+[data-theme="dark"] .month-name { color: #e0e0e0; }
+.month-astro, .month-sun { color: #888; white-space: nowrap; font-size: 0.6875rem; }
+
+.cal-grid { padding: 0.5rem 0.75rem 0.75rem; }
+.wk-row { display: grid; grid-template-columns: repeat(7, 1fr); }
+.wk-hdr {
+  padding: 0.5rem 0; text-align: center; font-size: 0.625rem; font-weight: 700;
+  color: #aaa; text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid #eee; margin-bottom: 4px;
+}
+[data-theme="dark"] .wk-hdr { color: #666; border-bottom: 1px solid #333; }
+
+.day-cell {
+  min-height: 48px; padding: 0.25rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 6px; transition: all 150ms ease; position: relative;
+}
+.day-cell.empty { visibility: hidden; }
+.day-cell:not(.empty):hover { background: #f0f0ff; }
+[data-theme="dark"] .day-cell:not(.empty):hover { background: #2a2a3a; }
+
+/* Zebra striping - blue/white */
+.wk-row:nth-child(odd) .day-cell:not(.empty) { background: #e8f4ff; }
+.wk-row:nth-child(even) .day-cell:not(.empty) { background: #fff; }
+.wk-row:nth-child(odd) .day-cell.holiday { background: #d0e8ff; }
+.wk-row:nth-child(even) .day-cell.holiday { background: #f0f0ff; }
+[data-theme="dark"] .wk-row:nth-child(odd) .day-cell:not(.empty) { background: #1a1a2e; }
+[data-theme="dark"] .wk-row:nth-child(even) .day-cell:not(.empty) { background: #252535; }
+[data-theme="dark"] .wk-row:nth-child(odd) .day-cell.holiday { background: #1e2a3a; }
+[data-theme="dark"] .wk-row:nth-child(even) .day-cell.holiday { background: #252540; }
+
+.day-cell.holiday::before {
+  content: ''; position: absolute; left: 3px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 50%; background: var(--hc); border-radius: 2px;
+}
+
+.day-n {
+  font-size: 0.875rem; font-weight: 600; color: #444;
+  width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+}
+.day-n.today {
+  background: #dc2626; color: #fff; animation: glow-pulse 2s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 #dc2626; }
+  50% { box-shadow: 0 0 10px 3px #dc2626; }
+}
+
+/* Saturday = blue, Sunday = red */
+.day-cell.sat .day-n { color: #2563eb; }
+.day-cell.sun .day-n { color: #dc2626; }
+
+.hol-nm { display: none; }
+
+/* Month holiday list below each calendar */
+.month-hols {
+  border-top: 1px solid #eee;
+  padding: 0.625rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #fafafa;
+}
+[data-theme="dark"] .month-hols { border-top: 1px solid #333; background: #18181f; }
+
+.mh-item {
+  display: flex; align-items: center; gap: 0.625rem; font-size: 0.8125rem;
+}
+.mh-day {
+  width: 22px; height: 22px; background: var(--hc); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.625rem; flex-shrink: 0;
+}
+.mh-day.today { animation: glow-pulse 2s ease-in-out infinite; }
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 #dc2626; }
+  50% { box-shadow: 0 0 8px 3px #dc2626; }
+}
+.mh-name { flex: 1; color: #444; font-weight: 500; }
+.mh-type { font-size: 0.5625rem; color: #999; }
+[data-theme="dark"] .mh-name { color: #ccc; }
+[data-theme="dark"] .mh-type { color: #666; }
+  color: var(--color-text);
+  font-weight: 500;
+}
+.mh-type {
+  font-size: 0.5625rem;
+  color: var(--color-text-muted);
+}
+
+/* Holiday Table */
+.year-holiday-list { margin-bottom: 2rem; padding: 1.25rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; }
+.list-title { font-size: 1.125rem; font-weight: 700; color: var(--color-text); margin-bottom: 1rem; }
+.hol-tbl { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+.hol-tbl th {
+  text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--color-border);
+  font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.05em;
+}
+.hol-tbl td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--color-border); color: var(--color-text); }
+.hol-tbl tr:hover td { background: var(--color-bg-alt); }
+.ht-d { font-weight: 600; white-space: nowrap; }
+.ht-n { font-weight: 500; }
+.ht-bdg { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.6875rem; font-weight: 600; border: 1px solid; background: transparent; }
+
+.cal-print-row { display: flex; justify-content: center; margin-bottom: 2rem; }
+
+/* Responsive */
+@media (max-width: 1000px) { .months-row { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) {
+  .months-row { grid-template-columns: 1fr; }
+  .day-cell { min-height: 44px; }
+  .hol-nm { font-size: 0.4375rem; }
+}
+
+/* Print */
+@media print {
+  .header, .footer, .country-tabs, .cal-controls, .year-nav, .cal-print-row, .faq-section, .breadcrumbs { display: none !important; }
+  .calendar-page { padding: 0; }
+  .months-row { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .month-cal { break-inside: avoid; }
+}
+</style>
+</body>
+</html>

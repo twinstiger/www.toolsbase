@@ -30,8 +30,8 @@ input, textarea, select { font-family: inherit; }
 ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
 
 /* === LAYOUT === */
-.container { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
-.container--narrow { max-width: 1050px; margin: 0 auto; padding: 0 1.5rem; }
+.container { max-width: 1232px; margin: 0 auto; padding: 0 1.5rem; }
+.container--narrow { max-width: 1155px; margin: 0 auto; padding: 0 1.5rem; }
 
 /* === HEADER === */
 .header {

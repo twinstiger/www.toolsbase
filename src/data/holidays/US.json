@@ -1,0 +1,21 @@
+{
+  "country": "US",
+  "name": "United States",
+  "holidays": [
+    { "date": "2026-01-01", "name": "New Year's Day", "type": "Federal" },
+    { "date": "2026-01-19", "name": "Martin Luther King Jr. Day", "type": "Federal" },
+    { "date": "2026-02-16", "name": "Presidents' Day", "type": "Federal" },
+    { "date": "2026-05-25", "name": "Memorial Day", "type": "Federal" },
+    { "date": "2026-06-19", "name": "Juneteenth", "type": "Federal" },
+    { "date": "2026-07-04", "name": "Independence Day", "type": "Federal" },
+    { "date": "2026-09-07", "name": "Labor Day", "type": "Federal" },
+    { "date": "2026-10-12", "name": "Columbus Day", "type": "Federal" },
+    { "date": "2026-11-11", "name": "Veterans Day", "type": "Federal" },
+    { "date": "2026-11-26", "name": "Thanksgiving", "type": "Federal" },
+    { "date": "2026-12-25", "name": "Christmas Day", "type": "Federal" },
+    { "date": "2026-01-01", "name": "New Year's Day", "type": "Traditional" },
+    { "date": "2026-07-04", "name": "Independence Day", "type": "Traditional" },
+    { "date": "2026-10-31", "name": "Halloween", "type": "Traditional" },
+    { "date": "2026-12-31", "name": "New Year's Eve", "type": "Traditional" }
+  ]
+}

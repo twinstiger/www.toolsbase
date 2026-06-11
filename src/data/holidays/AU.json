@@ -1,0 +1,16 @@
+{
+  "country": "AU",
+  "name": "Australia",
+  "holidays": [
+    { "date": "2026-01-01", "name": "New Year's Day", "type": "National" },
+    { "date": "2026-01-26", "name": "Australia Day", "type": "National" },
+    { "date": "2026-04-03", "name": "Good Friday", "type": "National" },
+    { "date": "2026-04-06", "name": "Easter Monday", "type": "National" },
+    { "date": "2026-04-25", "name": "Anzac Day", "type": "National" },
+    { "date": "2026-06-08", "name": "Queen's Birthday", "type": "National" },
+    { "date": "2026-12-25", "name": "Christmas Day", "type": "National" },
+    { "date": "2026-12-26", "name": "Boxing Day", "type": "National" },
+    { "date": "2026-10-31", "name": "Halloween", "type": "Traditional" },
+    { "date": "2026-07-14", "name": "Bastille Day", "type": "Traditional" }
+  ]
+}

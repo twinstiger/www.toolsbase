@@ -1,0 +1,19 @@
+{
+  "country": "CA",
+  "name": "Canada",
+  "holidays": [
+    { "date": "2026-01-01", "name": "New Year's Day", "type": "Federal" },
+    { "date": "2026-02-16", "name": "Family Day", "type": "Federal (ON, AB, SK, BC)" },
+    { "date": "2026-04-03", "name": "Good Friday", "type": "Federal" },
+    { "date": "2026-05-18", "name": "Victoria Day", "type": "Federal" },
+    { "date": "2026-07-01", "name": "Canada Day", "type": "Federal" },
+    { "date": "2026-08-03", "name": "Civic Holiday", "type": "Regional" },
+    { "date": "2026-09-07", "name": "Labour Day", "type": "Federal" },
+    { "date": "2026-10-12", "name": "Thanksgiving", "type": "Federal" },
+    { "date": "2026-11-11", "name": "Remembrance Day", "type": "Federal" },
+    { "date": "2026-12-25", "name": "Christmas Day", "type": "Federal" },
+    { "date": "2026-12-26", "name": "Boxing Day", "type": "Federal" },
+    { "date": "2026-07-14", "name": "Bastille Day", "type": "Traditional" },
+    { "date": "2026-10-31", "name": "Halloween", "type": "Traditional" }
+  ]
+}

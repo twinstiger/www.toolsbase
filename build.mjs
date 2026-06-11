@@ -546,6 +546,13 @@ async function build() {
     fs.cpSync(imagesSrc, path.join(DIST, 'images'), { recursive: true });
   }
 
+  // Copy holiday data
+  const holidaysSrc = path.join(SRC, 'data', 'holidays');
+  if (fs.existsSync(holidaysSrc)) {
+    fs.mkdirSync(path.join(DIST, 'src', 'data', 'holidays'), { recursive: true });
+    fs.cpSync(holidaysSrc, path.join(DIST, 'src', 'data', 'holidays'), { recursive: true });
+  }
+
   // Copy root static files
   if (fs.existsSync(path.join(ROOT, 'favicon.ico'))) {
     fs.cpSync(path.join(ROOT, 'favicon.ico'), path.join(DIST, 'favicon.ico'));

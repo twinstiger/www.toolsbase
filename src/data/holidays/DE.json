@@ -1,0 +1,18 @@
+{
+  "country": "DE",
+  "name": "Germany",
+  "holidays": [
+    { "date": "2026-01-01", "name": "Neujahr", "type": "National" },
+    { "date": "2026-04-03", "name": "Karfreitag", "type": "National" },
+    { "date": "2026-04-06", "name": "Ostermontag", "type": "National" },
+    { "date": "2026-05-01", "name": "Tag der Arbeit", "type": "National" },
+    { "date": "2026-05-25", "name": "Christi Himmelfahrt", "type": "National" },
+    { "date": "2026-06-15", "name": "Pfingstmontag", "type": "National" },
+    { "date": "2026-10-03", "name": "Tag der Deutschen Einheit", "type": "National" },
+    { "date": "2026-12-25", "name": "Weihnachtstag", "type": "National" },
+    { "date": "2026-12-26", "name": "Zweiter Weihnachtsfeiertag", "type": "National" },
+    { "date": "2026-07-14", "name": "Bastille Day", "type": "Traditional" },
+    { "date": "2026-10-31", "name": "Halloween", "type": "Traditional" },
+    { "date": "2026-11-11", "name": "St. Martin", "type": "Traditional" }
+  ]
+}
