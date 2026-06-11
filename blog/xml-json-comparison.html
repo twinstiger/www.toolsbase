@@ -93,8 +93,70 @@
 <tr style="border-bottom:1px solid #f0e6d9"><td style="padding:0.5rem;"><strong>Use XML</strong></td><td style="padding:0.5rem;">SOAP services, RSS feeds, Office documents, complex enterprise data</td></tr>
 </table>
 
+<h2>Parsing in Code: JavaScript and Python</h2>
+<pre><code>// JavaScript — parsing JSON (built-in)
+const response = await fetch('/api/user/42');
+const user = await response.json(); // Returns a plain object
+console.log(user.name); // "Sarah Chen"
+
+// Parsing XML (DOMParser)
+const parser = new DOMParser();
+const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
+const name = xmlDoc.querySelector('name').textContent;
+
+// Python — JSON
+import json
+with open('data.json') as f:
+    data = json.load(f)  # Returns a Python dict
+print(data['name'])
+
+# Python — XML (ElementTree)
+import xml.etree.ElementTree as ET
+tree = ET.parse('data.xml')
+root = tree.getroot()
+name = root.find('name').text</code></pre>
+
+<h2>Schema Validation: XSD vs JSON Schema</h2>
+<p>Both formats support schema validation, but they work differently:</p>
+<ul>
+<li><strong>XML Schema (XSD)</strong>: XML-based language (verbose but powerful). Enforces data types, ranges, patterns, and element ordering. Tools: xmllint, XMLSpy. Used in enterprise systems where data integrity is critical.</li>
+<li><strong>JSON Schema</strong>: JSON-based standard (draft 2020-09). More readable and native to JavaScript tooling. Tools: ajv (JS), jsonschema (Python). Integrates with OpenAPI/Swagger for API documentation.</li>
+</ul>
+<pre><code>// JSON Schema example — validates a user object
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["id", "name", "email"],
+  "properties": {
+    "id": { "type": "integer", "minimum": 1 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "email": { "type": "string", "format": "email" },
+    "roles": { "type": "array", "items": { "type": "string" } }
+  }
+}</code></pre>
+
+<h2>When XML Is Truly the Better Choice</h2>
+<p>Don't dismiss XML as legacy — it genuinely excels in these scenarios:</p>
+<ul>
+<li><strong>Complex document formats</strong>: DOCX, XLSX, ODS files are ZIP archives containing XML. The XML inside gives you fine-grained access to document structure.</li>
+<li><strong>RSS/Atom feeds</strong>: Still the standard for blog syndication. Every RSS reader expects XML.</li>
+<li><strong>SOAP web services</strong>: Enterprise integration still runs on SOAP. WSDL (Web Services Description Language) is XML describing the service interface.</li>
+<li><strong>SAML authentication</strong>: Security Assertion Markup Language uses XML assertions for single sign-on across enterprise systems.</li>
+<li><strong>SVG graphics</strong>: Scalable Vector Graphics are XML documents. You can edit them in any text editor and manipulate them with CSS/JS.</li>
+</ul>
+
+<h2>Migrating from XML to JSON: A Practical Approach</h2>
+<p>If you're modernizing a legacy system, here's the migration path:</p>
+<ol>
+<li>Keep XML for external-facing APIs (legacy clients depend on it)</li>
+<li>Introduce JSON for new internal endpoints</li>
+<li>Use an API gateway to convert between formats at the boundary</li>
+<li>When legacy clients migrate, deprecate the XML endpoints</li>
+</ol>
+<p>The biggest risk during migration is data loss from attribute vs. element mismatches. Map attributes to child elements in JSON, and test the round-trip before decommissioning old code.</p>
+
 <h2>Converting Between Them</h2>
-<p>Our <a href="../../tools/dev/json-formatter.html">JSON Formatter</a> can help you validate and debug JSON, while understanding XML's structure helps when working with legacy systems.</p>
+<p>Our <a href="../../tools/dev/json-formatter.html">JSON Formatter</a> can help you validate and debug JSON. For XML, the <code>xml-js</code> npm package converts between formats, but be aware of lossy conversions for attributes and mixed content. Understanding both structures helps when debugging legacy integrations.</p>
 
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>

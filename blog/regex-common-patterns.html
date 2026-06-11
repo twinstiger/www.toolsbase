@@ -115,6 +115,46 @@
 <h2>Test Your Regexes</h2>
 <p>Use our <a href="../../tools/dev/regex-tester.html">Regex Tester</a> to validate patterns against test strings — with real-time highlighting of matches and capture groups.</p>
 
+<h2>16. ISO 8601 Date and Time</h2>
+<pre><code>/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d+)?(Z|[+-]\d{2}:\d{2})?$/</code></pre>
+<p>Matches ISO 8601 datetimes like <code>2026-06-11T14:30:00Z</code> or <code>2026-06-11T14:30:00+05:30</code>. Useful for validating timestamps from APIs before parsing.</p>
+
+<h2>17. API Key / Bearer Token</h2>
+<pre><code>/^Bearer [a-zA-Z0-9_-]{20,}$/</code></pre>
+<p>Matches Authorization headers with a bearer token. Adjust the length range to match your key format.</p>
+
+<h2>18. File Path (Unix-style)</h2>
+<pre><code>/^\/(?:[a-zA-Z0-9._-]+\/?)*$/</code></pre>
+<p>Matches Unix file paths like <code>/var/log/nginx/access.log</code>. Doesn't resolve <code>..</code> or symlinks — that's a job for your OS, not a regex.</p>
+
+<h2>19. JWT</h2>
+<pre><code>/^eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$/</code></pre>
+<p>Matches the structure of a JWT (three base64url-encoded segments separated by dots). It validates format only — not the signature or claims. Use a proper JWT library to decode and verify.</p>
+
+<h2>20. Semver (Semantic Version)</h2>
+<pre><code>/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/</code></pre>
+<p>Matches full semver: <code>1.2.3</code>, <code>1.0.0-alpha</code>, <code>2.0.0-beta.1+build.456</code>. For npm package versions, this is the standard.</p>
+
+<h2>When NOT to Use Regex</h2>
+<p>Regex is powerful but the wrong tool for many jobs. Know when to reach for something else:</p>
+<ul>
+<li><strong>HTML parsing</strong>: Regex can't handle nested tags, malformed HTML, or attributes with complex values. Use <code>DOMParser</code> in browsers or <code>BeautifulSoup</code> in Python.</li>
+<li><strong>Email addresses (production)</strong>: The simple pattern catches typos but can't validate that an address actually exists. Send a confirmation email — that's the only real validation.</li>
+<li><strong>JSON parsing</strong>: Even for "simple" JSON extraction, use <code>JSON.parse</code> with a try/catch. A regex that works on valid JSON will silently corrupt on invalid JSON.</li>
+<li><strong>URL parsing (production)</strong>: The simple pattern is fine for filtering. For anything that matters (redirects, routing, security), use <code>new URL()</code> in JavaScript or <code>urllib.parse</code> in Python.</li>
+<li><strong>Chinese / Japanese / Korean text</strong>: Unicode-aware regex is complex. Use a proper library like XRegExp or your language's built-in Unicode support.</li>
+</ul>
+
+<h2>Debugging Regex: A Systematic Approach</h2>
+<p>When a regex doesn't match what you expect, work through these checks in order:</p>
+<ol>
+<li><strong>Are you using the right anchors?</strong> <code>/\d+/</code> matches inside <code>abc123def</code>. <code>/^\d+$/</code> matches only if the whole string is digits.</li>
+<li><strong>Is your regex greedy or lazy?</strong> <code>/&lt;.+&gt;/</code> matches from the first <code>&lt;</code> to the LAST <code>&gt;</code> (greedy). <code>/&lt;.+?&gt;/</code> matches the first <code>&lt;</code> to the first <code>&gt;</code> (lazy).</li>
+<li><strong>Are special characters escaped?</strong> <code>.</code> matches any character. Use <code>\.</code> to match a literal dot. Inside character classes, only <code>]\^-\</code> need escaping.</li>
+<li><strong>Are you testing against the right string?</strong> Print the exact string with visible whitespace: <code>console.log(JSON.stringify(str))</code>. Invisible newlines, tabs, or BOM characters are a common cause of "why doesn't this match?"</li>
+<li><strong>Use regex101.com</strong>: Paste your regex and test string, and see exactly which parts match and which don't. It highlights capture groups and explains what each part does.</li>
+</ol>
+
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
         </div>

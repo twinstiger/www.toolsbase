@@ -84,7 +84,67 @@ crypto.randomUUID()
 // Python
 import uuid
 uuid.uuid4()   # v4 random
-uuid.uuid7()   # v7 time-ordered</code></pre>
+uuid.uuid7()   # v7 time-ordered
+
+// Go
+import "github.com/google/uuid"
+id := uuid.New()        // v4
+id, _ := uuid.NewV7()   // v7
+
+// C# / .NET
+Guid.NewGuid() // v4</code></pre>
+
+<h2>UUID Version Comparison Table</h2>
+<table style="width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.875rem;">
+<thead>
+<tr style="background:var(--color-bg-alt);">
+<th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Version</th>
+<th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Content</th>
+<th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Sortable?</th>
+<th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Privacy</th>
+<th style="padding:0.75rem;text-align:left;border:1px solid var(--color-border);">Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding:0.75rem;border:1px solid var(--color-border);"><strong>v1</strong></td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Timestamp + MAC address</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Partial (reorderable)</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">❌ Leaks MAC</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Legacy, avoid</td>
+</tr>
+<tr>
+<td style="padding:0.75rem;border:1px solid var(--color-border);"><strong>v4</strong></td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">122 random bits</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">❌</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">✅</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Most use cases — general purpose</td>
+</tr>
+<tr>
+<td style="padding:0.75rem;border:1px solid var(--color-border);"><strong>v7</strong></td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Unix timestamp (48 bits) + random</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">✅ Lexicographic</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">✅</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Database primary keys, time-ordered</td>
+</tr>
+<tr>
+<td style="padding:0.75rem;border:1px solid var(--color-border);"><strong>ULID</strong></td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Timestamp + random (26 chars, Crockford Base32)</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">✅ Lexicographic</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">✅</td>
+<td style="padding:0.75rem;border:1px solid var(--color-border);">Better performance than UUID v7</td>
+</tr>
+</tbody>
+</table>
+
+<h2>UUID v1 Privacy Concerns (Why You Should Avoid It)</h2>
+<p>A v1 UUID contains the generating machine's MAC address in the node field. This means:</p>
+<ul>
+<li>If you share a v1 UUID, you reveal your machine's MAC address to anyone who reads it</li>
+<li>Attackers can correlate UUIDs to infer which devices are generating them</li>
+<li>Log files containing v1 UUIDs become a privacy liability</li>
+</ul>
+<p>If you're using v1 UUIDs in production, migrate to v4 (or v7 if you need time-ordering). The UUID standard (RFC 9562) deprecated v1 for new implementations.</p>
 
 <h2>When to Use UUIDs</h2>
 <ul>

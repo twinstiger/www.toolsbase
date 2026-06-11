@@ -117,8 +117,69 @@ HMACSHA256(
 <pre><code>// Node.js with jsonwebtoken
 const jwt = require('jsonwebtoken');
 
-const decoded = jwt.verify(token, process.env.JWT_SECRET);
-console.log(decoded.userId, decoded.role);</code></pre>
+const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+  algorithms: ['HS256'],      // explicitly specify allowed algorithms
+  issuer: 'https://auth.example.com',
+  audience: 'https://api.example.com'
+});
+console.log(decoded.userId, decoded.role);
+
+// Express middleware example
+function authMiddleware(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'missing_token' });
+  }
+  const token = authHeader.slice(7);
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
+    next();
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'token_expired' });
+    }
+    return res.status(401).json({ error: 'invalid_token' });
+  }
+}</code></pre>
+
+<h2>Refresh Token Flow: The Complete Picture</h2>
+<p>Short-lived access tokens (15–60 min) reduce the window of damage if a token is stolen. Refresh tokens (typically valid for days to weeks) let users stay logged in without re-entering credentials:</p>
+<pre><code>// Login flow
+1. User authenticates with username + password
+2. Server creates: access_token (15 min) + refresh_token (7 days)
+3. Returns both to client
+
+// Subsequent requests — use access token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+// When access token expires (401 response)
+4. Client sends refresh_token to /auth/refresh endpoint
+5. Server validates refresh_token, issues new access_token
+6. Old refresh_token is invalidated (rotation) — prevents replay attacks
+
+// Logout — revoke both tokens server-side
+7. Delete refresh_token from database
+8. Client clears access_token from memory (not localStorage)</code></pre>
+
+<h2>JWT Implementation Mistakes That Get People Hacked</h2>
+<p>The most common JWT vulnerabilities I've seen in real codebases:</p>
+<ul>
+<li><strong>Algorithm confusion (alg:none)</strong>: Attackers change the JWT header to <code>"alg": "none"</code> and strip the signature entirely. Always specify allowed algorithms on the server: <code>jwt.verify(token, secret, { algorithms: ['HS256'] })</code>.</li>
+<li><strong>Algorithm confusion (RS256 → HS256)</strong>: If your server supports both RS256 (asymmetric, public key) and HS256 (symmetric, shared secret), an attacker who has the public key can trick the server into using HS256. Use a fixed algorithm, don't let the token choose.</li>
+<li><strong>Missing expiration validation</strong>: Not calling <code>jwt.verify()</code> and just <code>jwt.decode()</code> — the token is unverified and could be expired or forged.</li>
+<li><strong>Storing tokens in localStorage</strong>: Any XSS on your page can read localStorage. Use httpOnly cookies for sensitive applications.</li>
+<li><strong>No jti claim</strong>: Without a unique token ID, you can't revoke a specific token — only all tokens for a user.</li>
+</ul>
+
+<h2>When JWT Is the Wrong Choice</h2>
+<p>JWT shines for stateless APIs and SPAs. But for traditional server-rendered apps (Rails, Django, Express with server-side rendering), session cookies are simpler and safer:</p>
+<ul>
+<li>Cookies are automatically sent with requests — no client code needed</li>
+<li>httpOnly + Secure + SameSite cookies are immune to XSS token theft</li>
+<li>Server-side revocation is immediate — delete the session row, token is dead</li>
+<li>Built-in CSRF protection with SameSite=Strict (modern browsers)</li>
+</ul>
+<p>If you're building a traditional web app, session-based auth with httpOnly cookies is the more secure default. Reach for JWT when you genuinely have multiple services that need to verify the same identity without sharing a session store.</p>
 
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>

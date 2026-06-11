@@ -116,8 +116,36 @@ Use `npm install` to add packages.</code></pre>
 <li>Code fencing: with syntax highlighting</li>
 </ul>
 
+<h2>Real-World Traps and How to Avoid Them</h2>
+<p>Markdown seems simple but has sharp edges that trip up even experienced developers:</p>
+<ul>
+<li><strong>Underscores in code</strong>: Inside inline code, underscores don't trigger emphasis. Outside, <code>my_variable</code> will render as <em>my</em>variable in some renderers. Always use code formatting for identifiers with underscores.</li>
+<li><strong>Nested lists need 4 spaces</strong>: A sub-item under <code>- Item</code> needs 4 spaces (or 2 spaces in some renderers). Getting the indent wrong creates broken nesting or merges items incorrectly.</li>
+<li><strong>HTML inside fenced blocks</strong>: If you write <code>&lt;div&gt;</code> inside a fenced code block, it's safe. But if you indent HTML within a list item, some parsers treat it as real HTML and strip the indentation.</li>
+<li><strong>Trailing spaces and line breaks</strong>: Two trailing spaces create a hard line break in most renderers. Some platforms (notably GitHub) also treat a single newline as a line break in paragraphs, but not all — stick to two spaces when you need a hard break in portable Markdown.</li>
+<li><strong>Table alignment colons</strong>: <code>|---|:</code> (left) vs <code>|:---|:</code> (center) vs <code>|:---|</code> (right) — the colons only work in GFM. CommonMark renders them as left-aligned regardless.</li>
+</ul>
+
+<h2>Markdown in Popular Tools</h2>
+<p>Most developer tools use one of these parsers:</p>
+<ul>
+<li><strong>GitHub / GitLab</strong> — GFM with syntax highlighting via Linguist (100+ languages)</li>
+<li><strong>VS Code</strong> — Markdown + preview tab (uses markdown-it), supports GFM tables and task lists</li>
+<li><strong>Jekyll / Hugo</strong> — Kramdown (Ruby) and Goldmark (Go) respectively — subtle differences in how they handle block-level HTML inside list items</li>
+<li><strong>Notion / Obsidian</strong> — Both support callout blocks (<code>[]()</code> syntax) which are non-standard but increasingly common</li>
+</ul>
+
+<h2>When Markdown Isn't Enough</h2>
+<p>Markdown is a formatting language, not a layout language. If you need:</p>
+<ul>
+<li><strong>Complex tables with merged cells</strong> — use HTML inside Markdown (if your renderer allows it), or export to a different format</li>
+<li><strong>Footnotes</strong> — use MultiMarkdown or a tool like remark-footnotes (not in standard GFM)</li>
+<li><strong>Math equations</strong> — use LaTeX inside <code>$$...$$</code> blocks with a KaTeX or MathJax renderer</li>
+<li><strong>Embedded diagrams</strong> — Mermaid (<code>```mermaid</code>) is widely supported in GitHub, GitLab, and VS Code</li>
+</ul>
+
 <h2>Live Preview</h2>
-<p>Use our <a href="../../tools/text/markdown-previewer.html">Markdown Previewer</a> to see your Markdown rendered in real-time as you type.</p>
+<p>Use our <a href="../../tools/text/markdown-previewer.html">Markdown Previewer</a> to see your Markdown rendered in real-time as you type. Paste the examples from this guide to see how they render — it's the fastest way to build intuition.</p>
 
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>

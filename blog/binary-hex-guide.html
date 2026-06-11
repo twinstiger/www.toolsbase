@@ -95,6 +95,69 @@ Binary to Decimal:
    255    11111111   FF
   1024    01000000   400</code></pre>
 
+<h2>Bitwise Operations: How CPUs Actually Think</h2>
+<p>Beyond representation, hex and binary matter because of bitwise operations — the actual math your CPU does:</p>
+<pre><code>// AND: useful for extracting bits
+0b11110000 & 0b00001111 = 0b00000000  // isolate lower nibble
+0xFF & 0x0F = 0x0F
+
+// OR: useful for combining flags
+0b11000000 | 0b00111111 = 0b11111111  // combine bit fields
+
+// XOR: useful for toggling and cryptography
+0b1010 ^ 0b1111 = 0b0101  // bit inversion
+// XOR swap: a ^= b; b ^= a; a ^= b; swaps without temp variable
+
+// Left/Right shift: multiply or divide by powers of 2
+0b0001 << 2 = 0b0100  // 1 * 4 = 4
+0b1000 >> 1 = 0b0100  // 8 / 2 = 4
+
+// Useful bitmask patterns
+value & 0xFF        // extract lowest byte
+value >> 8          // shift right by one byte
+flag | (1 << n)     // set bit n in flag
+flag & ~(1 << n)    // clear bit n in flag
+flag & (1 << n)     // test if bit n is set</code></pre>
+
+<h2>Two's Complement: How Negative Numbers Work</h2>
+<p>Modern computers represent negative integers using two's complement — the high bit indicates sign, and negating flips all bits and adds 1. This design makes addition and subtraction work uniformly with no special circuitry.</p>
+<pre><code>// With 8 bits:
+//   0 to 127:  00000000 to 01111111
+//  -1 to -128: 11111111 down to 10000000
+
+// Converting negative to decimal:
+0b11111111 = -(~0b11111111 + 1) = -(0 + 1) = -1
+0b11110000 = -(~0b11110000 + 1) = -(0b00001111 + 1) = -16
+
+// Why two's complement?
+//   0 + (-1) = 0 + 11111111 = 11111111 = -1 ✓
+//   1 + (-1) = 00000001 + 11111111 = 100000000 → overflow → 0 ✓</code></pre>
+
+<h2>Endianness: Does Your Byte Order Matter?</h2>
+<p>When you store a multi-byte integer (like 0x12345678 = 305419896 in decimal) in memory, the byte order depends on your CPU architecture:</p>
+<pre><code>// Little-endian (x86, x64, ARM on most devices): least significant byte first
+// Address:  0x00  0x01  0x02  0x03
+// Value:    0x78  0x56  0x34  0x12
+// This is why when debugging: look for 0x78 first, not 0x12
+
+// Big-endian (network order, some ARM configs):
+// Address:  0x00  0x01  0x02  0x03
+// Value:    0x12  0x34  0x56  0x78
+
+// When to care: when reading binary protocols, parsing file formats, or debugging
+// memory dumps. Use hexdump -C (Linux/macOS) to see raw bytes with addresses.</code></pre>
+
+<h2>Where Developers Actually Encounter Hex</h2>
+<p>You don't need to manually convert numbers, but you'll encounter hex constantly in these scenarios:</p>
+<ul>
+<li><strong>Debugging memory dumps</strong>: In gdb, p/x displays variables in hex. A memory address like <code>0x7fff5fbff8a0</code> tells you where a value lives.</li>
+<li><strong>CSS colors</strong>: <code>#FF5733</code> — each pair of hex digits is R, G, B (255, 87, 51). The math: R = 0xFF = 255.</li>
+<li><strong>Cryptographic signatures</strong>: ECDSA signatures (used by Bitcoin, TLS) are raw hex strings. A signature looks like 30 bytes of data as a 60-character hex string.</li>
+<li><strong>Binary file formats</strong>: PNG, PDF, ELF all start with magic bytes in hex — PNG is <code>89 50 4E 47</code>.</li>
+<li><strong>Network protocols</strong>: IPv6 addresses are written in hex groups. MAC addresses (<code>00:1A:2B:3C:4D:5E</code>) are 6 bytes in hex.</li>
+<li><strong>API keys and tokens</strong>: Stripe API keys (<code>sk_live_...</code>), GitHub tokens, and many OAuth secrets are hex-encoded randomness.</li>
+</ul>
+
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
         </div>

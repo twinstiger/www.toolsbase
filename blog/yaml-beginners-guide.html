@@ -124,9 +124,85 @@ server: {host: localhost, port: 8080}</code></pre>
 production:
   <<: *defaults
   timeout: 60</code></pre>
+<p>Anchors (<code>&amp;name</code>) define a reusable value; aliases (<code>*name</code>) reference it. The <code>&lt;&lt;: *name</code> syntax merges the anchored object into another map. This is especially useful in Kubernetes and Docker Compose where you define a base service configuration and override specific fields per environment.</p>
+
+<h2>Multi-Document YAML</h2>
+<p>One YAML file can contain multiple documents separated by <code>---</code>:</p>
+<pre><code>---
+# Document 1: production config
+name: production
+replicas: 3
+---
+# Document 2: staging config
+name: staging
+replicas: 1
+---
+# Document 3: development config
+name: dev
+replicas: 1
+debug: true</code></pre>
+<p>Kubernetes uses this pattern: a single YAML file can <code>kubectl apply -f</code> multiple resources. The parser returns an array when it sees <code>---</code> separators.</p>
+
+<h2>Real-World YAML: Docker Compose Example</h2>
+<pre><code>version: "3.9"
+services:
+  web:
+    image: nginx:1.25-alpine
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://db:5432/app
+    volumes:
+      - ./data:/var/data
+      - ./logs:/var/log/nginx
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - backend
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+    driver: bridge</code></pre>
+<p>This is a real production Docker Compose file — notice the nested structures, multi-line lists, and anchors potential. The <code>depends_on</code> with <code>condition: service_healthy</code> requires the healthcheck to pass before starting the web service.</p>
+
+<h2>Debugging Broken YAML</h2>
+<p>When YAML fails to parse, the error message is often unhelpful. Here's a systematic approach to finding the problem:</p>
+<ol>
+<li><strong>Check for tabs</strong>: Use <code>cat -A file.yaml | grep $'\t'</code> — any <code>I</code> characters mean tabs. Replace with spaces.</li>
+<li><strong>Validate the indentation</strong>: Run <code>yamllint file.yaml</code> or use an online YAML validator. Inconsistent indentation is the #1 cause of broken YAML.</li>
+<li><strong>Check for duplicate keys</strong>: YAML parsers fail silently or produce wrong results when the same key appears twice at the same level. Search your file for duplicate top-level keys.</li>
+<li><strong>Quote special values</strong>: If you have a string that looks like <code>2024-01-01</code> (date), <code>yes</code> (boolean), or <code>null</code> — quote it: <code>"2024-01-01"</code>, <code>"yes"</code>, <code>"null"</code>.</li>
+<li><strong>Use Python to debug</strong>: <code>python3 -c "import yaml; yaml.safe_load(open('file.yaml'))"</code> gives a Python traceback pointing to the problem.</li>
+</ol>
 
 <h2>Validate Your YAML</h2>
-<p>Use our <a href="../../tools/dev/yaml-formatter.html">YAML Formatter</a> to format, validate, and convert YAML to JSON. Copy-paste errors are the #1 cause of broken CI/CD pipelines.</p>
+<p>Use our <a href="../../tools/dev/yaml-formatter.html">YAML Formatter</a> to format, validate, and convert YAML to JSON. Copy-paste errors are the #1 cause of broken CI/CD pipelines — always validate before deploying.</p>
 
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>

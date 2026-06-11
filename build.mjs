@@ -14,6 +14,7 @@ const headerWithCatNav = fs.readFileSync(path.join(COMPONENTS, 'header.html'), '
 // Header without cat-nav (for blog, api, static pages)
 const headerNoCatNav = headerWithCatNav.replace(/\n<!-- Category Sub-nav -->[\s\S]*?<\/nav>\n/, '\n');
 const footerHTML = fs.readFileSync(path.join(COMPONENTS, 'footer.html'), 'utf-8');
+const cookieConsentHTML = fs.readFileSync(path.join(COMPONENTS, 'cookie-consent.html'), 'utf-8');
 
 // Load blog structure data (TL;DR, key takeaways, FAQs for AEO/GEO)
 const BLOG_STRUCTURE_PATH = path.join(SRC, 'blog-structure.json');
@@ -240,7 +241,7 @@ function finalizeHtml(html) {
 
   // Insert components (no cat-nav on api page)
   html = html.replace('<!-- HEADER -->', headerNoCatNav);
-  html = html.replace('<!-- FOOTER -->', footerHTML);
+  html = html.replace('<!-- FOOTER -->', footerHTML + '\n' + cookieConsentHTML);
 
   // Add utils.js
   if (!html.includes('src/utils.js')) {
@@ -265,9 +266,10 @@ function finalizeHtml(html) {
     html = html.replace('<head>', '<head>\n  ' + GOOGLE_ADS_SCRIPT);
   }
 
-  // Add Microsoft Clarity script
-  if (!html.includes('clarity.ms/tag/')) {
-    html = html.replace('<head>', '<head>\n  ' + CLARITY_SCRIPT);
+  // Microsoft Clarity is injected dynamically by the cookie-consent component (GDPR compliance)
+  // Add placeholder only if not already present
+  if (!html.includes('clarity.ms/tag/') && !html.includes('clarity-placeholder')) {
+    html = html.replace('<head>', '<head>\n  <script type="text/javascript" id="clarity-script" data-tb-consent-required="analytics"></script>');
   }
 
   // Add SEO meta tags if missing
@@ -410,7 +412,7 @@ function processFile(filePath, outPath) {
   const useCatNav = (relPath === 'index.html' || relPath === 'tools/index.html');
   const headerToUse = useCatNav ? headerWithCatNav : headerNoCatNav;
   html = html.replace('<!-- HEADER -->', headerToUse);
-  html = html.replace('<!-- FOOTER -->', footerHTML);
+  html = html.replace('<!-- FOOTER -->', footerHTML + '\n' + cookieConsentHTML);
 
   // Add utils.js script before </body> (after footer scripts so TBUtils is available)
   if (!html.includes('src/utils.js')) {
@@ -434,9 +436,10 @@ function processFile(filePath, outPath) {
     html = html.replace('<head>', '<head>\n  ' + GOOGLE_ADS_SCRIPT);
   }
 
-  // Add Microsoft Clarity script after <head> if not already present
-  if (!html.includes('clarity.ms/tag/')) {
-    html = html.replace('<head>', '<head>\n  ' + CLARITY_SCRIPT);
+  // Microsoft Clarity is injected dynamically by the cookie-consent component (GDPR compliance)
+  // Only inject placeholder if not already present
+  if (!html.includes('clarity.ms/tag/') && !html.includes('clarity-placeholder')) {
+    html = html.replace('<head>', '<head>\n  <script type="text/javascript" id="clarity-script" data-tb-consent-required="analytics"></script>');
   }
 
   // Add SEO meta tags before </head> if og:type is missing
@@ -586,7 +589,7 @@ async function build() {
 
   // Generate sitemap.xml
   const siteUrl = 'https://toolsbase.net';
-  const urls = ['index.html', 'about.html', 'contact.html', 'terms.html', 'privacy-policy.html', 'api/index.html'];
+  const urls = ['index.html', 'about.html', 'contact.html', 'terms.html', 'privacy-policy.html', 'cookie-policy.html', 'disclaimer.html', 'api/index.html'];
   const toolPages = [
     'tools/run/python.html', 'tools/run/javascript.html', 'tools/run/lua.html', 'tools/run/sql.html', 'tools/run/regex-runner.html', 'tools/run/brainfuck.html',
     'tools/network/my-ip.html', 'tools/network/url-parser.html', 'tools/network/url-shortener.html',
