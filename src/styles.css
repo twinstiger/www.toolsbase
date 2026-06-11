@@ -2435,3 +2435,49 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
 }
 @media (max-width: 900px) { .hp-why-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .hp-why-grid { grid-template-columns: 1fr; } }
+
+/* === DARK MODE: HOMEPAGE === */
+[data-theme="dark"] .hp-hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(14, 165, 233, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(139, 92, 246, 0.10) 0%, transparent 60%),
+    #0d1117;
+  border-bottom-color: #21262d;
+}
+[data-theme="dark"] .hp-hero::after {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+}
+[data-theme="dark"] .hp-hero-eyebrow {
+  color: #79b8ff;
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.35);
+}
+[data-theme="dark"] .hp-hero-title { color: #e6edf3; }
+[data-theme="dark"] .hp-hero-sub { color: #8b949e; }
+[data-theme="dark"] .hp-trust-item {
+  background: #161b22;
+  border-color: #30363d;
+  color: #8b949e;
+}
+[data-theme="dark"] .hp-trust-item svg { color: #3fb950; }
+[data-theme="dark"] .hp-section-title { color: #e6edf3; }
+[data-theme="dark"] .hp-section-sub { color: #8b949e; }
+[data-theme="dark"] .hp-popular { background: transparent; }
+[data-theme="dark"] .hp-categories { background: transparent; }
+[data-theme="dark"] .hp-why {
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+  border-top-color: #21262d;
+}
+[data-theme="dark"] .hp-why-card {
+  background: #161b22;
+  border-color: #30363d;
+}
+[data-theme="dark"] .hp-why-card:hover { border-color: #58a6ff; }
+[data-theme="dark"] .hp-why-card h3 { color: #e6edf3; }
+[data-theme="dark"] .hp-why-card p { color: #8b949e; }
+[data-theme="dark"] .hp-why-icon {
+  background: linear-gradient(135deg, rgba(14,165,233,0.15) 0%, rgba(139,92,246,0.15) 100%);
+  color: #79b8ff;
+}
