@@ -29,7 +29,6 @@
     </div>
 
 
-    <div class="tool-layout">
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
         <textarea id="input" class="tool-input" placeholder="Enter text to encode, or Base64 to decode…"></textarea>
@@ -53,12 +52,27 @@
       <span id="stats">Ready — enter text and choose Encode or Decode</span>
     </div>
 
-    <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Base64 used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Base64 encodes binary data as ASCII text, enabling safe transmission of binary content through text-only protocols. It is commonly used for embedding images in HTML and CSS (inline data URIs), transmitting binary data in JSON APIs, encoding credentials in HTTP Basic Authentication headers, and handling file uploads that require text representation.</div>
-      </div>
+        
+
+    <div class="tool-layout">
+
+
+
+
+
+<section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">📧 Embedding images in emails or JSON<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>Instead of hosting an image and linking to it, encode it as a Base64 data URI and embed it directly. Works in email HTML, JSON payloads, and anywhere external resources are blocked.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">🔑 Encoding credentials for HTTP Basic Auth<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><code>Authorization: Basic base64(username:password)</code> — the browser and servers use this encoding to safely transmit credentials that would otherwise contain special characters.</p></div>
+    </div><div class="faq-item">
+        <div class="faq-question">🌐 Passing binary data through JSON APIs<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>If an API requires a JSON payload containing a file or binary blob, Base64 encoding is the standard way to embed it without introducing binary-incompatible characters.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">How do I encode text to Base64?<span class="faq-icon">+</span></div>
         <div class="faq-answer">Paste your text into the input box and click the "Encode to Base64" button. The tool converts your text to UTF-8 bytes first, then applies Base64 encoding, ensuring full Unicode support including Chinese characters, emoji, and special symbols. The encoded output will appear in the output box ready to copy.</div>

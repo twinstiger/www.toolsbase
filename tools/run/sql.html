@@ -29,7 +29,12 @@
       <p class="lead-text">Execute SQL queries against a pre-loaded SQLite database. Powered by sql.js (SQLite compiled to WebAssembly) — no server, no signup.</p>
     </div>
 
+    </div>
+
+
     <div class="code-runner">
+    
+
       <div class="code-panel">
         <div class="code-panel-header">SQL Query</div>
         <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
@@ -55,8 +60,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item"><summary class="faq-q">What database is loaded?</summary><div class="faq-a"><p>A sample SQLite database with tables for <code>users</code>, <code>orders</code>, and <code>products</code> is pre-created. You can also run <code>CREATE TABLE</code>, <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> to modify data within the session.</p></div></div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">Why Run SQL in the Browser?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📊 Practice SQL interactively</strong> — <div> — No setup, no installation. Write CREATE TABLE, INSERT, SELECT, JOIN — practice SQL concepts by doing, not by reading documentation. The environment resets on each run so you start fresh.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Why Run SQL in the Browser?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🔍 Prototyping queries before writing application code</strong> — <div> — Draft and test a complex JOIN or aggregation query here before copying it into your application code. Iterating on SQL in a REPL is faster than the edit-run-debug cycle of a full application.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Why Run SQL in the Browser?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📁 Analyzing CSV data with SQL</strong> — <div> — Import a CSV file, create a table from it with a CREATE TABLE statement, and query it with SQL. This gives you the full power of SQL for data exploration without needing Python or pandas.</p></div>
+    </div><div class="faq-item"><summary class="faq-q">What database is loaded?</summary><div class="faq-a"><p>A sample SQLite database with tables for <code>users</code>, <code>orders</code>, and <code>products</code> is pre-created. You can also run <code>CREATE TABLE</code>, <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> to modify data within the session.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What SQL features work?</summary><div class="faq-a"><p>Most SQLite features: <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code>, joins, subqueries, aggregates, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, views, and more.</p></div></div>
       <div class="faq-item"><summary class="faq-q">Is my data persisted?</summary><div class="faq-a"><p>No. The database lives entirely in memory for the current browser session. Refreshing the page resets it to the sample data.</p></div></div>
       <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. sql.js runs SQLite entirely in your browser via WebAssembly. The WASM file is downloaded once and cached.</p></div></div>

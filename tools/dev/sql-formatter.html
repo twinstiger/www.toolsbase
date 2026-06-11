@@ -27,8 +27,12 @@
       </div>
       <p class="lead-text">Format and prettify SQL queries with syntax highlighting. Supports multiple SQL dialects.</p></div>
 
+    </div>
 
+    
     <div class="tool-layout">
+    
+
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
         <textarea id="input" class="tool-input" placeholder="Enter your sql formatter input here..."></textarea>
@@ -52,11 +56,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is SQL Formatter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">SQL Formatter beautifies and prettifies SQL queries with proper indentation and structure, making complex queries readable and easier to debug. It helps database developers write cleaner code, assists data analysts in understanding complex joins, and aids students learning SQL syntax by showing proper formatting conventions.</div>
-      </div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">Why Format SQL?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>👥 Code review and collaboration</strong> — <div> — Formatted SQL in pull requests is easier to review, comment on, and approve. A well-formatted query shows the reviewer exactly what tables are involved and what filtering logic is applied, reducing review time.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Why Format SQL?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🐢 Debugging slow queries</strong> — <div> — When a query runs slowly, being able to clearly see the JOIN order, WHERE clause selectivity, and subquery structure is essential for identifying missing indexes or suboptimal execution plans.</p></div>
+    </div><div class="faq-item">
+        <div class="faq-question">Why Format SQL?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📋 Converting between SQL dialects</strong> — <div> — MySQL, PostgreSQL, SQLite, and SQL Server each have slightly different syntax. A formatter that highlights dialect-specific keywords helps you spot incompatibilities when migrating.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What SQL keywords and dialects are supported?<span class="faq-icon">+</span></div>
         <div class="faq-answer">The formatter recognizes standard SQL keywords including SELECT, FROM, WHERE, JOIN variants (LEFT, RIGHT, INNER, OUTER, CROSS), GROUP BY, ORDER BY, HAVING, LIMIT, INSERT, UPDATE, DELETE, and DDL commands like CREATE TABLE and ALTER TABLE. It handles subqueries, CTEs (WITH clauses), and common window function syntax.</div>

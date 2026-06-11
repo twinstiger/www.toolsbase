@@ -27,8 +27,12 @@
       </div>
       <p class="lead-text">Generate UUID v4 identifiers instantly. Perfect for database keys, testing, and software development.</p></div>
 
+    </div>
 
+    
     <div class="tool-layout">
+    
+
       <div class="tool-panel">
         <div class="tool-panel-label">Options</div>
         <div class="tool-input" style="padding:1rem;display:flex;flex-direction:column;gap:0.75rem;">
@@ -52,11 +56,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is a UUID and what is it used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">UUID (Universally Unique Identifier) is a 128-bit label formatted as a 36-character string. It provides unique identifiers across systems without central coordination. Common uses include database primary keys, session IDs, API tokens, and distributed system identifiers.</div>
-      </div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">What Is a UUID and Why Does It Matter?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🗄️ Database primary keys</strong> — <div> — UUIDs let multiple systems generate IDs without coordinating through a central server. Each service can insert into the same table without conflicts — essential for microservices and offline-first applications.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is a UUID and Why Does It Matter?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🔗 Distributed resource identifiers</strong> — <div> — In distributed databases, message queues, and event streams, every entity needs a unique ID before it can be referenced. UUIDs provide this without a coordination round-trip.</p></div>
+    </div><div class="faq-item">
+        <div class="faq-question">What Is a UUID and Why Does It Matter?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📁 Session and token IDs</strong> — <div> — Generate unique session identifiers, activation tokens, or one-time-use codes. Random UUIDs can't be predicted, which makes them suitable for security-sensitive identifiers.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What is the difference between UUID v1, v4, and v7?<span class="faq-icon">+</span></div>
         <div class="faq-answer">UUID v1 uses timestamp and MAC address for time-ordered IDs but exposes privacy information. UUID v4 uses cryptographically secure random numbers for maximum entropy and privacy. UUID v7 combines time ordering with random bits for sortable IDs without privacy concerns.</div>

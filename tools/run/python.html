@@ -29,7 +29,7 @@
       <p class="lead-text">Execute Python code instantly in your browser. Powered by Pyodide (Python 3.11 in WebAssembly) — no server, no signup, fully client-side.</p>
     </div>
 
-    <div class="code-runner">
+
       <div class="code-panel">
         <div class="code-panel-header">Code</div>
         <textarea id="codeEditor" class="code-editor" spellcheck="false" placeholder="# Write your Python here&#10;print('Hello, world!')&#10;&#10;for i in range(5):&#10;    print(i ** 2)&#10;&#10;# Output:&#10;# Hello, world!&#10;# 0&#10;# 1&#10;# 4&#10;# 9&#10;# 16"></textarea>
@@ -54,9 +54,27 @@
       </div>
     </div>
 
-    <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item"><summary class="faq-q">Is Python installed on my machine?</summary><div class="faq-a"><p>No. Python runs entirely in your browser via Pyodide — a WebAssembly port of CPython. No installation needed.</p></div></div>
+        
+
+    <div class="code-runner">
+
+
+
+
+
+<section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">What Is Pyodide?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🐍 Learning Python</strong> — <div> — No installation required. Open this page, write Python, hit Run. Perfect for working through tutorials, experimenting with syntax, or trying out a new concept without setting up a local Python environment.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is Pyodide?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📊 Data analysis and visualization</strong> — <div> — NumPy, Pandas, and Matplotlib are pre-installed. Load data, run calculations, generate charts — all in the browser. Useful for quick prototyping before committing to a full data pipeline.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is Pyodide?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>⚡ Algorithm testing</strong> — <div> — Test sorting algorithms, data structure operations, recursive functions — anything CPU-bound but not requiring external libraries. The sandbox means you can run potentially infinite loops (with a timeout) without affecting your browser.</p></div>
+    </div><div class="faq-item"><summary class="faq-q">Is Python installed on my machine?</summary><div class="faq-a"><p>No. Python runs entirely in your browser via Pyodide — a WebAssembly port of CPython. No installation needed.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What packages are available?</summary><div class="faq-a"><p>Pyodide includes many standard packages: <code>math</code>, <code>json</code>, <code>re</code>, <code>itertools</code>, <code>random</code>, <code>datetime</code>, <code>urllib</code>, <code>html</code>, <code>collections</code>, and more. NumPy is also included.</p></div></div>
       <div class="faq-item"><summary class="faq-q">Can I import external packages?</summary><div class="faq-a"><p>Some packages like NumPy, Pandas, and Matplotlib are available via <code>import pyodide-http</code> followed by <code>pyodide_http.patch_all()</code>. Network access from Python is restricted.</p></div></div>
       <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. Everything runs locally in your browser. The Pyodide runtime is downloaded once (~10MB) and cached.</p></div></div>

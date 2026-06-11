@@ -29,7 +29,12 @@
       <p class="lead-text">Execute Brainfuck code in your browser. Pure JavaScript interpreter with step limit protection — no server required.</p>
     </div>
 
+    </div>
+
+
     <div class="code-runner">
+    
+
       <div class="code-panel">
         <div class="code-panel-header">Brainfuck Code</div>
         <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
@@ -55,8 +60,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item"><summary class="faq-q">What is Brainfuck?</summary><div class="faq-a"><p>Brainfuck is an esoteric programming language with only 8 commands: <code>&gt;</code> <code>&lt;</code> <code>+</code> <code>-</code> <code>.</code> <code>,</code> <code>[</code> <code>]</code>. It operates on a tape of memory cells using a pointer.</p></div></div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">What Is Brainfuck?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🧠 Understanding computer fundamentals</strong> — <div> — Brainfuck makes you think about memory as a tape, operations as cell manipulation, and loops as conditional jumps. This low-level mental model deepens your understanding of how any language actually runs.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is Brainfuck?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🏆 Programming language design learning</strong> — <div> — Building an interpreter for Brainfuck is a classic systems programming exercise. Once you've implemented one, implementing other languages (even toy ones) becomes much less mysterious.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is Brainfuck?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🎮 Code golf challenges</strong> — <div> — Brainfuck programs can be extremely compact. In code golf competitions, Brainfuck solutions often win by sheer shortness of character count, even if they're completely unreadable.</p></div>
+    </div><div class="faq-item"><summary class="faq-q">What is Brainfuck?</summary><div class="faq-a"><p>Brainfuck is an esoteric programming language with only 8 commands: <code>&gt;</code> <code>&lt;</code> <code>+</code> <code>-</code> <code>.</code> <code>,</code> <code>[</code> <code>]</code>. It operates on a tape of memory cells using a pointer.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What do the commands do?</summary><div class="faq-a"><p><code>&gt;</code> move pointer right &nbsp; <code>&lt;</code> move pointer left &nbsp; <code>+</code> increment cell &nbsp; <code>-</code> decrement cell &nbsp; <code>.</code> output char &nbsp; <code>,</code> input char &nbsp; <code>[</code>/<code>]</code> loop while cell != 0</p></div></div>
       <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. The interpreter runs entirely in your browser as pure JavaScript.</p></div></div>
     </section>

@@ -27,8 +27,12 @@
       </div>
       <p class="lead-text">Validate YAML syntax and format. Detect errors with line numbers and helpful error messages.</p></div>
 
+    </div>
 
+    
     <div class="tool-layout">
+    
+
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
         <textarea id="input" class="tool-input" placeholder="Paste YAML here to validate syntax and formatting..."></textarea>
@@ -52,11 +56,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is YAML Validator used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">YAML Validator checks YAML syntax and formatting for errors, providing line numbers for any issues found. It helps DevOps engineers catch configuration errors before deployment, developers validate config files for CI/CD pipelines, and anyone working with Kubernetes manifests, Docker Compose, or Ansible playbooks.</div>
-      </div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">What Is YAML and Why Validate It?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🐳 Docker Compose and Kubernetes</strong> — <div> — Every docker-compose.yml and k8s manifest is YAML. Validate before running <code>docker compose up</code> or applying a deployment — catch missing colons, bad indentation, and invalid keys before they cause a pod crash.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is YAML and Why Validate It?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>⚙️ CI/CD pipeline configuration</strong> — <div> — GitHub Actions, GitLab CI, and CircleCI all use YAML for pipeline definitions. A single syntax error can disable your entire CI pipeline. Validate before pushing to avoid broken builds.</p></div>
+    </div><div class="faq-item">
+        <div class="faq-question">What Is YAML and Why Validate It?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📦 Package and dependency configs</strong> — <div> — Many tools use YAML for metadata files. Validate generated YAML to ensure it parses correctly before committing to source control.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What kinds of errors does it detect?<span class="faq-icon">+</span></div>
         <div class="faq-answer">The validator checks for mixed tabs and spaces, invalid characters in keys (like brackets or special symbols), incorrect indentation (YAML requires multiples of 2 spaces), invalid anchor/alias syntax, and structural issues that would prevent parsing.</div>

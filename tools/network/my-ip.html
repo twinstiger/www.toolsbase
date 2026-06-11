@@ -46,7 +46,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">What Is My IP Address?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🌐 VPN connection verification</strong> — <div> — After connecting to a VPN, check your IP to confirm you're browsing from the VPN's server location rather than your real location. This verifies the VPN is working and not leaking your real IP.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is My IP Address?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🛡️ Firewall allowlisting</strong> — <div> — Many cloud services (AWS, GCP, databases) restrict access by IP address. Check your current IP to add it to an allowlist before accessing sensitive infrastructure.</p></div>
+    </div><div class="faq-item">
+        <div class="faq-question">What Is My IP Address?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🌍 Geo-location verification</strong> — <div> — Your IP determines what content you see online: local search results, regional pricing, blacked-out sports. Check what geo-location services see about you.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What's the difference between IPv4 and IPv6?<span class="faq-icon">+</span></div>
         <div class="faq-answer">IPv4 addresses are 32-bit numbers written as four octets like 192.168.1.1. IPv6 addresses are 128-bit numbers using hexadecimal notation like 2001:0db8:85a3:0000:0000:8a2e:0370:7334. IPv4 is running out of addresses due to internet growth, while IPv6 provides a virtually unlimited address space to accommodate all current and future devices.</div>
@@ -81,7 +92,11 @@ async function fetchIPInfo() {
   const card = document.getElementById('ip-card');
   const stats = document.getElementById('stats');
 
-  card.innerHTML = '<div class="ip-loading"><span class="ip-spinner">⏳</span><p>Looking up your IP address...</p></div>';
+  card.innerHTML = '<div class="ip-loading"><span class="ip-spinner">⏳</span><p>Looking up your IP address...</p></div>
+
+
+    
+';
   stats.textContent = 'Looking up your IP...';
 
   try {

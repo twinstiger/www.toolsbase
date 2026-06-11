@@ -29,7 +29,12 @@
       <p class="lead-text">Execute Lua 5.3 code instantly in your browser. Powered by Fengari (pure JavaScript) — fully client-side, no server required.</p>
     </div>
 
+    </div>
+
+
     <div class="code-runner">
+    
+
       <div class="code-panel">
         <div class="code-panel-header">Code (Lua 5.3)</div>
         <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
@@ -55,8 +60,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item"><summary class="faq-q">What is Fengari?</summary><div class="faq-a"><p>Fengari is an implementation of Lua 5.3 written entirely in JavaScript (compiled from the C source using GopherJS). No plugins or server needed.</p></div></div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">Why Run Lua in the Browser?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🎮 Learning Lua for game development</strong> — <div> — Roblox uses Lua as its scripting language. This runner is a zero-setup way to practice Lua syntax, data structures, and coroutines before touching the Roblox Studio environment.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Why Run Lua in the Browser?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📚 Understanding scripting basics</strong> — <div> — Lua's minimal design makes it excellent for learning programming concepts: variables, functions, tables, loops, and coroutines. There's less syntax to memorize than Python, letting you focus on logic.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">Why Run Lua in the Browser?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>⚙️ Configuration language exploration</strong> — <div> — Nginx's OpenResty, Redis modules, and many embedded systems use Lua for configuration scripting. Understanding Lua helps you customize these systems beyond static config files.</p></div>
+    </div><div class="faq-item"><summary class="faq-q">What is Fengari?</summary><div class="faq-a"><p>Fengari is an implementation of Lua 5.3 written entirely in JavaScript (compiled from the C source using GopherJS). No plugins or server needed.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What can I do with it?</summary><div class="faq-a"><p>You can run standard Lua — loops, functions, tables, string operations, math, and more. It's great for learning Lua or running quick scripts.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What doesn't work?</summary><div class="faq-a"><p>File I/O (<code>io.*</code>), OS calls (<code>os.execute</code>, <code>os.exit</code>), and networking are not available. The standard <code>print()</code> function is supported.</p></div></div>
       <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. All execution happens locally in your browser using Fengari's pure-JS Lua engine.</p></div></div>

@@ -29,7 +29,7 @@
       <p class="lead-text">Execute JavaScript code instantly in your browser. Powered by a sandboxed iframe — fully client-side, no server required.</p>
     </div>
 
-    <div class="code-runner">
+
       <div class="code-panel">
         <div class="code-panel-header">Code</div>
         <textarea id="codeEditor" class="code-editor" spellcheck="false"></textarea>
@@ -54,9 +54,27 @@
       </div>
     </div>
 
-    <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item"><summary class="faq-q">Is this JavaScript runner safe?</summary><div class="faq-a"><p>Yes. Code runs inside a sandboxed iframe with no access to the parent page, cookies, or localStorage. The sandbox attribute restricts capabilities to script execution only.</p></div></div>
+        
+
+    <div class="code-runner">
+
+
+
+
+
+<section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">How the Sandboxed Runner Works<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>⚡ Rapid prototyping</strong> — <div> — Test an idea in seconds. No project setup, no<code>node_modules</code>, no build step. Write code, hit Run, see output. Refresh to reset the environment and start fresh.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">How the Sandboxed Runner Works<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📚 Learning JavaScript</strong> — <div> — Experiment with ES6+ features (arrow functions, destructuring, async/await, modules) in a clean environment. See exactly what output your code produces without side effects from other scripts running in a real page.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">How the Sandboxed Runner Works<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🔬 Algorithm testing</strong> — <div> — Sort an array, implement a recursive function, explore a data structure — anything that requires quick iteration without a full development environment. The iframe resets on each run.</p></div>
+    </div><div class="faq-item"><summary class="faq-q">Is this JavaScript runner safe?</summary><div class="faq-a"><p>Yes. Code runs inside a sandboxed iframe with no access to the parent page, cookies, or localStorage. The sandbox attribute restricts capabilities to script execution only.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What can I do with it?</summary><div class="faq-a"><p>You can run any standard JavaScript — array operations, string manipulation, math, objects, async/await, and more. It's great for quick prototyping, algorithm testing, and learning.</p></div></div>
       <div class="faq-item"><summary class="faq-q">Is my code sent to a server?</summary><div class="faq-a"><p>No. All execution happens locally in your browser. Nothing is transmitted over the network.</p></div></div>
       <div class="faq-item"><summary class="faq-q">What doesn't work?</summary><div class="faq-a"><p>DOM manipulation, <code>window</code>, <code>document</code>, external network requests (fetch/XHR), and browser APIs are not available inside the sandbox.</p></div></div>

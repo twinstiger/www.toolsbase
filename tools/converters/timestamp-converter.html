@@ -27,8 +27,12 @@
       </div>
       <p class="lead-text">Convert between Unix timestamps and human-readable dates. Supports all timezones and batch conversion.</p></div>
 
+    </div>
 
+    
     <div class="tool-layout">
+    
+
       <div class="tool-panel">
         <div class="tool-panel-label">Input</div>
         <textarea id="input" class="tool-input" placeholder="Enter Unix timestamp (e.g. 1717200000) or ISO date (e.g. 2024-06-01T00:00:00Z)"></textarea>
@@ -52,11 +56,18 @@
     </div>
 
     <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is Timestamp Converter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">Timestamp Converter transforms between Unix timestamps (epoch seconds or milliseconds) and human-readable dates. It helps debug API responses, analyze server logs, configure scheduled tasks, and convert timestamps between different formats and timezones.</div>
-      </div>
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">What Is a Unix Timestamp?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🔧 API debugging</strong> — <div> — Many APIs (especially Stripe, Twilio, and financial services) use Unix timestamps in request and response fields. Converting to human-readable dates lets you verify whether a timestamp is in the past, future, or within an expected range.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">What Is a Unix Timestamp?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>📅 Log file analysis</strong> — <div> — Server logs, database audit trails, and system events often use timestamps as their primary ordering mechanism. Converting a Unix timestamp reveals when an event actually occurred in your local timezone.</p></div>
+    </div><div class="faq-item">
+        <div class="faq-question">What Is a Unix Timestamp?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p><strong>🔄 Timezone conversion</strong> — <div> — A timestamp represents a single point in time. Converting the same timestamp to multiple timezone formats shows you what time it was in different regions simultaneously — essential for coordinating across time zones.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What formats can it convert?<span class="faq-icon">+</span></div>
         <div class="faq-answer">The tool accepts Unix timestamps in seconds or milliseconds (auto-detected based on magnitude), and ISO 8601 date strings. It outputs ISO 8601, UTC, local time, various date formats, Unix seconds and milliseconds, and includes timezone information.</div>

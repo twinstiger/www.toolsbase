@@ -142,12 +142,28 @@
       </div>
     </div>
 
-    <section class="faq-section">
-      <h2 class="faq-title">Frequently Asked Questions</h2>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-question">What is JSON Formatter used for?<span class="faq-icon">+</span></div>
-        <div class="faq-answer">JSON Formatter formats ugly or minified JSON into readable indented output with syntax highlighting. Essential for debugging API responses, cleaning configuration files, and validating data exports.</div>
-      </div>
+ <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2><div class="faq-item">
+        <div class="faq-question">Why Use a JSON Formatter?<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>When you're debugging aAPI response or inspecting a webhook payload, raw JSON is unreadable — a single line of minified data that forces you to scroll horizontally through a wall of brackets. A JSON formatter takes that compressed string and indents it into a structure you can actually read: nested objects become visually clear hierarchies, arrays become indexed lists, and errors jump out immediately.</p> <p>Beyond readability, formatting is the first step in debugging. When<code>JSON.parse()</code> throws an error, the parser tells you the character position of the failure — but only if you can see the structure. A formatter that preserves line numbers lets you translate that character offset directly to the problem location in your data.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">🔍 Debugging API responses<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>Paste a response from Postman, Insomnia, or curl. Instantly see the full structure instead of squinting at a single line. The diff tab is especially useful for comparing two API responses side-by-side.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">⚡ Cleaning pasted data<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>Copy data from a PDF, Slack message, or poorly formatted export? The Clean button strips trailing commas, removes duplicate keys, and fixes common JSON malformations automatically.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">📦 Preparing production config<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>Write your config in readable formatted JSON, then use Minify to produce the compact single-line version your application expects — without retyping or search-replacing manually.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">🔄 Converting between formats<span class="faq-icon">+</span></div>
+        <div class="faq-answer"><p>Need JSON as YAML for your config file, or XML for an older system? Use the built-in converters — JSON to YAML, JSON to XML, or encode as Base64 or URL components — all in one place without switching tools.</p></div>
+    </div>
+    
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">What operations does this tool support?<span class="faq-icon">+</span></div>
         <div class="faq-answer"><strong>Format</strong> — beautify with indentation (default); <strong>Minify</strong> — remove whitespace; <strong>Clean</strong> — strip null, empty strings, arrays and objects; <strong>Sort</strong> — sort object keys alphabetically; <strong>YAML / XML</strong> — convert JSON to YAML or XML; <strong>URL</strong> — URL-encode raw text; <strong>Base64</strong> — Base64 encode; <strong>Escape</strong> — escape special characters; <strong>Diff</strong> — compare two JSON documents side by side.</div>
