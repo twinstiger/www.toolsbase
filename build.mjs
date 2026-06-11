@@ -426,7 +426,12 @@ function processFile(filePath, outPath) {
 
   // Always add critical.css + styles.css (tokens merged into styles.css)
   if (!html.includes('critical.css')) {
+    // Handle tokens.css - remove it (critical.css will be added below)
+    html = html.replace(/<link rel="stylesheet" href="src\/tokens\.css">/g, '');
+    // Handle absolute path styles.css
     html = html.replace('<link rel="stylesheet" href="/src/styles.css">', '<link rel="stylesheet" href="/src/critical.css">\n  <link rel="stylesheet" href="/src/styles.css">');
+    // Handle relative path styles.css (add critical.css before it)
+    html = html.replace('<link rel="stylesheet" href="src/styles.css">', '<link rel="stylesheet" href="src/critical.css">\n  <link rel="stylesheet" href="src/styles.css">');
   }
 
   // Add Google Ads script after <head> if not already present
