@@ -1109,9 +1109,13 @@ html[data-theme="dark"] .page-hero .hero-search-icon { color: #6e7681; }
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.footer-nav { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+.footer-nav { display: flex; gap: 1.5rem; flex-wrap: nowrap; align-items: center; }
 .footer-nav a { font-size: 0.8125rem; color: #6B7280; transition: color 120ms ease; }
 .footer-nav a:hover { color: var(--color-primary); }
+.footer-nav-links { display: flex; flex-direction: column; justify-content: flex-start; row-gap: 0.5rem; }
+.footer-nav-row { display: flex; gap: 1.25rem; flex-wrap: nowrap; align-items: center; justify-content: flex-start; }
+.footer-nav-row a { font-size: 0.8125rem; color: #6B7280; transition: color 120ms ease; }
+.footer-nav-row a:hover { color: var(--color-primary); }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid #F3F4F6; flex-wrap: wrap; gap: 0.875rem; }
 .footer-copy { font-size: 0.775rem; color: #9CA3AF; }
 .footer-legal { display: flex; gap: 1.25rem; }
@@ -1159,7 +1163,8 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
   .tool-grid { grid-template-columns: 1fr; }
   .blog-list { grid-template-columns: 1fr; }
   .footer-top { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-  .footer-bottom { flex-direction: column; text-align: center; }
+  .footer-nav-links { align-items: flex-start; }
+  .footer-nav-row { justify-content: flex-start; }
   .hero-cta { flex-direction: column; }
   .hero-right { display: none; }
 
@@ -1368,6 +1373,7 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
 [data-theme="dark"] .footer-info p { color: var(--color-text-muted); }
 [data-theme="dark"] .footer-copy { color: var(--color-text-muted); }
 [data-theme="dark"] .footer-nav a { color: var(--color-text-muted); }
+[data-theme="dark"] .footer-nav-row a { color: var(--color-text-muted); }
 [data-theme="dark"] .footer-nav a:hover { color: var(--color-primary); }
 [data-theme="dark"] .footer-col-title { color: var(--color-text); }
 [data-theme="dark"] .footer-links a { color: var(--color-text-muted); }
