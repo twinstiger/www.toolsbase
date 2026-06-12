@@ -563,6 +563,9 @@ async function build() {
   if (fs.existsSync(path.join(ROOT, 'og-image.png'))) {
     fs.cpSync(path.join(ROOT, 'og-image.png'), path.join(DIST, 'og-image.png'));
   }
+  if (fs.existsSync(path.join(ROOT, 'ac9496e0f6e44a229119b66622526fe4.txt'))) {
+    fs.cpSync(path.join(ROOT, 'ac9496e0f6e44a229119b66622526fe4.txt'), path.join(DIST, 'ac9496e0f6e44a229119b66622526fe4.txt'));
+  }
   if (fs.existsSync(path.join(ROOT, '_redirects'))) {
     fs.cpSync(path.join(ROOT, '_redirects'), path.join(DIST, '_redirects'));
     console.log('  _redirects');
