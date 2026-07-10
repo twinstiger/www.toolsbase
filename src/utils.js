@@ -251,4 +251,151 @@
       }
     }
   });
+
+  // === COOKIE CONSENT BANNER ===
+  var CONSENT_KEY = 'tb_cookie_consent';
+  var CONSENT_VALUES = {
+    ACCEPT_ALL: 'accepted',
+    REJECT_ALL: 'rejected',
+    ESSENTIAL_ONLY: 'essential'
+  };
+
+  // Check if we should show banner (not EU or no consent yet)
+  function shouldShowBanner() {
+    if (TBUtils.getCookieConsent()) return false;
+    // Check if this is likely an EU visitor (simple heuristic)
+    var continent = TBUtils.getContinent();
+    // Show banner to all users for maximum compliance
+    return true;
+  }
+
+  // Get user's continent (simplified)
+  TBUtils.getContinent = function() {
+    return 'unknown'; // In production, use a GeoIP service
+  };
+
+  // Get cookie consent status
+  TBUtils.getCookieConsent = function() {
+    return localStorage.getItem(CONSENT_KEY);
+  };
+
+  // Save cookie consent
+  TBUtils.setCookieConsent = function(value) {
+    localStorage.setItem(CONSENT_KEY, value);
+    hideBanner();
+  };
+
+  // Check if advertising/analytics cookies are allowed
+  TBUtils.hasConsentForAds = function() {
+    var consent = TBUtils.getCookieConsent();
+    return consent === CONSENT_VALUES.ACCEPT_ALL;
+  };
+
+  // Show banner
+  function showBanner() {
+    // Check if AdSense script should be blocked
+    if (!TBUtils.hasConsentForAds()) {
+      // Remove or disable AdSense script
+      var adsScripts = document.querySelectorAll('script[src*="googlesyndication"]');
+      adsScripts.forEach(function(script) {
+        if (!script.dataset.consentGiven) {
+          script.dataset.originalSrc = script.src;
+          script.removeAttribute('src');
+        }
+      });
+    }
+  }
+
+  function hideBanner() {
+    var banner = document.querySelector('.cookie-banner');
+    if (banner) {
+      banner.classList.add('hidden');
+      setTimeout(function() { banner.remove(); }, 300);
+    }
+  }
+
+  function renderBanner() {
+    if (!shouldShowBanner()) return;
+
+    var bannerHtml =
+      '<div class="cookie-banner" id="cookieBanner">' +
+        '<div class="cookie-banner-content">' +
+          '<div class="cookie-banner-text">' +
+            '<p>We use cookies to deliver personalized ads and analyze site traffic. <a href="/cookie-policy">Learn more</a></p>' +
+          '</div>' +
+          '<div class="cookie-banner-actions">' +
+            '<button class="cookie-btn cookie-btn-reject" onclick="TBUtils.setCookieConsent(\'' + CONSENT_VALUES.REJECT_ALL + '\');">Reject</button>' +
+            '<button class="cookie-btn cookie-btn-settings" onclick="showCookieSettings()">Settings</button>' +
+            '<button class="cookie-btn cookie-btn-accept" onclick="TBUtils.setCookieConsent(\'' + CONSENT_VALUES.ACCEPT_ALL + '\');loadAdSense();">Accept All</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cookie-settings-panel" id="cookieSettingsPanel" style="display:none;">' +
+          '<div class="cookie-settings-group">' +
+            '<div class="cookie-settings-item">' +
+              '<div class="cookie-settings-info">' +
+                '<strong>Necessary</strong>' +
+                '<p>Essential for the website to function. Cannot be disabled.</p>' +
+              '</div>' +
+              '<label class="cookie-toggle"><input type="checkbox" checked disabled><span class="cookie-toggle-slider"></span></label>' +
+            '</div>' +
+            '<div class="cookie-settings-item">' +
+              '<div class="cookie-settings-info">' +
+                '<strong>Analytics</strong>' +
+                '<p>Help us understand how visitors use our site.</p>' +
+              '</div>' +
+              '<label class="cookie-toggle"><input type="checkbox" id="consentAnalytics"><span class="cookie-toggle-slider"></span></label>' +
+            '</div>' +
+            '<div class="cookie-settings-item">' +
+              '<div class="cookie-settings-info">' +
+                '<strong>Advertising</strong>' +
+                '<p>Used by Google AdSense to show relevant ads.</p>' +
+              '</div>' +
+              '<label class="cookie-toggle"><input type="checkbox" id="consentAds"><span class="cookie-toggle-slider"></span></label>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cookie-settings-actions">' +
+            '<button class="cookie-btn cookie-btn-reject" onclick="TBUtils.setCookieConsent(\'' + CONSENT_VALUES.REJECT_ALL + '\');">Reject All</button>' +
+            '<button class="cookie-btn cookie-btn-accept" onclick="saveCustomConsent()">Save Preferences</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    document.body.insertAdjacentHTML('beforeend', bannerHtml);
+  }
+
+  window.showCookieSettings = function() {
+    var panel = document.getElementById('cookieSettingsPanel');
+    if (panel) {
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
+  };
+
+  window.saveCustomConsent = function() {
+    var analytics = document.getElementById('consentAnalytics') && document.getElementById('consentAnalytics').checked;
+    var ads = document.getElementById('consentAds') && document.getElementById('consentAds').checked;
+    if (ads && analytics) {
+      TBUtils.setCookieConsent(CONSENT_VALUES.ACCEPT_ALL);
+      loadAdSense();
+    } else {
+      TBUtils.setCookieConsent(CONSENT_VALUES.ESSENTIAL_ONLY);
+    }
+  };
+
+  window.loadAdSense = function() {
+    var adsScripts = document.querySelectorAll('script[data-original-src]');
+    adsScripts.forEach(function(script) {
+      var originalSrc = script.dataset.originalSrc;
+      if (originalSrc) {
+        var newScript = document.createElement('script');
+        newScript.src = originalSrc;
+        newScript.async = true;
+        script.parentNode.replaceChild(newScript, script);
+      }
+    });
+  };
+
+  // Initialize banner on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', function() {
+    renderBanner();
+  });
 })();
