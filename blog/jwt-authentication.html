@@ -120,6 +120,61 @@ const jwt = require('jsonwebtoken');
 const decoded = jwt.verify(token, process.env.JWT_SECRET);
 console.log(decoded.userId, decoded.role);</code></pre>
 
+<h2>JWT vs Session Cookies</h2>
+
+| Aspect | JWT | Session Cookies |
+|--------|-----|----------------|
+| Storage | Client-side (localStorage/cookies) | Server-side |
+| Scalability | Stateless, scales easily | Requires shared session store |
+| Revocation | Complex (requires blocklist) | Easy (delete session) |
+| Size | Larger (token in every request) | Small (session ID only) |
+| Security | Vulnerable to XSS | httpOnly cookies protect against XSS |
+
+<h2>Access Tokens vs Refresh Tokens</h2>
+<p>The best practice is to use two tokens:</p>
+<pre><code>// Access token: short-lived (15-60 min), contains claims
+// Refresh token: long-lived (days/weeks), used to get new access tokens
+
+// Example flow:
+1. Login → returns access_token (15min) + refresh_token (7days)
+2. API calls use access_token
+3. When access_token expires → use refresh_token to get new pair
+4. Refresh token can be invalidated (logout, security breach)</code></pre>
+
+<h2>Common JWT Libraries</h2>
+<ul>
+<li><strong>Node.js:</strong> jsonwebtoken, jose (universal)</li>
+<li><strong>Python:</strong> PyJWT, python-jose</li>
+<li><strong>Java:</strong> jjwt, java-jwt</li>
+<li><strong>Go:</strong> golang-jwt/jwt</li>
+<li><strong>Rust:</strong> jsonwebtoken</li>
+</ul>
+
+<h2>Security Checklist</h2>
+<ul>
+<li><strong>Always use HTTPS</strong> — Tokens are credentials, protect them in transit</li>
+<li><strong>Validate algorithm</strong> — Prevent algorithm confusion attacks</li>
+<li><strong>Check expiration</strong> — Always verify <code>exp</code> claim</li>
+<li><strong>Verify issuer</strong> — Check <code>iss</code> matches your expected value</li>
+<li><strong>Verify audience</strong> — Check <code>aud</code> is for your API</li>
+<li><strong>Use secure storage</strong> — httpOnly cookies over localStorage</li>
+<li><strong>Implement refresh token rotation</strong> — Prevents token reuse attacks</li>
+</ul>
+
+<h2>Troubleshooting Common Issues</h2>
+
+<h3>"Token expired" error</h3>
+<p>Check the server clock is synchronized. JWT validation compares against server time.</p>
+
+<h3>"Invalid signature"</h3>
+<p>Verify the secret/key matches exactly what was used to sign the token.</p>
+
+<h3>"Token not before" error</h3>
+<p>The <code>nbf</code> (not before) claim is set in the future. Wait or adjust server time.</p>
+
+<h3>Algorithm confusion attack</h3>
+<p>Always specify and validate the expected algorithm. Don't let clients choose the algorithm.</p>
+
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
         </div>

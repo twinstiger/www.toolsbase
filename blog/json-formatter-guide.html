@@ -96,6 +96,131 @@
         <h2>Try It Now</h2>
         <p>Head over to the <a href="../../tools/dev/json-formatter.html">JSON Formatter tool</a> and paste any JSON to see it in action. With the sample data loaded, you can experiment with all three modes and see error messages in real time.</p>
 
+        <h2>JSON vs Other Formats</h2>
+        <p>Understanding when to use JSON versus alternatives:</p>
+
+        <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+          <tr style="border-bottom:1px solid #ddd;">
+            <th style="padding:8px;text-align:left;">Format</th>
+            <th style="padding:8px;text-align:left;">Best For</th>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">JSON</td>
+            <td style="padding:8px;">APIs, config files, data exchange</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">XML</td>
+            <td style="padding:8px;">Legacy systems, complex documents</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">YAML</td>
+            <td style="padding:8px;">Configuration files, Docker Compose</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">CSV</td>
+            <td style="padding:8px;">Tabular data, spreadsheets</td>
+          </tr>
+        </table>
+
+        <h2>JSON in Different Programming Languages</h2>
+
+        <h3>JavaScript</h3>
+        <pre><code>// Parse JSON string to object
+const obj = JSON.parse('{"name":"Alice","age":30}');
+
+// Object to JSON string
+const str = JSON.stringify({name: "Alice", age: 30}, null, 2);
+
+// Pretty print with custom indentation
+const formatted = JSON.stringify(data, null, '\t');</code></pre>
+
+        <h3>Python</h3>
+        <pre><code>import json
+
+# Parse JSON string to dict
+obj = json.loads('{"name": "Alice", "age": 30}')
+
+# Dict to JSON string
+data = {"name": "Alice", "age": 30}
+formatted = json.dumps(data, indent=2)
+
+# Pretty print to file
+with open('output.json', 'w') as f:
+    json.dump(data, f, indent=2)</code></pre>
+
+        <h3>Node.js</h3>
+        <pre><code>const fs = require('fs');
+
+// Read and parse JSON file
+const data = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+
+// Write formatted JSON
+fs.writeFileSync('output.json', JSON.stringify(data, null, 2));</code></pre>
+
+        <h2>Common JSON Pitfalls</h2>
+
+        <h3>Trailing Commas</h3>
+        <p>JavaScript allows trailing commas, but JSON does not:</p>
+        <pre><code>// Invalid JSON (trailing comma)
+{"name": "Alice", "age": 30,}
+
+// Valid JSON
+{"name": "Alice", "age": 30}</code></pre>
+
+        <h3>Comments</h3>
+        <p>JSON does not support comments. Use JSON5 or YAML for config files that need comments:</p>
+        <pre><code>// This is NOT valid JSON
+{
+  "name": "Alice",
+  "//": "This is not a comment",
+  "age": 30
+}</code></pre>
+
+        <h3>Undefined and Functions</h3>
+        <p>JSON cannot represent undefined, functions, or symbols:</p>
+        <pre><code>// These will be ignored or cause errors
+const data = {
+  name: "Alice",
+  birthday: undefined,  // becomes null or error
+  greet: function() {}  // ignored entirely
+};</code></pre>
+
+        <h2>Working with Large JSON Files</h2>
+        <p>For files larger than a few megabytes, consider streaming approaches:</p>
+        <pre><code>// Node.js - stream large JSON files
+const fs = require('fs');
+const JSONStream = require('JSONStream');
+
+// Stream parse a large JSON array
+const stream = fs.createReadStream('large.json');
+const parser = JSONStream.parse('items.*');
+
+stream.pipe(parser);
+parser.on('data', item => {
+  // Process each item individually
+  console.log(item.name);
+});</code></pre>
+
+        <h2>JSON Schema Validation</h2>
+        <p>For production APIs, validate JSON structure with JSON Schema:</p>
+        <pre><code>const schema = {
+  "type": "object",
+  "required": ["name", "email"],
+  "properties": {
+    "name": { "type": "string" },
+    "email": { "type": "string", "format": "email" },
+    "age": { "type": "number", "minimum": 0 }
+  }
+};</code></pre>
+
+        <h2>Performance Tips</h2>
+        <ul>
+          <li><strong>Minify before network transfer</strong> — Smaller payloads load faster</li>
+          <li><strong>Validate early</strong> — Catch JSON errors before processing</li>
+          <li><strong>Cache formatted output</strong> — Don't reformat the same data repeatedly</li>
+          <li><strong>Use streaming for large files</strong> — Avoid loading everything into memory</li>
+        </ul>
+
       </article>
 
       <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">

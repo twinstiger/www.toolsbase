@@ -149,6 +149,98 @@ X-RateLimit-Remaining: 0</code></pre>
           <li>Document all possible response codes for each endpoint</li>
         </ul>
 
+        <h2>Less Common But Important Codes</h2>
+
+        <h3>100 Continue</h3>
+        <p>Server has received request headers, client should proceed with request body. Useful for large uploads where server may reject the request.</p>
+        <pre><code># Client sends headers first
+HEAD /api/upload HTTP/1.1
+Content-Length: 10485760
+Expect: 100-continue
+
+# Server responds:
+HTTP/1.1 100 Continue
+# Client then sends the body</code></pre>
+
+        <h3>206 Partial Content</h3>
+        <p>Server returns only part of the resource. Essential for resumable downloads and video streaming.</p>
+        <pre><code>GET /video/large-file.mp4
+Range: bytes=0-1023
+
+HTTP/1.1 206 Partial Content
+Content-Range: bytes 0-1023/10485760
+Content-Length: 1024</code></pre>
+
+        <h3>418 I'm a Teapot</h3>
+        <p>April Fools' joke from RFC 2324. Some APIs use it as an easter egg, but it should not be used in production.</p>
+
+        <h3>451 Unavailable For Legal Reasons</h3>
+        <p>Censorship-related status code. The name is a reference to Fahrenheit 451 (book burning).</p>
+
+        <h2>Error Response Format</h2>
+        <p>Standardize your error responses across the API:</p>
+        <pre><code>{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "The request could not be processed",
+    "details": [
+      {
+        "field": "email",
+        "message": "Must be a valid email address",
+        "value": "not-an-email"
+      },
+      {
+        "field": "password",
+        "message": "Must be at least 8 characters",
+        "value": "short"
+      }
+    ],
+    "request_id": "req_abc123xyz"
+  }
+}</code></pre>
+
+        <h2>Testing Status Codes</h2>
+        <p>Common tools for testing HTTP responses:</p>
+        <ul>
+          <li><strong>curl</strong> — Command line testing</li>
+          <li><strong>Postman</strong> — GUI for API testing</li>
+          <li><strong>Browser DevTools</strong> — Network tab</li>
+          <li><strong>httpstat</strong> — Visualize response time breakdown</li>
+        </ul>
+        <pre><code># Test status codes with curl
+curl -i https://api.example.com/users
+curl -X POST -d '{"name":"test"}' -H "Content-Type: application/json" https://api.example.com/users
+curl -I https://api.example.com/users  # HEAD request only</code></pre>
+
+        <h2>SEO Considerations</h2>
+
+        <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+          <tr style="border-bottom:1px solid #ddd;">
+            <th style="padding:8px;text-align:left;">Code</th>
+            <th style="padding:8px;text-align:left;">SEO Impact</th>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">200</td>
+            <td style="padding:8px;">Page indexed normally</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">301/302</td>
+            <td style="padding:8px;">Link equity passed (with differences)</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">404</td>
+            <td style="padding:8px;">Removed from index over time</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">410</td>
+            <td style="padding:8px;">Explicitly removed from index</td>
+          </tr>
+          <tr style="border-bottom:1px solid #ddd;">
+            <td style="padding:8px;">500</td>
+            <td style="padding:8px;">Page dropped from index temporarily</td>
+          </tr>
+        </table>
+
       </article>
 
       <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border);">

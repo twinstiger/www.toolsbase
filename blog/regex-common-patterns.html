@@ -115,6 +115,36 @@
 <h2>Test Your Regexes</h2>
 <p>Use our <a href="../../tools/dev/regex-tester.html">Regex Tester</a> to validate patterns against test strings — with real-time highlighting of matches and capture groups.</p>
 
+<h2>Advanced Patterns for Production</h2>
+
+<h3>16. File Path (Windows)</h3>
+<pre><code>/^[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>|\r\n]*$/</code></pre>
+<p>Matches Windows file paths like <code>C:\Users\Documents\file.txt</code>. Validates drive letter and prevents invalid characters.</p>
+
+<h3>17. Email with Display Name</h3>
+<pre><code>/^(?:[^\x00-\x1F"]+ )?&lt;?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}&gt;?$/</code></pre>
+<p>Matches formats like "John Doe &lt;john@example.com&gt;" or "john@example.com". Common in email headers.</p>
+
+<h3>18. CSS Hex Color</h3>
+<pre><code>/^#(?:[0-9a-fA-F]{3}){1,2}$/</code></pre>
+<p>Matches 3-digit (#RGB) and 6-digit (#RRGGBB) hex color codes. The <code>#</code> is required.</p>
+
+<h3>19. Credit Card with Spaces</h3>
+<pre><code>/^\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}$/</code></pre>
+<p>Matches credit card numbers with optional hyphens or spaces between groups. Same as basic but more flexible.</p>
+
+<h3>20. Markdown Link</h3>
+<pre><code>/\[([^\]]+)\]\(([^\)]+)\)/</code></pre>
+<p>Extracts link text and URL from Markdown links like <code>[click here](https://example.com)</code>.</p>
+
+<h2>Regex Best Practices</h2>
+<ul>
+<li><strong>Test thoroughly</strong> — Use the Regex Tester tool to verify against edge cases</li>
+<li><strong>Add comments</strong> — Complex patterns benefit from documentation</li>
+<li><strong>Use anchors</strong> — Always use <code>^</code> and <code>$</code> for full string validation</li>
+<li><strong>Consider performance</strong> — Avoid patterns that cause catastrophic backtracking</li>
+</ul>
+
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
         </div>

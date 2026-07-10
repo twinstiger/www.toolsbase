@@ -116,8 +116,121 @@ Use `npm install` to add packages.</code></pre>
 <li>Code fencing: with syntax highlighting</li>
 </ul>
 
-<h2>Live Preview</h2>
-<p>Use our <a href="../../tools/text/markdown-previewer.html">Markdown Previewer</a> to see your Markdown rendered in real-time as you type.</p>
+<h2>Extended Syntax Examples</h2>
+
+<h3>Definition Lists</h3>
+<pre><code>Term 1
+: Definition 1
+
+Term 2
+: Definition 2
+: Another definition</code></pre>
+
+<h3>Footnotes</h3>
+<pre><code>Here is a footnote reference[^1].
+
+[^1]: Here is the footnote.</code></pre>
+
+<h3>Emoji Shortcodes</h3>
+<pre><code>:smile: :rocket: :point_right: :white_check_mark:</code></pre>
+<p>Most platforms support emoji shortcodes — check your platform's supported emoji list.</p>
+
+<h2>Real-World Examples</h2>
+
+<h3>Project README</h3>
+<pre><code># Project Name
+
+[![Build Status](https://img.shields.io/badge/build-passing-green)](https://example.com)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+A brief description of what this project does.
+
+## Features
+
+- Feature one
+- Feature two
+- Feature three
+
+## Installation
+
+```bash
+npm install project-name
+```
+
+## Usage
+
+```javascript
+const project = require('project-name');
+project.init();
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing`)
+5. Open a Pull Request</code></pre>
+
+<h3>API Documentation</h3>
+<pre><code>## GET /api/users
+
+Returns a list of all users.
+
+### Query Parameters
+
+| Parameter | Type   | Required | Description          |
+|-----------|--------|----------|----------------------|
+| page      | number | No       | Page number (default: 1) |
+| limit     | number | No       | Items per page (default: 20) |
+
+### Response
+
+```json
+{
+  "data": [
+    {"id": 1, "name": "Alice"},
+    {"id": 2, "name": "Bob"}
+  ],
+  "meta": {
+    "page": 1,
+    "total": 100
+  }
+}
+```
+
+### Status Codes
+
+- `200 OK` — Success
+- `401 Unauthorized` — Missing or invalid token
+- `500 Server Error` — Internal error</code></pre>
+
+<h2>Markdown Editor Tips</h2>
+<ul>
+<li><strong>Live preview</strong> — Use our <a href="../../tools/text/markdown-previewer.html">Markdown Previewer</a> to see rendered output as you type</li>
+<li><strong>Split view</strong> — Many editors (VS Code, Typora) offer side-by-side editing</li>
+<li><strong>Table generators</strong> — Use online tools to create tables without manual alignment</li>
+<li><strong>Keyboard shortcuts</strong> — Most editors support shortcuts like Ctrl+B for bold</li>
+</ul>
+
+<h2>Common Mistakes to Avoid</h2>
+<ul>
+<li><strong>Mixed indentation</strong> — Use consistent spaces (2 or 4) throughout</li>
+<li><strong>Forgetting blank lines</strong> — Block elements need blank lines before and after</li>
+<li><strong>Unescaped special characters</strong> — Use backslash to escape: <code>\*</code></li>
+<li><strong>Overusing HTML</strong> — Pure Markdown is more portable</li>
+<li><strong>Broken links</strong> — Always verify relative links work from the rendered location</li>
+</ul>
+
+<h2>Platform-Specific Notes</h2>
+
+| Platform | Special Features |
+|----------|-----------------|
+| GitHub | GFM, task lists, autolinks, code highlighting |
+| VS Code | Preview panel, multiple themes |
+| Notion | Callouts, toggles, databases |
+| Reddit | Limited GFM, no tables |
+| Discord | Basic formatting, no code blocks with highlighting |
 
         <div style="margin-top:3rem;padding-top:2rem;border-top:2px solid #f0e6d9;">
           <a href="index.html" class="btn btn--secondary">← Back to Blog</a>
