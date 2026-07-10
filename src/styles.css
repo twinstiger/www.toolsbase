@@ -2440,6 +2440,85 @@ main { flex: 1; animation: fadeIn 0.3s ease-out 0.1s both; }
 .hp-popular .tool-card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.45rem; }
 .hp-popular .tool-card-desc { font-size: 0.825rem; margin-bottom: 0.75rem; }
 
+/* === BLOG RECOMMENDATIONS === */
+.hp-blog {
+  padding: 2.5rem 0 2rem;
+}
+.hp-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.hp-blog-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 0;
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.hp-blog-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  border-color: #0ea5e9;
+}
+.hp-blog-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+}
+.hp-blog-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.hp-blog-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0ea5e9;
+  background: rgba(14,165,233,0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  width: fit-content;
+  margin-bottom: 0.5rem;
+}
+.hp-blog-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+.hp-blog-desc {
+  font-size: 0.8rem;
+  color: #6B7280;
+  line-height: 1.5;
+  flex: 1;
+  margin-bottom: 0.5rem;
+}
+.hp-blog-meta {
+  font-size: 0.7rem;
+  color: #9CA3AF;
+}
+.hp-blog-cta {
+  text-align: center;
+}
+@media (max-width: 1200px) { .hp-blog-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 900px) { .hp-blog-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .hp-blog-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .hp-blog-grid { grid-template-columns: 1fr; } }
+
 /* === CATEGORIES SECTION === */
 .hp-categories { padding: 2.5rem 0 2rem; }
 .hp-categories .hp-section-sub { white-space: nowrap; max-width: none; margin: 0.5rem auto 0; }
