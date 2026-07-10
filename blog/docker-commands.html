@@ -113,10 +113,135 @@ docker compose exec app npm run dev</code></pre>
 docker tag my-app:latest registry.com/my-app:v1.0.0
 docker push registry.com/my-app:v1.0.0</code></pre>
 
+        <h2>Networking Basics</h2>
+        <p>Docker containers need to communicate. Understanding networks is essential:</p>
+        <pre><code># List all networks
+docker network ls
+
+# Create a custom network
+docker network create my-network
+
+# Connect a container to a network
+docker network connect my-network container-name
+
+# Inspect a network
+docker network inspect bridge
+
+# Run container on specific network
+docker run --network my-network nginx</code></pre>
+        <p>Common network types: <code>bridge</code> (default), <code>host</code> (removes network isolation), <code>overlay</code> (Docker Swarm), <code>none</code> (no network).</p>
+
+        <h2>Volume Management</h2>
+        <p>Volumes persist data beyond container lifecycle:</p>
+        <pre><code># List volumes
+docker volume ls
+
+# Create a volume
+docker volume create my-data
+
+# Inspect a volume
+docker volume inspect my-data
+
+# Run with a volume
+docker run -v my-data:/app/data nginx
+
+# Run with bind mount (host directory)
+docker run -v $(pwd)/data:/app/data nginx
+
+# Run with read-only mount
+docker run -v $(pwd)/config:/app/config:ro nginx</code></pre>
+
+        <h2>Image Building Deep Dive</h2>
+        <p>A typical Dockerfile example:</p>
+        <pre><code>FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]</code></pre>
+        <p>Build with multi-stage builds to reduce final image size:</p>
+        <pre><code>docker build -t my-app:latest --target builder .
+docker build -t my-app:prod --target production .</code></pre>
+
+        <h2>Dockerfile Best Practices</h2>
+        <ul>
+          <li><strong>Use specific versions</strong> — Not <code>node:latest</code>, use <code>node:20-alpine</code></li>
+          <li><strong>Order by change frequency</strong> — COPY package files first, then source code</li>
+          <li><strong>Use .dockerignore</strong> — Exclude node_modules, .git, build artifacts</li>
+          <li><strong>Minimize layers</strong> — Combine RUN commands where possible</li>
+          <li><strong>Use multi-stage builds</strong> — Keep production images lean</li>
+          <li><strong>Don't run as root</strong> — Use USER directive in Dockerfile</li>
+        </ul>
+
+        <h2>Resource Limits</h2>
+        <p>Prevent containers from consuming all system resources:</p>
+        <pre><code># Limit CPU and memory
+docker run -d --name web \
+  --memory="512m" \
+  --cpus="1.0" \
+  nginx
+
+# Set memory reservation (soft limit)
+docker run -d --name web \
+  --memory="512m" \
+  --memory-reservation="256m" \
+  nginx
+
+# Limit CPU cores
+docker run -d --cpuset-cpus="0,1" nginx</code></pre>
+
+        <h2>Health Checks</h2>
+        <p>Add health checks to monitor container status:</p>
+        <pre><code># In Dockerfile
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD curl -f http://localhost/health || exit 1
+
+# Run with custom health check
+docker run -d \
+  --health-cmd="curl -f http://localhost/health || exit 1" \
+  --health-interval=30s \
+  nginx</code></pre>
+
         <h2>Troubleshooting</h2>
         <p><strong>Container exits immediately:</strong> Check logs with <code>docker logs container-name</code></p>
         <p><strong>Port already in use:</strong> Find the process: <code>docker ps | grep 8080</code> or use <code>lsof -i :8080</code></p>
         <p><strong>Permission denied:</strong> On Linux, you may need <code>sudo docker ...</code> or add your user to the docker group.</p>
+        <p><strong>Image pull fails:</strong> Check Docker daemon is running: <code>docker info</code></p>
+        <p><strong>Disk space full:</strong> Run cleanup commands:</p>
+        <pre><code>docker system prune -a
+docker volume prune
+docker builder prune</code></pre>
+
+        <h2>Useful One-Liners</h2>
+        <pre><code># Kill all running containers
+docker kill $(docker ps -q)
+
+# Remove all stopped containers
+docker container prune
+
+# Remove all dangling images
+docker image prune
+
+# Remove all unused volumes
+docker volume prune
+
+# Show container disk usage
+docker system df
+
+# Watch container stats in real-time
+docker stats
+
+# Copy files from container
+docker cp container:/app/logs ./logs
+
+# Pause/unpause container
+docker pause container-name
+docker unpause container-name</code></pre>
 
       </article>
 

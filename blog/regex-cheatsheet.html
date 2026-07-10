@@ -86,14 +86,122 @@
         <pre><code>const ccRegex = /^(?:4[0-9]{12}|5[1-5][0-9]{14}|3[47][0-9]{13})$/;</code></pre>
         <p>Validates Visa, MasterCard, and Amex formats. Does not verify the checksum (Luhn algorithm).</p>
 
+        <h2>Advanced Patterns</h2>
+
+        <h3>11. Password with Special Characters Only</h3>
+        <pre><code>const strongPwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;</code></pre>
+        <p>Requires: lowercase, uppercase, digit, special char, minimum 8 characters. Uses lookahead assertions.</p>
+
+        <h3>12. Credit Card Number (basic validation)</h3>
+        <pre><code>const ccRegex = /^(?:4[0-9]{12}|5[1-5][0-9]{14}|3[47][0-9]{13})$/;</code></pre>
+        <p>Validates Visa, MasterCard, and Amex formats. Does not verify the checksum (Luhn algorithm).</p>
+
+        <h3>13. Slug / URL-Friendly String</h3>
+        <pre><code>const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;</code></pre>
+        <p>Lowercase letters, numbers, single hyphens between words. No leading/trailing hyphens. Perfect for URL segments like <code>my-blog-post</code>.</p>
+
+        <h3>14. HTML Tag Matcher</h3>
+        <pre><code>const htmlTagRegex = /<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)$/;</code></pre>
+        <p>Matches opening tags with content and closing tags, or self-closing tags. Useful for basic HTML parsing.</p>
+
+        <h3>15. Comma-Separated Numbers</h3>
+        <pre><code>const commaNumRegex = /^\d{1,3}(,\d{3})*$/;</code></pre>
+        <p>Matches properly formatted numbers: 1,000, 1,000,000 but not 10,00 or 1000,000.</p>
+
+        <h3>16. Social Security Number (US)</h3>
+        <pre><code>const ssnRegex = /^\d{3}-\d{2}-\d{4}$/;</code></pre>
+        <p>Matches format XXX-XX-XXXX. For production validation, also verify the SSN ranges (Area: 001-899, Group: 01-99, Serial: 0001-9999).</p>
+
+        <h3>17. ZIP Code (US)</h3>
+        <pre><code>const zipRegex = /^\d{5}(-\d{4})?$/;</code></pre>
+        <p>Matches 5-digit ZIP codes and ZIP+4 format (12345-6789).</p>
+
+        <h3>18. MAC Address</h3>
+        <pre><code>const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;</code></pre>
+        <p>Matches MAC addresses in formats like 00:1B:44:11:3A:B7 or 00-1B-44-11-3A-B7.</p>
+
+        <h3>19. JWT Token</h3>
+        <pre><code>const jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;</code></pre>
+        <p>Basic JWT format validation. Checks for three base64url-encoded parts separated by dots.</p>
+
+        <h3>20. ISBN-10 or ISBN-13</h3>
+        <pre><code>const isbnRegex = /^(?:\d{9}[\dXx]|\d{13})$/;</code></pre>
+        <p>Matches both ISBN-10 and ISBN-13 formats. ISBN-10 uses digits + optional X as check digit.</p>
+
+        <h2>Regex Flags Explained</h2>
+        <p>Flags modify how the regex engine interprets the pattern:</p>
+        <ul>
+          <li><code>g</code> — Global: Find all matches, not just the first</li>
+          <li><code>i</code> — Case-insensitive: Match both upper and lowercase</li>
+          <li><code>m</code> — Multiline: <code>^</code> and <code>$</code> match line starts/ends</li>
+          <li><code>s</code> — Dotall: <code>.</code> matches newlines too</li>
+          <li><code>u</code> — Unicode: Enable full Unicode support</li>
+        </ul>
+
         <h2>Quick Reference: Quantifiers</h2>
         <ul>
-          <li><code>*</code> — 0 or more</li>
-          <li><code>+</code> — 1 or more</li>
-          <li><code>?</code> — 0 or 1</li>
+          <li><code>*</code> — 0 or more (greedy)</li>
+          <li><code>+</code> — 1 or more (greedy)</li>
+          <li><code>?</code> — 0 or 1 (optional)</li>
           <li><code>{n}</code> — Exactly n</li>
           <li><code>{n,}</code> — n or more</li>
           <li><code>{n,m}</code> — Between n and m</li>
+          <li><code>*?</code>, <code>+?</code>, <code>??</code> — Lazy versions (match as few as possible)</li>
+        </ul>
+
+        <h2>Lookahead and Lookbehind</h2>
+        <p>Lookaheads and lookbehinds let you assert patterns without consuming characters:</p>
+        <ul>
+          <li><code>(?=abc)</code> — Positive lookahead: must be followed by "abc"</li>
+          <li><code>(?!abc)</code> — Negative lookahead: must NOT be followed by "abc"</li>
+          <li><code>(?&lt;=abc)</code> — Positive lookbehind: must be preceded by "abc"</li>
+          <li><code>(?&lt;!abc)</code> — Negative lookbehind: must NOT be preceded by "abc"</li>
+        </ul>
+        <pre><code>// Example: Match price without currency symbol
+        const priceRegex = /(?&lt;=\$)\d+\.\d{2}/;
+        // Matches "12.34" in "$12.34" without capturing the $</code></pre>
+
+        <h2>Common Use Cases in JavaScript</h2>
+
+        <h3>Validating Form Input</h3>
+        <pre><code>function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Usage
+validateEmail("user@example.com"); // true
+validateEmail("invalid-email");    // false</code></pre>
+
+        <h3>Extracting Data</h3>
+        <pre><code>// Extract all numbers from a string
+const str = "Order #12345 shipped on 2024-01-15";
+const numbers = str.match(/\d+/g);
+// Result: ["12345", "2024", "01", "15"]
+
+// Extract matches with capture groups
+const log = "Error: 404 Not Found";
+const [, code, message] = log.match(/Error: (\d+) (.+)/);
+// code = "404", message = "Not Found"</code></pre>
+
+        <h3>Search and Replace</h3>
+        <pre><code>// Replace all phone numbers with [REDACTED]
+const text = "Call 555-123-4567 or 555-987-6543";
+const sanitized = text.replace(/\d{3}-\d{3}-\d{4}/g, "[REDACTED]");
+// Result: "Call [REDACTED] or [REDACTED]"
+
+// Convert camelCase to kebab-case
+const camelCase = "firstName";
+const kebabCase = camelCase.replace(/([A-Z])/g, '-$1').toLowerCase();
+// Result: "first-name"</code></pre>
+
+        <h2>Performance Tips</h2>
+        <ul>
+          <li><strong>Be specific:</strong> <code>\d{4}</code> is faster than <code>[0-9]{4}</code></li>
+          <li><strong>Avoid catastrophic backtracking:</strong> Don't use nested quantifiers like <code>(a+)+</code></li>
+          <li><strong>Use anchors:</strong> Start with <code>^</code> and end with <code>$</code> when matching entire strings</li>
+          <li><strong>Prefer character classes:</strong> <code>[a-z]</code> over alternation <code>(a|b|c|...|z)</code></li>
+          <li><strong>Compile once:</strong> Store regex in variables outside loops</li>
         </ul>
 
         <h2>Try These Patterns Live</h2>
