@@ -188,11 +188,27 @@
       </div>
     </section>
 
-    <!-- Browse All -->
-    <div style="text-align:center;margin-bottom:2rem;">
-      <a href="/tools/index.html" class="btn btn--outline">Browse all 60+ free tools →</a>
-    </div>
-  </div>
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">How does PDF merge work?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">All processing happens locally in your browser using the pdf-lib library. We never upload your files to any server. The merged PDF is generated in memory and downloaded directly to your device.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is there a limit on file size or number of files?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">No hard limits. Since everything runs in your browser, performance depends on your device's memory. Most modern devices can handle 10+ PDFs totaling several hundred MB.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Can I reorder files before merging?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Yes. After uploading, simply drag any file card up or down to reorder them. The merge order matches the list order from top to bottom.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">Is my data safe?<span class="faq-icon">+</span></div>
+        <div class="faq-answer">Absolutely. Your files never leave your device. All processing is client-side, and the resulting PDF is generated and downloaded directly from your browser.</div>
+      </div>
+    </section>
+
 </main>
 
 <!-- FOOTER -->
@@ -411,6 +427,7 @@ function showToast(msg) {
   setTimeout(function() { t.classList.remove('show'); }, 2500);
 }
 
+function toggleFaq(el) { el.classList.toggle('open'); }
 function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModal('pdf-merge', 'PDF Merge'); }
 </script>
 <style>
