@@ -142,6 +142,55 @@
       </div>
     </div>
 
+    <!-- Use Cases -->
+    <section class="use-cases-section">
+      <h2 class="use-cases-title">Common Use Cases</h2>
+      <div class="use-cases-grid">
+        <div class="use-case-card" onclick="document.getElementById('jsonInput').value=JSON.stringify({name:'Alice',email:'alice@example.com',score:95},null,2);doOp('format');">
+          <div class="use-case-icon">🔗</div>
+          <div class="use-case-label">API Response</div>
+          <div class="use-case-desc">Format JSON from API calls</div>
+        </div>
+        <div class="use-case-card" onclick="document.getElementById('jsonInput').value='{\"name\":\"test\",\"data\":{\"items\":[1,2,3]}}';doOp('minify');">
+          <div class="use-case-icon">📦</div>
+          <div class="use-case-label">Minify Config</div>
+          <div class="use-case-desc">Compress JSON for production</div>
+        </div>
+        <div class="use-case-card" onclick="document.getElementById('jsonInput').value=JSON.stringify({zebra:1,apple:2,mango:3},null,2);doOp('sort');">
+          <div class="use-case-icon">🔤</div>
+          <div class="use-case-label">Sort Keys</div>
+          <div class="use-case-desc">Alphabetize object keys</div>
+        </div>
+        <div class="use-case-card" onclick="loadDiffA();loadDiffB();document.querySelector('[data-tab=diff]').click();">
+          <div class="use-case-icon">🔍</div>
+          <div class="use-case-label">Compare JSON</div>
+          <div class="use-case-desc">Find differences between docs</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result Showcase -->
+    <section class="showcase-section">
+      <h2 class="showcase-title">Example Output</h2>
+      <div class="showcase-grid">
+        <div class="showcase-item">
+          <div class="showcase-preview" id="showcase-format"></div>
+          <div class="showcase-label">Formatted</div>
+          <div class="showcase-desc">Readable indented output</div>
+        </div>
+        <div class="showcase-item">
+          <div class="showcase-preview" id="showcase-minify"></div>
+          <div class="showcase-label">Minified</div>
+          <div class="showcase-desc">Compact single line</div>
+        </div>
+        <div class="showcase-item">
+          <div class="showcase-preview" id="showcase-clean"></div>
+          <div class="showcase-label">Cleaned</div>
+          <div class="showcase-desc">Strip nulls and empty values</div>
+        </div>
+      </div>
+    </section>
+
     <section class="faq-section">
       <h2 class="faq-title">Frequently Asked Questions</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
@@ -159,6 +208,28 @@
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Keyboard shortcuts?<span class="faq-icon">+</span></div>
         <div class="faq-answer"><code>Ctrl+Enter</code> (or <code>Cmd+Enter</code> on Mac) to format instantly.</div>
+      </div>
+    </section>
+
+    <!-- Related Tools -->
+    <section class="related-tools-section">
+      <h2 class="related-tools-title">Related Tools</h2>
+      <div class="related-tools-list">
+        <a href="/tools/dev/yaml-validator.html" class="related-tool-card">
+          <span class="related-tool-icon">📄</span>
+          <span class="related-tool-name">YAML Validator</span>
+          <span class="related-tool-desc">Validate and parse YAML files</span>
+        </a>
+        <a href="/tools/dev/json-to-yaml.html" class="related-tool-card">
+          <span class="related-tool-icon">🔄</span>
+          <span class="related-tool-name">JSON to YAML</span>
+          <span class="related-tool-desc">Convert JSON to YAML format</span>
+        </a>
+        <a href="/tools/dev/xml-formatter.html" class="related-tool-card">
+          <span class="related-tool-icon">📋</span>
+          <span class="related-tool-name">XML Formatter</span>
+          <span class="related-tool-desc">Format and validate XML</span>
+        </a>
       </div>
     </section>
   </div>
@@ -576,7 +647,22 @@ function shareTool() { if (typeof TBUtils !== 'undefined') TBUtils.showShareModa
 
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof TBUtils !== 'undefined') TBUtils.addToHistory('json-formatter', 'JSON Formatter');
+  generateShowcase();
 });
+
+function generateShowcase() {
+  var formatData = { user: { name: "Alice", email: "alice@example.com", active: true, score: 94.5 }, posts: [ { id: 101, title: "Getting Started", views: 1200 }, { id: 102, title: "Advanced Tips", views: 890 } ], meta: { page: 1, total: 42 } };
+  var minifyData = { name: "Alice", email: "alice@example.com", active: true };
+  var cleanData = { user: { name: "Alice" }, posts: [ { id: 101, title: "Getting Started" } ] };
+
+  var formatEl = document.getElementById('showcase-format');
+  var minifyEl = document.getElementById('showcase-minify');
+  var cleanEl = document.getElementById('showcase-clean');
+
+  if (formatEl) formatEl.innerHTML = syntaxHighlight(JSON.stringify(formatData, null, 2));
+  if (minifyEl) minifyEl.textContent = JSON.stringify(minifyData);
+  if (cleanEl) cleanEl.innerHTML = syntaxHighlight(JSON.stringify(cleanData, null, 2));
+}
 </script>
 <style>
 .json-tabs {
@@ -706,6 +792,45 @@ document.addEventListener('DOMContentLoaded', function() {
 .json-number { color: #fab387; }
 .json-bool   { color: #cba6f7; }
 .json-null   { color: #f38ba8; }
+
+/* Use Cases Section */
+.use-cases-section { margin-bottom: 1.5rem; }
+.use-cases-title { font-size: 1.1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.75rem; }
+.use-cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+.use-case-card { display: flex; flex-direction: column; align-items: center; padding: 0.875rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; transition: background 150ms, border-color 150ms; text-align: center; }
+.use-case-card:hover { background: var(--color-bg-alt); border-color: var(--color-primary); }
+.use-case-icon { font-size: 1.5rem; margin-bottom: 0.35rem; }
+.use-case-label { font-size: 0.85rem; font-weight: 600; color: var(--color-text); }
+.use-case-desc { font-size: 0.72rem; color: var(--color-text-muted); margin-top: 0.2rem; }
+
+/* Result Showcase Section */
+.showcase-section { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+.showcase-title { font-size: 1.1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.75rem; text-align: center; }
+.showcase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.showcase-item { display: flex; flex-direction: column; align-items: center; }
+.showcase-preview { background: var(--color-bg); border-radius: var(--radius-md); padding: 0.75rem; display: flex; align-items: flex-start; justify-content: left; min-height: 100px; width: 100%; overflow: hidden; font-family: monospace; font-size: 0.7rem; color: var(--color-text-muted); white-space: pre; }
+.showcase-preview .json-key { color: #89dceb; }
+.showcase-preview .json-string { color: #a6e3a1; }
+.showcase-preview .json-number { color: #fab387; }
+.showcase-preview .json-bool { color: #cba6f7; }
+.showcase-preview .json-null { color: #f38ba8; }
+.showcase-label { font-size: 0.85rem; font-weight: 600; color: var(--color-text); margin-top: 0.5rem; }
+.showcase-desc { font-size: 0.72rem; color: var(--color-text-muted); text-align: center; }
+
+/* Related Tools Section */
+.related-tools-section { margin-bottom: 1.5rem; }
+.related-tools-title { font-size: 1.1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.75rem; }
+.related-tools-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+.related-tool-card { display: flex; align-items: center; gap: 0.625rem; padding: 0.75rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); text-decoration: none; transition: background 150ms, border-color 150ms; }
+.related-tool-card:hover { background: var(--color-bg-alt); border-color: var(--color-primary); }
+.related-tool-icon { font-size: 1.25rem; flex-shrink: 0; }
+.related-tool-name { font-size: 0.875rem; font-weight: 600; color: var(--color-text); }
+.related-tool-desc { font-size: 0.72rem; color: var(--color-text-muted); }
+
+@media (max-width: 640px) {
+  .showcase-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+  .use-cases-grid { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </body>
 </html>
